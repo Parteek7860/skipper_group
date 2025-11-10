@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />    
+    @await Html.PartialAsync("~/Views/Shared/_seosection.cshtml")
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/bootstrap.min.css")" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/slick.css")" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/jquery.fancybox.min.css")" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/common.css")" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/header.css")" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/inner-page.css")" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/inner-page-anuj.css")" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/inner-responsive.css")" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/footer.css")" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/animate.css")" asp-append-version="true" />
+    <link href="@Url.Content("~/css/dynamic.css")" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link href="@Url.Content("~/css/xzoom.min.css")" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/inner-subpage.css")" asp-append-version="true" />
+   
+    
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+</head>
+
+<body>
+    <header class="header inner-header">
+        <div class="container-fluid header-wrapper">
+            <nav class="navbar">
+                <div class="logo-home ">
+                    <a class="" href="/">
+                        <picture>
+                            <img src="~/images/metro_tyre_logo_black.png" class="img-fluid " alt="metro_tyre_logo" />
+                        </picture>
+                    </a>
+                </div>
+
+                 @await Html.PartialAsync("~/Views/PartialView/Main_Menu.cshtml") 
+
+            </nav>
+        </div>
+        @await Html.PartialAsync("~/Views/PartialView/_search.cshtml")
+    </header>
+    <main>
+        <section class="page_title text-center">
+            <div class="container">
+                  <h1> @Model.Name </h1>  
+            </div>
+        </section>
+        @{
+            var innerMenu = ViewBag.InnerMenu as List<clsHomeModel> ?? new List<clsHomeModel>();
+        }
+        @if (innerMenu != null && innerMenu.Any())
+        {
+            <section class="inner_common_menu text-center pdb-4">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10">
+                            <ul>
+                                @foreach (var ham in ViewBag.InnerMenu as List<clsHomeModel> ?? new List<clsHomeModel>())
+                                {
+                                    int currentId = Convert.ToInt32(ViewBag.Currentid);
+                                    int menuPageId = Convert.ToInt32(ham.pageid);
+                                    string activeclass = (menuPageId == currentId) ? "active" : "";
+                                    if (!string.IsNullOrEmpty(ham.rewriteurl))
+                                    {
+                                        <li>
+                                            <a href="/@ham.rewriteurl" class="@activeclass">@ham.linkname</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a href="/cms/@ham.linkname/@ham.pageid" class="@activeclass">@ham.linkname</a>
+                                        </li>
+                                    }
+                                }
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        }
+        
+        @if (Context.Session.GetString("Message") != null)
+        {
+            <div id="sessionMessage" class="alert alert-success alert-dismissible fade show"
+                 role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 250px;">
+                @Context.Session.GetString("Message")
+            </div>
+
+            {
+
+                Context.Session.Remove("Message");
+            }
+        }
+     
+        
+        @RenderBody()
+    </main>
+    @await Html.PartialAsync("~/Views/Shared/_footer.cshtml")
+
+    <script src="@Url.Content("~/js/jquery-3.7.1.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/bootstrap.bundle.min.js")" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.19/jquery.touchSwipe.min.js"></script>
+    <script src="@Url.Content("~/js/jquery.fancybox.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/slick.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/xzoom.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/setup.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/wow.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/main.js")" asp-append-version="true"></script>
+    <script src="~/js/footer_select.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

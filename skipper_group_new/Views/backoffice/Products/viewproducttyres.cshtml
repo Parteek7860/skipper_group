@@ -1,0 +1,247 @@
+﻿@{
+    Layout = "~/Views/Shared/_homepage.cshtml";
+    ViewBag.Title = "Product Tyre Detail";
+}
+
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @ViewBag.Title
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item">
+                    <a href="#"><i class="zmdi zmdi-home"></i> Product Tyre</a>
+                </li>
+                <li class="breadcrumb-item active">Product Tyre List</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="thismessage" class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="message" class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<!-- ✅ Add / Edit Size Modal -->
+<div class="modal fade" id="addSizeModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white py-2">
+                <h5 class="modal-title">Add / Edit Product Size</h5>
+                <button type="button" class="close text-white" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="sizePopupContent"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ Add / Edit Image Modal -->
+<div class="modal fade" id="addImageModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white py-2">
+                <h5 class="modal-title">Add / Edit Tyre Image</h5>
+                <button type="button" class="close text-white" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="imagePopupContent"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+            <div class="body">
+                @{
+                    var tyreList = ViewBag.TyreList as List<skipper_group_new.Models.PTyreView>;
+                }
+
+                @if (tyreList != null && tyreList.Any())
+                {
+                    <h2 class="card-inside-title">Fields with * are mandatory</h2>
+
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search..." />
+
+                    <div class="row mt-3">
+                        <div class="col-lg-4">
+                            <label for="fromDate" class="font-weight-bold">From Date</label>
+                            <input type="date" id="fromDate" class="form-control" />
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="toDate" class="font-weight-bold">To Date</label>
+                            <input type="date" id="toDate" class="form-control" />
+                        </div>
+                        <div class="col-lg-2 d-flex align-items-end">
+                            <button class="btn btn-primary w-100 font-weight-bold" type="button" onclick="filterByDate()" style="background-color:#456976 !important;">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+
+                    <table class="table table-bordered mt-4" id="productTable">
+                        <thead class="table-header">
+                            <tr>
+                                <th>Tyre/Product</th>
+                                <th>Tyre Size</th>
+                                <th>Product Type</th>
+                                <th>Vehicle Type</th>
+                                <th>Tyre Type</th>
+                                <th>Posting</th>
+                                <th>Design Type</th>
+                                <th>Publish</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var i in tyreList)
+                            {
+                                <tr>
+                                    <td>@i.Title</td>
+                                    <td>@i.TyreSize</td>
+                                    <td>@i.ProductType</td>
+                                    <td>@i.VehicleType</td>
+                                    <td>@i.TyreType</td>
+                                    <td>@i.Posting</td>
+                                    <td>@i.Design</td>
+                                    <td>
+                                        @if (i.Status == true)
+                                        {
+                                            <form method="post" action="/backoffice/Products/ChangeProductTyreStatus/@i.ProductTyreId" style="display:inline;">
+                                                <button type="submit" class="btnstatus" style="border:none;background:none"
+                                                        onclick="return confirm('You want to change the status to inactive?');">
+                                                    <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <form method="post" action="/backoffice/Products/ChangeProductTyreStatus/@i.ProductTyreId" style="display:inline;">
+                                                <button type="submit" class="btnstatus" style="border:none;background:none"
+                                                        onclick="return confirm('You want to change the status to active?');">
+                                                    <img src="~/Backoffice/images/wrong.png" width="25" alt="Inactive" />
+                                                </button>
+                                            </form>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a href="/Backoffice/Products/GetPTyreByID/@i.ProductTyreId" title="Edit Product">
+                                            <img src="~/Backoffice/images/edit.png" width="20" alt="Edit" />
+                                        </a>
+                                        <a href="#" class="btndelete" data-href="/Backoffice/Products/DeleteTyreByID/@i.ProductTyreId" title="Delete Product">
+                                            <img src="~/Backoffice/images/delete.png" width="20" alt="Delete" />
+                                        </a>
+                                        <a href="javascript:void(0);" class="btnAddImage" data-id="@i.ProductTyreId" title="Add Image">
+                                            <img src="~/Backoffice/images/addimage.svg" width="20" alt="Add Image" />
+                                        </a>
+                                        <a href="javascript:void(0);" class="btnAddSize" data-id="@i.ProductTyreId" title="Add Product Size">
+                                            <img src="~/Backoffice/images/package-add-icon.svg" width="20" alt="Add Product Size" />
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <!-- ✅ Fixed missing table structure when no data -->
+                    <table class="table table-bordered">
+                        <tr>
+                            <td colspan="9" class="text-center text-muted">No products found.</td>
+                        </tr>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+
+
+<script nonce="@nonce">
+    $(document).ready(function () {
+        $('.btndelete').on('click', function (e) {
+            e.preventDefault();
+            if (confirm("Are you sure you want to delete this record?")) {
+                window.location.href = $(this).data('href');
+            }
+        });
+
+        $('.btnAddSize').on('click', function () {
+            const tyreId = $(this).data("id");
+            $("#addSizeModal").modal("show");
+            $("#sizePopupContent").html('<div class="text-center my-3"><div class="spinner-border text-primary"></div> Loading...</div>');
+
+            $.ajax({
+                url: '/Backoffice/Products/GetProductSize',
+                type: 'GET',
+                data: { id: tyreId },
+                success: function (response) {
+                    $("#sizePopupContent").html(response);
+                },
+                error: function () {
+                    $("#sizePopupContent").html("<div class='text-danger text-center py-3'>Failed to load data. Try again.</div>");
+                }
+            });
+        });
+
+        $('.btnAddImage').on('click', function () {
+            const tyreId = $(this).data("id");
+            $("#addImageModal").modal("show");
+            $("#imagePopupContent").html('<div class="text-center my-3"><div class="spinner-border text-primary"></div> Loading...</div>');
+
+            $.ajax({
+                url: '/Backoffice/Products/GetTyreImage',
+                type: 'GET',
+                data: { id: tyreId },
+                success: function (response) {
+                    $("#imagePopupContent").html(response);
+                },
+                error: function () {
+                    $("#imagePopupContent").html("<div class='text-danger text-center py-3'>Failed to load data. Try again.</div>");
+                }
+            });
+        });
+
+        $('#searchInput').on('keyup', function () {
+            const filter = $(this).val().toLowerCase();
+            $('#productTable tbody tr').each(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(filter) > -1);
+            });
+        });
+
+        $('#fromDate, #toDate').on('change', function () {
+            const from = new Date($('#fromDate').val());
+            const to = new Date($('#toDate').val());
+            $('#productTable tbody tr').each(function () {
+                const posting = $(this).find('td').eq(5).text().trim();
+                const date = new Date(posting);
+                if (!isNaN(date.getTime())) {
+                    $(this).toggle((!$('#fromDate').val() || date >= from) && (!$('#toDate').val() || date <= to));
+                }
+            });
+        });
+
+        setTimeout(() => $('#thismessage').fadeOut(), 2000);
+    });
+</script>

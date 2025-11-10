@@ -1,0 +1,84 @@
+﻿@model skipper_group_new.Models.clsLogin
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+
+    <title>:: Sign In ::</title>
+    <!-- Favicon-->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/backoffice/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/backoffice/css/main.css">
+    <link rel="stylesheet" href="/backoffice/css/authentication.css">
+    <link rel="stylesheet" href="/backoffice/css/color_skins.css">
+</head>
+<body class="theme-orange">
+
+    @using (Html.BeginForm("Signin", "Backoffice", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true)
+        <div class="authentication">
+            <div class="card">
+                <div class="body">
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            <div class="header slideDown">
+                                <div class="logo"><img src="~/images/logo/logo.png" alt="" width="200px"></div>
+                                @* <h1>skipper_group_new</h1> *@
+
+                            </div>
+                        </div>
+                        
+                            <h5 class="title">Sign in to your Account</h5>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                                    <label class="form-label">Username</label>
+                                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger v-span" })
+                                </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                    <label class="form-label">Password</label>
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger v-span" })
+                                </div>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="rememberme" id="rememberme" class="filled-in chk-col-cyan d-none">
+                                <label for="rememberme">Remember Me</label>
+                            </div>
+                        
+                        <div class="col-lg-12">
+                            <input type="submit" class="btn btn-raised btn-primary waves-effect" value="SIGN IN" formaction="@Url.Action("dashboard", "Backoffice")" formmethod="post" />
+                            @{
+                                if (ViewBag.SuccessCreate != null)
+                                {
+                                    <div class="col-lg-12 my-lg-2 text-lg-center message-top">
+                                        @ViewBag.SuccessCreate
+                                    </div>
+                                }
+                            }
+                        </div>
+                        @ViewBag.Message
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Jquery Core Js -->
+    <script src="/backoffice/bundles/libscripts.bundle.js"></script>
+    <script src="/backoffice/bundles/vendorscripts.bundle.js"></script>
+    <script src="/backoffice/bundles/mainscripts.bundle.js"></script>
+</body>
+</html>

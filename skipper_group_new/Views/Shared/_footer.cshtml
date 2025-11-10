@@ -1,0 +1,713 @@
+﻿@using System.Data
+@using skipper_group_new.Models
+@using skipper_group_new.mainclass
+@inject skipper_group_new.Service.MenuDataService MenuService
+@{
+    var mainMenu = MenuService.MainMenuList;
+    var producttype = MenuService.GetVehicleList;
+    var mobile_menu = MenuService.MobileMenu;
+    var BikeTyreList  = MenuService.FooterList;
+}
+<footer>
+    <div class="container wow fadeIn" data-wow-delay=".4s">
+        <div class="row">
+            <div class="col-md-1 ftr_left flex-grow-1">
+                <div class="f-menu w-100">
+                 
+                    <div class="menu-ul-ftr">
+                        <a href="/about-us"><span>About Us</span></a>
+                    </div>
+                    <div class="menu-ul-ftr">
+                        <a href="/technology-overview"><span>Technology</span></a>
+                    </div>
+                    <div class="menu-ul-ftr">
+                        <a href="/news-and-events"><span>Happenings</span></a>
+                    </div>
+                    <div class="menu-ul-ftr">
+                        <a href="/career"><span>Careers</span></a>
+                    </div>
+                    <div class="menu-ul-ftr">
+                        <a href="/contact-us"><span>Contact Us</span></a>
+                    </div>
+                    <div class="menu-ul-ftr d-md-none">
+                        <a href="/bike/motorcycle-tyre"><span>Bike Tyres</span></a>
+                    </div>
+                    <div class="menu-ul-ftr d-none d-md-block">
+                        <a href="/export-markets"><span>Exports</span></a>
+                        <a href="/career"><span>Careers</span></a>
+                        <a href="javascript:void"><span>Testimonials</span></a>
+                        <a href="javascript:void"><span>FAQ's</span></a>
+                    </div>
+                </div>
+                
+
+            </div>
+            <div class="col-md-9 ftr_rights">
+                <div class="row">
+                    <div class="col-md-4 col-6 d-none d-md-flex flex-grow-1">
+                        <div class="f-menu bikeTires w-100">
+                            <a href="/bike/motorcycle-tyre"><span>Bike Tyres</span></a>
+                           @if( BikeTyreList != null && BikeTyreList.Count > 0)
+                            {
+                                 var filteredList = BikeTyreList.Where(x => x.id == 9).ToList(); 
+
+                                <div class="menu-ul-ftr">
+                                    @foreach (var bike in filteredList)
+                                    {
+                                        <a href="/product-details/@bike.title.ToSlug()/@bike.ProductTitle.ToSlug()/@bike.ProductId/@bike.id">@bike.ProductTitle</a>
+                                    }
+                                </div>
+                            }
+                       
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6 flex-grow-1">
+                        <div id="footer1_panelscooter" class="f-menu">
+                            <a href="scooter/scooter-tyre.html"><span>Scooter Tyres</span></a>
+                           @if( BikeTyreList != null && BikeTyreList.Count > 0)
+                            {
+                                 var filteredList = BikeTyreList.Where(x => x.id == 19).ToList(); 
+
+                                <div class="menu-ul-ftr">
+                                    @foreach (var bike in filteredList)
+                                    {
+                                        <a href="/product-details/@bike.title.ToSlug()/@bike.ProductTitle.ToSlug()/@bike.ProductId/@bike.id">@bike.ProductTitle</a>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6 flex-grow-1">
+                        <div class="f-menu">
+                            <a href="/rickshaw/auto-rickshaw-tyre"><span>Autorickshaw Tyres</span></a>
+                            @if( BikeTyreList != null && BikeTyreList.Count > 0)
+                            {
+                                 var filteredList = BikeTyreList.Where(x => x.id == 14).ToList(); 
+
+                                <div class="menu-ul-ftr">
+                                    @foreach (var bike in filteredList)
+                                    {
+                                        <a href="/product-details/@bike.title.ToSlug()/@bike.ProductTitle.ToSlug()/@bike.ProductId/@bike.id">@bike.ProductTitle</a>
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <div class="f-menu d-none d-md-block">
+                            <a href="/rickshaw/e-rickshaw-tyre"><span>E - Rickshaw Tyres</span></a>
+                            @if( BikeTyreList != null && BikeTyreList.Count > 0)
+                            {
+                                 var filteredList = BikeTyreList.Where(x => x.id == 13).ToList(); 
+
+                                <div class="menu-ul-ftr">
+                                    @foreach (var bike in filteredList)
+                                    {
+                                        <a href="/product-details/@bike.title.ToSlug()/@bike.ProductTitle.ToSlug()/@bike.ProductId/@bike.id">@bike.ProductTitle</a>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6 d-md-none flex-grow-1">
+                        <div class="f-menu">
+                            <a href="/rickshaw/e-rickshaw-tyre"><span>E - Rickshaw Tyres</span></a>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6 flex-grow-1">
+                        <div class="f-menu">
+                            <a href="/cycle/cycle-tyre"><span>Cycle Tyres</span></a>
+                            @if( BikeTyreList != null && BikeTyreList.Count > 0)
+                            {
+                                 var filteredList = BikeTyreList.Where(x => x.id == 18).ToList(); 
+
+                                <div class="menu-ul-ftr">
+                                    @foreach (var bike in filteredList)
+                                    {
+                                        <a href="/product-details/@bike.title.ToSlug()/@bike.ProductTitle.ToSlug()/@bike.ProductId/@bike.id">@bike.ProductTitle</a>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-1 flex-grow-1 order-3">
+                <div class="f-menu mobile w-100">
+                    <span>Quick Links</span>
+                    <div class="menu-ul-ftr">
+                        <a href="javascript:void" class="d-none d-md-block">Tyre Care</a>
+                        <a href="/store-locator" class="d-none d-md-block">Branch Locator</a>
+                        <a class="ps-md-3">Assam</a>
+                        <a class="ps-md-3">Karnataka</a>
+                        <a class="ps-md-3">Kerala</a>
+                        <a class="ps-md-3">Tamil Nadu</a>
+                        <a class="ps-md-3">Uttar Pradesh</a>
+                        <a href="cdn-cgi/l/email-protection.html#c0a9aea6af80ada5b4b2afa7b2afb5b0eea3afeea9ae"
+                           class="d-none d-md-block">Webmail</a>
+                        <a href="javascript:void" class="d-none d-md-block" target="_blank">Blog</a>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-md-12 flex-grow-1 d-md-none">
+                <div class="f-menu w-100 mobile-left-menu">
+                    <a href="export-markets.html"><span>Exports</span></a>
+                    <a href="career.html"><span>Careers</span></a>
+                    <a href="testimonial.html"><span>Testimonials</span></a>
+                    <a href="tyre-care.html"><span>Tyre Care</span></a>
+                    <a href="store-locator.html"><span>Branch Locator</span></a>
+                    <a href="faq.html"><span>FAQ's</span></a>
+                    <a href="cdn-cgi/l/email-protection.html#3c55525a537c5159484e535b4e53494c125f53125552"><span>Webmail</span></a>
+                    <a href="blog.html" target="_blank"><span>Blog</span></a>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+    <div class="copyright wow fadeIn" data-wow-delay=".1s">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 col-md-3">
+                    <div class="follow-us">
+                        <span>Follow Us</span>
+                        <ul>
+                            <li>
+                                <a href="https://www.facebook.com/MetroTyres/" target="_blank">
+                                    <img src="~/images/facebook.svg" alt="facebook">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/MetroTyresIndia" target="_blank">
+                                    <img src="~/images/twitter-x.png" alt="twitter">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.instagram.com/metrotyres/" target="_blank">
+                                    <img src="~/images/instagram.svg" alt="instagram">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.youtube.com/metrotyres746" target="_blank">
+                                    <img src="~/images/youtube.png" alt="youtube">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.linkedin.com/company/metro-tyres-limited/" target="_blank">
+                                    <img src="~/images/linkdin.svg" alt="linkdin">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-5  col-md-4">
+                    <div class="subscribe">
+                        <span>Subscribe</span>
+                        <div class="footer-input">
+                            <div id="footer1_Panel1"
+                                 onkeypress="javascript:return WebForm_FireDefaultButton(event, &#39;footer1_lnksubscribe&#39;)">
+
+                                <input name="footer1$txtsubEmail" type="text" id="footer1_txtsubEmail"
+                                       class="form-control" placeholder="Enter Email Address" />
+                                <span id="footer1_RequiredFieldValidator1" style="color:Red;display:none;">
+                                    Enter
+                                    E-mail Address.
+                                </span>
+                                <span id="footer1_RegularExpressionValidator5" style="color:Red;display:none;">
+                                    Enter
+                                    Valid Email.
+                                </span>
+                                <input type="hidden" name="footer1$ValidatorCalloutExtender9_ClientState"
+                                       id="footer1_ValidatorCalloutExtender9_ClientState" />
+                                <input type="hidden" name="footer1$ValidatorCalloutExtender10_ClientState"
+                                       id="footer1_ValidatorCalloutExtender10_ClientState" />
+
+                            </div>
+                            <a id="footer1_lnksubscribe" class="footer-btn"
+                               href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;footer1$lnksubscribe&quot;, &quot;&quot;, true, &quot;subscribe&quot;, &quot;&quot;, false, true))">
+                                <img src="~/images/arrow-min.svg" alt="arrow">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5">
+                    <p>
+                        &copy; 2025 Metro Tyre - All rights reserved. <span>
+                            Website Design and Development by <a href="https://www.stercodigitex.com/" target="_blank">Sterco Digitex</a>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div class="side-social">
+    <ul class="sub-menu1">
+        <li>
+            <a aria-label="whatsapp link" class="nav-link whatsapp-bg"
+               href="https://api.whatsapp.com/send?phone=919220823366" target="_blank"
+               onclick="ga('send', 'event', { eventCategory: 'metrotyres', eventAction: 'Whats App', eventLabel: 'https://api.whatsapp.com/send?phone=919220823366'})">
+                <i class="fa-brands fa-whatsapp fa-lg whatsapp-bg"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<section class="mobile-bottom-menu">
+    <ul>
+        <li class="">
+            <a href="javascript:void(0)" class="m-enquiry togglee">
+                <figure>
+                    <img src="~/images/search_m.svg" alt="icon">
+                </figure>
+                <p>Find A Tyre</p>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" class="about_m togglee">
+                <figure>
+                    <img src="~/images/location_icon_m.svg" alt="icon">
+                </figure>
+                <p>Branch Locator</p>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" class="togglee call-phone">
+                <figure>
+                    <img src="~/images/phone_call_icon.svg" alt="icon">
+                </figure>
+                <p>Contact</p>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" class="m-insurance togglee ">
+                <figure>
+                    <img src="~/images/menu_icon.svg">
+                </figure>
+                <p>Menu</p>
+            </a>
+        </li>
+    </ul>
+    <div class="call-mobile m-pop sec">
+        <div class="contact-mobile">
+            <h2>Contact Us</h2>
+            <div class="prog-menu-mob">
+                <a href="tel:911204147414" class="cta-number">
+                    <span>
+                        <img src="~/images/Icon-feather-phone-call.svg" alt="Icon feather phone call">
+                    </span>
+                    +91-1204147414
+                </a>
+
+                <a href="cdn-cgi/l/email-protection.html#b1d8dfd7def1dcd4c5c3ded6c3dec4c19fd2de9fd8df"
+                   class="e_mail">
+                    <span>
+                        <img src="~/images/Icon-envelope.svg" alt="Icon envelope">
+                    </span>
+                    <span class="__cf_email__"
+                          data-cfemail="f990979f96b9949c8d8b969e8b968c89d79a96d79097">[email&#160;protected]</span>
+                </a>
+                <p>
+                    Metro Tower, C-49, Sector 62,
+                    <br>
+                    Noida – 201 307, India
+                </p>
+            </div>
+            <div class="accordion_mobile" id="accordionExample1">
+                <div class="accordion-item">
+                    <div class="accordion-header" id="headingOne1">
+                        <a href="javascript:void(0);" class="accordion-button collapsed" data-bs-toggle="collapse"
+                           data-bs-target="#collapseOne1" aria-expanded="true"
+                           aria-controls="collapseOne1">
+                            CORPORATE OFFICE
+                        </a>
+                    </div>
+                    <div id="collapseOne1" class="accordion-collapse collapse " aria-labelledby="headingOne1"
+                         data-bs-parent="#accordionExample1">
+                        <div class="accordion-body">
+                            <p><strong>Metro Group</strong></p>
+                            <p>Metro Tower, C-49, Sector 62, Noida – 201 307, India</p>
+                            <p><strong>Metro Tyres Limited</strong></p>
+                            <p>201, Square One, C-2, District Centre, Saket Place, New Delhi -17, India</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" id="headingTwo1">
+                        <a href="javascript:void(0);" class="accordion-button collapsed" data-bs-toggle="collapse"
+                           data-bs-target="#collapseTwo1" aria-expanded="false" aria-controls="collapseTwo1">
+                            DUBAI
+                            OFFICE
+                        </a>
+                    </div>
+                    <div id="collapseTwo1" class="accordion-collapse collapse" aria-labelledby="headingTwo1"
+                         data-bs-parent="#accordionExample1">
+                        <div class="accordion-body">
+                            <p>LB05125, Jebel Ali Freezone, Dubai, U.A.E.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" id="headingThree1">
+                        <a href="javascript:void(0);" class="accordion-button collapsed" data-bs-toggle="collapse"
+                           data-bs-target="#collapseThree1" aria-expanded="false"
+                           aria-controls="collapseThree1">
+                            MANUFACTURING OFFICE
+                        </a>
+                    </div>
+                    <div id="collapseThree1" class="accordion-collapse collapse" aria-labelledby="headingThree1"
+                         data-bs-parent="#accordionExample1">
+                        <div class="accordion-body">
+                            <p><strong>Metro Tyres Limited</strong></p>
+                            <p>503, Industrial, Area-B, Ludhiana- 141003 Punjab (India)</p>
+                            <p>B-27, Metro Road Focal Point, Phase-IV, Ludhiana- 141010, Punjab (India)</p>
+                            <p>VPO Jugiana, GT Road Ludhiana- 141017, Punjab (India)</p>
+                            <p>B-46, Metro Road Focal, Phase-VI, Ludhiana-141010, Punjab, (India)</p>
+                            <p>
+                                K106/1, 64 K.M. Mile Stone, Delhi Jaipur National Highway-8 V & P.O:-
+                                Sidhrawali-122413, Distt- Gurgoan (Haryana)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="enquiry-mobile m-pop sec">
+        <h2>Find A Tyre</h2>
+        <div class="for_mobile_findTyre">
+            <div id="mobilemenu1_UpdatePanel2">
+
+                <ul>
+                    @if (producttype != null)
+                    {
+                        int index = 0;
+                        foreach (var p in producttype as List<ProductTypeModel>)
+                        {
+                            var isActive = index == 0 ? "active" : "";
+                            <li class="nav-item">
+                                <a class="@isActive" data-id="@p.PID">
+                                    <img src="/uploads/productimg/@p.Image" alt="@p.Title">
+                                    <span>@p.Title</span>
+                                </a>
+                            </li>
+                            index++;
+                        }
+                        <input type="hidden" id="ProductTypeId" name="id" value="" />
+                    }
+                </ul>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="find_tab">
+            <div class="card-body">
+                <div id="mobilemenu1_UpdatePanel1">
+
+                    <div class="filter_tyre">
+                        <div class="form-group">
+                            <label>Brand</label>
+                            <select id="bid" name="bid" class="form-coltrol form-select">
+                                <option value="">Select any brand</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Model</label>
+                            <select id="mid" name="mid" class="form-coltrol form-select">
+                                <option value="">Select any model</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <a id="lnkbtn" class="search-fl">
+                                <img src="/images/search_icon_head_red.svg" alt="search_icon_head">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="search_procduct_name">
+                        <div class="view_btn_sec">
+                            <a href="/product-tyres/Motorcycle/9" id="mobilemenu1_ank">
+                                View All Tyres
+
+                                <img src="~/images/arrow_view.svg" alt="arrow_view">
+                            </a>
+                        </div>
+                        <div class="pro_search">
+                            <a>
+                                <img src="~/images/Icon-feather-search.svg" alt="search_icon_head">
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!--<div class="findbysize">
+                            <span>Find Tyres by Size</span>
+                            <div class="Find-input">
+                                <div onkeypress="">
+                                    <input type="text" class="form-control" placeholder="Find Your Size">
+
+
+                                </div>
+                                <a class="submit-btn" href="javascript:void(0)"><img src="/images/find_arrow.svg" alt="find_arrow"></a>
+                            </div>
+                        </div>-->
+
+
+
+                </div>
+
+            </div>
+        </div>
+        <div class="Search_Tyre_Size">
+            <a href="tyre-size.html">
+                Search by Tyre Size
+                <img src="~/images/search-arrow-icon.svg">
+            </a>
+        </div>
+
+
+    </div>
+    <div class="about_m-mobile m-pop sec">
+        <div class="find_city_mob">
+            <h2>Branch Locator</h2>
+            <h3>Find tyre shops in your city</h3>
+            <div class="locator_icon">
+
+                <ul>
+                    <li>
+                        <a href="branch-locator/assam.html">
+                            <figure>
+                                <img src="~/images/assam-icon.png" alt="assam icon" class="img-fluid">
+                            </figure>
+                            <p>Assam</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="branch-locator/karnataka.html">
+                            <figure>
+                                <img src="~/images/karnataka-icon.png" alt="karnataka icon" class="img-fluid">
+                            </figure>
+                            <p>Karnataka</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="branch-locator/kerala.html">
+                            <figure>
+                                <img src="~/images/kerala-icon.png" alt="kerala icon" class="img-fluid">
+                            </figure>
+                            <p>Kerala</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="branch-locator/tamil-nadu.html">
+                            <figure>
+                                <img src="~/images/tamilnadu-icon.png" alt="tamilnadu-icon" class="img-fluid">
+                            </figure>
+                            <p>Tamil Nadu</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="branch-locator/uttar-pradesh.html">
+                            <figure>
+                                <img src="~/images/uttar-pradesh-icon.png" alt="uttar pradesh icon" class="img-fluid">
+                            </figure>
+                            <p>Uttar Pradesh</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="store-locator.html" class="viewallbtn">View All</a>
+                    </li>
+                </ul>
+                <div class="location_select">
+                    <select name="mobilemenu1$ddlcity"
+                            onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;mobilemenu1$ddlcity\&#39;,\&#39;\&#39;)&#39;, 0)"
+                            id="mobilemenu1_ddlcity" class="form-coltrol form-select">
+                        <option selected="selected" value="0">Select other City</option>
+                        <option value="101">Agra</option>
+                        <option value="20">Ahmedabad</option>
+                        <option value="67">Akola </option>
+                        <option value="243">Allahabad</option>
+                        <option value="30">Ambala </option>
+                        <option value="9">Amritsar</option>
+                        <option value="225">Asansol</option>
+                        <option value="48">Bangalore</option>
+                        <option value="55">Bareilly</option>
+                        <option value="280">Bellary</option>
+                        <option value="4">Chandigarh</option>
+                        <option value="75">Chennai</option>
+                        <option value="221">Coimbatore</option>
+                        <option value="204">Cuttack</option>
+                        <option value="255">Delhi</option>
+                        <option value="282">Ernakulam</option>
+                        <option value="24">Faridabad</option>
+                        <option value="115">Ghaziabad</option>
+                        <option value="232">Gorakhpur</option>
+                        <option value="146">Guwahati</option>
+                        <option value="51">Hubli</option>
+                        <option value="277">Hyderabad</option>
+                        <option value="73">Indore</option>
+                        <option value="2">Jabalpur</option>
+                        <option value="78">Jaipur</option>
+                        <option value="12">Jalandhar </option>
+                        <option value="185">Jamshedpur</option>
+                        <option value="128">Jodhpur</option>
+                        <option value="62">Kanpur</option>
+                        <option value="124">Kashipur</option>
+                        <option value="150">Katihar</option>
+                        <option value="281">Kolhapur</option>
+                        <option value="278">Kolkata </option>
+                        <option value="57">Lucknow</option>
+                        <option value="11">Ludhiana </option>
+                        <option value="76">Madurai</option>
+                        <option value="64">Mumbai </option>
+                        <option value="46">Muzaffarpur</option>
+                        <option value="66">Nagpur</option>
+                        <option value="53">New Delhi</option>
+                        <option value="44">Patna </option>
+                        <option value="63">Pune</option>
+                        <option value="91">Raipur </option>
+                        <option value="93">Ranchi</option>
+                        <option value="59">Saharanpur </option>
+                        <option value="99">Siliguri</option>
+                        <option value="19">Surat</option>
+                        <option value="279">Trichy</option>
+                        <option value="69">Varanasi</option>
+                        <option value="145">Vijayawada</option>
+                        <option value="251">Vishakhapatnam</option>
+
+                    </select>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="insurance-mobile m-pop sec">
+        <div class="mob-menu-btm">
+            <div>
+                @if (producttype != null)
+                {
+                    int index = 0;
+                    foreach (var p in producttype as List<ProductTypeModel>)
+                    {
+
+                        <a href="/@p.RewriteUrl" class="menu-big-s" data-id="@p.PID">
+                            <img src="/uploads/productimg/@p.Image" alt="@p.Title" />
+                            <span>@p.Title</span>
+                        </a>
+                        index++;
+                    }
+                }
+
+            </div>
+            @if (mobile_menu != null && mobile_menu.Any())
+            {
+                <div class="privacy-menu">
+                    <ul>
+                        @foreach (var menu in mobile_menu)
+{
+    <li>
+        @if (menu.SubMenus != null && menu.SubMenus.Any())
+        {
+            <!-- If submenu exists, disable parent link -->
+            <a href="javascript:void(0)">
+                @menu.Name
+            </a>
+
+            <ul>
+                @foreach (var sub in menu.SubMenus)
+                {
+                    <li>
+                        <a href="@(string.IsNullOrEmpty(menu.rewriteurl) 
+            ? "/cms/"+sub.linkname.Replace(" ","-").ToLower()+"/" + menu.id 
+            : "/" + sub.rewriteurl)">@sub.linkname</a>
+                    </li>
+                }
+                                    </ul>
+                                }
+   
+           else
+                                {
+                                    <!-- If no submenu, show normal link -->
+                                    <a href="@(string.IsNullOrEmpty(menu.rewriteurl) 
+            ? "/cms/"+menu.Name.Replace(" ","-").ToLower()+"/" + menu.id 
+            : "/" + menu.rewriteurl)">
+                @menu.Name
+            </a>
+        }
+ 
+    </li>
+}
+
+                    </ul>
+                </div>
+            }
+
+            @if (mobile_menu != null)
+            {
+                <div class="privacy-menu d-none">
+                    <ul>
+                        <li>
+                            <a href="javascript:void(0)" id="mobilemenu1_rptmenu_ctl00_ank">s
+                                About Us
+                            </a>
+                            <ul id="mobilemenu1_rptmenu_ctl00_ul1">
+                                <li>
+                                    <a href="/the-profile">
+                                        Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/the-group">
+                                        The Group
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/mission-and-vision">
+                                        Mission & Vision
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/leadership">
+                                        Leadership
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/export-markets">
+                                        Export Markets
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/sustainability">
+                                        Sustainability
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/hercules-tyres">
+                                        Hercules Tyres
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li><a href="/career">Careers</a></li>
+
+                        <li>
+                            <a 
+                               class="e_mail">Webmail</a>
+                        </li>
+
+                    </ul>
+
+
+
+                </div>
+            }
+           
+        </div>
+    </div>
+</section>

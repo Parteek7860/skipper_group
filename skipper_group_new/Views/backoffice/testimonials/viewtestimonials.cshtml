@@ -1,0 +1,135 @@
+﻿@using System.Data
+
+@{
+    Layout = "~/Views/Shared/_homepage.cshtml";
+    ViewBag.Title = "View/Edit Testimonials";
+    DataTable testimonials = ViewBag.Testimonials as DataTable;
+}
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @ViewBag.Title
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Testimonials</a></li>
+                <li class="breadcrumb-item active">View Testimonials</li>
+            </ul>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm("viewtestimonials", "Backoffice", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <h5 class="text-lg-center">Serach</h5>
+            <div class="card">
+                <div class="body">
+                    <h2 class="card-inside-title">
+                        Fields with * are mandatory
+                    </h2>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="searchTable()" />
+                    <div class="row" style="margin-top:20px;">
+                        <!-- From Date -->
+                        <div class="col-lg-4">
+                            <label for="fromDate" style="font-weight: bold;">From Date</label>
+                            <input type="date" id="fromDate" class="form-control" style="border-radius: 5px; border: 1px solid #ddd;" />
+                        </div>
+                        <!-- To Date -->
+                        <div class="col-lg-4">
+                            <label for="toDate" style="font-weight: bold;">To Date</label>
+                            <input type="date" id="toDate" class="form-control" style="border-radius: 5px; border: 1px solid #ddd;" />
+                        </div>
+                        <!-- Filter Button -->
+
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-lg-2" style="padding-top:10px;">
+                            <button class="btn btn-primary" type="button" onclick="filterByDate()" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Search</button>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        @if (testimonials.Rows.Count > 0)
+                        {
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table-responsive-lg" id="productTable">
+                                    <thead class="table-header">
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Place</th>
+                                            <th>Image</th>
+                                            <th>Status</th>                                            
+                                            <th>Display Order</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow row in testimonials.Rows)
+                                        {
+                                            <tr>
+                                                <td>@(Convert.ToString(row["testimonialname"]))</td>
+                                                <td>@(Convert.ToString(row["placed"]))</td>
+                                                <td>
+                                                    <img src="/uploads/testimonialimage/@(Convert.ToString(row["uploadphoto"]))" width="50" />
+                                                </td>
+                                                @if ((Convert.ToBoolean(row["status"]) == true))
+                                                {
+                                                    <td>
+
+                                                        <a data-value="@(Convert.ToString(row["testimonialid"]))"
+                                                           href="/backoffice/testimonials/tStatus/@(Convert.ToString(row["testimonialid"]))" class="btndelete" onclick="return confirm('You want to change status');">
+                                                            <img src="~/backoffice/images/active.png" width="25" />
+                                                        </a>
+
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+
+                                                        <a data-value="@(Convert.ToString(row["testimonialid"]))"
+                                                           href="/backoffice/testimonials/tStatus/@(Convert.ToString(row["testimonialid"]))" class="btndelete" onclick="return confirm('You want to change status');">
+                                                            <img src="~/backoffice/images/wrong.png" width="25" />
+                                                        </a>
+
+                                                    </td>
+                                                }
+                                               
+                                                <td>@(Convert.ToString(row["displayorder"]))</td>
+                                                <th scope="row">@(Convert.ToDateTime(row["trdate"]).ToShortDateString())</th>
+                                                <td>
+                                                    <input type="hidden" value="@(Convert.ToString(row["testimonialid"]))" />
+
+                                                    <a id="1" data-value="@(Convert.ToString(row["testimonialid"]))"
+                                                       href="/backoffice/testimonials/edit/@(Convert.ToString(row["testimonialid"]))" class="btnEdit">
+                                                        <img src="~/backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
+                                                    </a>
+                                                    <a data-value="@(Convert.ToString(row["testimonialid"]))" href="/backoffice/testimonials/delete/@(Convert.ToString(row["testimonialid"]))" class="btndelete" onclick="return confirm('Are sure wants to Delete Records');">
+                                                        <img src="~/backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-lg-12 my-lg-2 text-lg-center message-top2">
+                                Records not found
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}

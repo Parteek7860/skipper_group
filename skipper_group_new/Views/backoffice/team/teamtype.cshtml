@@ -1,0 +1,259 @@
+﻿@model skipper_group_new.Models.clsTeamType
+
+@{
+    Layout = "~/Views/Shared/_homepage.cshtml";
+    ViewBag.Title = "Add Leadership Type";
+}
+
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @ViewBag.Title
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Home</a></li>
+                <li class="breadcrumb-item active">Leadership Type</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+            <div class="body">
+                @using (Html.BeginForm("AddTeamType", "Management", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.TTypeId)
+
+                    <h2 class="card-inside-title">Fields with * are mandatory</h2>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Leadership Type *</label>
+                                @Html.TextBoxFor(model => model.TType, new { @class = "form-control", placeholder = "Enter leadership type" })
+                                @Html.ValidationMessageFor(model => model.TType, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Display Order *</label>
+                                @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.DisplayOrder, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Short Description</label>
+                                @Html.TextBoxFor(model => model.ShortDesc, new { @class = "form-control", placeholder = "Optional short description" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Username *</label>
+                                @Html.TextBoxFor(model => model.UName, new { @class = "form-control", placeholder = "Enter username" })
+                                @Html.ValidationMessageFor(model => model.UName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>College ID *</label>
+                                @Html.EditorFor(model => model.CollageId, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter collage ID" } })
+                                @Html.ValidationMessageFor(model => model.CollageId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Status</label><br />
+                                @Html.CheckBoxFor(model => model.Status)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-12 my-lg-4 my-4">
+                            <button type="submit" class="btn btn-raised btn-success waves-effect" style="width:100px;">
+                                @ViewBag.Button
+                            </button>
+                        </div>
+                    </div>
+                }
+
+                <hr />
+                <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="searchTable()" />
+                <div class="row" style="margin-top:20px;">
+                    <div class="col-lg-4">
+                        <label for="fromDate" style="font-weight: bold;">From Date</label>
+                        <input type="date" id="fromDate" class="form-control" style="border-radius: 5px; border: 1px solid #ddd;" />
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="toDate" style="font-weight: bold;">To Date</label>
+                        <input type="date" id="toDate" class="form-control" style="border-radius: 5px; border: 1px solid #ddd;" />
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 20px;">
+                    <div class="col-lg-2" style="padding-top:10px;">
+                        <button class="btn btn-primary" type="button" onclick="filterByDate()" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Search</button>
+                    </div>
+                    <div class="col-md-2 align-self-end" style="text-align: center;">
+                        <form method="post" asp-controller="Management" asp-action="ExportLeadershipTypeToExcel">
+                            <button type="submit" class="btn btn-success" style="width: 100%;">
+                                Export to Excel
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                @{
+                    var list = ViewBag.TeamTypeDtl as List<skipper_group_new.Models.TeamTypeDtl>;
+                }
+
+                @if (list != null && list.Any())
+                {
+                    <table class="table table-bordered" id="categoryTable">
+                        <thead class="table-header">
+                            <tr>
+                                <th>Leadership Type</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in list)
+                            {
+                                <tr>
+                                    <td>@item.TType</td>
+                                    <td>@item.ShortDesc</td>
+                                    <td>@item.TrDate</td>
+                                    <td>
+                                        @if (item.Status == true)
+                                        {
+                                            <form method="post" action="/backoffice/team/Changestatus/@item.TTypeId" style="display: inline;">
+                                                <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
+                                                    <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <form method="post" action="/backoffice/team/Changestatus/@item.TTypeId" style="display: inline;">
+                                                <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to active?');">
+                                                    <img src="~/Backoffice/images/wrong.png" width="25" alt="Inactive" />
+                                                </button>
+                                            </form>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a href="/backoffice/team/GetTeamTypeByID/@item.TTypeId" class="btnEdit" title="Edit">
+                                            <img src="~/Backoffice/images/edit.png" width="20" alt="Edit" />
+                                        </a>
+                                        <a href="#" class="btndelete" data-href="/backoffice/team/DeleteTeamType/@item.TTypeId" title="Delete">
+                                            <img src="~/Backoffice/images/delete.png" width="20" alt="Delete" />
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="text-center" style="margin-top:20px;">No leadership types found.</p>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.btndelete');
+        deleteButtons.forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const confirmed = confirm("Are you sure you want to delete this record?");
+                if (confirmed) {
+                    window.location.href = btn.getAttribute('data-href');
+                }
+            });
+        });
+    });
+
+    function searchTable() {
+        var input = document.getElementById('searchInput');
+        var filter = input.value.toLowerCase();
+        var table = document.getElementById('categoryTable');
+        var tr = table.getElementsByTagName('tr');
+        for (var i = 1; i < tr.length; i++) {
+            var td = tr[i].getElementsByTagName('td');
+            var matchFound = false;
+            for (var j = 0; j < td.length; j++) {
+                if (td[j]) {
+                    var txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        matchFound = true;
+                        break;
+                    }
+                }
+            }
+            tr[i].style.display = matchFound ? "" : "none";
+        }
+    }
+
+    function filterByDate() {
+        const fromDateInput = document.getElementById('fromDate').value;
+        const toDateInput = document.getElementById('toDate').value;
+
+        const fromDate = fromDateInput ? new Date(fromDateInput) : null;
+        const toDate = toDateInput ? new Date(toDateInput) : null;
+
+        if (toDate) {
+            toDate.setDate(toDate.getDate() + 1);
+        }
+
+        const table = document.getElementById('categoryTable');
+        const tr = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < tr.length; i++) {
+            const td = tr[i].getElementsByTagName('td')[2];
+            if (td) {
+                const trDate = new Date(td.textContent || td.innerText);
+                let showRow = true;
+
+                if (fromDate && trDate < fromDate) {
+                    showRow = false;
+                }
+                if (toDate && trDate >= toDate) {
+                    showRow = false;
+                }
+                tr[i].style.display = showRow ? "" : "none";
+            }
+        }
+    }
+    setTimeout(function () {
+        var msg = document.getElementById("message");
+        if (msg) {
+            msg.style.display = "none";
+        }
+    }, 2000);
+</script>

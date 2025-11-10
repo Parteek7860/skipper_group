@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "Edit/View Review";
+    Layout = "~/Views/Shared/_homepage.cshtml";
+}
+<style>
+    .star-display {
+        display: inline-flex;
+        color: #ccc;
+        font-size: 20px;
+    }
+
+        .star-display .filled {
+            color: #f5b301;
+        }
+
+</style>
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @ViewBag.Title
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Product Review </a></li>
+                <li class="breadcrumb-item active">View/Edit Review</li>
+            </ul>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm("viewreview", "review", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="body">
+                    @{
+                        var reviewdata = ViewBag.ReviewData as List<skipper_group_new.Models.clsReview>;
+                    }
+                    @if (reviewdata != null && reviewdata.Any())
+                    {
+                        <h2 class="card-inside-title">
+                            Fields with * are mandatory
+                        </h2>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="searchTable()" />
+                        <div class="row" style="margin-top:20px;">
+                            <div class="col-lg-4">
+                                <label for="fromDate" style="font-weight: bold;">From Date</label>
+                                <input type="date" id="fromDate" class="form-control" style="border-radius: 5px; border: 1px solid #ddd;" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label for="toDate" style="font-weight: bold;">To Date</label>
+                                <input type="date" id="toDate" class="form-control" style="border-radius: 5px; border: 1px solid #ddd;" />
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col-lg-2" style="padding-top:10px;">
+                                <button class="btn btn-primary" type="button" onclick="filterByDate()" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Search</button>
+                            </div>
+                        </div>
+                        <table class="table table-bordered" id="productTable">
+                            <thead class="table-header">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Title</th>
+                                    <th>Email Id</th>
+                                    <th>Mobile No</th>
+                                    <th>Rating</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var s in reviewdata)
+                                {
+                                    <tr>
+                                        <td>@s.username</td>
+                                        <td>@s.title</td>
+                                        <td>@s.emailid</td>
+                                        <td>@s.mobileno</td>
+                                        <td>
+                                            <div class="star-display">
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    if (s.Rating >= i)
+                                                    {
+                                                        <span class="star filled">&#9733;</span>
+                                                    }
+
+                                                }
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            @if (s.status == true)
+                                            {
+                                                <form method="post" action="/backoffice/review/ChangeStatus/@s.Id" style="display: inline;">
+                                                    <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
+                                                        <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <form method="post" action="/backoffice/review/ChangeStatus/@s.Id" style="display: inline;">
+                                                    <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to active?');">
+                                                        <img src="~/Backoffice/images/wrong.png" width="25" alt="Inactive" />
+                                                    </button>
+                                                </form>
+                                            }
+                                        </td>
+
+                                        <td>
+                                            <a href="/backoffice/review/Reviewedit/@s.Id" class="btnEdit">
+                                                <img src="~/Backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
+                                            </a>
+                                            <a href="#" class="btndelete" data-href="/backoffice/review/delete/@s.Id">
+                                                <img src="~/Backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center">No Product review found.</td>
+                        </tr>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

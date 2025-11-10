@@ -1,0 +1,111 @@
+﻿@using System.Data
+@model skipper_group_new.Models.clsfaq
+
+@{
+    ViewBag.Title = "Add Image Path";
+    Layout = "~/Views/Shared/_homepage.cshtml";
+    var Faq = ViewBag.Faq as System.Data.DataTable;
+}
+
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @ViewBag.Title
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Uploads</a></li>
+                <li class="breadcrumb-item active">Add Image Path</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@{
+    if (Context.Session.GetString("Message") != null || ViewBag.SuccessCreate != null)
+    {
+        <div class="col-lg-12 my-lg-2 text-lg-center message-top">
+            @Context.Session.GetString("Message")
+            @ViewBag.SuccessCreate
+        </div>
+    }
+}
+
+@using (Html.BeginForm("imagefilepath", "FAQ", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="body">
+                    <h2 class="card-inside-title">Fields with * are mandatory</h2>
+
+                    <!-- Upload File -->
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Path (Upload Image) *</label>
+                                    @Html.HiddenFor(model => model.Id)
+                                    @Html.HiddenFor(model => model.status)
+                                    <input type="file" name="file_Uploader" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="row clearfix">
+                        <div class="col-sm-12 my-lg-4 my-4">
+                            <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save">
+                                @ViewBag.CreateUpdate
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Uploaded Files Table -->
+                    <div class="row clearfix">
+                        @if (Faq != null && Faq.Rows.Count > 0)
+                        {
+                            <div class="col-sm-12">
+                                <table class="table table-bordered">
+                                    <thead class="table-header">
+                                        <tr>
+                                            <th>Image File Title (URL)</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow row in Faq.Rows)
+                                        {
+                                            <tr>
+                                                <td>@(Convert.ToString(row["filetitle"]))</td>
+                                                <td>@(Convert.ToString(row["trdate"]))</td>
+                                                <td>
+                                                    <a class="btndelete" href="/backoffice/faq/download/@row["fileid"]">
+                                                        <img src="~/Backoffice/images/download.png" class="img-fluid" width="20" alt="Download" />
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-lg-12 my-lg-2 text-lg-center message-top2">
+                                Records not found
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

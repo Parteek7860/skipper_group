@@ -1,0 +1,37 @@
+﻿@inject skipper_group_new.Service.MenuDataService MenuService
+@{
+   // var seo = ViewData["PageSeo"] as skipper_group_new.Models.SeoModel;
+    var seo = MenuService.SeoList;
+}
+@if (seo != null && seo.Any())
+{
+    foreach (var seo1 in seo)
+    {
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>@seo1.Title</title>
+        <meta name="description" content="@seo1.MetaDescription" />
+        <meta name="keywords" content="@seo1.MetaKeywords" />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="@seo1.CanonicalUrl" />
+        <meta property="og:title" content="@seo1.Title" />
+        <meta property="og:description" content="@seo1.MetaDescription" />
+        <meta property="og:image" content="https://www.metrotyres.com/images/logo.png" />
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="@seo1.CanonicalUrl" />
+        <meta property="twitter:title" content="@seo1.Title" />
+        <meta property="twitter:description" content="@seo1.MetaDescription" />
+        <meta property="twitter:image" content="https://www.metrotyres.com/images/logo.png" />
+
+        <link rel="canonical" href="@seo1.CanonicalUrl" />
+       @*  <meta name="robots" content="@seo1.Robots" /> *@
+        <meta name="robots" content="noindex, nofollow" />
+       
+    }
+}
+

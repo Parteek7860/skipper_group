@@ -1,0 +1,8 @@
+﻿@model List<string>
+
+<div class="media-detail-popup text-center">
+    @foreach (var img in Model)
+    {
+        <img src="~/Uploads/LargeImages/@img" class="img-fluid mb-3" alt="Media Image" />
+    }
+</div>

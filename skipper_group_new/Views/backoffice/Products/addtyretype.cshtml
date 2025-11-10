@@ -1,0 +1,147 @@
+﻿@using System.Data
+@model skipper_group_new.Models.clsProduct
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = "Add Tyre Type";
+
+    Layout = "~/Views/Shared/_homepage.cshtml";
+    var medialist = ViewBag.Brand as System.Data.DataTable;
+
+}
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @ViewBag.Title
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Products</a></li>
+                <li class="breadcrumb-item active">Add Tyre Type</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+@using (Html.BeginForm("addtyretype", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="body">
+                    <h2 class="card-inside-title">
+                        Fields with * are mandatory
+                    </h2>
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Tyre Type</label>
+                                    @Html.HiddenFor(model => model.id)
+                                    @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger v-span" })
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Rewrite Url</label>
+                                    @Html.EditorFor(model => model.RewriteUrl, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.RewriteUrl, "", new { @class = "text-danger v-span" })
+                        </div>
+                    </div>
+                    <div class="row ckearfix">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Display order</label>
+                                    @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.DisplayOrder, "", new { @class = "text-danger v-span" })
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-sm-12 my-lg-4 my-4">
+                            <form method="post" action="/Backoffice/Products/addtyretype" style="display: inline;">
+                                <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" name="action" formmethod="post"> @ViewBag.CreateUpdate </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        @if (medialist.Rows.Count > 0)
+                        {
+                            <div class="col-sm-12">
+                                <table class="table table-bordered">
+                                    <thead class="table-header">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow row in medialist.Rows)
+                                        {
+                                            <tr>
+                                                <td>@(Convert.ToString(row["tyre_typetitle"]))</td>
+                                                <td>
+                                                    @if (Convert.ToBoolean(row["Status"]) == true)
+                                                    {
+                                                        <a data-value="@(Convert.ToString(row["tyre_typeid"]))"
+                                                           href="/Backoffice/Products/tyretypestatus/@(Convert.ToString(row["tyre_typeid"]))" class="btnstatus" onclick="return confirm('You want to change status');">
+                                                            <img src="~/backoffice/images/active.png" width="25" />
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a data-value="@(Convert.ToString(row["tyre_typeid"]))"
+                                                           href="/Backoffice/Products/tyretypestatus/@(Convert.ToString(row["tyre_typeid"]))" class="btnstatus" onclick="return confirm('You want to change status');">
+                                                            <img src="~/backoffice/images/wrong.png" width="25" />
+                                                        </a>
+                                                    }
+                                                </td>
+                                                <td>@(Convert.ToString(row["trdate"]))</td>
+                                                <td>
+                                                    <a href="/Backoffice/Products/tyretypeedit/@row["tyre_typeid"]" class="btnEdit">
+                                                        <img src="~/Backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
+                                                    </a>
+
+                                                    <a href="#" class="btndelete" data-href="/Backoffice/Products/tyretypeDelete/@row["tyre_typeid"]">
+                                                        <img src="~/Backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-lg-12 my-lg-2 text-lg-center message-top2">
+                                Records not found
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+

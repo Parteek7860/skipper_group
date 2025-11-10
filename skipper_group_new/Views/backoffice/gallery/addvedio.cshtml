@@ -1,0 +1,89 @@
+﻿@using System.Data;
+@model skipper_group_new.Models.clsGallery;
+@{
+    ViewData["Title"] = "Add Video";
+    Layout = "~/Views/Shared/_homepage.cshtml";
+}
+
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @ViewBag.Title
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Gallery</a></li>
+                <li class="breadcrumb-item active">Add Video</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("addvedio", "gallery", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="body">
+                    <h2 class="card-inside-title">
+                        Fields with * are mandatory
+                    </h2>
+                    <div class="row clearfix">
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Video Title</label>
+                                    @Html.HiddenFor(mbox => mbox.id))
+                                    @Html.HiddenFor(mbox => mbox.status))
+                                    @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.title, "", new { @class = "text-danger v-span" })
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Youtube URL</label>
+                                    @Html.EditorFor(model => model.URL, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.URL, "", new { @class = "text-danger v-span" })
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label> Thumbnail Image</label>
+                                <input type="file" name="file_Uploader" />
+                                <img src="/uploads/vedio/@Url.Content(Model.bannerimage)" width="80" />
+                                @Html.HiddenFor(model => model.uploadbanner)
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Display Order</label>
+                                    @Html.EditorFor(model => model.displayorder, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <form asp-action="addvedio" method="post">
+                                <button type="submit" class="btn btn-raised btn-success waves-effect"> @ViewBag.CreateUpdate </button>
+                            </form>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,81 @@
+.redtext
+{
+    color: Red;
+    font-weight: bold;
+}
+
+
+.error-box1
+{
+	border: 1px solid #d35755;
+	font: 12px Arial, Helvetica, sans-serif;
+	color: #f21a1a;
+	background: #feebeb url(../assets/error.gif) no-repeat 10px;
+	margin: 10px 0;
+	padding: 10px 33px;
+}
+.error-box
+{
+	border: 1px solid #d35755;
+	font: 12px Arial, Helvetica, sans-serif;
+	color: #f21a1a;
+	background: #feebeb;
+	margin: 10px 0;
+	padding: 10px 33px;
+}
+.notic-box
+{
+	border: 1px solid #FFD324;
+	font: 12px Arial, Helvetica, sans-serif;
+	color: #514721;
+	background: #FFF6BF;
+	margin: 0px 0 10px 0;
+	display: block;
+	padding: 10px 13px;
+	list-style: none;
+}
+.confirm-box
+{
+	border: 1px solid #8dd355;
+	font: 12px Arial, Helvetica, sans-serif;
+	color: #398000;
+	background: #eefeeb url(../images/confirm.gif) no-repeat 10px;
+	margin: 10px 0;
+	padding: 10px 33px; display:block
+}
+
+.error-box ul li
+{
+	background: url(../images/bult3.gif) 0px 4px no-repeat;
+}
+.notice-box ul li
+{
+	background: url(../images/bult3.gif) 0px 4px no-repeat;
+	
+}
+
+.validatorCalloutHighlight {
+    border-bottom: solid 1px Red !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-top: 0 !important;
+}
+.BlockPopup div,
+.BlockPopup td {
+    border: solid 1px #000;
+    background-color: #00f;
+    display: none;
+}
+.validationerror {
+    padding-top: 4px;
+    display: block !important;
+    font-size: 16px;
+}
+.compare-building_main .validatorCalloutHighlight {
+    border: 0 !important;
+    border-bottom: solid 1px Red !important;
+}
+.validatorCalloutHighlight2 {
+    border: solid 1px Red !important;
+}
+

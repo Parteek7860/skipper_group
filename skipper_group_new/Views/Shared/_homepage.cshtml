@@ -1,0 +1,298 @@
+﻿@{
+    var menu = (List<skipper_group_new.Models.clsmainmenu>)ViewBag.Menus;
+}
+@{
+    string nonce = Context.Items["CSPNonce"]?.ToString();
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+
+    <title>:: Back Admin :: </title>
+    <!-- Favicon-->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="~/backoffice/plugins/bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="~/backoffice/plugins/jvectormap/jquery-jvectormap-2.0.3.css" />
+    <link rel="stylesheet" href="~/backoffice/plugins/morrisjs/morris.css" />
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="~/backoffice/css/main.css">
+    <link rel="stylesheet" href="~/backoffice/css/color_skins.css">
+      <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <style nonce="@nonce">
+        /* Minimum height for CKEditor editing area */
+        .ck-editor__editable_inline {
+            max-height: 500px !important; /* adjust to your desired height */
+        }
+
+        /* Optional: increase padding for a better look */
+        .ck-content {
+            padding: 16px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body class="theme-orange" style="overflow-x: hidden;>
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+    </div>
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div><!-- Search  -->
+    <div class="search-bar">
+        <div class="search-icon"> <i class="material-icons">search</i> </div>
+        <input type="text">
+        <div class="close-search"> <i class="material-icons">close</i> </div>
+    </div>
+
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="col-12">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="bars"></a>
+                <a class="navbar-brand" href="#">
+                    @if (Context.Session.GetString("ClientName") != null)
+                    {
+                        @* <img src="~/images/metro_tyre_logo.png" width="100" height="100" alt="User" /> *@
+                        @Context.Session.GetString("ClientName") 
+                    }
+                </a>
+            </div>
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="javascript:void(0);" class="ls-toggle-btn" data-close="true"><i class="zmdi zmdi-swap"></i></a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/backoffice/Signout" class="mega-menu xs-hide" data-close="true"><i class="zmdi zmdi-power"></i></a></li>
+            </ul>
+        </div>
+    </nav>
+    <aside id="leftsidebar" class="sidebar">
+        <!-- User Info -->
+        <div class="user-info">
+            <div class="image">
+                <img src="~/images/user_logo.png" width="48" height="48" alt="User" />
+            </div>
+            <div class="info-container">
+                <div class="name" data-toggle="dropdown">
+                    @if (Context.Session.GetString("UserName") != null)
+                    {
+                        @Context.Session.GetString("UserName")
+                    }
+
+
+                </div>
+                <div class="btn-group user-helper-dropdown">
+                    <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" role="button"></i>
+                    <ul class="dropdown-menu slideUp">
+                        @*  <li><a href="#"><i class="material-icons"></i>Profile</a></li> *@
+                        <li class="divider"></li>
+                        <li><a href="@Url.Action("signout", "Backoffice")"><i class="material-icons"></i>Sign Out</a></li>
+                    </ul>
+                </div>
+                <div class="email">
+                    User ID -
+                    @if (Context.Session.GetString("UserName") != null)
+                    {
+                        @Context.Session.GetString("UserName")
+                    }
+
+                </div>
+            </div>
+        </div>
+        <!-- #User Info -->
+        <!-- Menu -->
+        <div class="menu">
+            <ul class="list">
+                <li>
+                    
+                    <input type="text" id="txtSearch" placeholder="Menu search..."
+                           style="width:100%; max-width:300px; padding:8px 10px; border:1px solid #ccc; border-radius:5px;">
+                    <div id="suggestions"
+                         style="border:1px solid #ccc;border-radius:5px;background:#fff;z-index:1000;margin-left: 10px;margin-right: 14px;"></div>
+
+                   
+                </li>
+                <li>
+                    <a href="@Url.Action("dashboard", "Backoffice")"><i class="zmdi zmdi-home"></i><span>DashBoard</span> </a>
+                </li>
+                <li class="header">MAIN NAVIGATION</li>
+                @if (ViewBag.Menus != null)
+                {
+                    foreach (var menu1 in menu)
+                    {
+                        <li>
+                            <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="your-default-icon"></i>
+                                <span>@menu1.linkname</span>
+                            </a>
+                            @if (menu1.Forms != null && menu1.Forms.Any())
+                            {
+                                <ul class="ml-menu">
+                                    @foreach (var form in menu1.Forms)
+                                    {
+                                        <li>
+                                            <a href="@form.Url_name">
+                                                <i class="your-default-icon"></i>
+                                                <span>@form.modulename</span>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </li>
+                    }
+                }
+
+
+            </ul>
+        </div>
+        <!-- #Menu -->
+    </aside>
+    <section class="content">
+        @if (Context.Session.GetString("Message") != null)
+        {
+            <div id="sessionMessage" class="alert alert-success alert-dismissible fade show"
+                 role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 250px;">
+                @Context.Session.GetString("Message")
+            </div>
+
+            {
+                
+                Context.Session.Remove("Message");
+            }
+        }
+        @RenderBody()
+    </section>
+    @RenderSection("scripts", required: false)
+    <script src="~/backoffice/bundles/libscripts.bundle.js"></script>
+    <script src="~/backoffice/bundles/vendorscripts.bundle.js"></script>
+
+
+    <script src="~/backoffice/bundles/knob.bundle.js"></script>
+    <script src="~/backoffice/bundles/mainscripts.bundle.js"></script>
+    <script src="~/backoffice/js/pages/index.js"></script>
+    <script src="~/backoffice/js/pages/charts/jquery-knob.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#txtSearch').on('keyup', function () {
+                var query = $(this).val().trim();
+
+                if (query.length >= 1) {
+                    $.ajax({
+                        url: '@Url.Action("AutoSearch", "Backoffice")',
+                        type: 'GET',
+                        data: { term: query },
+                        success: function (data) {
+                            $('#suggestions').html(data).show();
+                        }
+                    });
+                } else {
+                    $('#suggestions').empty().hide();
+                }
+            });
+
+            // when clicking on suggestion
+            $(document).on('click', '.suggestion-item', function () {
+                var text = $(this).text();
+                $('#txtSearch').val(text);
+                $('#suggestions').empty().hide();
+            });
+
+            // hide suggestions if clicked outside
+            $(document).click(function (e) {
+                if (!$(e.target).closest('#txtSearch, #suggestions').length) {
+                    $('#suggestions').hide();
+                }
+            });
+        });
+    </script>
+
+    <script nonce="@nonce">
+        document.addEventListener("DOMContentLoaded", function () {
+            const msg = document.getElementById("sessionMessage");
+            if (msg) {
+                setTimeout(() => {
+                    msg.style.transition = "opacity 1s ease";
+                    msg.style.opacity = "0";
+                    setTimeout(() => msg.remove(), 1000);
+                }, 5000); // Hide after 5 seconds
+            }
+        });
+
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const deleteButtons = document.querySelectorAll('.btndelete');
+        //     deleteButtons.forEach(function (btn) {
+        //         btn.addEventListener('click', function (e) {
+        //             e.preventDefault();
+        //             const confirmed = confirm("Are you sure you want to delete this record?");
+        //             if (confirmed) {
+        //                 window.location.href = btn.getAttribute('data-href');
+        //             }
+        //         });
+        //     });
+        // });
+
+    </script>
+
+    
+
+    <style nonce="@nonce">
+        .ck-editor__editable_inline {
+            min-height: 500px !important;
+        }
+    </style>
+
+
+
+
+    <script src="https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.editor1').forEach(function (el) {
+                CKEDITOR.replace(el.id, {
+                    extraPlugins: 'sourcearea',
+                    removePlugins: 'sourcedialog,codesnippet',
+                    allowedContent: true,
+                    autoParagraph: false,
+                    enterMode: CKEDITOR.ENTER_BR,
+                    shiftEnterMode: CKEDITOR.ENTER_P,
+                    fillEmptyBlocks: false,
+                    toolbar: [
+                        { name: 'clipboard', items: ['Undo', 'Redo'] },
+                        { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
+                        { name: 'paragraph', items: ['NumberedList', 'BulletedList'] },
+                        { name: 'insert', items: ['Image', 'Table', 'HorizontalRule'] },
+                        { name: 'links', items: ['Link', 'Unlink'] },
+                        { name: 'tools', items: ['Maximize', 'Source'] }
+                    ]
+                });
+            });
+        });
+    </script>
+
+
+    @* <script nonce="@nonce">
+        function getCleanData() {
+            document.querySelectorAll(".editor1").forEach(function (el) {
+                var instance = Object.values(CKEDITOR.instances).find(inst => inst.element.$ === el);
+                if (instance) {
+                    var data = instance.getData().replace(/<\/?p>/g, '');
+                    console.log(el, data);
+                }
+            });
+        }
+    </script> *@
+
+</body>
+</html>

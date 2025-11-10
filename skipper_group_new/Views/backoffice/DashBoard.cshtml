@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_homepage.cshtml";
+    
+}
+<style>
+    .enquiry-card {
+        transition: transform 0.2s ease-in-out;
+        cursor: pointer;
+    }
+
+    .enquiry-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+</style>
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                Welcome To Admin Panel
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Admin Panel</a></li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row clearfix">
+        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
+            <div class="card tasks_report">
+                <div class="body">
+                    <input id="input1" type="text" class="knob dial" value="@ViewData["totalpages"]" data-width="90" data-height="90" data-thickness="0.2" data-fgColor="#00ced1" readonly>
+                    <h6 class="m-t-20">Total Pages</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
+            <div class="card tasks_report">
+                <div class="body">
+                    <input type="text" class="knob dial" value="@ViewData["media"]" data-width="90" data-height="90" data-thickness="0.2" data-fgColor="#ffa07a" readonly>
+                    <h6 class="m-t-20">Media Files</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
+            <div class="card tasks_report">
+                <div class="body">
+                    <input type="text" class="knob" value="@ViewData["banner"]" data-width="90" data-height="90" data-thickness="0.2" data-fgColor="#8fbc8f" readonly>
+                    <h6 class="m-t-20">Total Banner</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
+            <div class="card tasks_report">
+                <div class="body">
+                    <input type="text" class="knob" value="@ViewData["enquiry"]" data-width="90" data-height="90" data-thickness="0.2" data-fgColor="#00adef" readonly>
+                    <h6 class="m-t-20">Total Enquiry</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="header">
+                    <h2 class="text-primary">
+                        <i class="zmdi zmdi-comment-text-alt"></i> Top 5 Enquiries
+                    </h2>
+                </div>
+                <div class="body">
+                    @if (ViewBag.TopEnquiry != null)
+                    {
+                        var enquiries = ViewBag.TopEnquiry as List<DashboardModel>;
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email Id</th>
+                                        <th>Mobile</th>
+                                        <th>Message</th>
+                                        <th>Subject</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var enquiry in enquiries)
+                                    {
+                                        <tr>
+                                            <td>@enquiry.FName</td>
+                                            <td>@enquiry.EmailId</td>
+                                            <td>@enquiry.Mobile</td>
+                                            <td>@enquiry.FMessage</td>
+                                            <td>@enquiry.Subject</td>
+                                            <td>@Convert.ToDateTime(enquiry.TrDate).ToString("dd-MMM-yyyy")</td>
+                                            <td>
+                                                @if (enquiry.Status == "Active")
+                                                {
+                                                    <form method="post" action="/Backoffice/Products/ChangeStatus/@enquiry.EID" style="display: inline;">
+                                                        <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
+                                                            <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
+                                                        </button>
+                                                    </form>
+                                                }
+                                                else
+                                                {
+                                                    <form method="post" action="/Backoffice/Products/ChangeStatus/@enquiry.EID" style="display: inline;">
+                                                        <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to active?');">
+                                                            <img src="~/Backoffice/images/wrong.png" width="25" alt="Inactive" />
+                                                        </button>
+                                                    </form>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="/Backoffice/Products/GetProductByID/@enquiry.EID" class="btn btn-sm btn-info" title="View">
+                                                    <i class="zmdi zmdi-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-muted text-center">No enquiries available.</div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div> *@
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="body">
+                    <p class="m-b-0">© @System.DateTime.Now.Year  @Context.Session.GetString("ClientName") by <a href="#" target="black">Sterco Digitex</a> </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

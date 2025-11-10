@@ -1,0 +1,212 @@
+﻿@using System.Data;
+@model skipper_group_new.Models.clsMediatype
+@{
+    ViewBag.Title = "Media ";
+    Layout = "~/Views/Shared/_homepage.cshtml";
+
+}
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @ViewBag.Title
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Media Section</a></li>
+                <li class="breadcrumb-item active">Events</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+@using (Html.BeginForm("mediasection", "Media", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="body">
+                    <h2 class="card-inside-title">
+                        Fields with * are mandatory
+                    </h2>
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Parent Page</label>
+                                    @Html.HiddenFor(model => model.id)
+                                    @Html.HiddenFor(model => model.status)
+                                    @Html.DropDownListFor(model => model.mediatype, Model.selectmediatype, "Select Type", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.mediatype, "", new { @class = "text-danger v-span" })
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Title</label>
+                                    @Html.EditorFor(model => model.eventstitle, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.eventstitle, "", new { @class = "text-danger v-span" })
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Tagline</label>
+                                    @Html.EditorFor(model => model.tagline, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Start Date</label>
+                                    @Html.TextBoxFor(model => model.eventsdate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label> Short Description</label>
+                                @Html.TextAreaFor(model => model.shortdetail, new { @id = "editor1", @class = "form-control editor1", @rows = "10" })
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label> Description</label>
+                                @Html.TextAreaFor(model => model.detail, new { @id = "editor2", @class = "form-control editor1", @rows = "10" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label> Upload Banner</label>
+                                <input type="file" name="file_Uploader" />
+                                <img src="/uploads/smallimages/@Url.Content(Model.bannerimage)" width="80" />
+                                @Html.HiddenFor(model => model.uploadbanner)
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label> Upload large Image </label>
+                                <input type="file" name="file_Uploader2" />
+                                <img src="/uploads/largeimages/@Url.Content(Model.Largeimage)" width="80" />
+                                @Html.HiddenFor(model => model.uploadlargeimage)
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Display order</label>
+                                    @Html.EditorFor(model => model.displayorder, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.displayorder, "", new { @class = "text-danger v-span" })
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> URL</label>
+                                    @Html.EditorFor(model => model.url, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Color Code</label>
+                                    <input type="color"
+                                           id="colorcode"
+                                           name="colorcode"
+                                           class="form-control form-control-color"
+                                           value="@Model.colorcode" />
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.colorcode, "", new { @class = "text-danger v-span" })
+                        </div>
+                    </div>
+                    <h5>SEO Section</h5>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Page Title</label>
+                                    @Html.EditorFor(model => model.pagetitle, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Meta Description</label>
+                                    @Html.EditorFor(model => model.metadesc, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Meta Keywords </label>
+                                    @Html.EditorFor(model => model.metakeywords, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Canonical</label>
+                                    @Html.EditorFor(model => model.canonical, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <button type="submit" class="btn btn-raised btn-success waves-effect" name="action" formaction="@Url.Action("media_section", "Media")" formmethod="post"> @ViewBag.CreateUpdate </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+
+
+    <script>
+        $('.editor1').each(function () {
+            CKEDITOR.replace($(this).prop('id'));
+        });
+    </script>
+    
+}
+
+

@@ -1,0 +1,140 @@
+@media (max-width:1799px) {
+    .infra_box {
+        padding-block: 5rem 10rem;
+        height: 100%;
+    }
+   .home_people_content p br{display: none;}
+  .video-wrapper {
+    height: fit-content;
+}
+video, .video video{
+    height: auto;
+}
+}
+
+
+@media (min-width:1000px) and (max-width:1099px) {
+    .we_are_list p {
+        line-height: inherit;
+    }
+
+    .we_are_list li {
+        padding: 0 2rem;
+    }
+
+    .we_are_list li:after {
+        right: 0;
+    }
+
+}
+
+
+
+@media (max-width:999px) {
+     
+    section.featured_project {
+            padding-block: 7rem 2rem;
+        }
+        .infra_box {
+            padding-block: 5rem 4rem;
+        }
+                        .certificate-pic {
+                            left: 0;
+                        }
+    .video img {
+            width: 100%;   }
+    /* .video-wrapper {
+        height: 100vh;
+    } */
+
+    .about_img_panel {
+        padding-inline: 3rem;
+    }
+
+    section.skipper_home_about .col-md-7 {
+        order: 1;
+    }
+
+    section.skipper_home_about .col-md-5 {
+        order: 2;
+    }
+
+    section.skipper_home_about {
+        padding-block: 3rem;
+        text-align: center;
+        padding-inline: 2.5rem;
+    }
+
+    .we_are h1 {
+        padding-block: 0 2rem;
+        margin: 0;
+    }
+
+    .read_icon {
+        margin: inherit;
+        width: 22px;
+        height: 22px;
+    }
+
+    .we_are p {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        /* limits to 3 lines */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .we_are_list li:last-child {
+        display: none;
+    }
+
+    .we_are_list li:nth-child(2):after {
+        display: none;
+    }
+
+    .we_are_list li:after {
+        right: 0;
+    }
+
+    .we_are_list p {
+        line-height: inherit;
+        font-size: var(--font-14);
+        padding-inline: 4rem;
+    }
+
+    .we_are_list {
+        margin-block: 1rem 3rem;
+    }
+}
+@media (max-width:767px) {
+.second-vertical-line2{
+    display: none;
+}
+}
+@media (max-width:360px) {
+    .we_are p {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        /* limits to 3 lines */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .we_are_list p {
+        padding-inline: 2rem;
+    }
+}
+@media (min-width:2399px) {
+
+    .icon_sustain {
+        bottom: -101.5em;
+        right: 33em;
+    }
+    .icon_sustain img{width:60rem;}
+    .home_people_content p br{display: none;}
+    .infra_num2 {
+        padding-block: 4rem 5rem;
+    }
+}
