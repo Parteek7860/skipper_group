@@ -112,11 +112,11 @@ namespace skipper_group_new.Controllers
 
                     if (x > 0)
                     {
-                        if (product.ProductId > 0) 
+                        if (product.ProductId > 0)
                         {
                             TempData["SuccessMessage"] = "Product updated successfully.";
                         }
-                        else 
+                        else
                         {
                             TempData["SuccessMessage"] = "Product added successfully.";
                         }
@@ -271,6 +271,7 @@ namespace skipper_group_new.Controllers
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
+            ViewBag.UpdateStatus = "Save";
             return View("~/Views/backoffice/Products/category.cshtml");
         }
 
@@ -280,8 +281,8 @@ namespace skipper_group_new.Controllers
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
-            var catdtl = await _products.GetCategoryTblData();
-            ViewBag.CateDtl = catdtl;            
+            var catdtl = await _products.BindProductCategory();
+            ViewBag.CateDtl = catdtl;
             return View("~/Views/backoffice/Products/viewcategory.cshtml");
         }
 
@@ -291,6 +292,7 @@ namespace skipper_group_new.Controllers
         {
             try
             {
+                clsCategory obj = new clsCategory();
                 if (UploadAPDFFile != null && UploadAPDFFile.Length > 0)
                 {
                     var uploadFileName = Path.GetFileName(UploadAPDFFile.FileName);
@@ -302,47 +304,75 @@ namespace skipper_group_new.Controllers
                         await UploadAPDFFile.CopyToAsync(stream);
                     }
 
-                    c.UploadAPDF = "/uploads/ProductImages/" + uniqueName;
+                    obj.UploadAPDF = "/uploads/ProductImages/" + uniqueName;
                 }
+
                 if (BannerImgFile != null && BannerImgFile.Length > 0)
                 {
-                    var uploadFileName = Path.GetFileName(BannerImgFile.FileName);
-                    var uniqueName = $"{Guid.NewGuid()}_{uploadFileName}";
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/ProductImages", uniqueName);
+                    var fileName = Path.GetFileName(BannerImgFile.FileName); // captures name
+                    var filePath = Path.Combine("wwwroot/uploads/SmallImages", fileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        await BannerImgFile.CopyToAsync(stream);
+                        BannerImgFile.CopyTo(stream);
                     }
 
-                    c.Banner = "/uploads/ProductImages/" + uniqueName;
+                    obj.Banner = fileName;
+                }
+                else
+                {
+                    obj.Banner = c.Banner ?? string.Empty;
                 }
                 if (HomeImageFile != null && HomeImageFile.Length > 0)
                 {
-                    var uploadFileName = Path.GetFileName(HomeImageFile.FileName);
-                    var uniqueName = $"{Guid.NewGuid()}_{uploadFileName}";
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/ProductImages", uniqueName);
+                    var fileName = Path.GetFileName(HomeImageFile.FileName); // captures name
+                    var filePath = Path.Combine("wwwroot/uploads/SmallImages", fileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        await HomeImageFile.CopyToAsync(stream);
+                        HomeImageFile.CopyTo(stream);
                     }
 
-                    c.HomeImage = "/uploads/ProductImages/" + uniqueName;
+                    obj.HomeImage = fileName;
+                }
+                else
+                {
+                    obj.HomeImage = c.HomeImage ?? string.Empty;
+                }
+                obj.Category = c.Category;
+                obj.Detail = c.Detail;
+                obj.ShortDetail = c.ShortDetail;
+                obj.HomeDesc = c.HomeDesc;
+                obj.Status = c.Status;
+                obj.DisplayOrder = c.DisplayOrder;
+                obj.PcatId = c.PcatId;
+                obj.RewriteUrl = c.RewriteUrl;
+                obj.PageTitle = c.PageTitle;
+                obj.PageMeta = c.PageMeta;
+                obj.PageMetaDesc = c.PageMetaDesc;
+                obj.Canonical = c.Canonical;
+                if (obj.PcatId > 0)
+                {
+                    obj.Mode = 2;
+                }
+                else
+                {
+                    obj.Mode = 1;
                 }
                 if (c != null)
                 {
-                    int x = await _products.AddCategory(c);
+                    int x = _products.AddProductCategory(obj);
                     if (x > 0)
                     {
                         if (c.PcatId > 0)
                         {
-                            TempData["SuccessMessage"] = "Category updated successfully.";
+                            HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Category updated successfully.");
+
                             return RedirectToAction("viewcategory", "Products");
                         }
                         else
                         {
-                            TempData["SuccessMessage"] = "Category added successfully.";
+                            HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Category added successfully.");
                             return RedirectToAction("viewcategory", "Products");
                         }
                     }
@@ -369,12 +399,36 @@ namespace skipper_group_new.Controllers
             {
                 if (id > 0)
                 {
-                    var cat = await _products.EditCategory(id);
-                    if (cat != null)
+                    var menuList = _menuService.GetMenu();
+                    ViewBag.Menus = menuList;
+                    clsCategory obj = new clsCategory();
+                    var productTypes = await _products.BindProductCategory();
+                    // Replace the following code block:
+
+                    // With this code block:
+                    var filteredRows = productTypes.AsEnumerable()
+                        .Where(pt => pt.Field<int>("pcatid") == id)
+                        .ToList();
+
+                    if (filteredRows != null)
                     {
-                        var menuList = _menuService.GetMenu();
-                        ViewBag.Menus = menuList;
-                        return View("~/Views/backoffice/Products/category.cshtml", cat);
+                        obj.Category = filteredRows[0]["category"].ToString();
+                        obj.Detail = filteredRows[0]["detail"].ToString();
+                        obj.ShortDetail = WebUtility.HtmlDecode(filteredRows[0]["shortdetail"].ToString());
+                        obj.HomeDesc = WebUtility.HtmlDecode(filteredRows[0]["detail"].ToString());
+                        obj.Status = Convert.ToBoolean(Convert.ToInt32(filteredRows[0]["Status"]));
+                        obj.DisplayOrder = Convert.ToInt32(filteredRows[0]["displayorder"]);
+                        obj.PcatId = Convert.ToInt32(filteredRows[0]["pcatid"]);
+                        obj.RewriteUrl = filteredRows[0]["rewriteurl"].ToString();
+                        obj.PageTitle = filteredRows[0]["pagetitle"].ToString();
+                        obj.PageMeta = filteredRows[0]["pagemeta"].ToString();
+                        obj.PageMetaDesc = filteredRows[0]["pagemetadesc"].ToString();
+                        obj.Banner = filteredRows[0]["banner"].ToString();
+                        obj.HomeImage = filteredRows[0]["homeimage"].ToString();
+                        obj.UploadAPDF = filteredRows[0]["uploadapdf"].ToString();
+                        obj.Canonical = filteredRows[0]["canonical"].ToString();
+                        ViewBag.UpdateStatus = "Update";
+                        return View("~/Views/backoffice/Products/category.cshtml", obj);
                     }
                     else
                     {
@@ -430,22 +484,19 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/Products/ExportCategoryToExcel")]
         public async Task<IActionResult> ExportCategoryToExcel()
         {
-            var catdtl = await _products.GetCategoryTblData();
+            var catdtl = await _products.BindProductCategory();
             using (var workbook = new ClosedXML.Excel.XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Categories");
                 worksheet.Cell(1, 1).Value = "Category";
-                worksheet.Cell(1, 2).Value = "Title";
                 worksheet.Cell(1, 3).Value = "Date";
                 worksheet.Cell(1, 4).Value = "Status";
                 int row = 2;
-                foreach (var c in catdtl)
+                foreach (DataRow c in catdtl.Rows)
                 {
-                    worksheet.Cell(row, 1).Value = c.Category;
-                    worksheet.Cell(row, 2).Value = c.PageTitle;
-                    worksheet.Cell(row, 3).Value = c.trdate;
+                    worksheet.Cell(row, 1).Value = c["category"].ToString();
+                    worksheet.Cell(row, 3).Value = c["trdate"].ToString();
                     worksheet.Cell(row, 3).Style.DateFormat.Format = "yyyy-MM-dd";
-                    worksheet.Cell(row, 4).Value = c.Status ? "Active" : "Inactive";
                     row++;
                 }
                 using (var stream = new MemoryStream())
@@ -466,20 +517,35 @@ namespace skipper_group_new.Controllers
             {
                 if (id > 0)
                 {
-                    var chngstatus = await _products.ChangeCatStatus(id);
-                    if (chngstatus > 0)
+                    clsProduct obj = new clsProduct();
+                    var productTypes = await _products.BindProductCategory();
+                    // Replace the following code block:
+
+                    // With this code block:
+                    var filteredRows = productTypes.AsEnumerable()
+                        .Where(pt => pt.Field<int>("pcatid") == id)
+                        .ToList();
+
+
+                    if (filteredRows.Count > 0)
                     {
-                        TempData["SuccessMessage"] = "Status changed successfully.";
-                        TempData["Title"] = "Product";
+                        obj.Status = Convert.ToString(Convert.ToInt32(filteredRows[0]["Status"])) == "1" ? "True" : "False"; // Toggle status
+
+                        var chngstatus = _products.CategoryUpdateStatus(obj.Status, id);
+                        if (chngstatus > 0)
+                        {
+                            HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Status update successfully.");
+
+                        }
+                        else
+                        {
+                            TempData["ErrorMessage"] = "Failed to change the status.";
+                        }
                     }
                     else
                     {
-                        TempData["ErrorMessage"] = "Failed to change the status.";
+                        TempData["ErrorMessage"] = "Id is necessary.";
                     }
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = "Id is necessary.";
                 }
             }
             catch (Exception ex)
@@ -497,8 +563,30 @@ namespace skipper_group_new.Controllers
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
-            var cat = await _products.GetCatDropdown();
-            ViewBag.Category = new SelectList(cat, "Key", "Value");
+            var catd = await _products.BindProductCategory();
+            var filterresult = catd.AsEnumerable()
+                .Where(row => row.Field<bool>("Status") == true)
+                .CopyToDataTable();
+            if (filterresult != null && filterresult.Rows.Count > 0)
+            {
+
+                var categoryList = filterresult.AsEnumerable()
+                    
+                    .Select(row => new SelectListItem
+                    {
+                        Value = row["PcatId"].ToString(),  // or your key column
+                        Text = row["Category"].ToString()  // or your name column
+                    })
+                    .ToList();
+
+
+                ViewBag.Category = new SelectList(categoryList, "Value", "Text");
+            }
+            else
+            {
+                ViewBag.Category = new SelectList(Enumerable.Empty<SelectListItem>());
+            }
+            ViewBag.CreateUpdate = "Update";
             return View("~/Views/backoffice/Products/subcategory.cshtml");
         }
 
@@ -508,7 +596,7 @@ namespace skipper_group_new.Controllers
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
-            var catdtl = await _products.GetSubCategoryTblData();
+            var catdtl = await _products.BindProductSubCategory();
             ViewBag.CateDtl = catdtl;
             return View("~/Views/backoffice/Products/viewsubcategory.cshtml");
         }
@@ -519,50 +607,82 @@ namespace skipper_group_new.Controllers
         {
             try
             {
+                SubCategory obj = new SubCategory();
                 if (UploadAIFile != null && UploadAIFile.Length > 0)
                 {
-                    var uploadFileName = Path.GetFileName(UploadAIFile.FileName);
-                    var uniqueName = $"{Guid.NewGuid()}_{uploadFileName}";
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/ProductImages", uniqueName);
+                    var fileName = Path.GetFileName(UploadAIFile.FileName); // captures name
+                    var filePath = Path.Combine("wwwroot/uploads/ProductsImage", fileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        await UploadAIFile.CopyToAsync(stream);
+                        UploadAIFile.CopyTo(stream);
                     }
 
-                    c.UploadAImage = "/uploads/ProductImages/" + uniqueName;
+                    obj.Banner = fileName;
+                }
+                else
+                {
+                    obj.Banner = c.Banner ?? string.Empty;
                 }
                 if (BannerImgFile != null && BannerImgFile.Length > 0)
                 {
-                    var uploadFileName = Path.GetFileName(BannerImgFile.FileName);
-                    var uniqueName = $"{Guid.NewGuid()}_{uploadFileName}";
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/ProductImages", uniqueName);
+                    var fileName = Path.GetFileName(BannerImgFile.FileName); // captures name
+                    var filePath = Path.Combine("wwwroot/uploads/ProductsImage", fileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        await BannerImgFile.CopyToAsync(stream);
+                        BannerImgFile.CopyTo(stream);
                     }
 
-                    c.Banner = "/uploads/ProductImages/" + uniqueName;
+                    obj.Banner = fileName;
                 }
+                else
+                {
+                    obj.Banner = c.Banner ?? string.Empty;
+                }
+                obj.PSubCatId = c.PSubCatId;
+                obj.PCatId = c.PCatId;
+                obj.Category = c.Category;
+                obj.Detail = c.Detail;
+                obj.ShortDetail = c.ShortDetail;
+                obj.homedesc = c.homedesc;
+                obj.homedesc2 = c.homedesc2;
+                obj.tagline = c.tagline;
+                obj.Status = c.Status;
+                obj.DisplayOrder = c.DisplayOrder;
+                obj.RewriteUrl = c.RewriteUrl;
+                obj.PageTitle = c.PageTitle;
+                obj.PageMeta = c.PageMeta;
+                obj.PageMetaDesc = c.PageMetaDesc;
+                obj.Canonical = c.Canonical;
+                if (obj.PSubCatId > 0)
+                {
+                    obj.Mode = "2";
+                }
+                else
+                {
+                    obj.Mode = "1";
+                }
+                obj.Uname = HttpContext.Session.GetString("UserName");
+
                 if (c != null)
                 {
-                    int x = await _products.AddSubCategory(c);
+                    int x =  _products.AddSubProductCategory(obj);
                     if (x > 0)
                     {
-                        if(c.PSubCatId>0)
+                        if (obj.PSubCatId > 0)
                         {
-                            TempData["SuccessMessage"] = "Sub-Category updated successfully.";
-                            TempData["Title"] = "Sub-Category";
+                            HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Sub-Category updated successfully.");
+
                             return RedirectToAction("viewsubcategory", "Products");
                         }
                         else
                         {
-                            TempData["SuccessMessage"] = "Sub-Category added successfully.";
-                            TempData["Title"] = "Sub-Category";
-                            return RedirectToAction("viewsubcategory", "Products");
+                            HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Sub Category Added successfully.");
+
+                            return RedirectToAction("subcategory", "Products");
                         }
-                            
+
                     }
                 }
                 else
@@ -586,14 +706,54 @@ namespace skipper_group_new.Controllers
             {
                 if (id > 0)
                 {
-                    var cat = await _products.EditSubCategory(id);
+                    SubCategory obj = new SubCategory();
+                    var menuList = _menuService.GetMenu();
+                    ViewBag.Menus = menuList;
+                    var data = _products.BindProductSubCategory();
+                    var cat = data.Result.AsEnumerable()
+                        .Where(pt => pt.Field<int>("psubcatid") == id)
+                        .ToList();
                     if (cat != null)
                     {
-                        var menuList = _menuService.GetMenu();
-                        ViewBag.Menus = menuList;
-                        var catd = await _products.GetCatDropdown();
-                        ViewBag.Category = new SelectList(catd, "Key", "Value", cat.PCatId);
-                        return View("~/Views/backoffice/Products/subcategory.cshtml", cat);
+                        obj.PSubCatId = Convert.ToInt32(cat[0]["psubcatid"]);
+                        obj.PCatId = Convert.ToInt32(cat[0]["pcatid"]);
+                        obj.Category = cat[0]["category"].ToString();
+                        obj.PageTitle = cat[0]["pagetitle"].ToString();
+                        obj.RewriteUrl = cat[0]["rewriteurl"].ToString();
+                        obj.Status = Convert.ToBoolean(Convert.ToInt32(cat[0]["Status"]));
+                        obj.DisplayOrder = Convert.ToInt32(cat[0]["displayorder"]);
+                        obj.Banner = cat[0]["banner"].ToString();
+                        obj.UploadAImage = cat[0]["homeimage"].ToString();
+                        obj.Detail = WebUtility.HtmlDecode(cat[0]["detail"].ToString());
+                        obj.ShortDetail = WebUtility.HtmlDecode(cat[0]["shortdetail"].ToString());
+                        obj.PageMeta = cat[0]["pagemeta"].ToString();
+                        obj.PageMetaDesc = cat[0]["pagemetadesc"].ToString();
+                        obj.Canonical = cat[0]["canonical"].ToString();
+                        obj.tagline = cat[0]["tagline"].ToString();
+                        obj.homedesc= WebUtility.HtmlDecode(cat[0]["homedesc"].ToString());
+                        obj.homedesc2 = WebUtility.HtmlDecode(cat[0]["homedesc2"].ToString());
+                        ViewBag.CreateUpdate = "Update";
+                        var catd = await _products.BindProductCategory();
+                        if (catd != null && catd.Rows.Count > 0)
+                        {
+
+                            var categoryList = catd.AsEnumerable()
+                                .Select(row => new SelectListItem
+                                {
+                                    Value = row["PcatId"].ToString(),  // or your key column
+                                    Text = row["Category"].ToString()  // or your name column
+                                })
+                                .ToList();
+
+                            // Bind to ViewBag for dropdown
+                            ViewBag.Category = new SelectList(categoryList, "Value", "Text", obj.PCatId);
+                        }
+                        else
+                        {
+                            ViewBag.Category = new SelectList(Enumerable.Empty<SelectListItem>());
+                        }
+
+                        return View("~/Views/backoffice/Products/subcategory.cshtml", obj);
                     }
                     else
                     {
@@ -622,11 +782,11 @@ namespace skipper_group_new.Controllers
             {
                 if (id > 0)
                 {
-                    var deletedCat = await _products.DeleteSubCategory(id);
+                    var deletedCat = _products.SubCategoryDeleteRecords(id);
                     if (deletedCat > 0)
                     {
-                        TempData["SuccessMessage"] = "Sub-Category deleted successfully.";
-                        TempData["Title"] = "Sub-Category";
+                        HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Delete data successfully.");
+
                     }
                     else
                     {
@@ -686,16 +846,25 @@ namespace skipper_group_new.Controllers
             {
                 if (id > 0)
                 {
-                    var chngstatus = await _products.ChangeSubCatStatus(id);
-                    if (chngstatus > 0)
+                    var data = _products.BindProductSubCategory();
+                    var filterresults = data.Result.AsEnumerable()
+                        .Where(pt => pt.Field<int>("psubcatid") == id)
+                        .ToList();
+                    if (filterresults.Count > 0)
                     {
-                        ViewBag.SuccessCreate = "Status changed successfully.";
-                        TempData["Title"] = "Product";
+                        clsProduct obj = new clsProduct();
+                        obj.Status = Convert.ToString(Convert.ToInt32(filterresults[0]["Status"])) == "1" ? "False" : "True"; // Toggle status
+                        var chngstatus = _products.SubCategoryUpdateStatus(obj.Status, id);
+                        if (chngstatus > 0)
+                        {
+                            HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Status update successfully.");
+                        }
+                        else
+                        {
+                            ViewBag.ErrorMessage = "Failed to change the status.";
+                        }
                     }
-                    else
-                    {
-                        ViewBag.ErrorMessage = "Failed to change the status.";
-                    }
+
                 }
                 else
                 {
@@ -711,8 +880,8 @@ namespace skipper_group_new.Controllers
         #endregion
 
         [HttpGet]
-        [Route("backoffice/products/addproducttype")]
-        public async Task<IActionResult> addproducttype()
+        [Route("backoffice/products/addproductsolution")]
+        public async Task<IActionResult> addproductsolution()
         {
 
             clsCategory objcls = new clsCategory();
@@ -724,7 +893,7 @@ namespace skipper_group_new.Controllers
 
 
 
-                return View("~/Views/backoffice/products/addproducttype.cshtml", objcls);
+                return View("~/Views/backoffice/products/addproductsolution.cshtml", objcls);
             }
             catch (Exception ex)
             {
@@ -732,11 +901,11 @@ namespace skipper_group_new.Controllers
                 ViewBag.ErrorMessage = "An error occurred while loading the media section. Please try again later.";
                 return View("~/Views/backoffice/media/media_section.cshtml");
             }
-            return View("~/Views/backoffice/products/addproducttype.cshtml", objcls);
+            return View("~/Views/backoffice/products/addproductsolution.cshtml", objcls);
         }
         [HttpPost]
-        [Route("backoffice/products/addproducttype")]
-        public async Task<IActionResult> addproducttype(clsCategory obj, IFormFile file_Uploader)
+        [Route("backoffice/products/addproductsolution")]
+        public async Task<IActionResult> addproductsolution(clsCategory obj, IFormFile file_Uploader, IFormFile file_Uploader2)
         {
             clsCategory objcls = new clsCategory();
             try
@@ -751,12 +920,13 @@ namespace skipper_group_new.Controllers
                     objcls.Detail = obj.Detail;
                     objcls.ShortDetail = obj.ShortDetail;
                     objcls.DisplayOrder = obj.DisplayOrder;
-                    objcls.PcatId = obj.PcatId;
+                    objcls.productid = obj.productid;
+                    objcls.shortname = obj.shortname ?? string.Empty;
                     objcls.PageTitle = obj.PageTitle ?? string.Empty;
                     objcls.PageMeta = obj.PageMeta ?? string.Empty;
                     objcls.PageMetaDesc = obj.PageMetaDesc ?? string.Empty;
                     objcls.UploadAPDF = obj.UploadAPDF ?? string.Empty;
-                    if (obj.PcatId == 0)
+                    if (obj.productid == "0")
                     {
                         objcls.Mode = 1;
                     }
@@ -764,7 +934,7 @@ namespace skipper_group_new.Controllers
                     {
                         objcls.Mode = 2;
                     }
-                    objcls.RewriteUrl= obj.RewriteUrl ?? string.Empty;
+                    objcls.RewriteUrl = obj.RewriteUrl ?? string.Empty;
                     objcls.Uname = HttpContext.Session.GetString("UserName");
                     if (file_Uploader != null && file_Uploader.Length > 0)
                     {
@@ -782,24 +952,40 @@ namespace skipper_group_new.Controllers
                     {
                         objcls.Banner = obj.Banner ?? string.Empty;
                     }
+                    if (file_Uploader2 != null && file_Uploader2.Length > 0)
+                    {
+                        var fileName = Path.GetFileName(file_Uploader2.FileName); // captures name
+                        var filePath = Path.Combine("wwwroot/uploads/SmallImages", fileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            file_Uploader2.CopyTo(stream);
+                        }
+
+                        objcls.UploadAPDF = fileName;
+                    }
+                    else
+                    {
+                        objcls.UploadAPDF = obj.UploadAPDF ?? string.Empty;
+                    }
                     objcls.Status = obj.Status;
-                    int x = await _products.AddProductType(objcls);
+                    int x = await _products.AddProductSolution(objcls);
                     if (x > 0)
                     {
-                        if (obj.PcatId == 0)
+                        if (obj.productid =="0")
                         {
                             HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Save successfully.");
-                            return RedirectToAction("addproducttype", "products");
+                            return RedirectToAction("addproductsolution", "products");
                         }
                         else
                         {
                             HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Update successfully.");
-                            return RedirectToAction("viewproducttype", "products");
+                            return RedirectToAction("viewproductsolution", "products");
                         }
                     }
                 }
 
-                return View("~/Views/backoffice/products/addproducttype.cshtml", objcls);
+                return View("~/Views/backoffice/products/addproductsolution.cshtml", objcls);
             }
             catch (Exception ex)
             {
@@ -807,11 +993,11 @@ namespace skipper_group_new.Controllers
                 ViewBag.ErrorMessage = "An error occurred while loading the media section. Please try again later.";
                 return View("~/Views/backoffice/Products/addproducttype.cshtml");
             }
-            return View("~/Views/backoffice/products/addproducttype.cshtml", objcls);
+            return View("~/Views/backoffice/products/addproductsolution.cshtml", objcls);
         }
         [HttpGet]
-        [Route("backoffice/products/viewproducttype")]
-        public async Task<IActionResult> viewproducttype()
+        [Route("backoffice/products/viewproductsolution")]
+        public async Task<IActionResult> viewproductsolution()
         {
 
             clsCategory objcls = new clsCategory();
@@ -820,10 +1006,10 @@ namespace skipper_group_new.Controllers
                 var menuList = _menuService.GetMenu();
                 ViewBag.Menus = menuList;
 
-                var catdtl = await _products.GetProductTypeyTblData();
+                var catdtl = await _products.BindProductSolution();
                 ViewBag.CateDtl = catdtl;
 
-                return View("~/Views/backoffice/products/viewproducttype.cshtml", objcls);
+                return View("~/Views/backoffice/products/viewproductsolution.cshtml", objcls);
             }
             catch (Exception ex)
             {
@@ -831,7 +1017,7 @@ namespace skipper_group_new.Controllers
                 ViewBag.ErrorMessage = "An error occurred while loading the media section. Please try again later.";
                 return View("~/Views/backoffice/media/media_section.cshtml");
             }
-            return View("~/Views/backoffice/products/addproducttype.cshtml", objcls);
+            return View("~/Views/backoffice/products/viewproductsolution.cshtml", objcls);
         }
 
         [HttpPost]
@@ -845,23 +1031,23 @@ namespace skipper_group_new.Controllers
                     try
                     {
                         HttpContext.Session.Remove("Message");
-                        clsBannerType objbannertype = new clsBannerType();
+                        clsProduct objbannertype = new clsProduct();
                         // Get the Media list by ID
-                        var productTypes = await _products.GetProductTypeyTblData();
+                        var productTypes =  _products.BindProductSolution();
 
-                        var filteredRows = productTypes
-                            .Where(pt => pt.PcatId == id)   // <-- Use the actual property name
-                            .ToList();
+                        var filterresults = productTypes.Result.AsEnumerable()
+                       .Where(pt => pt.Field<int>("productid") == id)
+                       .ToList();
 
-                        if (filteredRows.Count > 0)
+                        if (filterresults.Count > 0)
                         {
-                            objbannertype.status = Convert.ToString(Convert.ToInt32(filteredRows[0].Status)) == "1" ? "True" : "False"; // Toggle status
-                            int x1 = _products.UpdateStatus(objbannertype.status, id);
+                            objbannertype.Status = Convert.ToString(Convert.ToInt32(filterresults[0]["Status"])) == "1" ? "False" : "True"; // Toggle status
+                            int x1 = _products.UpdateStatus(objbannertype.Status, id);
                             if (x1 > 0)
                             {
                                 HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Status Update successfully.");
 
-                                return RedirectToAction("viewproducttype", "Products");
+                                return RedirectToAction("viewproductsolution", "Products");
                             }
                         }
 
@@ -880,7 +1066,7 @@ namespace skipper_group_new.Controllers
             {
                 ViewBag.ErrorMessage = "An error occurred while processing your request.";
             }
-            return RedirectToAction("viewproducttype", "Products");
+            return RedirectToAction("viewproductsolution", "Products");
         }
 
         [HttpGet]
@@ -898,43 +1084,38 @@ namespace skipper_group_new.Controllers
                         HttpContext.Session.Remove("Message");
                         clsCategory obj = new clsCategory();
                         // Get the Media list by ID
-                        var productTypes = await _products.GetProductTypeList();
+                        var productTypes =  _products.BindProductSolution();
 
-                        var filteredRows = productTypes
-                            .Where(pt => pt.PcatId == id)   // <-- Use the actual property name
-                            .ToList();
+                        var filterresults = productTypes.Result.AsEnumerable()
+                       .Where(pt => pt.Field<int>("productid") == id)
+                       .ToList();
 
-                        if (filteredRows.Count > 0)
+                        if (filterresults.Count > 0)
                         {
-                            obj.PcatId = filteredRows[0].PcatId;
-                            obj.Category = filteredRows[0].Category;
-                            obj.Detail = filteredRows[0].Detail;
-                            obj.ShortDetail = filteredRows[0].ShortDetail;
-                            obj.DisplayOrder = filteredRows[0].DisplayOrder;
-                            obj.ShowOnHome = filteredRows[0].ShowOnHome;
-                            obj.Status = filteredRows[0].Status;
-                            obj.Banner = "/uploads/smallimages/" + Convert.ToString(filteredRows[0].Banner);
-                            obj.Banner = filteredRows[0].Banner;
-                            obj.UploadAPDF = "/uploads/smallimages/" + Convert.ToString(filteredRows[0].UploadAPDF);
-                            obj.UploadAPDF = filteredRows[0].UploadAPDF;
-                            obj.PageTitle = filteredRows[0].PageTitle;
-                            obj.PageMeta = filteredRows[0].PageMeta;
-                            obj.PageMetaDesc = filteredRows[0].PageMetaDesc;
-                            obj.RewriteUrl = filteredRows[0].RewriteUrl;
-                            obj.Canonical = filteredRows[0].Canonical;
-                            obj.NoIndexFollow = filteredRows[0].NoIndexFollow;
-                            obj.PageScript = filteredRows[0].PageScript;
+                            obj.productid = filterresults[0]["productid"].ToString();
+                            obj.shortname = filterresults[0]["displayname"].ToString();
+                            obj.Banner = filterresults[0]["product_banner"].ToString();
+                            obj.Category = filterresults[0]["productname"].ToString();
+                            obj.Detail = WebUtility.HtmlDecode(filterresults[0]["productdescp"].ToString());
+                            obj.ShortDetail = WebUtility.HtmlDecode(filterresults[0]["productshortdescp"].ToString());
+                            obj.DisplayOrder = Convert.ToInt32(filterresults[0]["displayorder"]);
+                            obj.Status = Convert.ToBoolean(Convert.ToInt32(filterresults[0]["Status"]));
+                            obj.RewriteUrl = filterresults[0]["rewrite_url"].ToString();
+                            obj.PageTitle = filterresults[0]["pagetitle"].ToString();
+                            obj.PageMeta = filterresults[0]["pagemeta"].ToString();
+                            obj.PageMetaDesc = filterresults[0]["pagemetadesc"].ToString();
+                            obj.UploadAPDF= filterresults[0]["productsmallmg"].ToString();
                             ViewBag.CreateUpdate = "Update";
 
-                            return View("~/Views/backoffice/products/addproducttype.cshtml", obj);
+                            return View("~/Views/backoffice/products/addproductsolution.cshtml", obj);
 
                         }
 
                     }
                     catch (Exception ex)
                     {
-                        ViewBag.ErrorMessage = "An error occurred while processing your request.";
-                        return RedirectToAction("viewproducttype", "Products");
+                        HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "An error occurred while processing your request.");
+                        return RedirectToAction("viewproductsolution", "Products");
                     }
                 }
                 else
@@ -947,7 +1128,7 @@ namespace skipper_group_new.Controllers
             {
                 ViewBag.ErrorMessage = "An error occurred while processing your request.";
             }
-            return RedirectToAction("viewproducttype", "Products");
+            return RedirectToAction("viewproductsolution", "Products");
         }
 
         [HttpGet]
@@ -963,7 +1144,7 @@ namespace skipper_group_new.Controllers
                         HttpContext.Session.Remove("Message");
                         clsBannerType objbannertype = new clsBannerType();
                         // Get the Media list by ID
-                        var productTypes = await _products.GetProductTypeyTblData();
+                      //  var productTypes = await _products.GetProductTypeyTblData();
 
 
 
@@ -972,7 +1153,7 @@ namespace skipper_group_new.Controllers
                         {
                             HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Delete successfully.");
 
-                            return RedirectToAction("viewproducttype", "Products");
+                            return RedirectToAction("viewproductsolution", "Products");
                         }
 
 
@@ -991,7 +1172,7 @@ namespace skipper_group_new.Controllers
             {
                 ViewBag.ErrorMessage = "An error occurred while processing your request.";
             }
-            return RedirectToAction("viewproducttype", "Products");
+            return RedirectToAction("viewproductsolution", "Products");
         }
         [HttpGet]
         [Route("backoffice/Products/addvehicletype")]
@@ -2760,7 +2941,7 @@ namespace skipper_group_new.Controllers
                         ModelId = model.modelID,
                         BlogoId = model.BlogoId,
                         UName = "admin",
-                        DesignTypeId = 1 
+                        DesignTypeId = 1
                     };
                     var data = await _products.UpdateProductSize(mapping);
                 }

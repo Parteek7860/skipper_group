@@ -1,6 +1,7 @@
-﻿@{
+﻿@using System.Data
+@{
     Layout = "~/Views/Shared/_homepage.cshtml";
-    ViewBag.Title = "View Product Type";
+    ViewBag.Title = "View Product Solution";
 }
 
 <div class="block-header">
@@ -14,23 +15,12 @@
         <div class="col-lg-5 col-md-6 col-sm-12">
             <ul class="breadcrumb float-md-right">
                 <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Products </a></li>
-                <li class="breadcrumb-item active">View Product Type</li>
+                <li class="breadcrumb-item active">View Product Solution</li>
             </ul>
         </div>
     </div>
 </div>
-@if (TempData["SuccessMessage"] != null)
-{
-    <div id="message" class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
-@if (TempData["ErrorMessage"] != null)
-{
-    <div id="message" class="alert alert-danger">
-        @TempData["ErrorMessage"]
-    </div>
-}
+
 
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -39,9 +29,9 @@
                 <div class="row clearfix">
                     <div class="col-sm-12">
                         @{
-                            var cat = ViewBag.CateDtl as List<skipper_group_new.Models.CategoryDtl>;
+                            var cat = ViewBag.CateDtl as DataTable;
                         }
-                        @if (cat != null && cat.Any())
+                        @if (cat != null && cat.Rows.Count>0)
                         {
                             <input type="text" id="searchInput" class="form-control mb-2" placeholder="Search..." onkeyup="searchTable()" />
                             <div class="row mb-3">
@@ -57,11 +47,11 @@
                             </div>
                             <div class="row mb-4">
                                 <div class="col-md-2 align-self-end" style="text-align: center;">
-                                    <button class="btn btn-primary" onclick="filterByDate()" style="width: 100%; padding: 10px; border-radius: 5px; font-weight: bold;">Search</button>
+                                    <button class="btn btn-primary" onclick="filterByDate()" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Search</button>
                                 </div>
-                                <div class="col-md-2 align-self-end" style="text-align: center;">
+                                <div class="col-md-2" style="text-align: center;">
                                     <form method="post" asp-controller="Products" asp-action="ExportCategoryToExcel">
-                                        <button type="submit" class="btn btn-success" style="width: 100%; padding: 10px; border-radius: 5px; font-weight: bold;">Export to Excel</button>
+                                        <button type="submit" class="btn btn-success" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Export to Excel</button>
                                     </form>
                                 </div>
                             </div>
@@ -69,43 +59,50 @@
                             <table class="table table-bordered" id="CategoryTable">
                                 <thead class="table-header">
                                     <tr>
-                                        <th>Product Type</th>                                        
+                                        
+                                        <th>Product Name</th>       
+                                        <th>Display Name</th>       
                                         <th>Date</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var c in cat)
+                                    @foreach (DataRow c in cat.Rows)
                                     {
                                         <tr>
-                                            <td>@c.Category</td>
-                                            
-                                            <td>@c.trdate</td>
+                                            <td>@c["Productname"].ToString()</td>
+                                            <td>@c["displayname"].ToString()</td>
+                                               <td>@Convert.ToDateTime(c["trdate"]).ToShortDateString()</td> 
                                             <td>
-                                                @if (c.Status == true)
-                                                {
-                                                    <form method="post" action="/Backoffice/Products/chkstatus/@c.PcatId" style="display: inline;">
-                                                        <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
-                                                            <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
-                                                        </button>
-                                                    </form>
-                                                }
-                                                else
-                                                {
-                                                    <form method="post" action="/Backoffice/Products/chkstatus/@c.PcatId" style="display: inline;">
-                                                        <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to active?');">
-                                                            <img src="~/Backoffice/images/wrong.png" width="25" alt="Inactive" />
-                                                        </button>
-                                                    </form>
-                                                }
+                                                @{
+                                        bool isActive = c["Status"] != DBNull.Value && Convert.ToBoolean(c["Status"]);
+                                        var id = c["productid"];
+                                    }
+
+                                    @if (isActive)
+                                    {
+                                        <form method="post" action="/Backoffice/Products/chkstatus/@id" style="display:inline;">
+                                            <button type="submit" class="btnstatus border-0 bg-transparent" onclick="return confirm('You want to change the status to inactive?');">
+                                                <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form method="post" action="/Backoffice/Products/chkstatus/@id" style="display:inline;">
+                                            <button type="submit" class="btnstatus border-0 bg-transparent" onclick="return confirm('You want to change the status to active?');">
+                                                <img src="~/Backoffice/images/wrong.png" width="25" alt="Inactive" />
+                                            </button>
+                                        </form>
+                                    }
                                             </td>
                                             <td>
-                                                <a href="/Backoffice/Products/edit/@c.PcatId" class="btnEdit">
+                                                <a href="/Backoffice/Products/edit/@c["productid"]" class="btnEdit">
                                                     <img src="~/Backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
                                                 </a>
 
-                                                <a href="#" class="btndelete" data-href="/Backoffice/Products/delete/@c.PcatId">
+                                                <a href="#" class="btndelete" data-href="/Backoffice/Products/delete/@c["productid"]">
                                                     <img src="~/Backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
                                                 </a>
                                             </td>

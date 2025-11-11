@@ -37,12 +37,11 @@ namespace skipper_group_new.Controllers
                 }).ToList();
 
             List<SelectListItem> names = new List<SelectListItem>();
-            names.Add(new SelectListItem { Text = "Top-Links", Value = "Top-Links" });
             names.Add(new SelectListItem { Text = "Header", Value = "Header" });
-            names.Add(new SelectListItem { Text = "Hamburger menu", Value = "Hamburger menu" });
-            names.Add(new SelectListItem { Text = "Left Side Menu", Value = "Left Side Menu" });
-            names.Add(new SelectListItem { Text = "Right Side Menu", Value = "Right Side Menu" });
-            names.Add(new SelectListItem { Text = "Mobile", Value = "Mobile" });
+            names.Add(new SelectListItem { Text = "Hamburger", Value = "Hamburger" });
+            names.Add(new SelectListItem { Text = "External", Value = "External" });
+            names.Add(new SelectListItem { Text = "Sub-Footer", Value = "Sub-Footer" });
+            names.Add(new SelectListItem { Text = "MobileFooter", Value = "MobileFooter" });
             obj.linkposition = names;
             ViewBag.CreateUpdate = "Save";
 
@@ -63,12 +62,11 @@ namespace skipper_group_new.Controllers
                 }).ToList();
 
             List<SelectListItem> names = new List<SelectListItem>();
-            names.Add(new SelectListItem { Text = "Top-Links", Value = "Top-Links" });
             names.Add(new SelectListItem { Text = "Header", Value = "Header" });
-            names.Add(new SelectListItem { Text = "Hamburger menu", Value = "Hamburger menu" });
-            names.Add(new SelectListItem { Text = "Left Side Menu", Value = "Left Side Menu" });
-            names.Add(new SelectListItem { Text = "Right Side Menu", Value = "Right Side Menu" });
-            names.Add(new SelectListItem { Text = "Mobile", Value = "Mobile" });
+            names.Add(new SelectListItem { Text = "Hamburger", Value = "Hamburger" });
+            names.Add(new SelectListItem { Text = "External", Value = "External" });
+            names.Add(new SelectListItem { Text = "Sub-Footer", Value = "Sub-Footer" });
+            names.Add(new SelectListItem { Text = "MobileFooter", Value = "MobileFooter" });
             obj.linkposition = names;
             ViewBag.CreateUpdate = "Save";
 
@@ -205,12 +203,11 @@ namespace skipper_group_new.Controllers
                     Text = row.Field<string>("linkname")
                 }).ToList();
             List<SelectListItem> names = new List<SelectListItem>();
-            names.Add(new SelectListItem { Text = "Top-Links", Value = "Top-Links" });
             names.Add(new SelectListItem { Text = "Header", Value = "Header" });
-            names.Add(new SelectListItem { Text = "Hamburger menu", Value = "Hamburger menu" });
-            names.Add(new SelectListItem { Text = "Left Side Menu", Value = "Left Side Menu" });
-            names.Add(new SelectListItem { Text = "Right Side Menu", Value = "Right Side Menu" });
-            names.Add(new SelectListItem { Text = "Mobile", Value = "Mobile" });
+            names.Add(new SelectListItem { Text = "Hamburger", Value = "Hamburger" });
+            names.Add(new SelectListItem { Text = "External", Value = "External" });
+            names.Add(new SelectListItem { Text = "Sub-Footer", Value = "Sub-Footer" });
+            names.Add(new SelectListItem { Text = "MobileFooter", Value = "MobileFooter" });
             obj.linkposition = names;
             ViewBag.UpdateStatus = "Update";
             var dt = _backofficeService.GetPageListByID(id).Result;
@@ -265,38 +262,6 @@ namespace skipper_group_new.Controllers
             return View("~/Views/backoffice/cms/viewpages.cshtml");
         }
 
-        // [HttpPost]
-        // [Route("backoffice/Products/ExportProductToExcel")]
-        // public async Task<IActionResult> ExportProductToExcel()
-        // {
-        //var catdtl = await _products.GetProductTblData();
-        //using (var workbook = new ClosedXML.Excel.XLWorkbook())
-        //{
-        //    var worksheet = workbook.Worksheets.Add("Products");
-        //    worksheet.Cell(1, 1).Value = "Product";
-        //    worksheet.Cell(1, 2).Value = "Title";
-        //    worksheet.Cell(1, 3).Value = "Model Number";
-        //    worksheet.Cell(1, 4).Value = "Date";
-        //    worksheet.Cell(1, 5).Value = "Status";
-        //    int row = 2;
-        //    foreach (var c in catdtl)
-        //    {
-        //        worksheet.Cell(row, 1).Value = c.ProductName;
-        //        worksheet.Cell(row, 2).Value = c.ProductTitle;
-        //        worksheet.Cell(row, 3).Value = c.ModelNo;
-        //        worksheet.Cell(row, 4).Style.DateFormat.Format = "yyyy-MM-dd";
-        //        worksheet.Cell(row, 5).Value = c.Status ? "Active" : "Inactive";
-        //        row++;
-        //    }
-
-        //    using (var stream = new MemoryStream())
-        //    {
-        //        workbook.SaveAs(stream);
-        //        stream.Position = 0;
-        //        string fileName = $"ProductList_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
-        //        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
-        //    }
-        //}
-        //}
+        
     }
 }

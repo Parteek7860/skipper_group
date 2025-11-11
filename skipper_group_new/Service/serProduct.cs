@@ -1,4 +1,5 @@
-﻿using skipper_group_new.Interface;
+﻿using DocumentFormat.OpenXml.InkML;
+using skipper_group_new.Interface;
 using skipper_group_new.Models;
 using skipper_group_new.Repositories;
 using System.Data;
@@ -14,6 +15,7 @@ namespace skipper_group_new.Service
         {
             _repository = repository;
         }
+      
 
         #region Product
         public Task<List<ProductDtl>> GetProductTblData()
@@ -102,9 +104,44 @@ namespace skipper_group_new.Service
         }
         #endregion
 
-        public Task<int> AddProductType(clsCategory obj)
+        public Task<DataTable> BindProductCategory()
         {
-            return _repository.AddProductType(obj);
+            return _repository.BindProductCategory();
+        }
+
+        public int CategoryUpdateStatus(string status, int id)
+        {
+            return _repository.CategoryUpdateStatus(status, id);
+        }
+        public int CategoryDeleteRecords( int id)
+        {
+            return _repository.CategoryDeleteRecords(id);
+        }
+        public Task<DataTable> BindProductSubCategory()
+        {
+            return _repository.BindProductSubCategory();
+        }
+        public int SubCategoryUpdateStatus(string status, int id)
+        {
+            return _repository.SubCategoryUpdateStatus(status, id);
+        }
+
+        public int SubCategoryDeleteRecords(int id)
+        {
+            return _repository.SubCategoryDeleteRecords(id);
+        }
+        public int AddSubProductCategory(SubCategory obj)
+        {
+            return _repository.AddSubProductCategory(obj);
+        }
+        public Task<DataTable> BindProductSolution()
+        {
+            return _repository.BindProductSolution();
+        }
+
+        public Task<int> AddProductSolution(clsCategory obj)
+        {
+            return _repository.AddProductSolution(obj);
         }
 
 
@@ -382,6 +419,11 @@ namespace skipper_group_new.Service
         public async Task<int> UpdateProductSize(MappingDetail mapping)
         {
             return await _repository.UpdateProductSize(mapping);
+        }
+
+        public int AddProductCategory(clsCategory category)
+        {
+            return  _repository.AddProductCategory(category);
         }
     }
 }

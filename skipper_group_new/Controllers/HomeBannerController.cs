@@ -1,7 +1,8 @@
-﻿using skipper_group_new.Interface;
+﻿using Microsoft.AspNetCore.Mvc;
+using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
 using skipper_group_new.Models;
-using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Net;
 
 namespace skipper_group_new.Controllers
@@ -289,7 +290,9 @@ namespace skipper_group_new.Controllers
 
             //Get list of banner types
             var bannerTypes = _homePageService.GetBannerList();
-            ViewBag.bannerlist = bannerTypes.Result;
+            var filterresult = bannerTypes.Result.Select("collageid=0").OrderByDescending(r => r["bid"]);
+            DataTable dt = filterresult.CopyToDataTable(); 
+            ViewBag.bannerlist = dt;
 
             return View("~/Views/Backoffice/homebanner/ViewHomeBanner.cshtml", clsBanner);
         }

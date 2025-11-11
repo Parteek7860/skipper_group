@@ -1,7 +1,6 @@
-﻿@using System.Data
-@{
+﻿@{
     Layout = "~/Views/Shared/_homepage.cshtml";
-    ViewBag.Title = "View Sub Category";
+    ViewBag.Title = "View Category";
 }
 
 <div class="block-header">
@@ -14,22 +13,32 @@
         </div>
         <div class="col-lg-5 col-md-6 col-sm-12">
             <ul class="breadcrumb float-md-right">
-                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Sub Category </a></li>
-                <li class="breadcrumb-item active">Sub-Category List</li>
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Category </a></li>
+                <li class="breadcrumb-item active">Category List</li>
             </ul>
         </div>
     </div>
 </div>
-
-
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="message" class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="message" class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="card">
             <div class="body">
                 @{
-                    var products = ViewBag.CateDtl as DataTable;
+                    var cat = ViewBag.CateDtl as List<skipper_group_new.Models.CategoryDtl>;
                 }
-                @if (products != null && products.Rows.Count > 0)
+                @if (cat != null && cat.Any())
                 {
                     <h2 class="card-inside-title">
                         Fields with * are mandatory
@@ -50,57 +59,52 @@
                             <button class="btn btn-primary" type="button" onclick="filterByDate()" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Search</button>
                         </div>
                         <div class="col-md-2 align-self-end" style="text-align: center;">
-                            <form method="post" asp-controller="Products" asp-action="ExportSubCategoryToExcel">
-                                <button type="submit" class="btn btn-success" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Export to Excel</button>
+                            <form method="post" asp-controller="Products" asp-action="ExportCategoryToExcel">
+                                <button type="submit" class="btn btn-success" style="width: 100%; padding: 10px; border-radius: 5px; font-weight: bold;">Export to Excel</button>
                             </form>
                         </div>
                     </div>
-                    <table class="table table-bordered" id="subCategoryTable">
+                    <table class="table table-bordered" id="categoryTable">
                         <thead class="table-header">
                             <tr>
                                 <th>Category Name</th>
-                                <th>Sub-Category</th>
+                                <th>Category Title</th>
                                 <th>Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (DataRow product in products.Rows)
+                            @foreach (var c in cat)
                             {
                                 <tr>
-                                    <td>@product["categoryname"].ToString()</td>
-                                    <td>@product["category"].ToString()</td>
-                                    <td>@Convert.ToDateTime(product["trdate"]).ToShortDateString()</td>
+                                    <td>@c.Category</td>
+                                    <td>@c.PageTitle</td>
+                                    <td>@c.trdate</td>
                                     <td>
-                                        @{
-                                            bool isActive = product["Status"] != DBNull.Value && Convert.ToBoolean(product["Status"]);
-                                            var id = product["PsubcatId"];
-                                        }
-
-                                        @if (isActive)
+                                        @if (c.Status == true)
                                         {
-                                            <form method="post" action="/Backoffice/Products/ChangeSubCatStatus/@id" style="display:inline;">
-                                                <button type="submit" class="btnstatus border-0 bg-transparent" onclick="return confirm('You want to change the status to inactive?');">
+                                            <form method="post" action="/Backoffice/investor/ChangeCatStatus/@c.PcatId" style="display: inline;">
+                                                <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
                                                     <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
                                                 </button>
                                             </form>
                                         }
                                         else
                                         {
-                                            <form method="post" action="/Backoffice/Products/ChangeSubCatStatus/@id" style="display:inline;">
-                                                <button type="submit" class="btnstatus border-0 bg-transparent" onclick="return confirm('You want to change the status to active?');">
+                                            <form method="post" action="/Backoffice/investor/ChangeCatStatus/@c.PcatId" style="display: inline;">
+                                                <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to active?');">
                                                     <img src="~/Backoffice/images/wrong.png" width="25" alt="Inactive" />
                                                 </button>
                                             </form>
                                         }
                                     </td>
                                     <td>
-                                        <a href="/Backoffice/Products/GetSubCategoryByID/@product["psubcatid"]" class="btnEdit">
+                                        <a href="/Backoffice/investor/GetCategoryByID/@c.PcatId" class="btnEdit">
                                             <img src="~/Backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
                                         </a>
 
-                                        <a href="#" class="btndelete" data-href="/Backoffice/Products/DeleteSubCategory/@product["psubcatid"]">
+                                        <a href="#" class="btndelete" data-href="/Backoffice/investor/DeleteCategory/@c.PcatId">
                                             <img src="~/Backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
                                         </a>
                                     </td>
@@ -117,7 +121,6 @@
         </div>
     </div>
 </div>
-
 @{
     var nonce = Context.Items["CSPNonce"]?.ToString();
 }
@@ -139,7 +142,7 @@
         var input, filter, table, tr, td, i, j, txtValue;
         input = document.getElementById('searchInput');
         filter = input.value.toLowerCase();
-        table = document.getElementById('subCategoryTable');
+        table = document.getElementById('categoryTable');
         tr = table.getElementsByTagName('tr');
         for (i = 1; i < tr.length; i++) {
             td = tr[i].getElementsByTagName('td');
@@ -161,6 +164,7 @@
         }
     }
 
+
     function filterByDate() {
         const fromDateInput = document.getElementById('fromDate').value;
         const toDateInput = document.getElementById('toDate').value;
@@ -172,7 +176,7 @@
             toDate.setDate(toDate.getDate() + 1);
         }
 
-        const table = document.getElementById('subCategoryTable');
+        const table = document.getElementById('categoryTable');
         const tr = table.getElementsByTagName('tr');
 
         for (let i = 1; i < tr.length; i++) {

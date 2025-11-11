@@ -15,6 +15,7 @@ namespace skipper_group_new.Repositories
 
         #region Category
         Task<List<CategoryDtl>> GetCatDtl();
+      
         Task<int> AddCategory(clsCategory category);
         Task<clsCategory> GetCategoryById(int id);
         Task<int> DeleteCategory(int id);
@@ -30,7 +31,16 @@ namespace skipper_group_new.Repositories
         Task<List<SubCatDtl>> GetSubCategoriesByCategoryId(int catID);
         Task<int> ChangeSubCatStatus(int id);
         #endregion
-        Task<int> AddProductType(clsCategory obj);
+        int AddProductCategory(clsCategory category);
+        int CategoryUpdateStatus(string status, int id);
+        int CategoryDeleteRecords( int id);
+        Task<DataTable> BindProductCategory();
+        Task<DataTable> BindProductSubCategory();
+        int AddSubProductCategory(SubCategory category);
+        int SubCategoryUpdateStatus(string status, int id);
+        int SubCategoryDeleteRecords(int id);
+        Task<DataTable> BindProductSolution();
+        Task<int> AddProductSolution(clsCategory obj);
 
         Task<List<CategoryDtl>> GetProductTypeTblData();
         int UpdateStatus(string status, int id);

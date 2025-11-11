@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
 
 namespace skipper_group_new.Models
 {
@@ -6,9 +6,12 @@ namespace skipper_group_new.Models
     {
         public int PcatId { get; set; }
 
-        [Required(ErrorMessage = "Field is reqired.")]
+       
         public string Category { get; set; }
-        [Required(ErrorMessage = "Field is reqired.")]
+
+        public string shortname { get; set; }
+
+
         public string Detail { get; set; }
 
         public string ShortDetail { get; set; }
@@ -22,7 +25,7 @@ namespace skipper_group_new.Models
         public string Banner { get; set; }
 
         public string UploadAPDF { get; set; }
-        [Required(ErrorMessage = "Field is reqired.")]
+        
         public string PageTitle { get; set; }
 
         public string PageMeta { get; set; }
@@ -30,6 +33,7 @@ namespace skipper_group_new.Models
         public string PageMetaDesc { get; set; }
 
         public string RewriteUrl { get; set; }
+        public string productid { get; set; }
 
         public string Canonical { get; set; }
 

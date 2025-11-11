@@ -326,13 +326,13 @@
 <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
 <script nonce="@nonce" src="~/ckeditor/ckeditor.js"></script>
 <script nonce="@nonce">
+    $('.editor1').each(function () {
+        CKEDITOR.replace($(this).prop('id'));
+    });
+</script>
+<script nonce="@nonce">
     $(document).ready(function () 
     {
-        $('.editor1').each(function () {
-            CKEDITOR.replace($(this).prop('id'));
-        });
-
-
         $('#PcatId').change(function () {
             var categoryId = $(this).val();
             var subCategoryDropdown = $('#PsubcatId');

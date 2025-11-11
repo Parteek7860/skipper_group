@@ -15,9 +15,12 @@ namespace skipper_group_new.Interface
 
         #region Category
         Task<List<CategoryDtl>> GetCategoryTblData();
+
+        
         Task<int> AddCategory(clsCategory category); 
 
-        Task<int> AddProductType(clsCategory obj);
+
+        Task<int> AddProductSolution(clsCategory obj);
 
         int UpdateStatus(string status, int id);
 
@@ -25,6 +28,7 @@ namespace skipper_group_new.Interface
         Task<clsCategory> EditCategory(int id);
         Task<int> DeleteCategory(int id);
         Task<int> ChangeCatStatus(int id);
+
         #endregion
 
         #region Sub-Category
@@ -37,13 +41,27 @@ namespace skipper_group_new.Interface
         Task<int> ChangeSubCatStatus(int id);
         #endregion
 
+        int AddProductCategory(clsCategory category);
+
+        Task<DataTable> BindProductCategory();
+        int CategoryUpdateStatus(string status, int id);
+
+        Task<DataTable> BindProductSubCategory();
+
+        int AddSubProductCategory(SubCategory category);
+        int SubCategoryUpdateStatus(string status, int id);
+
+        int SubCategoryDeleteRecords(int id);
+
+        Task<DataTable> BindProductSolution();
+
         int DeleteRecords(int id);
         Task<List<clsCategory>> GetProductTypeList();
 
         Task<DataTable> GetVehicleTyreList();
 
-        int VehicleUpdateStatus(string status, int id);
-        
+        int VehicleUpdateStatus(string status, int id); 
+
         int VehicleDeleteRecords(int id);
 
         Task<int> AddVehicleType(SubCategory obj);

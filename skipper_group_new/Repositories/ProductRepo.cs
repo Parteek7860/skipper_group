@@ -14,7 +14,118 @@ namespace skipper_group_new.Repositories
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
+        public async Task<DataTable> BindProductCategory()
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            using (var cmd = new SqlCommand("BindProductCategorySP", conn))
+            using (var da = new SqlDataAdapter(cmd))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                var table = new DataTable();
+                await conn.OpenAsync();
+                da.Fill(table);
+                return table;
+            }
+        }
+        public int CategoryUpdateStatus(string status, int id)
+        {
+            int result = 0;
+            string query = "UpdProductCategoryStatusSP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
 
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.Parameters.AddWithValue("@status", status == "True" ? 0 : 1);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+        public int CategoryDeleteRecords(int id)
+        {
+            int result = 0;
+            string query = "deleteProductCategoryStatusSP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<DataTable> BindProductSubCategory()
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            using (var cmd = new SqlCommand("BindProductSubCategorySP", conn))
+            using (var da = new SqlDataAdapter(cmd))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                var table = new DataTable();
+                await conn.OpenAsync();
+                da.Fill(table);
+                return table;
+            }
+        }
+
+        public int SubCategoryUpdateStatus(string status, int id)
+        {
+            int result = 0;
+            string query = "UpdProductSubCategoryStatusSP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.Parameters.AddWithValue("@status", status == "True" ? 0 : 1);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+        public int SubCategoryDeleteRecords(int id)
+        {
+            int result = 0;
+            string query = "DeleteProductSubCategorySP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
         #region Product
         public async Task<List<ProductDtl>> GetProdDtl()
         {
@@ -415,31 +526,27 @@ namespace skipper_group_new.Repositories
         }
         #endregion
 
-        public async Task<int> AddProductType(clsCategory obj)
+        public async Task<int> AddProductSolution(clsCategory obj)
         {
             int result = 0;
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                using (SqlCommand cmd = new SqlCommand("product_typeSP", conn))
+                using (SqlCommand cmd = new SqlCommand("product_masterSP", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@product_typeid", obj.PcatId);
-                    cmd.Parameters.AddWithValue("@product_typetitle", obj.Category);
-                    cmd.Parameters.AddWithValue("@short_desc", obj.ShortDetail);
-                    cmd.Parameters.AddWithValue("@description", obj.Detail);
-                    cmd.Parameters.AddWithValue("@uploadimage", obj.UploadAPDF);
-                    cmd.Parameters.AddWithValue("@banner", obj.Banner);
+                    cmd.Parameters.AddWithValue("@productid", obj.productid);
+                    cmd.Parameters.AddWithValue("@productname", obj.Category);
+                    cmd.Parameters.AddWithValue("@productshortdescp", obj.ShortDetail);
+                    cmd.Parameters.AddWithValue("@productdescp", obj.Detail);
+                    cmd.Parameters.AddWithValue("@productsmallmg", obj.UploadAPDF);
+                    cmd.Parameters.AddWithValue("@product_banner", obj.Banner);
                     cmd.Parameters.AddWithValue("@displayorder", obj.DisplayOrder);
                     cmd.Parameters.AddWithValue("@status", obj.Status);
                     cmd.Parameters.AddWithValue("@pagetitle", obj.PageTitle);
                     cmd.Parameters.AddWithValue("@PageMeta", obj.PageMeta);
                     cmd.Parameters.AddWithValue("@pagemetadesc", obj.PageMetaDesc);
-                    cmd.Parameters.AddWithValue("@rewriteurl", "");
-                    cmd.Parameters.AddWithValue("@rewriteurl_sec", "");
-                    cmd.Parameters.AddWithValue("@tag1", "");
-                    cmd.Parameters.AddWithValue("@tag2", "");
-                    cmd.Parameters.AddWithValue("@showonhome", "0");
-                    cmd.Parameters.AddWithValue("@showonmenu", "0");
+                    cmd.Parameters.AddWithValue("@rewrite_url", obj.RewriteUrl);
+                  
                     cmd.Parameters.AddWithValue("@canonical", obj.Canonical);
                     cmd.Parameters.AddWithValue("@uname", obj.Uname);
                     cmd.Parameters.AddWithValue("@mode", obj.Mode);
@@ -487,7 +594,7 @@ namespace skipper_group_new.Repositories
         public int UpdateStatus(string status, int id)
         {
             int result = 0;
-            string query = "UpStatusproducttypeSP";
+            string query = "UpStatusproductsolutionSP";
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
 
@@ -497,7 +604,7 @@ namespace skipper_group_new.Repositories
 
                     cmd.Parameters.AddWithValue("@id", id);
 
-                    cmd.Parameters.AddWithValue("@status", status == "True" ? 0 : 1);
+                    cmd.Parameters.AddWithValue("@status", status == "True" ? 1 : 0);
 
                     conn.Open();
                     result = cmd.ExecuteNonQuery();
@@ -509,7 +616,7 @@ namespace skipper_group_new.Repositories
         public int DeleteRecords(int id)
         {
             int result = 0;
-            string query = "DeleteproducttypeSP";
+            string query = "DeleteproductsolutionSP";
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
 
@@ -1557,6 +1664,95 @@ namespace skipper_group_new.Repositories
                     await cmd.ExecuteNonQueryAsync();
                     return (int)cmd.Parameters["@mmodelid"].Value;
                 }
+            }
+        }
+        public int AddProductCategory(clsCategory obj)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("productcategorySP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@PcatId", obj.PcatId);
+                    cmd.Parameters.AddWithValue("@category", obj.Category ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@displayorder", obj.DisplayOrder);
+                    cmd.Parameters.AddWithValue("@status", obj.Status);
+                    cmd.Parameters.AddWithValue("@showonhome", obj.ShowOnHome);
+                    cmd.Parameters.AddWithValue("@banner", obj.Banner ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@homeimage", obj.HomeImage ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@uname", obj.Uname ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@homedesc", obj.HomeDesc ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@detail", obj.Detail ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@shortdetail", obj.ShortDetail ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@uploadapdf", obj.UploadAPDF ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@pagetitle", obj.PageTitle ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@pagemeta", obj.PageMeta ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@pagemetadesc", obj.PageMetaDesc ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@rewriteurl", obj.RewriteUrl ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@productid", obj.productid ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@canonical", obj.Canonical ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@mode", obj.Mode);
+
+
+                     conn.OpenAsync();
+                    result =  cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+
+        public int AddSubProductCategory(SubCategory obj)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("productsubcategorySP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@psubcatid", obj.PSubCatId);
+                    cmd.Parameters.AddWithValue("@PcatId", obj.PCatId);
+                    cmd.Parameters.AddWithValue("@category", obj.Category ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@displayorder", obj.DisplayOrder);
+                    cmd.Parameters.AddWithValue("@status", obj.Status);
+                    cmd.Parameters.AddWithValue("@showonhome", obj.ShowOnHome);
+                    cmd.Parameters.AddWithValue("@banner", obj.Banner ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@homeimage", obj.UploadAImage ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@uname", obj.Uname ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@homedesc", obj.homedesc ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@homedesc2", obj.homedesc2 ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@detail", obj.Detail ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@shortdetail", obj.ShortDetail ?? (object)DBNull.Value);
+                   // cmd.Parameters.AddWithValue("@uploadapdf", obj.UploadAPDF ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@pagetitle", obj.PageTitle ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@pagemeta", obj.PageMeta ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@pagemetadesc", obj.PageMetaDesc ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@rewriteurl", obj.RewriteUrl ?? (object)DBNull.Value);
+                 //   cmd.Parameters.AddWithValue("@productid", obj.productid ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@canonical", obj.Canonical ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@mode", obj.Mode);
+
+
+                    conn.OpenAsync();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<DataTable> BindProductSolution()
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            using (var cmd = new SqlCommand("BindProductSolutionSP", conn))
+            using (var da = new SqlDataAdapter(cmd))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                var table = new DataTable();
+                await conn.OpenAsync();
+                da.Fill(table);
+                return table;
             }
         }
 

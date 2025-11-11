@@ -1,10 +1,10 @@
-﻿@model skipper_group_new.Models.SubCategory
+﻿@using System.Data
+@model skipper_group_new.Models.clsCategory
 
 @{
-    ViewData["Title"] = "Add Sub-Category";
+    ViewData["Title"] = "Add Category";
     Layout = "~/Views/Shared/_homepage.cshtml";
 }
-
 <div class="block-header">
     <div class="row">
         <div class="col-lg-7 col-md-6 col-sm-12">
@@ -15,8 +15,8 @@
         </div>
         <div class="col-lg-5 col-md-6 col-sm-12">
             <ul class="breadcrumb float-md-right">
-                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i>Sub-Category</a></li>
-                <li class="breadcrumb-item active">Add Sub-Category</li>
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Category</a></li>
+                <li class="breadcrumb-item active">Add Category</li>
             </ul>
         </div>
     </div>
@@ -24,8 +24,7 @@
 
 
 
-
-@using (Html.BeginForm("AddSubCategory", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("AddCategory", "investor", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="row clearfix">
@@ -36,90 +35,85 @@
                         Fields with * are mandatory
                     </h2>
                     <div class="row clearfix">
-                        @Html.HiddenFor(model => model.PSubCatId)
-                        @Html.HiddenFor(model => model.RewriteUrl)
+                        @Html.HiddenFor(model => model.PcatId)
                         @Html.HiddenFor(model => model.Status)
                         @Html.HiddenFor(model => model.ShowOnHome)
+                        @Html.HiddenFor(model => model.RewriteUrl)
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label>Category *</label>
-                                    @Html.DropDownListFor(model => model.PCatId, ViewBag.Category as SelectList, "Select Category", new { @class = "form-control" })
-                                </div>
-                            </div>
-                            @Html.ValidationMessageFor(m => m.PCatId, "", new { @class = "text-danger v-span" })
+                            <label>Category Name *</label>
+                            @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control" } })
+                            </div></div>
+                            @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger v-span" })
                         </div>
-
-                        <div class="col-sm-6">
+                      @*   <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label>Sub Category</label>
-                                    @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control" } })
-
-                                    @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger v-span" })
+                                    <label>Rewrite URL</label>
+                                    @Html.EditorFor(model => model.RewriteUrl, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>
+                                @Html.ValidationMessageFor(model => model.RewriteUrl, "", new { @class = "text-danger v-span" })
                             </div>
+                        </div> *@
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="form-line">
+                            <label>Short Detail</label>
+                            @Html.TextAreaFor(model => model.ShortDetail, new { @class = "form-control editor1", @id = "editor1", @rows = "10" })
+                            </div></div>
+                        </div>
+                    </div>
+                   @*  <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="form-line">
+                            <label>Long Description</label>
+                            @Html.TextAreaFor(model => model.Detail, new { @class = "form-control editor1", @id = "editor2", @rows = "10" })
+                            </div></div>
                         </div>
                     </div>
                     <div class="row clearfix">
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label>Tagline</label>
-                                    @Html.TextAreaFor(model => model.tagline, new { @class = "form-control" })
-                                </div>
-                            </div>
+                            <label>Meta Description</label>                            
+                            @Html.TextAreaFor(model => model.PageMetaDesc, new { @class = "form-control editor1", @id = "editor3", @rows = "10" })
+                            </div></div>
                         </div>
-                    </div>
-                    <div class="row clearfix">
+                    </div>   *@
+                   @*  <div class="row clearfix">
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label>Short Detail</label>
-                                    @Html.TextAreaFor(model => model.ShortDetail, new { @class = "form-control editor1", @id = "editor1", @rows = "10" })
-                                </div>
-                            </div>
+                            <label>Home Desc</label>
+                                    @Html.EditorFor(model => model.HomeDesc, new { htmlAttributes = new { @class = "form-control", }})
+                            </div></div>
+                        </div>                       
+                    </div>      *@              
+                   @*  <div class="row clearfix">
+                        <div class="col-sm-4">
+                            <label>Show On Home</label><br />
+                            @Html.CheckBoxFor(model => model.ShowOnHome)
+                        </div>
+                        <div class="col-sm-4">
+                            <label>No Index follow</label><br />
+                            @Html.CheckBoxFor(model => model.NoIndexFollow)
+                        </div>
+                        <div class="col-sm-4">
+                            <label>Status</label><br />
+                            @Html.CheckBoxFor(model => model.Status)
                         </div>
                     </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Description</label>
-                                    @Html.TextAreaFor(model => model.Detail, new { @class = "form-control editor1", @id = "editor2", @rows = "10" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Description 2</label>
-                                    @Html.TextAreaFor(model => model.homedesc, new { @class = "form-control editor1", @id = "editor3", @rows = "10" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Description 3</label>
-                                    @Html.TextAreaFor(model => model.homedesc2, new { @class = "form-control editor1", @id = "editor4", @rows = "10" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="row clearfix">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Upload Image</label>
-                                    <input type="file" name="UploadAIFile" class="form-control" />
-                                    <img src="/uploads/ProductsImage/@Url.Content(Model.UploadAImage)" width="80" />
-                                    @Html.HiddenFor(model => model.UploadAImage)
+                                    <input type="file" name="UploadAPDFFile" class="form-control" />
+                                    @Html.HiddenFor(model => model.UploadAPDF)
                                 </div>
                             </div>
                         </div>
@@ -128,17 +122,21 @@
                                 <div class="form-line">
                                     <label>Banner Image</label>
                                     <input type="file" name="BannerImgFile" class="form-control" />
-                                    <img src="/uploads/ProductsImage/@Url.Content(Model.Banner)" width="80" />
                                     @Html.HiddenFor(model => model.Banner)
                                 </div>
                             </div>
                         </div>
-                    </div>
-                 
-
+                    </div> *@
                     <div class="row clearfix">
-                      
-
+                       @*  <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Home Image</label>
+                                    <input type="file" name="HomeImageFile" class="form-control" />
+                                    @Html.HiddenFor(model => model.HomeImage)
+                                </div>
+                            </div>
+                        </div> *@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
@@ -147,10 +145,8 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                   
-
+                    <br />
                     <h5>SEO Section</h5>
                     <div class="row clearfix">
                         <div class="col-sm-6">
@@ -174,25 +170,25 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label>Canonical</label>
-                                    @Html.EditorFor(model => model.Canonical, new { htmlAttributes = new { @class = "form-control" } })
+                                    <label>Page Script</label>
+                                    @Html.EditorFor(model => model.PageScript, new { htmlAttributes = new { @class = "form-control", } })
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label>Page Script</label>
-                                    @Html.EditorFor(model => model.PageScript, new { htmlAttributes = new { @class = "form-control" } })
+                                    <label>Canonical</label>
+                                    @Html.EditorFor(model => model.Canonical, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- Buttons -->
                     <div class="row mt-4">
-                        <div class="col-sm-12">
-                            <button type="submit" class="btn btn-success btn-lg mx-2" value="Save" formmethod="post" formaction="@Url.Action("AddSubcategory","Products")">  @ViewBag.CreateUpdate  </button>
-                            <a href="/backoffice/Products/viewsubcategory" class="btn btn-secondary btn-lg mx-2">Cancel</a>
+                        <div class="col-sm-12 text-center">
+                            <input type="submit" class="btn btn-success btn-lg mx-2" value="Save" />
+                            <a href="/backoffice/investor/category" class="btn btn-secondary btn-lg mx-2">Cancel</a>
                         </div>
                     </div>
                 </div>
@@ -201,7 +197,6 @@
     </div>
 
 }
-
 @{
     var nonce = Context.Items["CSPNonce"]?.ToString();
 }

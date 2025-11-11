@@ -21,6 +21,9 @@ namespace skipper_group_new.Models
 
         [Display(Name = "Long Description")]
         public string Detail { get; set; }
+        public string homedesc { get; set; }
+        public string homedesc2 { get; set; }
+        public string tagline { get; set; }
 
         [Display(Name = "Short Detail")]
         public string ShortDetail { get; set; }
