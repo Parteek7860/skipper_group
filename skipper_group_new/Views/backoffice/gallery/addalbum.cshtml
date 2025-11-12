@@ -82,7 +82,7 @@
                             <div class="form-group">
                                 <label> Upload Banner</label>
                                 <input type="file" name="file_Uploader" />
-                                <img src="/uploads/smallimages/@Url.Content(Model.uploadbanner)" width="80" />
+                                <img src="/uploads/Largeimages/@Url.Content(Model.uploadbanner)" width="80" />
                                 @Html.HiddenFor(model => model.uploadbanner)
                             </div>
 
@@ -162,7 +162,15 @@
             </div>
         </div>
     </div>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+
+
+    <script>
+        $('.editor1').each(function () {
+            CKEDITOR.replace($(this).prop('id'));
+        });
+    </script>
 
 }
 

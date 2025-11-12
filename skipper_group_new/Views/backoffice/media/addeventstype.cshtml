@@ -44,6 +44,7 @@
                                 <div class="form-line">
                                     <label> Media Type</label>
                                     @Html.HiddenFor(model => model.id)
+                                    @Html.HiddenFor(model => model.status)
                                     @Html.EditorFor(model => model.mediatype, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>
                             </div>
@@ -61,7 +62,7 @@
                     </div>
                     <div class="row clearfix">
                         <div class="col-sm-12 my-lg-4 my-4">
-                            <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" formaction="eventstype" formmethod="post"> @ViewBag.CreateUpdate </button>
+                            <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" formaction="@Url.Action("addeventstype", "Media")" formmethod="post"> @ViewBag.CreateUpdate </button>
                         </div>
                     </div>
                     <div class="row clearfix">
@@ -89,7 +90,7 @@
                                                         <td>
                                                             @Html.HiddenFor(model => model.id)
                                                             <a data-value="@(Convert.ToString(row["ntypeid"]))"
-                                                               href="/webmedia/eventstype/status?statusid=@(Convert.ToString(row["ntypeid"]))&status=@(Convert.ToString(row["status"]))" class="btndelete">
+                                                               href="/backoffice/media/TypeStatus/@(Convert.ToString(row["ntypeid"]))" class="btndelete">
                                                                 <img src="~/backoffice/images/active.png" width="20" />
                                                             </a>
                                                         </td>
@@ -99,7 +100,7 @@
                                                         <td>
                                                             @Html.HiddenFor(model => model.id)
                                                             <a data-value="@(Convert.ToString(row["ntypeid"]))"
-                                                               href="/webmedia/eventstype/status?statusid=@(Convert.ToString(row["ntypeid"]))&status=@(Convert.ToString(row["status"]))" class="btndelete">
+                                                               href="/backoffice/media/TypeStatus/@(Convert.ToString(row["ntypeid"]))" class="btndelete">
                                                                 <img src="~/backoffice/images/wrong.png" width="20" />
                                                             </a>
                                                         </td>
@@ -110,11 +111,11 @@
                                                         <input type="hidden" value="@(Convert.ToString(row["ntypeid"]))" />
 
                                                         <a data-value="@(Convert.ToString(row["ntypeid"]))"
-                                                           href="/webmedia/eventstype/?edit=@(Convert.ToString(row["ntypeid"]))" class="btnEdit">
+                                                           href="/backoffice/media/Typeedit/@(Convert.ToString(row["ntypeid"]))" class="btnEdit">
                                                             <img src="~/backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
                                                         </a>
                                                         <a data-value="@(Convert.ToString(row["ntypeid"]))"
-                                                           href="/webmedia/eventstype/?del=@(Convert.ToString(row["ntypeid"]))" class="btndelete">
+                                                           href="/backoffice/media/TypeDelete/@(Convert.ToString(row["ntypeid"]))" class="btndelete">
                                                             <img src="~/backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
                                                         </a>
                                                     </td>

@@ -81,6 +81,18 @@ namespace skipper_group_new.Service
         {
             return _repository.UpdateEventsStatus(status, id);
         }
+        public int UpdateEventsTypeStatus(string status, int id)
+        {
+            return _repository.UpdateEventsTypeStatus(status, id);
+        }
+        public int DeleteEventsTypeSection(int id)
+        {
+            return _repository.DeleteEventsTypeSection(id);
+        }
+        public int CreateMediaType(clsMediatype obj)
+        {
+            return _repository.CreateMediaType(obj);
+        }
         public int UpdateEventsStatusShowHome(string status, int id)
         {
             return _repository.UpdateEventsStatusShowHome(status, id);

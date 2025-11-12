@@ -183,7 +183,7 @@ namespace skipper_group_new.Controllers
             {
                 objAlbumType.id = Convert.ToInt32(bannerTypes.Rows[0]["albumid"]);
                 objAlbumType.title = Convert.ToString(bannerTypes.Rows[0]["albumtitle"]);
-                //objAlbumType.albumtype = Convert.ToInt16(bannerTypes.Rows[0]["typeid"]);
+                objAlbumType.albumtype = Convert.ToInt16(bannerTypes.Rows[0]["typeid"]);
                 objAlbumType.shortdetail = Convert.ToString(bannerTypes.Rows[0]["albumdesc"]);
                 //objAlbumType.eventsdate = Convert.ToDateTime(bannerTypes.Rows[0]["albumdate"]);
                 objAlbumType.displayorder = Convert.ToString(bannerTypes.Rows[0]["displayorder"]);

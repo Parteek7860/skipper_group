@@ -27,9 +27,12 @@ namespace skipper_group_new.Repositories
         int DeleteBanner(int id);
         Task<DataTable> GetBannerListByID(int id);
         Task<DataTable> GetEventTypeList();
+        int CreateMediaType(clsMediatype obj);
         Task<DataTable> GetEventList();
         Task<DataTable> GetEnquiryList();
         int DeleteMediaSection(int id);
+        int UpdateEventsTypeStatus(string status, int id);
+        int DeleteEventsTypeSection(int id);
         int UpdateEventsStatus(string status, int id);
         int UpdateEventsStatusShowHome(string status, int id);
         Task<DataTable> GetPageList();

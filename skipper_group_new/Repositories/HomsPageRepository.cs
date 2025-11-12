@@ -655,5 +655,69 @@ namespace skipper_group_new.Repositories
 
             return result;
         }
+        public int UpdateEventsTypeStatus(string status, int id)
+        {
+            int result = 0;
+            string query = "UpdStatuseventstypeSP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.Parameters.AddWithValue("@status", status == "true" ? 0 : 1);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+        public int DeleteEventsTypeSection(int id)
+        {
+            int result = 0;
+            string query = "DeleteEeventstypeSP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+        public int CreateMediaType(clsMediatype obj)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("newstypeSP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ntypeid", obj.id);
+                    cmd.Parameters.AddWithValue("@ntype", obj.mediatype);
+                    cmd.Parameters.AddWithValue("@displayorder", obj.displayorder);
+                    cmd.Parameters.AddWithValue("@status", obj.status);
+                    cmd.Parameters.AddWithValue("@uname", obj.uname);
+                    cmd.Parameters.AddWithValue("@mode", obj.mode);
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
     }
 }

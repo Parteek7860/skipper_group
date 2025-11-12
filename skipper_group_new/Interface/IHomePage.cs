@@ -20,6 +20,7 @@ namespace skipper_group_new.Interface
         int UpdateBannerType(string status, int id);
         Task<DataTable> GetBannerTypeList();
         Task<DataTable> GetEventTypeList();
+        int CreateMediaType(clsMediatype obj);
         Task<DataTable> GetBannerList();
         Task<DataTable> GetBannerTypeListByID(int id);
         int DeleteBanner(int id);
@@ -27,7 +28,8 @@ namespace skipper_group_new.Interface
         Task<DataTable> GetEventList();
 
         int DeleteMediaSection(int id);
-
+        int UpdateEventsTypeStatus(string status, int id);
+        int DeleteEventsTypeSection(int id);
         int UpdateEventsStatus(string status, int id);
         int UpdateEventsStatusShowHome(string status, int id);
 

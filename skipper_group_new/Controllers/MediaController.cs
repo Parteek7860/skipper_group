@@ -44,6 +44,132 @@ namespace skipper_group_new.Controllers
             return View("~/Views/backoffice/media/addeventstype.cshtml");
         }
         [HttpGet]
+        [Route("backoffice/Media/TypeDelete/{id}")]
+        public async Task<IActionResult> TypeDelete(int id)
+        {
+            clsMediatype obj1 = new clsMediatype();
+            try
+            {
+                int x = _homePageService.DeleteEventsTypeSection(id);
+                if (x > 0)
+                {
+                    HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Delete type successfully.");
+
+                    return RedirectToAction("addeventstype", "Media");
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View("~/Views/Backoffice/Media/addeventstype.cshtml", obj1);
+        }
+        [HttpGet]
+        [Route("backoffice/Media/TypeStatus/{id}")]
+        public async Task<IActionResult> TypeStatus(int id)
+        {
+            try
+            {
+                HttpContext.Session.Remove("Message");
+                clsBannerType objbannertype = new clsBannerType();
+                // Get the Media list by ID
+                var x = _homePageService.GetEventTypeList();
+                var filteredRows = x.Result.AsEnumerable().Where(row => Convert.ToInt32(row["ntypeid"]) == id).ToList();
+
+                if (filteredRows.Count > 0)
+                {
+                    objbannertype.status = Convert.ToString(Convert.ToInt32(filteredRows[0]["status"])) == "1" ? "true" : "false"; // Toggle status
+                    int x1 = _homePageService.UpdateEventsTypeStatus(objbannertype.status, id);
+                    if (x1 > 0)
+                    {
+                        HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Status Update successfully.");
+
+                        return RedirectToAction("addeventstype", "Media");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return RedirectToAction("addeventstype", "Media");
+        }
+
+        [HttpGet]
+        [Route("backoffice/Media/Typeedit/{id}")]
+        public async Task<IActionResult> Typeedit(int id)
+        {
+            try
+            {
+
+                clsMediatype objbannertype = new clsMediatype();
+
+                var menuList = _menuService.GetMenu();
+                ViewBag.Menus = menuList;
+                // Get the Media list by ID
+                var x = _homePageService.GetEventTypeList();
+                var filteredRows = x.Result.AsEnumerable().Where(row => Convert.ToInt32(row["ntypeid"]) == id).ToList();
+
+                if (filteredRows.Count > 0)
+                {
+                    objbannertype.status = Convert.ToBoolean(Convert.ToInt32(filteredRows[0]["status"]));
+                    objbannertype.mediatype = Convert.ToString(filteredRows[0]["ntype"]);
+                    objbannertype.displayorder = Convert.ToString(filteredRows[0]["displayorder"]);
+                    objbannertype.id = Convert.ToInt16(filteredRows[0]["ntypeid"]);
+                    ViewBag.CreateUpdate = "Update";
+                    return View("~/Views/backoffice/media/addeventstype.cshtml", objbannertype);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + ex.Message.ToString());
+            }
+            return RedirectToAction("addeventstype", "Media");
+        }
+
+        [HttpPost]
+        [Route("backoffice/media/addeventstype")]
+        public IActionResult addeventstype(clsMediatype obj)
+        {
+            var menuList = _menuService.GetMenu();
+            ViewBag.Menus = menuList;
+            ViewBag.CreateUpdate = "Save";
+            clsMediatype objMedia = new clsMediatype();
+            objMedia.mediatype = obj.mediatype;
+            objMedia.displayorder = obj.displayorder;
+            objMedia.status = obj.status;
+            objMedia.uname = HttpContext.Session.GetString("UserName");
+            objMedia.id = obj.id;
+            if (obj.id > 0)
+            {
+                objMedia.mode = "2";
+            }
+            else
+            {
+                objMedia.mode = "1";
+                objMedia.status = true;
+            }
+            int x = _homePageService.CreateMediaType(objMedia);
+            if (x > 0)
+            {
+                if (obj.id > 0)
+                {
+                    HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Event Type Update successfully.");
+                }
+                else
+                {
+                    HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Event Type Save successfully.");
+                }
+                return RedirectToAction("addeventstype", "Media");
+            }
+
+
+
+            return View("~/Views/backoffice/media/addeventstype.cshtml");
+        }
+        [HttpGet]
         [Route("backoffice/media/viewmedia_section")]
         public IActionResult viewmedia_section()
         {
@@ -188,7 +314,7 @@ namespace skipper_group_new.Controllers
                     objbannertype.metadesc = Convert.ToString(filteredRows[0]["pagemetadesc"]);
                     objbannertype.colorcode = Convert.ToString(filteredRows[0]["colorcode"]);
 
-                    objbannertype.bannerimage =  Convert.ToString(filteredRows[0]["uploadevents"]);
+                    objbannertype.bannerimage = Convert.ToString(filteredRows[0]["uploadevents"]);
                     objbannertype.uploadbanner = Convert.ToString(filteredRows[0]["uploadevents"]);
 
                     objbannertype.Largeimage = Convert.ToString(filteredRows[0]["largeimage"]);
@@ -309,9 +435,9 @@ namespace skipper_group_new.Controllers
                         int x = _homePageService.CreateMedia(objMedia);
                         if (x > 0)
                         {
-                            
+
                             HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Media Section Save successfully.");
-                            
+
                             return RedirectToAction("viewmedia_section", "Media");
                         }
                     }
@@ -323,7 +449,7 @@ namespace skipper_group_new.Controllers
                         if (x > 0)
                         {
                             HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Media Section Update successfully.");
-                            
+
                             return RedirectToAction("viewmedia_section", "Media");
                         }
                     }
@@ -355,7 +481,7 @@ namespace skipper_group_new.Controllers
             }
             catch (Exception ex)
             {
-                
+
                 HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + ex.Message.ToString());
             }
             return View("~/Views/backoffice/media/media_section.cshtml", objMedia);
