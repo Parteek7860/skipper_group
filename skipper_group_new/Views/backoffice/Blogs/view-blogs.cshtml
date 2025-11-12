@@ -2,7 +2,7 @@
 
 @{
     Layout = "~/Views/Shared/_homepage.cshtml";
-    ViewBag.Title = "Blog Detail";
+    ViewBag.Title = "View Edit Blogs";
 }
 
 <div class="block-header">
@@ -22,18 +22,6 @@
     </div>
 </div>
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div id="message" class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
-@if (TempData["ErrorMessage"] != null)
-{
-    <div id="message" class="alert alert-danger">
-        @TempData["ErrorMessage"]
-    </div>
-}
 
 
 <div class="row clearfix">
@@ -76,7 +64,7 @@
                             <tr>
                                 <th>Blog Title</th>
                                 <th>Image</th>
-                                <th>Short Description</th>
+                             
                                 <th>Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -96,9 +84,9 @@
                                         }
                                     }
                                     <td>
-                                        <img src="@Url.Content(imagePath)" alt="Blog Image" width="50" />
+                                        <img src=~/uploads/blogs/@Url.Content(imagePath)" alt="Blog Image" width="50" />
                                     </td>
-                                    <td>@Html.Raw(blog.SmallDesc)</td>
+                                 
                                     <td>@(blog.BlogDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
                                     <td>
                                         @if (blog.Status == true)

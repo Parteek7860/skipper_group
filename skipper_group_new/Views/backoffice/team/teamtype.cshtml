@@ -39,6 +39,9 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Leadership Type *</label>
+                                @Html.HiddenFor(Model=>Model.Status)
+                                @Html.HiddenFor(Model=>Model.TTypeId)
+                                @Html.HiddenFor(Model=>Model.CollageId)
                                 @Html.TextBoxFor(model => model.TType, new { @class = "form-control", placeholder = "Enter leadership type" })
                                 @Html.ValidationMessageFor(model => model.TType, "", new { @class = "text-danger" })
                             </div>
@@ -52,41 +55,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Short Description</label>
-                                @Html.TextBoxFor(model => model.ShortDesc, new { @class = "form-control", placeholder = "Optional short description" })
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Username *</label>
-                                @Html.TextBoxFor(model => model.UName, new { @class = "form-control", placeholder = "Enter username" })
-                                @Html.ValidationMessageFor(model => model.UName, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>College ID *</label>
-                                @Html.EditorFor(model => model.CollageId, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter collage ID" } })
-                                @Html.ValidationMessageFor(model => model.CollageId, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Status</label><br />
-                                @Html.CheckBoxFor(model => model.Status)
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="row clearfix">
                         <div class="col-sm-12 my-lg-4 my-4">
                             <button type="submit" class="btn btn-raised btn-success waves-effect" style="width:100px;">
@@ -112,9 +80,9 @@
                     <div class="col-lg-2" style="padding-top:10px;">
                         <button class="btn btn-primary" type="button" onclick="filterByDate()" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Search</button>
                     </div>
-                    <div class="col-md-2 align-self-end" style="text-align: center;">
+                    <div class="col-lg-2" style="padding-top:10px;">
                         <form method="post" asp-controller="Management" asp-action="ExportLeadershipTypeToExcel">
-                            <button type="submit" class="btn btn-success" style="width: 100%;">
+                            <button type="submit" class="btn btn-success" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">
                                 Export to Excel
                             </button>
                         </form>
@@ -131,7 +99,6 @@
                         <thead class="table-header">
                             <tr>
                                 <th>Leadership Type</th>
-                                <th>Description</th>
                                 <th>Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -142,7 +109,6 @@
                             {
                                 <tr>
                                     <td>@item.TType</td>
-                                    <td>@item.ShortDesc</td>
                                     <td>@item.TrDate</td>
                                     <td>
                                         @if (item.Status == true)

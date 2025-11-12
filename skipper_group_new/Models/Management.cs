@@ -51,6 +51,8 @@
     {
         public int Teamid { get; set; }
         public string Name { get; set; }
+        public string ttype { get; set; }
+        public string uploadphoto { get; set; }
         public bool Status { get; set; }
     }
 

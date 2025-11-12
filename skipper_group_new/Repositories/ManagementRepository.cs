@@ -269,7 +269,7 @@ namespace skipper_group_new.Repositories
         private DynamicParameters MapToTeamParameters(Management b, int mode)
         {
             var parameters = new DynamicParameters();
-            parameters.Add("@teamid", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@teamid", b.Teamid);
             parameters.Add("@ttypeid", b.TTypeId);
             parameters.Add("@name", b.Name);
             parameters.Add("@designation", b.Designation);

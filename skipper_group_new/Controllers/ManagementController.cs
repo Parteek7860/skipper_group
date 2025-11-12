@@ -4,6 +4,7 @@ using skipper_group_new.Models;
 using skipper_group_new.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net;
 
 namespace skipper_group_new.Controllers
 {
@@ -46,7 +47,8 @@ namespace skipper_group_new.Controllers
             {
                 if (blg != null)
                 {
-
+                    blg.CollageId = 0; //default value
+                    blg.UName = HttpContext.Session.GetString("UserName") ?? "Admin";
                     int result = await _ser.AddTeamType(blg);
                     if (result > 0)
                     {
@@ -243,46 +245,54 @@ namespace skipper_group_new.Controllers
                 {
                     if (UploadImageFile != null && UploadImageFile.Length > 0)
                     {
-                        var uploadFileName = Path.GetFileName(UploadImageFile.FileName);
-                        var uniqueName = $"{Guid.NewGuid()}_{uploadFileName}";
-                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/ProductImages", uniqueName);
+                        var fileName = Path.GetFileName(UploadImageFile.FileName); // captures name
+                        var filePath = Path.Combine("wwwroot/uploads/smallimages", fileName);
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
-                            await UploadImageFile.CopyToAsync(stream);
+                            UploadImageFile.CopyTo(stream);
                         }
 
-                        m.UploadPhoto = "/uploads/ProductImages/" + uniqueName;
+                        m.UploadPhoto = fileName;
+                    }
+                    else
+                    {
+                        m.UploadPhoto = m.UploadPhoto;
                     }
                     if (UploadImageFile1 != null && UploadImageFile1.Length > 0)
                     {
-                        var uploadFileName = Path.GetFileName(UploadImageFile1.FileName);
-                        var uniqueName = $"{Guid.NewGuid()}_{uploadFileName}";
-                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/ProductImages", uniqueName);
+                        var fileName = Path.GetFileName(UploadImageFile1.FileName); // captures name
+                        var filePath = Path.Combine("wwwroot/uploads/smallimages", fileName);
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
-                            await UploadImageFile1.CopyToAsync(stream);
+                            UploadImageFile1.CopyTo(stream);
                         }
 
-                        m.UploadPhoto1 = "/uploads/ProductImages/" + uniqueName;
+                        m.UploadPhoto1 = fileName;
                     }
+                    else
+                    {
+                        m.UploadPhoto1 = m.UploadPhoto1;
+                    }
+                    m.Teamid = m.Teamid;
+                    m.UName = HttpContext.Session.GetString("UserName") ?? "Admin";
                     int result = await _ser.AddTeam(m);
                     if (result > 0)
                     {
-                        HttpContext.Session.SetString("Message", "Team Update successfully.");                     
+                        HttpContext.Session.SetString("Message", "Team Update successfully.");
                         return RedirectToAction("viewteam", "Management");
                     }
                     else
                     {
-                        HttpContext.Session.SetString("Message", "Failed to save the team.");                        
+                        HttpContext.Session.SetString("Message", "Failed to save the team.");
                         return RedirectToAction("viewteam", "Management");
                     }
                 }
                 else
                 {
                     TempData["ErrorMessage"] = "Invalid team data.";
-                    return RedirectToAction("viewteam", "Management");
+                    return View("~/Views/backoffice/team/our-team.cshtml", m);
                 }
             }
             catch (Exception ex)
@@ -310,6 +320,11 @@ namespace skipper_group_new.Controllers
                         var subteam = await _ser.GetSubTeamDropdown();
                         ViewBag.TeamType = new SelectList(team, "Key", "Value");
                         ViewBag.SubTeamType = new SelectList(subteam, "Key", "Value");
+
+                        t.ShortDesc = WebUtility.HtmlDecode(t.ShortDesc);
+                        t.DetailDesc = WebUtility.HtmlDecode(t.DetailDesc);
+
+
                         ViewBag.Button = "Update";
                         return View("~/Views/backoffice/team/our-team.cshtml", t);
                     }
@@ -340,7 +355,7 @@ namespace skipper_group_new.Controllers
                 {
                     var delResult = await _ser.DeleteTeam(id);
                     if (delResult > 0)
-                    {                        
+                    {
                         HttpContext.Session.SetString("Message", "Team deleted successfully");
                     }
                     else
@@ -399,22 +414,22 @@ namespace skipper_group_new.Controllers
                     if (chngstatus > 0)
                     {
                         HttpContext.Session.SetString("Message", "Status changed successfully.");
-                        
+
                         TempData["Title"] = "Product";
                     }
                     else
                     {
-                        HttpContext.Session.SetString("Message", "Failed to change the status.");                        
+                        HttpContext.Session.SetString("Message", "Failed to change the status.");
                     }
                 }
                 else
                 {
-                    TempData["ErrorMessage"]= "Product id is necessary.";
+                    TempData["ErrorMessage"] = "Product id is necessary.";
                 }
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"]= "An error occurred while processing your request.";
+                TempData["ErrorMessage"] = "An error occurred while processing your request.";
             }
             return RedirectToAction("viewteam", "Management");
         }

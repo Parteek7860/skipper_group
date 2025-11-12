@@ -2,6 +2,7 @@
 using skipper_group_new.mainclass;
 using skipper_group_new.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace skipper_group_new.Controllers
 {
@@ -24,7 +25,7 @@ namespace skipper_group_new.Controllers
             {
                 var menuList = _menuService.GetMenu();
                 ViewBag.Menus = menuList;
-
+                ViewBag.CreateUpdate = "Save";
                 return View("~/Views/backoffice/Blogs/add-blogs.cshtml", new clsBlog());
             }
             catch (Exception ex)
@@ -66,37 +67,57 @@ namespace skipper_group_new.Controllers
         {
             try
             {
-                if (blg != null)
+                if (blg != null && blg.BlogId != 0 && blg.Mode != 0)
                 {
                     if (BlogImageFile != null && BlogImageFile.Length > 0)
                     {
-                        var blogImageFileName = $"bs_{Path.GetFileName(BlogImageFile.FileName)}";
-                        var blogImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/ProductImages", blogImageFileName);
+                        var fileName = Path.GetFileName(BlogImageFile.FileName); // captures name
+                        var filePath = Path.Combine("wwwroot/uploads/vedio", fileName);
 
-                        using (var stream = new FileStream(blogImagePath, FileMode.Create))
+                        using (var stream = new FileStream(filePath, FileMode.Create))
                         {
-                            await BlogImageFile.CopyToAsync(stream);
+                            BlogImageFile.CopyTo(stream);
                         }
-                        blg.BlogImage = "/uploads/ProductImages/" + blogImageFileName;
+
+                        blg.BlogImage = fileName;
+                    }
+                    else
+                    {
+                        blg.BlogImage = blg.BlogImage;
                     }
 
                     if (LargeImageFile != null && LargeImageFile.Length > 0)
                     {
-                        var largeImageFileName = $"bl_{Path.GetFileName(LargeImageFile.FileName)}";
-                        var largeImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/ProductImages", largeImageFileName);
+                        var fileName = Path.GetFileName(LargeImageFile.FileName); // captures name
+                        var filePath = Path.Combine("wwwroot/uploads/vedio", fileName);
 
-                        using (var stream = new FileStream(largeImagePath, FileMode.Create))
+                        using (var stream = new FileStream(filePath, FileMode.Create))
                         {
-                            await LargeImageFile.CopyToAsync(stream);
+                            LargeImageFile.CopyTo(stream);
                         }
-                        blg.LargeImage = "/uploads/ProductImages/" + largeImageFileName;
+
+                        blg.LargeImage = fileName;
+                    }
+                    else
+                    {
+                        blg.LargeImage = blg.LargeImage;
                     }
 
                     int result = await _blog.AddBlog(blg);
                     if (result > 0)
                     {
-                        TempData["SuccessMessage"] = blg.BlogId > 0 ? "Blog updated successfully." : "Blog added successfully.";
-                        return RedirectToAction("viewblog", "Blogs");
+                        if (blg.BlogId > 0)
+                        {
+                            HttpContext.Session.SetString("Message", "Blog Update successfully.");
+                            return RedirectToAction("viewblog", "Blogs");
+                        }
+                        else
+                        {
+                            HttpContext.Session.SetString("Message", "Blog Added successfully.");
+                            return RedirectToAction("addblog", "Blogs");
+                        }
+
+
                     }
                     else
                     {
@@ -106,8 +127,10 @@ namespace skipper_group_new.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Invalid blog data.";
-                    return RedirectToAction("viewblog", "Blogs");
+                    var menuList = _menuService.GetMenu();
+                    ViewBag.Menus = menuList;
+                    HttpContext.Session.SetString("Message", "Fill blogs required fields");
+                    return View("~/Views/backoffice/blogs/add-blogs.cshtml", blg);
                 }
             }
             catch (Exception ex)
@@ -130,7 +153,10 @@ namespace skipper_group_new.Controllers
                     {
                         var menuList = _menuService.GetMenu();
                         ViewBag.Menus = menuList;
-
+                        blg.SmallDesc = WebUtility.HtmlDecode(blg.SmallDesc);
+                        blg.LongDesc = WebUtility.HtmlDecode(blg.LongDesc);
+                        blg.BlogImage = blg.BlogImage;
+                        ViewBag.CreateUpdate = "Update";
                         return View("~/Views/backoffice/Blogs/add-blogs.cshtml", blg);
                     }
                     else
@@ -276,10 +302,19 @@ namespace skipper_group_new.Controllers
             {
                 if (blg != null)
                 {
+                    blg.Uname = HttpContext.Session.GetString("UserName");
                     int result = await _blog.AddBlogCat(blg);
                     if (result > 0)
                     {
-                        TempData["SuccessMessage"] = blg.BcatId > 0 ? "Blog category updated successfully." : "Blog category added successfully.";
+                        if (blg.BcatId > 0)
+                        {
+                            HttpContext.Session.SetString("Message", "Blog category Update successfully.");
+                        }
+
+                        else
+                        {
+                            HttpContext.Session.SetString("Message", "Blog category Added successfully.");
+                        }
                         return RedirectToAction("addblogcat", "Blogs");
                     }
                     else

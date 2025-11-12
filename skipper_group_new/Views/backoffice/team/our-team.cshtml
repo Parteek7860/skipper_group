@@ -34,6 +34,8 @@
                     </h2>
                     <div class="row clearfix">
                         @Html.HiddenFor(model => model.Teamid)
+                        @Html.HiddenFor(model => model.Status)
+                        @Html.HiddenFor(model => model.ShowOnHome)
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Team Type</label>
@@ -71,42 +73,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row clearfix">                        
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Nationality</label>
-                                    @Html.EditorFor(model => model.Nationality, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Headquarter</label>
-                                    @Html.EditorFor(model => model.Headquarter, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row clearfix">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label>Experience</label>
+                                    <label>Tagline</label>
                                     @Html.EditorFor(model => model.Experience, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Industries</label>
-                                    @Html.EditorFor(model => model.Industries, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                            </div>
-                        </div>
+                     
+
                     </div>
+                    
                     <div class="row clearfix">                        
                         <div class="col-sm-6">
                             <div class="form-group">
@@ -131,6 +110,7 @@
                                 <div class="form-line">
                                     <label>Upload Photo</label>
                                     <input type="file" name="UploadImageFile" class="form-control" />
+                                    <img src="/uploads/smallimages/@Url.Content(Model.UploadPhoto)" width="80" />
                                     @Html.HiddenFor(model => model.UploadPhoto)
                                 </div>
                             </div>
@@ -140,125 +120,20 @@
                                 <div class="form-line">
                                     <label>Upload Photo1</label>
                                     <input type="file" name="UploadImageFile1" class="form-control" />
+                                    <img src="/uploads/smallimages/@Url.Content(Model.UploadPhoto1)" width="80" />
                                     @Html.HiddenFor(model => model.UploadPhoto1)
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>No Index Follow</label>
-                                    @Html.CheckBoxFor(model => model.NoIndexFollow)
-                                </div>
-                            </div>
-                        </div>                       
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Show On Home</label>
-                                    @Html.CheckBoxFor(model => model.ShowOnHome)
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Status</label>
-                                    @Html.CheckBoxFor(model => model.Status)
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Show Top</label>
-                                    @Html.CheckBoxFor(model => model.ShowTop)
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    @Html.DropDownListFor(model => model.TSubTypeId, ViewBag.SubTeamType as SelectList, "Select Sub-Team Type", new { @class = "form-control", @id = "PsubcatId" })
-                                </div>
-                            </div>
-                            @Html.ValidationMessageFor(m => m.TSubTypeId, "", new { @class = "text-danger v-span" })
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Other Schema</label><br />
-                                    @Html.EditorFor(model => model.CollageId, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row clearfix">                        
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Other Schema</label><br />
-                                    @Html.EditorFor(model => model.OtherSchema, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Dean</label><br />
-                                    @Html.EditorFor(model => model.Dean, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Principal</label><br />
-                                    @Html.EditorFor(model => model.Principal, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Director</label><br />
-                                    @Html.EditorFor(model => model.Director, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Experience in Year</label><br />
-                                    @Html.EditorFor(model => model.ExpYear, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>UName</label><br />
-                                    @Html.EditorFor(model => model.UName, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
+
                     <h5>SEO Section</h5>
                     <div class="row clearfix">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label>Page Meta</label>
-                                    @Html.EditorFor(model => model.PageMeta, new { htmlAttributes = new { @class = "form-control" } })
+                                    <label>Page Title</label>
+                                    @Html.EditorFor(model => model.PageTitle, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>
                             </div>
                         </div>
@@ -283,8 +158,8 @@
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label>Page Title</label>
-                                    @Html.EditorFor(model => model.PageTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                    <label>Page Meta</label>
+                                    @Html.EditorFor(model => model.PageMeta, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>
                             </div>
                         </div>
@@ -310,13 +185,17 @@
 }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="~/ckeditor/ckeditor.js"></script>
+
+
+<script>
+    $('.editor1').each(function () {
+        CKEDITOR.replace($(this).prop('id'));
+    });
+</script>
 <script>
     $(document).ready(function ()
     {
-        $('.editor1').each(function () {
-            CKEDITOR.replace($(this).prop('id'));
-        });
-
+      
 
         $('#PcatId').change(function () {
             var categoryId = $(this).val();
