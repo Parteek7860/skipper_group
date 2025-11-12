@@ -494,7 +494,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@rewriteurl", "");
                     cmd.Parameters.AddWithValue("@uploadfile", "");
                     cmd.Parameters.AddWithValue("@colorcode", "");
-                    //cmd.Parameters.AddWithValue("@canonical", obj.canonical);
+                   // cmd.Parameters.AddWithValue("@pagescript", obj.pagescript ?? string.Empty);
                     cmd.Parameters.AddWithValue("@uname", obj.uname);
                     cmd.Parameters.AddWithValue("@mode", obj.mode);
                     conn.Open();

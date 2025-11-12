@@ -5,10 +5,10 @@
 *@
 @{
     ViewBag.Title = "Media Type";
- 
+
     Layout = "~/Views/Shared/_homepage.cshtml";
     var medialist = ViewBag.EventTypes as System.Data.DataTable;
-     
+
 }
 <div class="block-header">
     <div class="row">
@@ -65,71 +65,75 @@
                         </div>
                     </div>
                     <div class="row clearfix">
-                        @if (medialist.Rows.Count > 0)
+                        @if (medialist != null)
                         {
-                            <div class="col-sm-12">
-                                <table class="table table-bordered">
-                                    <thead class="table-header">
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Status</th>
-                                            <th>Date</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (DataRow row in medialist.Rows)
-                                        {
+                            @if (medialist.Rows.Count > 0)
+                            {
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered">
+                                        <thead class="table-header">
                                             <tr>
-                                                <td>@(Convert.ToString(row["ntype"]))</td>
-                                                @if ((Convert.ToBoolean(row["status"]) == true))
-                                                {
-                                                    <td>
-                                                        @Html.HiddenFor(model => model.id)
-                                                        <a data-value="@(Convert.ToString(row["ntypeid"]))"
-                                                           href="/webmedia/eventstype/status?statusid=@(Convert.ToString(row["ntypeid"]))&status=@(Convert.ToString(row["status"]))" class="btndelete">
-                                                            <img src="~/backoffice/images/active.png" width="20" />
-                                                        </a>
-                                                    </td>
-                                                }
-                                                else
-                                                {
-                                                    <td>
-                                                        @Html.HiddenFor(model => model.id)
-                                                        <a data-value="@(Convert.ToString(row["ntypeid"]))"
-                                                           href="/webmedia/eventstype/status?statusid=@(Convert.ToString(row["ntypeid"]))&status=@(Convert.ToString(row["status"]))" class="btndelete">
-                                                            <img src="~/backoffice/images/wrong.png" width="20" />
-                                                        </a>
-                                                    </td>
-                                                }
-
-                                                <th scope="row">@(Convert.ToString(row["trdate"]))</th>
-                                                <td>
-                                                    <input type="hidden" value="@(Convert.ToString(row["ntypeid"]))" />
-
-                                                    <a data-value="@(Convert.ToString(row["ntypeid"]))"
-                                                       href="/webmedia/eventstype/?edit=@(Convert.ToString(row["ntypeid"]))" class="btnEdit">
-                                                        <img src="~/backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
-                                                    </a>
-                                                    <a data-value="@(Convert.ToString(row["ntypeid"]))"
-                                                       href="/webmedia/eventstype/?del=@(Convert.ToString(row["ntypeid"]))" class="btndelete">
-                                                        <img src="~/backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
-                                                    </a>
-                                                </td>
+                                                <th>Name</th>
+                                                <th>Status</th>
+                                                <th>Date</th>
+                                                <th>Action</th>
                                             </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (DataRow row in medialist.Rows)
+                                            {
+                                                <tr>
+                                                    <td>@(Convert.ToString(row["ntype"]))</td>
+                                                    @if ((Convert.ToBoolean(row["status"]) == true))
+                                                    {
+                                                        <td>
+                                                            @Html.HiddenFor(model => model.id)
+                                                            <a data-value="@(Convert.ToString(row["ntypeid"]))"
+                                                               href="/webmedia/eventstype/status?statusid=@(Convert.ToString(row["ntypeid"]))&status=@(Convert.ToString(row["status"]))" class="btndelete">
+                                                                <img src="~/backoffice/images/active.png" width="20" />
+                                                            </a>
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            @Html.HiddenFor(model => model.id)
+                                                            <a data-value="@(Convert.ToString(row["ntypeid"]))"
+                                                               href="/webmedia/eventstype/status?statusid=@(Convert.ToString(row["ntypeid"]))&status=@(Convert.ToString(row["status"]))" class="btndelete">
+                                                                <img src="~/backoffice/images/wrong.png" width="20" />
+                                                            </a>
+                                                        </td>
+                                                    }
 
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
+                                                    <th scope="row">@(Convert.ToString(row["trdate"]))</th>
+                                                    <td>
+                                                        <input type="hidden" value="@(Convert.ToString(row["ntypeid"]))" />
+
+                                                        <a data-value="@(Convert.ToString(row["ntypeid"]))"
+                                                           href="/webmedia/eventstype/?edit=@(Convert.ToString(row["ntypeid"]))" class="btnEdit">
+                                                            <img src="~/backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
+                                                        </a>
+                                                        <a data-value="@(Convert.ToString(row["ntypeid"]))"
+                                                           href="/webmedia/eventstype/?del=@(Convert.ToString(row["ntypeid"]))" class="btndelete">
+                                                            <img src="~/backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-lg-12 my-lg-2 text-lg-center message-top2">
+                                    Records not found
+                                </div>
+                            }
+
                         }
-                        else
-                        {
-                            <div class="col-lg-12 my-lg-2 text-lg-center message-top2">
-                                Records not found
-                            </div>
-                        }
- 
+
                     </div>
                 </div>
             </div>
