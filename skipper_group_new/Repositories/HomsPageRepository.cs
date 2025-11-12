@@ -37,7 +37,7 @@ namespace skipper_group_new.Repositories
                     }
                 }
             }
-           
+
             return dt;
         }
 
@@ -192,20 +192,17 @@ namespace skipper_group_new.Repositories
         public int UpdateBannerType(string status, int id)
         {
             int result = 0;
-            string query = string.Empty;
+            string query = "UpStatusHomeBannertypeSP";
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                if (status == "True")
-                {
-                    query = @"update homebannertype set status=0 where btypeid=@btypeid ";
-                }
-                else
-                {
-                    query = @"update homebannertype set status=1 where btypeid=@btypeid ";
-                }
+
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@btypeid", id);
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.Parameters.AddWithValue("@status", status == "True" ? 0 : 1);
 
                     conn.Open();
                     result = cmd.ExecuteNonQuery();
@@ -519,14 +516,17 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@btypeid", obj.bannertype);
                     cmd.Parameters.AddWithValue("@title", obj.name);
                     cmd.Parameters.AddWithValue("@devicetype", obj.devicetype1);
-                    cmd.Parameters.AddWithValue("@tagline2", "");
+                    cmd.Parameters.AddWithValue("@tagline1", obj.tagline1);
                     cmd.Parameters.AddWithValue("@displayorder", obj.displayorder);
-                    cmd.Parameters.AddWithValue("@url", "");
+                    cmd.Parameters.AddWithValue("@url", obj.url);
                     cmd.Parameters.AddWithValue("@status", obj.status);
                     cmd.Parameters.AddWithValue("@bannerimage", obj.uploadbanner);
                     cmd.Parameters.AddWithValue("@blogo", "");
-
+                    cmd.Parameters.AddWithValue("@startdate", obj.startdate);
+                    cmd.Parameters.AddWithValue("@enddate", obj.enddate);
+                    cmd.Parameters.AddWithValue("@collageid", obj.collageid);
                     cmd.Parameters.AddWithValue("@uname", obj.uname);
+                    cmd.Parameters.AddWithValue("@tagline2", "");
                     cmd.Parameters.AddWithValue("@mode", obj.mode);
                     conn.Open();
                     result = cmd.ExecuteNonQuery();

@@ -78,7 +78,7 @@
                             <div class="form-group">
                                 <label> Upload Image</label>
                                 <input type="file" name="file_Uploader" />
-                                <img src="/uploads/banner/@Url.Content(Model.uploadimage)" width="80" />
+                                <img src="/uploads/banner/@Url.Content(Model.uploadbanner)" width="80" />
                                 @Html.HiddenFor(model => model.uploadimage)
                                 @Html.HiddenFor(model => model.uploadbanner)
                             </div>
@@ -103,10 +103,19 @@
                             </div>
                             @Html.ValidationMessageFor(model => model.displayorder, "", new { @class = "text-danger v-span" })
                         </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Title</label>
+                                    @Html.EditorFor(model => model.url, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.url, "", new { @class = "text-danger v-span" })
+                        </div>
                     </div>
                     <div class="row clearfix">
                         <div class="col-lg-12 col-md-12 col-sm-12">
-                            <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" formaction="@Url.Action("addhomebanner","HomeBanner")" formmethod="post"> @ViewBag.CreateUpdate </button>
+                            <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" formaction="@Url.Action("addhomebanner", "HomeBanner")" formmethod="post"> @ViewBag.CreateUpdate </button>
                             <input type="submit" class="btn  btn-raised btn-close waves-effect" value="Cancel" />
                         </div>
                     </div>

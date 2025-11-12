@@ -42,6 +42,7 @@ namespace skipper_group_new.Controllers
         }
         [HttpGet]
         [Route("backoffice/homebanner/addhomebannertype/{id}")]
+        [HttpGet]
         public async Task<IActionResult> addhomebannertype(int id)
         {
             var menuList = _menuService.GetMenu();
@@ -56,6 +57,7 @@ namespace skipper_group_new.Controllers
                 clsBannerType.btypeid = Convert.ToInt32(bannerTypes.Result.Rows[0]["btypeid"]);
                 clsBannerType.btype = Convert.ToString(bannerTypes.Result.Rows[0]["btype"]);
                 clsBannerType.displayorder = Convert.ToString(bannerTypes.Result.Rows[0]["displayorder"]);
+                clsBannerType.status = Convert.ToString(bannerTypes.Result.Rows[0]["status"]);
             }
             ViewBag.SuccessCreate = "Update";
             ViewBag.Title = "Home Banner Type";
@@ -75,30 +77,39 @@ namespace skipper_group_new.Controllers
                 ModelState.Remove("mobilestatus");
                 ModelState.Remove("uname");
                 ModelState.Remove("mode");
-                ModelState.Remove("btypeid");
+
                 //await BindStaticdata();
                 if (ModelState.IsValid)
                 {
+                    objbannertype.btypeid = bannertype.btypeid;
                     objbannertype.btype = bannertype.btype;
                     objbannertype.displayorder = bannertype.displayorder;
                     objbannertype.uname = Convert.ToString(HttpContext.Session.GetString("UserName"));
                     if (bannertype.btypeid > 0)
                     {
                         objbannertype.mode = "2";
+                        objbannertype.status = bannertype.status;
                     }
                     else
                     {
                         objbannertype.mode = "1";
+                        objbannertype.status = "1";
                     }
 
-                    objbannertype.status = "1";
+
                     objbannertype.mobilestatus = "1";
                     objbannertype.collageid = "0";
                     int x = _homePageService.CreateBannerType(objbannertype);
                     if (x > 0)
                     {
-                        ViewBag.SuccessCreate = "Banner type created successfully.";
-                        TempData["Title"] = "Home Banner Type";
+                        if (objbannertype.btypeid > 0)
+                        {
+                            HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Banner Type updated successfully.");
+                        }
+                        else
+                        {
+                            HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Banner Type Added successfully.");
+                        }
                         return RedirectToAction("addhomebannertype", "HomeBanner");
                     }
 
@@ -147,13 +158,13 @@ namespace skipper_group_new.Controllers
                 var x = _homePageService.GetBannerTypeListByID(id);
                 if (x.Result != null && x.Result.Rows.Count > 0)
                 {
-                    objbannertype.status = Convert.ToString(x.Result.Rows[0]["status"]) == "1" ? "True" : "False"; // Toggle status
+                    objbannertype.status = Convert.ToString(x.Result.Rows[0]["status"]) == "True" ? "True" : "False"; // Toggle status
 
                     int x1 = _homePageService.UpdateBannerType(objbannertype.status, id);
                     if (x1 > 0)
                     {
-                        ViewBag.Success = "Banner type Delete successfully.";
-                        TempData["Title"] = "Home Banner Type";
+                        HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "  Status update successfully.");
+
                         return RedirectToAction("addhomebannertype", "HomeBanner");
                     }
                 }
@@ -210,11 +221,13 @@ namespace skipper_group_new.Controllers
                 objbanner.shortdesc = obj.shortdesc;
                 objbanner.displayorder = obj.displayorder;
                 objbanner.status = obj.status;
+                objbanner.collageid = obj.collageid;
                 objbanner.uname = Convert.ToString(HttpContext.Session.GetString("UserName"));
                 if (obj.id > 0)
                 {
                     objbanner.mode = "2";
                     objbanner.id = obj.id;
+                    objbanner.collageid = "0";
                 }
                 else
                 {
@@ -224,19 +237,26 @@ namespace skipper_group_new.Controllers
                 if (file_Uploader != null && file_Uploader.Length > 0)
                 {
                     var fileName = Path.GetFileName(file_Uploader.FileName); // captures name
-                    var uniqueName = $"{Guid.NewGuid()}_{fileName}";
-                    var filePath = Path.Combine("wwwroot/uploads/banner", uniqueName);
+                    var filePath = Path.Combine("wwwroot/uploads/banner", fileName);
+
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         file_Uploader.CopyTo(stream);
                     }
-                    objbanner.uploadbanner = uniqueName;
+
+                    objbanner.uploadbanner = fileName;
                 }
                 else
                 {
-                    objbanner.uploadbanner = obj.bannerlogo ?? string.Empty;
+                    objbanner.uploadbanner = obj.uploadbanner ?? string.Empty;
                 }
                 objbanner.name = obj.name;
+                objbanner.tagline1 = obj.tagline1;
+                objbanner.url = obj.url;
+                objbanner.startdate = obj.startdate;
+                objbanner.enddate = obj.enddate;
+
+
                 int x = _homePageService.CreateHomeBaner(objbanner);
 
                 if (x > 0)
@@ -244,7 +264,9 @@ namespace skipper_group_new.Controllers
                     if (obj.id > 0)
                     {
                         var bannerTypes = _homePageService.GetBannerList();
-                        ViewBag.bannerlist = bannerTypes.Result;
+                        var filterresult = bannerTypes.Result.Select("collageid=0").OrderByDescending(r => r["bid"]);
+                        DataTable dt = filterresult.CopyToDataTable();
+                        ViewBag.bannerlist = dt;
 
                         HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Update successfully.");
                         return View("~/Views/backoffice/HomeBanner/viewhomebanner.cshtml", objbanner);
@@ -291,7 +313,7 @@ namespace skipper_group_new.Controllers
             //Get list of banner types
             var bannerTypes = _homePageService.GetBannerList();
             var filterresult = bannerTypes.Result.Select("collageid=0").OrderByDescending(r => r["bid"]);
-            DataTable dt = filterresult.CopyToDataTable(); 
+            DataTable dt = filterresult.CopyToDataTable();
             ViewBag.bannerlist = dt;
 
             return View("~/Views/Backoffice/homebanner/ViewHomeBanner.cshtml", clsBanner);
@@ -339,6 +361,11 @@ namespace skipper_group_new.Controllers
                     clsBanner.uploadbanner = Convert.ToString(bannerlist.Result.Rows[0]["bannerimage"]);
                     clsBanner.status = Convert.ToString(bannerlist.Result.Rows[0]["status"]);
                     clsBanner.devicetype1 = Convert.ToString(bannerlist.Result.Rows[0]["devicetype"]);
+                    clsBanner.url = Convert.ToString(bannerlist.Result.Rows[0]["url"]);
+                    clsBanner.collageid = Convert.ToString(bannerlist.Result.Rows[0]["collageid"]);
+                    clsBanner.tagline1 = WebUtility.HtmlDecode(Convert.ToString(bannerlist.Result.Rows[0]["tagline1"]));
+                    clsBanner.startdate = Convert.ToString(bannerlist.Result.Rows[0]["bannerstartdate"]) != "" ? Convert.ToDateTime(bannerlist.Result.Rows[0]["bannerstartdate"]).ToString("yyyy-MM-dd") : "";
+                    clsBanner.enddate = Convert.ToString(bannerlist.Result.Rows[0]["bannerenddate"]) != "" ? Convert.ToDateTime(bannerlist.Result.Rows[0]["bannerenddate"]).ToString("yyyy-MM-dd") : "";
 
                     ViewBag.CreateUpdate = "Update";
                 }

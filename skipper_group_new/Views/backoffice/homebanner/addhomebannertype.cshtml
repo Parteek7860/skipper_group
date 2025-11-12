@@ -40,7 +40,7 @@
                                 <div class="form-line">
                                     <label> Banner Type</label>
                                     @Html.HiddenFor(model => model.btypeid)
-
+                                    @Html.HiddenFor(model => model.status)
                                     @Html.DropDownListFor(model => model.btype, Model.bannertypeselect, "Select Banner", new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.btype, "", new { @class = "text-danger" })
                                 </div>

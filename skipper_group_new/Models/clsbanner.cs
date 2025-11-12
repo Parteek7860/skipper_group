@@ -14,6 +14,8 @@ namespace skipper_group_new.Models
 
         public List<SelectListItem> bannertypeselect { get; set; }
         public string devicetype1 { get; set; }
+        public string collageid { get; set; }
+        public string tagline1 { get; set; }
 
         public List<SelectListItem> devicetype { get; set; }
         public string shortdesc { get; set; }
