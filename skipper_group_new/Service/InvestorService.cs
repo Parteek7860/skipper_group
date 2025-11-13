@@ -70,5 +70,21 @@ namespace skipper_group_new.Service
         {
             return _repository.ChangeSubCatStatus(id);
         }
+        public Task<DataTable> BindYearCategory()
+        {
+            return _repository.BindYearCategory();
+        }
+        public int UpdateYearCategoryStatus(string status, int id)
+        {
+            return _repository.UpdateYearCategoryStatus(status, id);
+        }
+        public int DeleteYearCategory(int id)
+        {
+            return _repository.DeleteYearCategory(id);
+        }
+        public int AddYearCategory(clsInvestor obj)
+        {
+            return _repository.AddYearCategory(obj);
+        }
     }
 }

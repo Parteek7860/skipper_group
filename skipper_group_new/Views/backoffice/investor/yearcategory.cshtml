@@ -1,0 +1,138 @@
+﻿@using System.Data
+@model skipper_group_new.Models.clsInvestor;
+
+@{
+    ViewBag.Title = "Add Year Category";
+
+    Layout = "~/Views/Shared/_homepage.cshtml";
+    var yearcategory = ViewBag.YearCategory as System.Data.DataTable;
+
+}
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @ViewBag.Title
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Investor</a></li>
+                <li class="breadcrumb-item active">Add Year Category</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+@using (Html.BeginForm("yearcategory", "investor", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="body">
+                    <h2 class="card-inside-title">
+                        Fields with * are mandatory
+                    </h2>
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Category</label>
+                                    @Html.HiddenFor(model => model.Id)
+                                    @Html.HiddenFor(model => model.status)
+                                    @Html.EditorFor(model => model.yearcategory, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.yearcategory, "", new { @class = "text-danger v-span" })
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Display order</label>
+                                    @Html.EditorFor(model => model.displayorder, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.displayorder, "", new { @class = "text-danger v-span" })
+                        </div>
+                    </div>
+                    
+                    <div class="row clearfix">
+                        <div class="col-sm-12 my-lg-4 my-4">
+                            <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" name="action" formaction="@Url.Action("yearcategory", "investor")" formmethod="post"> @ViewBag.CreateUpdate </button>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        @if (yearcategory != null)
+                        {
+                            @if (yearcategory.Rows.Count > 0)
+                            {
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered">
+                                        <thead class="table-header">
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Status</th>
+                                                <th>Date</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (DataRow row in yearcategory.Rows)
+                                            {
+                                                <tr>
+                                                    <td>@(Convert.ToString(row["category"]))</td>
+                                                    <td>
+                                                        @if (Convert.ToBoolean(row["Status"]) == true)
+                                                        {
+                                                            <a data-value="@(Convert.ToString(row["ycatid"]))"
+                                                               href="/Backoffice/investor/yearstatus/@(Convert.ToString(row["ycatid"]))" class="btnstatus" onclick="return confirm('You want to change status');">
+                                                                <img src="~/backoffice/images/active.png" width="25" />
+                                                            </a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a data-value="@(Convert.ToString(row["ycatid"]))"
+                                                               href="/Backoffice/investor/yearstatus/@(Convert.ToString(row["ycatid"]))" class="btnstatus" onclick="return confirm('You want to change status');">
+                                                                <img src="~/backoffice/images/wrong.png" width="25" />
+                                                            </a>
+                                                        }
+                                                    </td>
+                                                    <td>@(Convert.ToString(row["trdate"]))</td>
+                                                    <td>
+                                                        <a href="/Backoffice/investor/edit/@row["ycatid"]" class="btnEdit">
+                                                            <img src="~/Backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
+                                                        </a>
+
+                                                        <a href="/Backoffice/investor/YearDelete/@row["ycatid"]" class="btndelete" onclick="return confirm('You want to Delete records');">
+                                                            <img src="~/Backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-lg-12 my-lg-2 text-lg-center message-top2">
+                                    Records not found
+                                </div>
+                            }
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+

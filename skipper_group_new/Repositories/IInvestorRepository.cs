@@ -19,5 +19,9 @@ namespace skipper_group_new.Repositories
         Task<Dictionary<int, string>> GetCategoryDrop();
         Task<List<SubCatDtl>> GetSubCategoriesByCategoryId(int catID);
         Task<int> ChangeSubCatStatus(int id);
+        Task<DataTable> BindYearCategory();
+        int UpdateYearCategoryStatus(string status, int id);
+        int DeleteYearCategory(int id);
+        int AddYearCategory(clsInvestor obj);
     }
 }

@@ -287,6 +287,81 @@ namespace skipper_group_new.Repositories
                 return result.ToList();
             }
         }
+        public async Task<DataTable> BindYearCategory()
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            using (var cmd = new SqlCommand("BindYearCategorySP", conn))
+            using (var da = new SqlDataAdapter(cmd))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                var table = new DataTable();
+                await conn.OpenAsync();
+                da.Fill(table);
+                return table;
+            }
+        }
+        public int UpdateYearCategoryStatus(string status, int id)
+        {
+            int result = 0;
+            string query = "UpdStatusYearCategorySP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
 
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.Parameters.AddWithValue("@status", status == "True" ? 0 : 1);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+        public int DeleteYearCategory(int id)
+        {
+            int result = 0;
+            string query = "DeleteYearCategorySP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+        public int AddYearCategory(clsInvestor obj)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("yearcategorySP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ycatid", obj.Id);
+                    cmd.Parameters.AddWithValue("@category", obj.yearcategory ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@displayorder", obj.displayorder);
+                    cmd.Parameters.AddWithValue("@status", obj.status);
+                    cmd.Parameters.AddWithValue("@uname", obj.uname);
+                    cmd.Parameters.AddWithValue("@Mode", obj.mode);
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
     }
 }

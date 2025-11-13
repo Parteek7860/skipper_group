@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.Math;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
 using skipper_group_new.Models;
+using System.Data;
 
 namespace skipper_group_new.Controllers
 {
@@ -94,7 +96,7 @@ namespace skipper_group_new.Controllers
                         if (c.PcatId > 0)
                         {
                             HttpContext.Session.SetString("Message", " Category updated successfully.");
-                            
+
                             return RedirectToAction("viewcategory", "investor");
                         }
                         else
@@ -107,7 +109,7 @@ namespace skipper_group_new.Controllers
                 else
                 {
                     HttpContext.Session.SetString("Message", " Please correct the error and try again");
-                    
+
                     return RedirectToAction("viewcategory", "investor");
                 }
             }
@@ -142,7 +144,7 @@ namespace skipper_group_new.Controllers
                 }
                 else
                 {
-                    
+
                     HttpContext.Session.SetString("Message", " Invalid Category ID.");
                     return RedirectToAction("viewcategory", "investor");
                 }
@@ -176,7 +178,7 @@ namespace skipper_group_new.Controllers
                 else
                 {
                     HttpContext.Session.SetString("Message", " Category id is necessary.");
-                    
+
                 }
             }
             catch (Exception ex)
@@ -197,7 +199,7 @@ namespace skipper_group_new.Controllers
                 worksheet.Cell(1, 1).Value = "Category";
                 worksheet.Cell(1, 2).Value = "Title";
                 worksheet.Cell(1, 3).Value = "Date";
-              
+
                 int row = 2;
                 foreach (var c in catdtl)
                 {
@@ -205,7 +207,7 @@ namespace skipper_group_new.Controllers
                     worksheet.Cell(row, 2).Value = c.PageTitle;
                     worksheet.Cell(row, 3).Value = c.trdate;
                     worksheet.Cell(row, 3).Style.DateFormat.Format = "yyyy-MM-dd";
-                   
+
                     row++;
                 }
                 using (var stream = new MemoryStream())
@@ -319,7 +321,7 @@ namespace skipper_group_new.Controllers
                         else
                         {
                             HttpContext.Session.SetString("Message", " Sub-Category added successfully.");
-                            
+
                             TempData["Title"] = "Sub-Category";
                             return RedirectToAction("viewsubcategory", "investor");
                         }
@@ -387,7 +389,7 @@ namespace skipper_group_new.Controllers
                     if (deletedCat > 0)
                     {
                         HttpContext.Session.SetString("Message", " Sub-Category deleted successfully.");
-                        
+
                         TempData["Title"] = "Sub-Category";
                     }
                     else
@@ -452,7 +454,7 @@ namespace skipper_group_new.Controllers
                     if (chngstatus > 0)
                     {
                         HttpContext.Session.SetString("Message", " Status changed successfully.");
-                        
+
                         TempData["Title"] = "Product";
                     }
                     else
@@ -472,5 +474,158 @@ namespace skipper_group_new.Controllers
             return RedirectToAction("viewsubcategory", "investor");
         }
         #endregion
+
+        [HttpGet]
+        [Route("backoffice/investor/yearcategory")]
+        public async Task<IActionResult> yearcategory()
+        {
+            var menuList = _menuService.GetMenu();
+            ViewBag.Menus = menuList;
+            var cat = await _Investor.BindYearCategory();
+            ViewBag.YearCategory = cat;
+            ViewBag.CreateUpdate = "Save";
+
+            return View("~/Views/backoffice/investor/yearcategory.cshtml");
+        }
+
+        [HttpPost]
+        [Route("backoffice/investor/yearcategory")]
+        public async Task<IActionResult> yearcategory(clsInvestor obj)
+        {
+            var menuList = _menuService.GetMenu();
+            ViewBag.Menus = menuList;
+            clsInvestor objcls = new clsInvestor();
+            if (obj.yearcategory != null)
+            {
+                objcls.Id = obj.Id;
+                objcls.yearcategory = obj.yearcategory;
+                objcls.displayorder = obj.displayorder;
+                objcls.status = obj.status;
+                if (obj.Id > 0)
+                {
+                    objcls.mode = "2";
+                }
+                else
+                {
+                    objcls.mode = "1";
+                }
+                objcls.uname= HttpContext.Session.GetString("UserName");
+                int x = _Investor.AddYearCategory(objcls);
+                {
+                    if (obj.Id > 0)
+                    {
+                        HttpContext.Session.SetString("Message", " Year Category updated successfully.");
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("Message", " Year Category Added successfully.");
+                    }
+                    return RedirectToAction("yearcategory", "investor");
+                }
+            }
+
+            ViewBag.CreateUpdate = "Save";
+
+            return View("~/Views/backoffice/investor/yearcategory.cshtml");
+        }
+
+        [HttpGet]
+        [Route("backoffice/investor/edit/{id}")]
+        public async Task<IActionResult> edit(int id)
+        {
+
+            var objcls = new clsInvestor();
+            ViewBag.Menus = _menuService.GetMenu();
+
+
+            //Get list of banner types
+            var yeartype = await _Investor.BindYearCategory();
+            var filterresults = from DataRow dr in yeartype.Rows
+                                where Convert.ToInt32(dr["ycatid"]) == id
+                                select dr;
+            if (filterresults.Any())
+            {
+                var row = filterresults.First(); // Get the first matching row
+
+                objcls.Id = Convert.ToInt32(row["ycatid"]);
+                objcls.yearcategory = Convert.ToString(row["category"]);
+                objcls.status = Convert.ToBoolean(row["status"]);
+                objcls.displayorder = Convert.ToString(row["displayorder"]);
+                ViewBag.CreateUpdate = "Update";
+            }
+
+            return View("~/Views/Backoffice/investor/yearcategory.cshtml", objcls);
+        }
+
+        [HttpGet]
+        [Route("backoffice/investor/yearstatus/{id}")]
+        public async Task<IActionResult> yearstatus(int id)
+        {
+
+            clsInvestor obj = new clsInvestor();
+            var x = await _Investor.BindYearCategory();
+            var filterresults = from DataRow dr in x.Rows
+                                where Convert.ToInt32(dr["ycatid"]) == id
+                                select dr;
+            if (filterresults.Any())
+            {
+                var row = filterresults.First();
+                obj.status = Convert.ToBoolean(row["status"]) == true ? true : false; // Toggle status
+
+                string status = obj.status ? "True" : "False";
+
+                int x1 = _Investor.UpdateYearCategoryStatus(status, id);
+                if (x1 > 0)
+                {
+                    HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Status Update successfully.");
+
+                    return RedirectToAction("yearcategory", "investor");
+                }
+            }
+
+            return RedirectToAction("yearcategory", "investor");
+        }
+        [HttpGet]
+        [Route("backoffice/investor/YearDelete/{id}")]
+        public async Task<IActionResult> YearDelete(int id)
+        {
+            HttpContext.Session.Remove("Message");
+            var result = _Investor.DeleteYearCategory(id);
+            if (result > 0)
+            {
+                HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Year Category deleted successfully.");
+            }
+            else
+            {
+                HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Failed to delete album. Please try again.");
+            }
+
+
+            return RedirectToAction("yearcategory", "investor");
+        }
+
+        [HttpGet]
+        [Route("backoffice/investor/investor")]
+        public async Task<IActionResult> investor()
+        {
+            var menuList = _menuService.GetMenu();
+            ViewBag.Menus = menuList;
+          
+            ViewBag.CreateUpdate = "Save";
+
+            return View("~/Views/backoffice/investor/investor.cshtml");
+        }
+        [HttpGet]
+        [Route("backoffice/investor/viewinvestor")]
+        public async Task<IActionResult> viewinvestor()
+        {
+            var menuList = _menuService.GetMenu();
+            ViewBag.Menus = menuList;
+
+            ViewBag.CreateUpdate = "Save";
+
+            return View("~/Views/backoffice/investor/viewinvestor.cshtml");
+        }
     }
+
 }

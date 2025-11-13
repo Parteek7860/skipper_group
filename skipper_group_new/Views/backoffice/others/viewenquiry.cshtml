@@ -20,16 +20,6 @@
 </div>
 
 
-@{
-    if (ViewBag.Success != null)
-    {
-        <div class="col-lg-12 my-lg-2 text-lg-center message-top">
-            @ViewBag.Success
-        </div>
-    }
-}
-
-
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="card">
@@ -88,9 +78,9 @@
                 }
                 else
                 {
-                    <tr>
-                        <td colspan="6" class="text-center">No enquiry found.</td>
-                    </tr>
+                       <div class="col-lg-12 my-lg-2 text-lg-center message-top2">
+                                    Records not found
+                                </div>
                 }
             </div>
         </div>
