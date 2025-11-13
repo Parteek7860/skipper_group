@@ -44,5 +44,8 @@ namespace skipper_group_new.Interface
         int UpdateTestimonilsStatus(bool status, int id);
 
         int DeleteTestimonils(int id);
+
+        Task<DataTable> GetImagePath();
+        int CreateFilePathImage(clsDownload obj);
     }
 }

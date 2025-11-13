@@ -494,7 +494,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@rewriteurl", "");
                     cmd.Parameters.AddWithValue("@uploadfile", "");
                     cmd.Parameters.AddWithValue("@colorcode", "");
-                   // cmd.Parameters.AddWithValue("@pagescript", obj.pagescript ?? string.Empty);
+                    // cmd.Parameters.AddWithValue("@pagescript", obj.pagescript ?? string.Empty);
                     cmd.Parameters.AddWithValue("@uname", obj.uname);
                     cmd.Parameters.AddWithValue("@mode", obj.mode);
                     conn.Open();
@@ -712,6 +712,49 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@status", obj.status);
                     cmd.Parameters.AddWithValue("@uname", obj.uname);
                     cmd.Parameters.AddWithValue("@mode", obj.mode);
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+        public async Task<DataTable> GetImagePath()
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                string query = @"BindImageFileListSP";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    await conn.OpenAsync();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    {
+                        dt.Load(reader);
+                    } // reader is closed here automatically
+                } // cmd disposed here
+            } // conn closed here
+
+            return dt;
+        }
+        public int CreateFilePathImage(clsDownload obj)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("ImagefileuploadSP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@fileid", obj.id ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@uploadfile", obj.FilePath);
+                    cmd.Parameters.AddWithValue("@displayorder", obj.displayorder);
+                    cmd.Parameters.AddWithValue("@filetitle", obj.Filetitle);
+                    cmd.Parameters.AddWithValue("@status", "1");
+                    cmd.Parameters.AddWithValue("@uname", obj.uname);
+                    cmd.Parameters.AddWithValue("@mode", "1");
                     conn.Open();
                     result = cmd.ExecuteNonQuery();
                 }

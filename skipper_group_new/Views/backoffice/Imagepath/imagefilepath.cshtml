@@ -37,59 +37,46 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Upload File</label>
-                                    <input type="file" name="UploadImageFile" class="form-control" />
+                                    <input type="file" name="fileuploader" class="form-control" />
                                     @Html.HiddenFor(model => model.FilePath)
                                 </div>
                             </div>
                         </div>
 
                     </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" formaction="@Url.Action("imagefilepath", "download")" formmethod="post"> @ViewBag.CreateUpdate </button>
+
+                        </div>
+                    </div>
                     @{
-                        var cat = ViewBag.BlogCatDtl as List<skipper_group_new.Models.Blogcatdtl>;
+                        var cat = ViewBag.List as DataTable;
                     }
-                    @if (cat != null && cat.Any())
+                    @if (cat != null && cat.Rows.Count > 0)
                     {
-                        <table class="table table-bordered" id="categoryTable">
+                        <table class="table table-bordered pt-8" id="categoryTable">
                             <thead class="table-header">
                                 <tr>
-                                    <th>Blog Category Title</th>
+                                    <th>Image Path</th>
                                     <th>Date</th>
-                                    <th>Status</th>
+                                    <th>Display Order</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var c in cat)
+                                @foreach (DataRow c in cat.Rows)
                                 {
                                     <tr>
-                                        <td>@c.BcatTitle</td>
-                                        <td>@c.TrDate</td>
+                                        <td>@c["Filetitle"].ToString()</td>
+                                        <td>@c["trdate"].ToString()</td>
+                                        <td>@c["displayorder"].ToString()</td>
                                         <td>
-                                            @if (c.Status == true)
-                                            {
-                                                <form method="post" action="/backoffice/Blogs/ChangeBlogCatStatus/@c.BcatId" style="display: inline;">
-                                                    <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
-                                                        <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
-                                                    </button>
-                                                </form>
-                                            }
-                                            else
-                                            {
-                                                <form method="post" action="/backoffice/Blogs/ChangeBlogCatStatus/@c.BcatId" style="display: inline;">
-                                                    <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to active?');">
-                                                        <img src="~/Backoffice/images/wrong.png" width="25" alt="Inactive" />
-                                                    </button>
-                                                </form>
-                                            }
-                                        </td>
-                                        <td>
-                                            <a href="/Backoffice/Blogs/GetBlogCatByID/@c.BcatId" class="btnEdit" title="Edit">
-                                                <img src="~/Backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
-                                            </a>
-                                            <a href="#" class="btndelete" data-href="/Backoffice/Blogs/DeleteBlogCat/@c.BcatId" title="Delete">
-                                                <img src="~/Backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
+                                            <a href="/download/downloadfile/@c["uploadfile"]">
+                                                <img src="~/backoffice/images/Download_24x24.png" alt="Download" />
                                             </a>
                                         </td>
+
                                     </tr>
                                 }
                             </tbody>

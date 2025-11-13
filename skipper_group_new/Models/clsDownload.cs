@@ -2,8 +2,11 @@
 {
     public class clsDownload
     {
-        public string FileName { get; set; }
+        public string Filetitle { get; set; }
         public string FilePath { get; set; }
         public string id { get; set; }
+        public string TrDate { get; set; }
+        public string displayorder { get; set; }
+        public string uname { get; set; }
     }
 }

@@ -138,5 +138,13 @@ namespace skipper_group_new.Service
         {
             return _repository.AddTestimonials(obj);
         }
+        public Task<DataTable> GetImagePath()
+        {
+            return _repository.GetImagePath();
+        }
+        public int CreateFilePathImage(clsDownload obj)
+        {
+            return _repository.CreateFilePathImage(obj);
+        }
     }
 }

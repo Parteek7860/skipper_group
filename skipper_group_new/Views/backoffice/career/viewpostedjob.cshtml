@@ -20,18 +20,7 @@
     </div>
 </div>
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div id="message" class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
-@if (TempData["ErrorMessage"] != null)
-{
-    <div id="message" class="alert alert-danger">
-        @TempData["ErrorMessage"]
-    </div>
-}
+
 
 
 <div class="row clearfix">
@@ -131,9 +120,9 @@
                         }
                         else
                         {
-                            <tr>
-                                <td colspan="6" class="text-center">No jobs found.</td>
-                            </tr>
+                             <div class="col-lg-12 my-lg-2 text-lg-center message-top2">
+                            Records not found
+                        </div>
                         }
                     </div>
                 </div>
