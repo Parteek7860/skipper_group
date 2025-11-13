@@ -8,12 +8,12 @@ namespace skipper_group_new.Controllers
 {
     public class InvestorController : Controller
     {
-        private readonly IProducts _products;
+        private readonly IInvestor _Investor;
         private readonly clsMainMenuList _menuService;
 
-        public InvestorController(clsMainMenuList menuService, IProducts products)
+        public InvestorController(clsMainMenuList menuService, IInvestor investor)
         {
-            _products = products;
+            _Investor = investor;
             _menuService = menuService;
         }
         public IActionResult Index()
@@ -36,7 +36,7 @@ namespace skipper_group_new.Controllers
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
-            var catdtl = await _products.GetCategoryTblData();
+            var catdtl = await _Investor.GetCategory();
             ViewBag.CateDtl = catdtl;
             return View("~/Views/backoffice/investor/viewcategory.cshtml");
         }
@@ -88,7 +88,7 @@ namespace skipper_group_new.Controllers
                 }
                 if (c != null)
                 {
-                    int x = await _products.AddCategory(c);
+                    int x = await _Investor.AddCategory(c);
                     if (x > 0)
                     {
                         if (c.PcatId > 0)
@@ -127,7 +127,7 @@ namespace skipper_group_new.Controllers
             {
                 if (id > 0)
                 {
-                    var cat = await _products.EditCategory(id);
+                    var cat = await _Investor.EditCategory(id);
                     if (cat != null)
                     {
                         var menuList = _menuService.GetMenu();
@@ -162,7 +162,7 @@ namespace skipper_group_new.Controllers
             {
                 if (id > 0)
                 {
-                    var deletedCat = await _products.DeleteCategory(id);
+                    var deletedCat = await _Investor.DeleteCategory(id);
                     if (deletedCat > 0)
                     {
                         HttpContext.Session.SetString("Message", " Category deleted successfully.");
@@ -190,14 +190,14 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/investor/ExportCategoryToExcel")]
         public async Task<IActionResult> ExportCategoryToExcel()
         {
-            var catdtl = await _products.GetCategoryTblData();
+            var catdtl = await _Investor.GetCategoryTblData();
             using (var workbook = new ClosedXML.Excel.XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Categories");
                 worksheet.Cell(1, 1).Value = "Category";
                 worksheet.Cell(1, 2).Value = "Title";
                 worksheet.Cell(1, 3).Value = "Date";
-                worksheet.Cell(1, 4).Value = "Status";
+              
                 int row = 2;
                 foreach (var c in catdtl)
                 {
@@ -205,7 +205,7 @@ namespace skipper_group_new.Controllers
                     worksheet.Cell(row, 2).Value = c.PageTitle;
                     worksheet.Cell(row, 3).Value = c.trdate;
                     worksheet.Cell(row, 3).Style.DateFormat.Format = "yyyy-MM-dd";
-                    worksheet.Cell(row, 4).Value = c.Status ? "Active" : "Inactive";
+                   
                     row++;
                 }
                 using (var stream = new MemoryStream())
@@ -226,7 +226,7 @@ namespace skipper_group_new.Controllers
             {
                 if (id > 0)
                 {
-                    var chngstatus = await _products.ChangeCatStatus(id);
+                    var chngstatus = await _Investor.ChangeCatStatus(id);
                     if (chngstatus > 0)
                     {
                         HttpContext.Session.SetString("Message", " Status changed successfully.");
@@ -257,7 +257,7 @@ namespace skipper_group_new.Controllers
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
-            var cat = await _products.GetCatDropdown();
+            var cat = await _Investor.GetCatDropdown();
             ViewBag.Category = new SelectList(cat, "Key", "Value");
             return View("~/Views/backoffice/investor/subcategory.cshtml");
         }
@@ -268,7 +268,7 @@ namespace skipper_group_new.Controllers
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
-            var catdtl = await _products.GetSubCategoryTblData();
+            var catdtl = await _Investor.GetSubCategoryTblData();
             ViewBag.CateDtl = catdtl;
             return View("~/Views/backoffice/investor/viewsubcategory.cshtml");
         }
@@ -307,7 +307,7 @@ namespace skipper_group_new.Controllers
                 }
                 if (c != null)
                 {
-                    int x = await _products.AddSubCategory(c);
+                    int x = await _Investor.AddSubCategory(c);
                     if (x > 0)
                     {
                         if (c.PSubCatId > 0)
@@ -347,12 +347,12 @@ namespace skipper_group_new.Controllers
             {
                 if (id > 0)
                 {
-                    var cat = await _products.EditSubCategory(id);
+                    var cat = await _Investor.EditSubCategory(id);
                     if (cat != null)
                     {
                         var menuList = _menuService.GetMenu();
                         ViewBag.Menus = menuList;
-                        var catd = await _products.GetCatDropdown();
+                        var catd = await _Investor.GetCatDropdown();
                         ViewBag.Category = new SelectList(catd, "Key", "Value", cat.PCatId);
                         return View("~/Views/backoffice/investor/subcategory.cshtml", cat);
                     }
@@ -383,7 +383,7 @@ namespace skipper_group_new.Controllers
             {
                 if (id > 0)
                 {
-                    var deletedCat = await _products.DeleteSubCategory(id);
+                    var deletedCat = await _Investor.DeleteSubCategory(id);
                     if (deletedCat > 0)
                     {
                         HttpContext.Session.SetString("Message", " Sub-Category deleted successfully.");
@@ -411,7 +411,7 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/investor/ExportSubCategoryToExcel")]
         public async Task<IActionResult> ExportSubCategoryToExcel()
         {
-            var catdtl = await _products.GetSubCategoryTblData();
+            var catdtl = await _Investor.GetSubCategoryTblData();
             using (var workbook = new ClosedXML.Excel.XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("SubCategories");
@@ -448,7 +448,7 @@ namespace skipper_group_new.Controllers
             {
                 if (id > 0)
                 {
-                    var chngstatus = await _products.ChangeSubCatStatus(id);
+                    var chngstatus = await _Investor.ChangeSubCatStatus(id);
                     if (chngstatus > 0)
                     {
                         HttpContext.Session.SetString("Message", " Status changed successfully.");

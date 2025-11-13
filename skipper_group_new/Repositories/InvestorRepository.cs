@@ -1,0 +1,292 @@
+﻿using Dapper;
+using skipper_group_new.Models;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace skipper_group_new.Repositories
+{
+    public class InvestorRepository : IInvestorRepository
+    {
+        private readonly string _connectionString;
+
+        public InvestorRepository(IConfiguration configuration)
+        {
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
+        }
+        public async Task<List<CategoryDtl>> GetCatDtl()
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@pcatid", 0, DbType.Int32, ParameterDirection.InputOutput);
+                parameters.Add("@Mode", 5);
+
+                var result = await db.QueryAsync<CategoryDtl>(
+                    "productcateSP",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+                return result.ToList();
+            }
+        }
+        public async Task<DataTable> GetCategory()
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            using (var cmd = new SqlCommand("BindInvestorProductCateSP", conn))
+            using (var da = new SqlDataAdapter(cmd))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                var table = new DataTable();
+                await conn.OpenAsync();
+                da.Fill(table);
+                return table;
+            }
+        }
+        public async Task<int> AddCategory(clsCategory category)
+        {
+            using var conn = new SqlConnection(_connectionString);
+            if (category != null)
+            {
+                int mode = category.PcatId > 0 ? 2 : 1;
+                conn.Open();
+                var parameters = MapToCategoryParameters(category, mode);
+                await conn.ExecuteAsync("productcateSP", parameters, commandType: CommandType.StoredProcedure);
+                return parameters.Get<int>("@pcatid");
+            }
+            return 0;
+        }
+        private DynamicParameters MapToCategoryParameters(clsCategory cat, int mode)
+        {
+            var parameters = new DynamicParameters();
+
+            parameters.Add("@pcatid", cat.PcatId, DbType.Int32, ParameterDirection.InputOutput);
+            parameters.Add("@category", cat.Category);
+            parameters.Add("@detail", cat.Detail);
+            parameters.Add("@shortdetail", cat.ShortDetail);
+            parameters.Add("@displayorder", cat.DisplayOrder);
+            parameters.Add("@showonhome", cat.ShowOnHome);
+            parameters.Add("@Status", cat.Status);
+            parameters.Add("@banner", cat.Banner);
+            parameters.Add("@UploadAPDF", cat.UploadAPDF);
+            parameters.Add("@PageTitle", cat.PageTitle);
+            parameters.Add("@PageMeta", cat.PageMeta);
+            parameters.Add("@PageMetaDesc", cat.PageMetaDesc);
+            parameters.Add("@rewriteurl", cat.RewriteUrl);
+            parameters.Add("@canonical", cat.Canonical);
+            parameters.Add("@no_indexfollow", cat.NoIndexFollow);
+            parameters.Add("@pagescript", cat.PageScript);
+            parameters.Add("@homeimage", cat.HomeImage);
+            parameters.Add("@homedesc", cat.HomeDesc);
+            parameters.Add("@Uname", cat.Uname);
+            parameters.Add("@Mode", mode);
+            return parameters;
+        }
+
+        public async Task<clsCategory> EditCategory(int categoryID)
+        {
+            try
+            {
+                using var conn = new SqlConnection(_connectionString);
+                const string sql = "GetCategoryById";
+                return await conn.QueryFirstOrDefaultAsync<clsCategory>(
+                    sql,
+                    new { pcatid = categoryID },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"Error executing stored procedure: {ex.Message}");
+                throw;
+            }
+        }
+        public async Task<int> DeleteCategory(int catid)
+        {
+            var category = new clsCategory();
+            category.PcatId = catid;
+            try
+            {
+                using var conn = new SqlConnection(_connectionString);
+                if (category != null)
+                {
+                    int mode = 3;
+                    conn.Open();
+                    var parameters = MapToCategoryParameters(category, mode);
+                    await conn.ExecuteAsync("productcateSP", parameters, commandType: CommandType.StoredProcedure);
+                    return parameters.Get<int>("@pcatid");
+                }
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+        public async Task<int> ChangeCatStatus(int id)
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@pcatid", id, DbType.Int32, ParameterDirection.InputOutput);
+                parameters.Add("@Mode", 6);
+
+                var rows = await db.ExecuteAsync(
+                    "productcateSP",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+                return rows;
+            }
+        }
+
+        public async Task<List<SubCatDtl>> GetSubCatDtl()
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@psubcatid", 0, DbType.Int32, ParameterDirection.InputOutput);
+                parameters.Add("@Mode", 5);
+
+                var result = await db.QueryAsync<SubCatDtl>(
+                    "productsubcateSP",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+                return result.ToList();
+            }
+        }
+
+        public async Task<SubCategory> GetSubCategoryById(int categoryID)
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@psubcatid", categoryID, DbType.Int32, ParameterDirection.InputOutput);
+                parameters.Add("@Mode", 8);
+
+                return await db.QueryFirstOrDefaultAsync<SubCategory>(
+                    "productsubcateSP",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+        }
+
+
+        public async Task<int> AddSubCategory(SubCategory sub)
+        {
+            using var conn = new SqlConnection(_connectionString);
+            if (sub != null)
+            {
+                int mode = sub.PSubCatId > 0 ? 2 : 1;
+                conn.Open();
+                var parameters = MapSubCategoryParameters(sub, mode);
+                await conn.ExecuteAsync("productsubcateSP", parameters, commandType: CommandType.StoredProcedure);
+                return parameters.Get<int>("@psubcatid");
+            }
+            return 0;
+        }
+
+        public async Task<int> DeleteSubCategory(int catid)
+        {
+            var category = new SubCategory();
+            category.PSubCatId = catid;
+            try
+            {
+                using var conn = new SqlConnection(_connectionString);
+                if (category != null)
+                {
+                    int mode = 3;
+                    conn.Open();
+                    var parameters = MapSubCategoryParameters(category, mode);
+                    await conn.ExecuteAsync("productsubcateSP", parameters, commandType: CommandType.StoredProcedure);
+                    return parameters.Get<int>("@pcatid");
+                }
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        private DynamicParameters MapSubCategoryParameters(SubCategory cat, int mode)
+        {
+            var parameters = new DynamicParameters();
+
+            parameters.Add("@psubcatid", cat.PSubCatId, DbType.Int32, ParameterDirection.InputOutput);
+            parameters.Add("@pcatid", cat.PCatId);
+            parameters.Add("@category", cat.Category);
+            parameters.Add("@detail", cat.Detail);
+            parameters.Add("@shortdetail", cat.ShortDetail);
+            parameters.Add("@displayorder", cat.DisplayOrder);
+            parameters.Add("@showonhome", cat.ShowOnHome);
+            parameters.Add("@Status", cat.Status);
+            parameters.Add("@banner", cat.Banner);
+            parameters.Add("@UploadAImage", cat.UploadAImage);
+            parameters.Add("@PageTitle", cat.PageTitle);
+            parameters.Add("@PageMeta", cat.PageMeta);
+            parameters.Add("@PageMetaDesc", cat.PageMetaDesc);
+            parameters.Add("@rewriteurl", cat.RewriteUrl);
+            parameters.Add("@canonical", cat.Canonical);
+            parameters.Add("@no_indexfollow", cat.NoIndexFollow);
+            parameters.Add("@pagescript", cat.PageScript);
+            parameters.Add("@showonsanden", cat.ShowOnSanden);
+            parameters.Add("@position", cat.Position ?? "");
+            parameters.Add("@Uname", cat.Uname ?? "system");
+            parameters.Add("@Mode", mode);
+            return parameters;
+        }
+
+        public async Task<Dictionary<int, string>> GetCategoryDrop()
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@psubcatid", 0, DbType.Int32, ParameterDirection.InputOutput);
+                parameters.Add("@Mode", 9);
+
+                var result = await db.QueryAsync<SubCatDtl>(
+                    "productsubcateSP",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+                return result.ToDictionary(x => x.PSubCatId, x => x.Category);
+            }
+        }
+
+        public async Task<int> ChangeSubCatStatus(int id)
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@psubcatid", id, DbType.Int32, ParameterDirection.InputOutput);
+                parameters.Add("@Mode", 7);
+
+                return await db.ExecuteAsync(
+                    "productsubcateSP",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+        }
+        public async Task<List<SubCatDtl>> GetSubCategoriesByCategoryId(int categoryId)
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@pcatid", categoryId);
+                parameters.Add("@psubcatid", 0, DbType.Int32, ParameterDirection.InputOutput);
+                parameters.Add("@Mode", 6);
+
+                var result = await db.QueryAsync<SubCatDtl>(
+                    "productsubcateSP",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+                return result.ToList();
+            }
+        }
+
+    }
+}

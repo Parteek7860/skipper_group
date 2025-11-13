@@ -38,6 +38,8 @@ builder.Services.AddScoped<IManagementRepo, ManagementRepository>();
 builder.Services.AddScoped<clsMainMenuList>(provider =>
     new clsMainMenuList(provider.GetRequiredService<IHomePage>()));
 
+builder.Services.AddScoped<IInvestor, InvestorService>();
+builder.Services.AddScoped<IInvestorRepository, InvestorRepository>();
 
 builder.Services.AddScoped<MenuDataService>();
 

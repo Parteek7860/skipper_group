@@ -79,5 +79,7 @@ namespace skipper_group_new.Models
         public string PageTitle { get; set; }
         public string trdate { get; set; }
         public bool Status { get; set; }
+        public string pcatid { get; set; }
+        public string categoryname { get; set; }
     }
 }

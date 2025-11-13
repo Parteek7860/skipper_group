@@ -61,15 +61,15 @@
                         </div>
                         <div class="col-md-2 align-self-end" style="text-align: center;">
                             <form method="post" asp-controller="Products" asp-action="ExportSubCategoryToExcel">
-                                <button type="submit" class="btn btn-success" style="width: 100%; padding: 10px; border-radius: 5px; font-weight: bold;">Export to Excel</button>
+                                <button type="submit" class="btn btn-success" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important;">Export to Excel</button>
                             </form>
                         </div>
                     </div>
                     <table class="table table-bordered" id="subCategoryTable">
                         <thead class="table-header">
                             <tr>
-                                <th>Sub-Category Name</th>
-                                <th>Sub-Category Title</th>
+                                <th>Category</th>
+                                <th>Sub-Category</th>
                                 <th>Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -79,8 +79,8 @@
                             @foreach (var product in products)
                             {
                                 <tr>
+                                    <td>@product.categoryname</td>
                                     <td>@product.Category</td>
-                                    <td>@product.PageTitle</td>
                                     <td>@product.trdate</td>
                                     <td>
                                         @if (product.Status == true)
