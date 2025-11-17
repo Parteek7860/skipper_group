@@ -608,8 +608,8 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpGet]
-        [Route("backoffice/investor/investor")]
-        public async Task<IActionResult> investor()
+        [Route("backoffice/investor/addinvestor")]
+        public async Task<IActionResult> addinvestor()
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
@@ -617,14 +617,15 @@ namespace skipper_group_new.Controllers
 
             ViewBag.CreateUpdate = "Save";
 
-            return View("~/Views/backoffice/investor/investor.cshtml", obj);
+            return View("~/Views/backoffice/investor/addinvestor.cshtml", obj);
         }
         [HttpPost]
-        [Route("backoffice/investor/investor")]
-        public async Task<IActionResult> investor(clsInvestor cls)
+        [Route("backoffice/investor/saveinvestor")]
+        public async Task<IActionResult> saveinvestor(clsInvestor cls, IFormFile fileuploader, IFormFile fileuploader2)
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
+            ViewBag.CreateUpdate = "Save";
             clsInvestor objcls = new clsInvestor();
             if (!string.IsNullOrEmpty(cls.category) && !string.IsNullOrEmpty(cls.subcategory) && !string.IsNullOrEmpty(cls.Name))
             {
@@ -653,6 +654,41 @@ namespace skipper_group_new.Controllers
                     objcls.mode = "1";
                     objcls.status = true;
                 }
+                objcls.showonhome = cls.showonhome;
+
+                if (fileuploader != null && fileuploader.Length > 0)
+                {
+                    var fileName = Path.GetFileName(fileuploader.FileName); // captures name
+                    var filePath = Path.Combine("wwwroot/uploads/ProductsImage", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        fileuploader.CopyTo(stream);
+                    }
+
+                    objcls.uploadimage = fileName;
+                }
+                else
+                {
+                    objcls.uploadimage = cls.uploadimage ?? string.Empty;
+                }
+                if (fileuploader2 != null && fileuploader2.Length > 0)
+                {
+                    var fileName = Path.GetFileName(fileuploader2.FileName); // captures name
+                    var filePath = Path.Combine("wwwroot/uploads/prospectus", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        fileuploader2.CopyTo(stream);
+                    }
+
+                    objcls.uploadfile = fileName;
+                }
+                else
+                {
+                    objcls.uploadfile = cls.uploadfile ?? string.Empty;
+                }
+
                 objcls.uname = HttpContext.Session.GetString("UserName");
                 int x = _Investor.AddInvestor(objcls);
                 {
@@ -670,12 +706,12 @@ namespace skipper_group_new.Controllers
             else
             {
                 HttpContext.Session.SetString("Message", " Please select  category, sub category and investor Name.");
-                return View("~/Views/backoffice/investor/investor.cshtml", objcls);
+                return View("~/Views/backoffice/investor/addinvestor.cshtml", objcls);
             }
 
-            ViewBag.CreateUpdate = "Save";
+            
 
-            return View("~/Views/backoffice/investor/investor.cshtml");
+            //return View("~/Views/backoffice/investor/addinvestor.cshtml");
         }
         [HttpGet]
         [Route("backoffice/investor/investoredit/{id}")]
@@ -695,6 +731,7 @@ namespace skipper_group_new.Controllers
                 objcls.Id = Convert.ToInt32(filterresults.First()["productid"]);
                 objcls.category = Convert.ToString(filterresults.First()["pcatid"]);
                 objcls.subcategory = Convert.ToString(filterresults.First()["psubcatid"]);
+                objcls.Quarterly = Convert.ToString(filterresults.First()["yqid"]);
                 objcls.Name = Convert.ToString(filterresults.First()["productname"]);
                 objcls.ShortDetail = WebUtility.HtmlDecode(Convert.ToString(filterresults.First()["shortdetail"]));
 
@@ -708,7 +745,7 @@ namespace skipper_group_new.Controllers
                 objcls.uploadfile = Convert.ToString(filterresults.First()["prospectus"]);
                 objcls.uploadimage = Convert.ToString(filterresults.First()["uploadaimage"]);
                 ViewBag.CreateUpdate = "Update";
-                return View("~/Views/backoffice/investor/investor.cshtml", objcls);
+                return View("~/Views/backoffice/investor/addinvestor.cshtml", objcls);
             }
             return View("~/Views/backoffice/investor/viewinvestor.cshtml");
         }

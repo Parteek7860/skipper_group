@@ -469,21 +469,23 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@shortdetail", obj.ShortDetail ?? string.Empty);
                     cmd.Parameters.AddWithValue("@productdetail", obj.Description ?? string.Empty);
                     cmd.Parameters.AddWithValue("@rewrite_url", obj.rewriteurl ?? string.Empty);
-                    cmd.Parameters.AddWithValue("@displayorder", obj.displayorder);
+                 
                     cmd.Parameters.AddWithValue("@showonhome", obj.showonhome);
                     cmd.Parameters.AddWithValue("@status", obj.status);
                     cmd.Parameters.AddWithValue("@prospectus", obj.uploadfile ?? string.Empty);
-                    cmd.Parameters.AddWithValue("@uploadimage", obj.uploadimage ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@uploadaimage", obj.uploadimage ?? string.Empty);
                     cmd.Parameters.AddWithValue("@PageTitle", obj.PageTitle ?? string.Empty);
                     cmd.Parameters.AddWithValue("@PageMetaDesc", obj.MetaDescription ?? string.Empty);
                     cmd.Parameters.AddWithValue("@Pagemeta", obj.MetaKeywords ?? string.Empty);
                     cmd.Parameters.AddWithValue("@investordate", obj.investordate);
                     cmd.Parameters.AddWithValue("@modelno", obj.doctype ?? string.Empty);
                     cmd.Parameters.AddWithValue("@expiraydate", obj.newexpiredate);
+                    cmd.Parameters.AddWithValue("@displayorder", obj.displayorder ?? string.Empty);
                     cmd.Parameters.AddWithValue("@uname", obj.uname);
-                    cmd.Parameters.AddWithValue("@purl", obj.vediourl ?? string.Empty);
+                  //  cmd.Parameters.AddWithValue("@purl", obj.vediourl ?? string.Empty);
                     cmd.Parameters.AddWithValue("@purl", obj.thirdpartyurl ?? string.Empty);
-                 
+                    cmd.Parameters.AddWithValue("@Isfamilyproduct", "" ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@producttitle", obj.Name ?? string.Empty);
 
 
                     cmd.Parameters.AddWithValue("@Mode", obj.mode);
