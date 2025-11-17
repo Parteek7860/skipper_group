@@ -1110,7 +1110,10 @@
     font-weight: 300;
     margin-bottom: 3rem;
 }
-
+.whats_new_two-details .whtsnew_btm_grid .whts_left p.font-700 {
+font-weight: 600;
+    margin-bottom: 2rem;
+}
 .whats_new_two-details .whtsnew_btm_grid .whts_left h4 {
         font-size: var(--font-24);
     color: var(--color00);
@@ -8913,7 +8916,9 @@ section.Social_Responsibility10 .col-md-2 figure {
     border-radius: 2rem;
     position: relative;
 }
-
+.award-sec .award_grid .logo_bx.bor-20px img{
+    border-radius: 20px;
+}
 .award-sec .award_grid .logo_bx::before {
     content: "";
     position: absolute;
