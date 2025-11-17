@@ -31,6 +31,10 @@ namespace skipper_group_new.Service
         {
             return _repository.DeleteCategory(id);
         }
+        public Task<DataTable> GetSubCategory()
+        {
+            return _repository.GetSubCategory();
+        }
         public Task<List<CategoryDtl>> GetCategoryTblData()
         {
             return _repository.GetCatDtl();
@@ -85,6 +89,26 @@ namespace skipper_group_new.Service
         public int AddYearCategory(clsInvestor obj)
         {
             return _repository.AddYearCategory(obj);
+        }
+        public Task<DataTable> BindInvestor()
+        {
+            return _repository.BindInvestor();
+        }
+        public int UpdateInvestorStatus(string status, int id)
+        {
+            return _repository.UpdateInvestorStatus(status, id);
+        }
+        public int DeleteINvestor(int id)
+        {
+            return _repository.DeleteINvestor(id);
+        }
+        public int UpdateInvestorShowonHome(string status, int id)
+        {
+            return _repository.UpdateInvestorShowonHome(status, id);
+        }
+        public int AddInvestor(clsInvestor obj)
+        {
+            return _repository.AddInvestor(obj);
         }
     }
 }

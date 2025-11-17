@@ -138,7 +138,19 @@ namespace skipper_group_new.Repositories
                 return rows;
             }
         }
-
+        public async Task<DataTable> GetSubCategory()
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            using (var cmd = new SqlCommand("BindSubCategoryInvestorSP", conn))
+            using (var da = new SqlDataAdapter(cmd))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                var table = new DataTable();
+                await conn.OpenAsync();
+                da.Fill(table);
+                return table;
+            }
+        }
         public async Task<List<SubCatDtl>> GetSubCatDtl()
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
@@ -355,6 +367,125 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@displayorder", obj.displayorder);
                     cmd.Parameters.AddWithValue("@status", obj.status);
                     cmd.Parameters.AddWithValue("@uname", obj.uname);
+                    cmd.Parameters.AddWithValue("@Mode", obj.mode);
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+        public async Task<DataTable> BindInvestor()
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            using (var cmd = new SqlCommand("BindInvestorListSP", conn))
+            using (var da = new SqlDataAdapter(cmd))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                var table = new DataTable();
+                await conn.OpenAsync();
+                da.Fill(table);
+                return table;
+            }
+        }
+        public int UpdateInvestorStatus(string status, int id)
+        {
+            int result = 0;
+            string query = "UpStatusInvestorSP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.Parameters.AddWithValue("@status", status == "True" ? 0 : 1);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+        public int DeleteINvestor(int id)
+        {
+            int result = 0;
+            string query = "DeleteInvestorSP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+        public int UpdateInvestorShowonHome(string status, int id)
+        {
+            int result = 0;
+            string query = "UpdShowonHomeInvestorSP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.Parameters.AddWithValue("@status", status == "True" ? 0 : 1);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+        public int AddInvestor(clsInvestor obj)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("ProductsSP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@productid", obj.Id);
+                    cmd.Parameters.AddWithValue("@pcatid", obj.category);
+                    cmd.Parameters.AddWithValue("@psubcatid", obj.subcategory);
+                    cmd.Parameters.AddWithValue("@ycatid", obj.yearcategory ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@yqid", obj.Quarterly ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@productname", obj.Name);
+                    cmd.Parameters.AddWithValue("@shortdetail", obj.ShortDetail ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@productdetail", obj.Description ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@rewrite_url", obj.rewriteurl ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@displayorder", obj.displayorder);
+                    cmd.Parameters.AddWithValue("@showonhome", obj.showonhome);
+                    cmd.Parameters.AddWithValue("@status", obj.status);
+                    cmd.Parameters.AddWithValue("@prospectus", obj.uploadfile ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@uploadimage", obj.uploadimage ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@PageTitle", obj.PageTitle ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@PageMetaDesc", obj.MetaDescription ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@Pagemeta", obj.MetaKeywords ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@investordate", obj.investordate);
+                    cmd.Parameters.AddWithValue("@modelno", obj.doctype ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@expiraydate", obj.newexpiredate);
+                    cmd.Parameters.AddWithValue("@uname", obj.uname);
+                    cmd.Parameters.AddWithValue("@purl", obj.vediourl ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@purl", obj.thirdpartyurl ?? string.Empty);
+                 
+
+
                     cmd.Parameters.AddWithValue("@Mode", obj.mode);
                     conn.Open();
                     result = cmd.ExecuteNonQuery();

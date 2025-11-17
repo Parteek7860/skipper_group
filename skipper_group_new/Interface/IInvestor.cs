@@ -12,7 +12,7 @@ namespace skipper_group_new.Interface
 
         Task<int> DeleteCategory(int id);
         Task<int> ChangeCatStatus(int id);
-
+        Task<DataTable> GetSubCategory();
         Task<List<SubCatDtl>> GetSubCategoryTblData();
         Task<int> AddSubCategory(SubCategory category);
         Task<SubCategory> EditSubCategory(int id);
@@ -25,5 +25,10 @@ namespace skipper_group_new.Interface
         int UpdateYearCategoryStatus(string status, int id);
         int DeleteYearCategory(int id); 
         int AddYearCategory(clsInvestor obj);
+        Task<DataTable> BindInvestor();
+        int UpdateInvestorStatus(string status, int id);
+        int DeleteINvestor(int id);
+        int UpdateInvestorShowonHome(string status, int id);
+        int AddInvestor(clsInvestor obj);
     }
 }

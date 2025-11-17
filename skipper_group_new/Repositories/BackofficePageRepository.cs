@@ -611,5 +611,115 @@ namespace skipper_group_new.Repositories
 
             return result;
         }
+        //Rakesh 12/11/2025
+        public async Task<int> AddAlbumPhoto(clsGallery obj)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("AlbumPhotoSP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@photoid", obj.id);
+                    cmd.Parameters.AddWithValue("@AlbumId", obj.albumtype);
+                    cmd.Parameters.AddWithValue("@photoTitle", obj.title ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@Uploadphoto", obj.uploadbanner ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@Status", obj.status);
+                    cmd.Parameters.AddWithValue("@displayorder", obj.displayorder);
+                    cmd.Parameters.AddWithValue("@largeimage", obj.uploadlargeimage ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@Uname", obj.uname);
+                    cmd.Parameters.AddWithValue("@Mode", obj.mode);
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+            return result;
+        }
+
+        public async Task<DataTable> BindPhotoGallaryList(int mode)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlCommand cmd = new SqlCommand("AlbumPhotoSP", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter photoIdParam = new SqlParameter("@photoid", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.InputOutput,
+                    Value = 0
+                };
+                cmd.Parameters.Add(photoIdParam);
+                cmd.Parameters.AddWithValue("@AlbumId", 0);
+                cmd.Parameters.AddWithValue("@photoTitle", "");
+                cmd.Parameters.AddWithValue("@Uploadphoto", "");
+                cmd.Parameters.AddWithValue("@Status", true);
+                cmd.Parameters.AddWithValue("@displayorder", 0);
+                cmd.Parameters.AddWithValue("@largeimage", "");
+                cmd.Parameters.AddWithValue("@Uname", "");
+                cmd.Parameters.AddWithValue("@Mode", mode);
+                await conn.OpenAsync();
+                using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                {
+                    dt.Load(reader);
+                }
+            }
+            return dt;
+        }
+
+        public async Task<int> DeletePhotoGallary(int id)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlCommand cmd = new SqlCommand("AlbumPhotoSP", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter photoIdParam = new SqlParameter("@photoid", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.InputOutput,
+                    Value = id
+                };
+                cmd.Parameters.Add(photoIdParam);
+                cmd.Parameters.AddWithValue("@AlbumId", 0);
+                cmd.Parameters.AddWithValue("@photoTitle", "");
+                cmd.Parameters.AddWithValue("@Uploadphoto", "");
+                cmd.Parameters.AddWithValue("@Status", true);
+                cmd.Parameters.AddWithValue("@displayorder", 0);
+                cmd.Parameters.AddWithValue("@largeimage", "");
+                cmd.Parameters.AddWithValue("@Uname", "");
+                cmd.Parameters.AddWithValue("@Mode", 3);
+                await conn.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+                result = (photoIdParam.Value != DBNull.Value) ? 1 : 0;
+            }
+            return result;
+        }
+
+        public async Task<int> changestatus(int id)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlCommand cmd = new SqlCommand("AlbumPhotoSP", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlParameter photoIdParam = new SqlParameter("@photoid", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.InputOutput,
+                    Value = id
+                };
+                cmd.Parameters.Add(photoIdParam);
+                cmd.Parameters.AddWithValue("@AlbumId", 0);
+                cmd.Parameters.AddWithValue("@photoTitle", "");
+                cmd.Parameters.AddWithValue("@Uploadphoto", "");
+                cmd.Parameters.AddWithValue("@Status", true);
+                cmd.Parameters.AddWithValue("@displayorder", 0);
+                cmd.Parameters.AddWithValue("@largeimage", "");
+                cmd.Parameters.AddWithValue("@Uname", "");
+                cmd.Parameters.AddWithValue("@Mode", 7);
+                await conn.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+                result = (photoIdParam.Value != DBNull.Value) ? 1 : 0;
+            }
+            return result;
+        }
     }
 }

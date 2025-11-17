@@ -1,5 +1,5 @@
 ﻿@using System.Data
-@model skipper_group_new.Models.clsCategory
+@model skipper_group_new.Models.clsInvestor
 
 @{
     ViewData["Title"] = "Add Investor";
@@ -35,166 +35,188 @@
                         Fields with * are mandatory
                     </h2>
                     <div class="row clearfix">
-                        @Html.HiddenFor(model => model.PcatId)
-                        @Html.HiddenFor(model => model.Status)
-                        @Html.HiddenFor(model => model.ShowOnHome)
-                        @Html.HiddenFor(model => model.RewriteUrl)
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
-                            <label>Category Name *</label>
-                            @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control" } })
-                            </div></div>
-                            @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger v-span" })
-                        </div>
-                      @*   <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Rewrite URL</label>
-                                    @Html.EditorFor(model => model.RewriteUrl, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                                @Html.ValidationMessageFor(model => model.RewriteUrl, "", new { @class = "text-danger v-span" })
+                                    <label> Category</label>
+                                    @Html.DropDownListFor(model => model.category,
+                                    new List<SelectListItem>(), "Select Category",
+                                                                new { @class = "form-control", @id = "ddlCategory", style = "border:1px solid #ccc; border-radius:4px;" })
+
                             </div>
-                        </div> *@
+                        </div>
+                        @Html.ValidationMessageFor(m => m.category, "", new { @class = "text-danger v-span" })
                     </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="form-line">
-                            <label>Short Detail</label>
-                            @Html.TextAreaFor(model => model.ShortDetail, new { @class = "form-control editor1", @id = "editor1", @rows = "10" })
-                            </div></div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Sub Category</label>
+                                @Html.DropDownListFor(model => model.subcategory,
+                                                                new List<SelectListItem>(), "Select Sub Category",
+                                                                new { @class = "form-control", @id = "ddlSubCategory", style = "border:1px solid #ccc; border-radius:4px;" })
+                            </div>
                         </div>
+                        @Html.ValidationMessageFor(m => m.subcategory, "", new { @class = "text-danger v-span" })
                     </div>
-                   @*  <div class="row clearfix">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="form-line">
-                            <label>Long Description</label>
-                            @Html.TextAreaFor(model => model.Detail, new { @class = "form-control editor1", @id = "editor2", @rows = "10" })
-                            </div></div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label> Year Category</label>
+                                @Html.DropDownListFor(model => model.yearcategory, new List<SelectListItem>(), "Select Year", new { @class = "form-control", @id = "ddlYearCategory", style = "border:1px solid #ccc; border-radius:4px;" })
+                            </div>
                         </div>
+                        @Html.ValidationMessageFor(m => m.yearcategory, "", new { @class = "text-danger v-span" })
                     </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="form-line">
-                            <label>Meta Description</label>                            
-                            @Html.TextAreaFor(model => model.PageMetaDesc, new { @class = "form-control editor1", @id = "editor3", @rows = "10" })
-                            </div></div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Year Quarterly</label>
+                                @Html.DropDownListFor(model => model.Quarterly,
+                                                                new List<SelectListItem>
+                                                                {
+                                                                new SelectListItem { Text = "Q1",  Value = "Q1" },
+                                                                new SelectListItem { Text = "Q2", Value = "Q2" },
+                                                                new SelectListItem { Text = "Q3", Value = "Q3" },
+                                                                new SelectListItem { Text = "Q4", Value = "Q4" }
+                                                                },
+                                                                "Select Quarterly",
+                                                                new { @class = "form-control", style = "border:1px solid #ccc; border-radius:4px;" })
+
+                            </div>
                         </div>
-                    </div>   *@
-                   @*  <div class="row clearfix">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="form-line">
-                            <label>Home Desc</label>
-                                    @Html.EditorFor(model => model.HomeDesc, new { htmlAttributes = new { @class = "form-control", }})
-                            </div></div>
-                        </div>                       
-                    </div>      *@              
-                   @*  <div class="row clearfix">
-                        <div class="col-sm-4">
-                            <label>Show On Home</label><br />
-                            @Html.CheckBoxFor(model => model.ShowOnHome)
-                        </div>
-                        <div class="col-sm-4">
-                            <label>No Index follow</label><br />
-                            @Html.CheckBoxFor(model => model.NoIndexFollow)
-                        </div>
-                        <div class="col-sm-4">
-                            <label>Status</label><br />
-                            @Html.CheckBoxFor(model => model.Status)
-                        </div>
+                        @Html.ValidationMessageFor(m => m.Quarterly, "", new { @class = "text-danger v-span" })
                     </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Upload Image</label>
-                                    <input type="file" name="UploadAPDFFile" class="form-control" />
-                                    @Html.HiddenFor(model => model.UploadAPDF)
-                                </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label> Investor Date</label>
+                                @Html.EditorFor(model => model.investordate, new { htmlAttributes = new { @class = "form-control" } })
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Banner Image</label>
-                                    <input type="file" name="BannerImgFile" class="form-control" />
-                                    @Html.HiddenFor(model => model.Banner)
-                                </div>
-                            </div>
-                        </div>
-                    </div> *@
-                    <div class="row clearfix">
-                       @*  <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Home Image</label>
-                                    <input type="file" name="HomeImageFile" class="form-control" />
-                                    @Html.HiddenFor(model => model.HomeImage)
-                                </div>
-                            </div>
-                        </div> *@
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Display Order</label>
-                                    @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                            </div>
-                        </div>
+                        @Html.ValidationMessageFor(m => m.investordate, "", new { @class = "text-danger v-span" })
                     </div>
-                    <br />
-                    <h5>SEO Section</h5>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Page Title</label>
-                                    @Html.EditorFor(model => model.PageTitle, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>New Expire Date</label>
+                                @Html.EditorFor(model => model.newexpiredate, new { htmlAttributes = new { @class = "form-control" } })
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Page Meta</label>
-                                    @Html.TextBoxFor(model => model.PageMeta, new { @class = "form-control" })
-                                </div>
+                        @Html.ValidationMessageFor(m => m.newexpiredate, "", new { @class = "text-danger v-span" })
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Doc Type</label>
+                                @Html.DropDownListFor(model => model.doctype,
+                                                                new List<SelectListItem>
+                                                                {
+                                                                new SelectListItem { Text = "PDF",  Value = "PDF" },
+                                                                new SelectListItem { Text = "Zip", Value = "Zip" }
+                                                                },
+                                                                "Select Type",
+                                                                new { @class = "form-control", style = "border:1px solid #ccc; border-radius:4px;" })
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.doctype, "", new { @class = "text-danger v-span" })
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.status)
+                    @Html.HiddenFor(model => model.showonhome)
+                    @Html.HiddenFor(model => model.rewriteurl)
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Investor *</label>
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger v-span" })
+                    </div>
+
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Short Detail</label>
+                                @Html.TextAreaFor(model => model.ShortDetail, new { @class = "form-control editor1", @id = "editor1", @rows = "10" })
                             </div>
                         </div>
                     </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Page Script</label>
-                                    @Html.EditorFor(model => model.PageScript, new { htmlAttributes = new { @class = "form-control", } })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Canonical</label>
-                                    @Html.EditorFor(model => model.Canonical, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
+                </div>
+
+
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Upload Image</label>
+                                <input type="file" name="UploadAPDFFile" class="form-control" />
+                                @Html.HiddenFor(model => model.uploadimage)
                             </div>
                         </div>
                     </div>
-                    <!-- Buttons -->
-                    <div class="row mt-4">
-                        <div class="col-sm-12 text-center">
-                            <input type="submit" class="btn btn-success btn-lg mx-2" value="Save" />
-                            <a href="/backoffice/investor/category" class="btn btn-secondary btn-lg mx-2">Cancel</a>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>upload File</label>
+                                <input type="file" name="BannerImgFile" class="form-control" />
+                                @Html.HiddenFor(model => model.uploadfile)
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Display Order</label>
+                                @Html.EditorFor(model => model.displayorder, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Third Party Url</label>
+                                @Html.EditorFor(model => model.thirdpartyurl, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Video</label>
+                                @Html.TextBoxFor(model => model.vediourl, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Buttons -->
+                <div class="row mt-4">
+                    <div class="col-sm-12">
+                        <input type="submit" class="btn btn-success btn-lg mx-2" value="Save" formmethod="post" formaction="@Url.Action("Investor", "Investor")" />
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 }
 @{
@@ -209,4 +231,109 @@
         CKEDITOR.replace($(this).prop('id'));
     });
 </script>
+<script>
+      var selectedCategory = "@Model.category";
+    var selectedSubCategory = "@Model.subcategory";
+    var selectedYearCategory = "@Model.yearcategory";
+    $(document).ready(function () {
+
+        // Load data on page load
+        LoadCategory();
+        LoadYearCategory();
+
+        // -------------------------------
+        // Load Category
+        // -------------------------------
+        function LoadCategory() {
+            $.ajax({
+                url: '/Investor/GetCategory',
+                type: 'GET',
+                success: function (data) {
+
+                    $("#ddlCategory").empty();
+                    $("#ddlCategory").append('<option value="">Select Category</option>');
+
+                    $.each(data, function (i, item) {
+                        $("#ddlCategory").append(
+                            $('<option>', { value: item.value, text: item.text })
+                        );
+                    });
+
+                    // ==== Auto Select Saved Category ====
+                    if (selectedCategory) {
+                        $("#ddlCategory").val(selectedCategory).trigger("change");
+                    }
+                }
+            });
+        }
+
+        // -------------------------------
+        // Load Year Category
+        // -------------------------------
+        function LoadYearCategory() {
+            $.ajax({
+                url: '/Investor/GetYearCategory',
+                type: 'GET',
+                success: function (data) {
+
+                    $("#ddlYearCategory").empty();
+                    $("#ddlYearCategory").append('<option value="">Select Year</option>');
+
+                    $.each(data, function (i, item) {
+                        $("#ddlYearCategory").append(
+                            $('<option>', { value: item.value, text: item.text })
+                        );
+                    });
+
+                    // ==== Auto Select Saved Year ====
+                    if (selectedYearCategory) {
+                        $("#ddlYearCategory").val(selectedYearCategory);
+                    }
+                }
+            });
+        }
+
+        // -------------------------------
+        // Handle Category Change -> Load SubCategory
+        // -------------------------------
+        $("#ddlCategory").change(function () {
+
+            var catId = $(this).val();
+
+            $("#ddlSubCategory").empty();
+            $("#ddlSubCategory").append('<option value="">Loading...</option>');
+
+            if (catId !== "") {
+                $.ajax({
+                    url: '/Investor/GetSubCategory',
+                    type: 'GET',
+                    data: { categoryId: catId },
+                    success: function (data) {
+
+                        $("#ddlSubCategory").empty();
+                        $("#ddlSubCategory").append('<option value="">Select Sub Category</option>');
+
+                        $.each(data, function (i, item) {
+                            $("#ddlSubCategory").append(
+                                $('<option>', { value: item.value, text: item.text })
+                            );
+                        });
+
+                        // ==== Auto Select Saved SubCategory ====
+                        if (selectedSubCategory) {
+                            $("#ddlSubCategory").val(selectedSubCategory);
+                        }
+                    }
+                });
+            } else {
+                $("#ddlSubCategory").empty();
+                $("#ddlSubCategory").append('<option value="">Select Sub Category</option>');
+            }
+        });
+
+    });
+</script>
+
+
+
 

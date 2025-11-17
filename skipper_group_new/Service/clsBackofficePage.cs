@@ -119,5 +119,25 @@ namespace skipper_group_new.Service
         {
             return _repository.AddVedio(obj);
         }
+        //Rakesh 12/11/2025
+        public async Task<int> AddAlbumPhoto(clsGallery objgallery)
+        {
+            return await _repository.AddAlbumPhoto(objgallery);
+        }
+
+        public Task<DataTable> BindPhotoGallaryList(int mode)
+        {
+            return _repository.BindPhotoGallaryList(mode);
+        }
+
+        public async Task<int> DeletePhotoGallary(int id)
+        {
+            return await _repository.DeletePhotoGallary(id);
+        }
+
+        public async Task<int> changestatus(int id)
+        {
+            return await _repository.changestatus(id);
+        }
     }
 }

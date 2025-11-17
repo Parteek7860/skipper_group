@@ -36,6 +36,11 @@ namespace skipper_group_new.Repositories
         Task<int> AddTvc(clsGallery objgallery);
         Task<int> AddVedio(clsGallery objgallery);
         int DeleteTvc(int id);
+        // Rakesh 12/11/2025
+        Task<int> AddAlbumPhoto(clsGallery objgallery);
+        Task<DataTable> BindPhotoGallaryList(int mode);
+        Task<int> DeletePhotoGallary(int id);
+        Task<int> changestatus(int id);
     }
 
 }

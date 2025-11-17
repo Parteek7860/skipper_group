@@ -443,6 +443,205 @@ namespace skipper_group_new.Controllers
 
             return View("~/Views/Backoffice/gallery/addvedio.cshtml", objAlbumType);
         }
+        //Rakesh Chauhan 11/12/2025
+        [HttpGet]
+        [Route("backoffice/gallery/addphotogallery")]
+        public async Task<IActionResult> PhotoGallary()
+        {
+            var objAlbumType = new clsGallery();
+            DataTable content = await _backofficeService.GetAlbumList();
 
+            if (content != null && content.Rows.Count > 0)
+            {
+                objAlbumType.selectalbumtype = content.AsEnumerable()
+                    .Select(row => new SelectListItem
+                    {
+                        Value = row["Albumid"]?.ToString() ?? string.Empty,
+                        Text = row["Albumtitle"]?.ToString() ?? string.Empty
+                    })
+                    .ToList();
+            }
+            else
+            {
+                objAlbumType.selectalbumtype = new List<SelectListItem>();
+            }
+            ViewBag.Menus = _menuService.GetMenu();
+            ViewBag.CreateUpdate = "Save";
+            return View("~/Views/backoffice/gallery/addphotogallery.cshtml", objAlbumType);
+        }
+
+        [HttpPost]
+        [Route("backoffice/gallery/addPhoto")]
+        public async Task<IActionResult> addPhoto(clsGallery objgallery, IFormFile file_Uploader)
+        {
+            HttpContext.Session.Remove("Message");
+            var objAlbumType = new clsGallery();
+            ViewBag.Menus = _menuService.GetMenu();
+            ModelState.Remove("mode");
+            ModelState.Remove("uname");
+            ModelState.Remove("eventsdate");
+            ModelState.Remove("selectalbumtype");
+            ModelState.Remove("pagetitle");
+            ModelState.Remove("metakeywords");
+            ModelState.Remove("metadesc");
+            ModelState.Remove("canonical");
+            ModelState.Remove("shortdetail");
+            ModelState.Remove("bannerimage");
+            ModelState.Remove("uploadbanner");
+            ModelState.Remove("largeimage");
+            ModelState.Remove("uploadlargeimage");
+            ModelState.Remove("status");
+            ModelState.Remove("URL");
+            ModelState.Remove("albumdesc");
+            ModelState.Remove("searchname");
+            ModelState.Remove("startdate");
+            ModelState.Remove("enddate");
+            ModelState.Remove("tagline");
+            ModelState.Remove("mode");
+            ModelState.Remove("uname");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    objgallery.albumtype = objgallery.albumtype;
+                    objgallery.title = objgallery.title;
+                    objgallery.displayorder = objgallery.displayorder ?? "0";
+                    objgallery.uname = HttpContext.Session.GetString("UserName");
+                    objgallery.status = true;
+                    if (objgallery.id == 0)
+                    {
+                        objgallery.mode = "1";
+                    }
+                    else
+                    {
+                        objgallery.mode = "2";
+                        objgallery.id = objgallery.id;
+                    }
+                    if (file_Uploader != null && file_Uploader.Length > 0)
+                    {
+                        var fileName = Path.GetFileName(file_Uploader.FileName);
+                        var filePath = Path.Combine("wwwroot/uploads/LargeImages", fileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            file_Uploader.CopyTo(stream);
+                        }
+
+                        objgallery.uploadbanner = fileName;
+                    }
+                    int result = await _backofficeService.AddAlbumPhoto(objgallery);
+                    if (result > 0)
+                    {
+                        if (objgallery.id == 0)
+                        {
+                            HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Photo gallary Added successfully.");
+                        }
+                        else
+                        {
+                            HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Photo gallary Updated successfully.");
+                        }
+
+                        TempData["Title"] = "Gallery Photo";
+                        return RedirectToAction("PhotoGallary", "Gallery");
+                    }
+                    else
+                    {
+                        ViewBag.Error = "Failed to add photo. Please try again.";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Error = $"An error occurred: {ex.Message}";
+                }
+            }
+            else
+            {
+                HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Please fill in all required fields.");
+                return RedirectToAction("PhotoGallary", "Gallery");
+            }
+
+            ViewBag.CreateUpdate = "Save";
+            return View("~/Views/backoffice/gallery/addphotogallery.cshtml", objAlbumType);
+        }
+
+        [HttpGet]
+        [Route("backoffice/gallery/editPhotoGallary/{id}")]
+        public async Task<IActionResult> editPhotoGallary(int id)
+        {
+
+            var objAlbumType = new clsGallery();
+            ViewBag.Menus = _menuService.GetMenu();
+            int mode = 5;
+            var x = await _backofficeService.BindPhotoGallaryList(mode);
+            var content = await _backofficeService.GetAlbumList();
+            var bannerTypes = x.AsEnumerable().Where(r => r.Field<int>("photoid") == id).CopyToDataTable();
+            if (bannerTypes != null && bannerTypes.Rows.Count > 0)
+            {
+                objAlbumType.id = Convert.ToInt32(bannerTypes.Rows[0]["photoid"]);
+                objAlbumType.title = Convert.ToString(bannerTypes.Rows[0]["phototitle"]);
+                objAlbumType.displayorder = Convert.ToString(bannerTypes.Rows[0]["displayorder"]);
+                objAlbumType.uploadbanner = Convert.ToString(bannerTypes.Rows[0]["uploadphoto"]);
+                objAlbumType.mode = "2";
+                objAlbumType.uname = HttpContext.Session.GetString("UserName");
+                objAlbumType.selectalbumtype = content.AsEnumerable()
+                   .Select(row => new SelectListItem
+                   {
+                       Value = row["Albumid"]?.ToString() ?? string.Empty,
+                       Text = row["Albumtitle"]?.ToString() ?? string.Empty
+                   })
+                   .ToList();
+                ViewBag.CreateUpdate = "Update";
+            }
+            return View("~/Views/backoffice/gallery/addphotogallery.cshtml", objAlbumType);
+        }
+
+        [HttpGet]
+        [Route("backoffice/gallery/viewphotogallery")]
+        public async Task<IActionResult> viewphotogallery()
+        {
+            var objAlbumType = new clsGallery();
+            ViewBag.Menus = _menuService.GetMenu();
+            int mode = 6;
+            var content = await _backofficeService.BindPhotoGallaryList(mode);
+            if (content != null)
+            {
+                ViewBag.GalPhotoList = content;
+            }
+            return View("~/Views/backoffice/gallery/viewphotogallery.cshtml", objAlbumType);
+        }
+
+        [HttpGet]
+        [Route("/backoffice/gallery/deletePhotoGallary/{id}")]
+        public async Task<IActionResult> deletephotogallery(int id)
+        {
+            HttpContext.Session.Remove("Message");
+            var result = await _backofficeService.DeletePhotoGallary(id);
+            if (result > 0)
+            {
+                HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Photo gallery deleted successfully.");
+            }
+            else
+            {
+                HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Failed to delete photo gallery. Please try again.");
+            }
+            return RedirectToAction("viewphotogallery", "Gallery");
+        }
+
+        [HttpGet]
+        [Route("/backoffice/gallery/chngStatus/{id}")]
+        public async Task<IActionResult> changestatus(int id)
+        {
+            HttpContext.Session.Remove("Message");
+            var result = await _backofficeService.changestatus(id);
+            if (result > 0)
+            {
+                HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Status changed successfully.");
+            }
+            else
+            {
+                HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Failed to change status. Please try again.");
+            }
+            return RedirectToAction("viewphotogallery", "Gallery");
+        }
     }
 }

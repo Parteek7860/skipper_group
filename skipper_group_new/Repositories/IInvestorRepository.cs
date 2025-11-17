@@ -13,6 +13,7 @@ namespace skipper_group_new.Repositories
         Task<int> ChangeCatStatus(int id);
 
         Task<List<SubCatDtl>> GetSubCatDtl();
+        Task<DataTable> GetSubCategory();
         Task<int> AddSubCategory(SubCategory category);
         Task<SubCategory> GetSubCategoryById(int id);
         Task<int> DeleteSubCategory(int id);
@@ -23,5 +24,10 @@ namespace skipper_group_new.Repositories
         int UpdateYearCategoryStatus(string status, int id);
         int DeleteYearCategory(int id);
         int AddYearCategory(clsInvestor obj);
+        Task<DataTable> BindInvestor();
+        int UpdateInvestorStatus(string status, int id);
+        int DeleteINvestor(int id);
+        int UpdateInvestorShowonHome(string status, int id);
+        int AddInvestor(clsInvestor obj);
     }
 }

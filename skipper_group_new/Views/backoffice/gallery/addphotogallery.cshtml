@@ -1,0 +1,100 @@
+﻿@model skipper_group_new.Models.clsGallery
+@using System.Data;
+@{
+    ViewBag.Title = "Add Photo Gallary";
+    Layout = "~/Views/Shared/_homepage.cshtml";
+}
+@{
+    string nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @ViewBag.Title
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Gallery</a></li>
+                <li class="breadcrumb-item active">Add Album</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("addPhoto", "gallery", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="body">
+                        <h2 class="card-inside-title">
+                            Fields with * are mandatory
+                        </h2>
+                        <div class="row clearfix">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label> Album</label>
+                                    @Html.HiddenFor(model => model.status)
+                                    @Html.HiddenFor(model => model.uname)
+                                    @Html.HiddenFor(model => model.id)
+                                    @Html.HiddenFor(model => model.mode)
+                                    @Html.DropDownListFor(model => model.albumtype, Model.selectalbumtype, "Select AlbumName", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Image Title</label>
+                                    @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                            @Html.ValidationMessageFor(m => m.title, "", new { @class = "text-danger v-span" })
+                            </div>
+                        </div>       
+                        <div class="row clearfix">                            
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    <label> Upload Image </label>
+                                    <input type="file" name="file_Uploader" />
+                                <img src="@Url.Content("~/Uploads/LargeImages/" + Model.uploadbanner)" width="80" />
+                                @Html.HiddenFor(model => model.uploadlargeimage)
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row clearfix">
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label> Display order</label>
+                                    @Html.EditorFor(model => model.displayorder, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                            @Html.ValidationMessageFor(m => m.displayorder, "", new { @class = "text-danger v-span" })
+                            </div>
+                        </div>                        
+                        <div class="row clearfix">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                            <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" name="action" formaction="@Url.Action("addPhoto", "Gallery")" formmethod="post"> @ViewBag.CreateUpdate </button>
+                                <input type="submit" class="btn  btn-raised btn-close waves-effect" value="Cancel" name="action" formaction="Cancel" formmethod="post" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="~/ckeditor/ckeditor.js"></script>
+        <script>
+            $('.editor1').each(function () {
+                CKEDITOR.replace($(this).prop('id'));
+            });
+        </script>
+
+}

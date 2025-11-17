@@ -1,10 +1,13 @@
-﻿using DocumentFormat.OpenXml.Math;
+﻿using AspNetCoreGeneratedDocument;
+using DocumentFormat.OpenXml.Math;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
 using skipper_group_new.Models;
 using System.Data;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace skipper_group_new.Controllers
 {
@@ -509,7 +512,7 @@ namespace skipper_group_new.Controllers
                 {
                     objcls.mode = "1";
                 }
-                objcls.uname= HttpContext.Session.GetString("UserName");
+                objcls.uname = HttpContext.Session.GetString("UserName");
                 int x = _Investor.AddYearCategory(objcls);
                 {
                     if (obj.Id > 0)
@@ -610,11 +613,106 @@ namespace skipper_group_new.Controllers
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
-          
+            clsInvestor obj = new clsInvestor();
+
+            ViewBag.CreateUpdate = "Save";
+
+            return View("~/Views/backoffice/investor/investor.cshtml", obj);
+        }
+        [HttpPost]
+        [Route("backoffice/investor/investor")]
+        public async Task<IActionResult> investor(clsInvestor cls)
+        {
+            var menuList = _menuService.GetMenu();
+            ViewBag.Menus = menuList;
+            clsInvestor objcls = new clsInvestor();
+            if (!string.IsNullOrEmpty(cls.category) && !string.IsNullOrEmpty(cls.subcategory) && !string.IsNullOrEmpty(cls.Name))
+            {
+                objcls.Id = cls.Id;
+                objcls.category = cls.category;
+                objcls.subcategory = cls.subcategory;
+                objcls.Name = cls.Name;
+                objcls.ShortDetail = cls.ShortDetail;
+                objcls.Description = cls.Description;
+                objcls.vediourl = cls.vediourl;
+                objcls.thirdpartyurl = cls.thirdpartyurl;
+                objcls.investordate = cls.investordate;
+                objcls.doctype = cls.doctype;
+                objcls.newexpiredate = cls.newexpiredate;
+                objcls.Quarterly = cls.Quarterly;
+                objcls.rewriteurl = cls.rewriteurl;
+                objcls.uploadfile = cls.uploadfile;
+                objcls.uploadimage = cls.uploadimage;
+                if (objcls.Id > 0)
+                {
+                    objcls.mode = "2";
+                    objcls.status = cls.status;
+                }
+                else
+                {
+                    objcls.mode = "1";
+                    objcls.status = true;
+                }
+                objcls.uname = HttpContext.Session.GetString("UserName");
+                int x = _Investor.AddInvestor(objcls);
+                {
+                    if (objcls.Id > 0)
+                    {
+                        HttpContext.Session.SetString("Message", " Investor updated successfully.");
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("Message", " Investor Added successfully.");
+                    }
+                    return RedirectToAction("viewinvestor", "investor");
+                }
+            }
+            else
+            {
+                HttpContext.Session.SetString("Message", " Please select  category, sub category and investor Name.");
+                return View("~/Views/backoffice/investor/investor.cshtml", objcls);
+            }
+
             ViewBag.CreateUpdate = "Save";
 
             return View("~/Views/backoffice/investor/investor.cshtml");
         }
+        [HttpGet]
+        [Route("backoffice/investor/investoredit/{id}")]
+        public async Task<IActionResult> investoredit(int id)
+        {
+            var menuList = _menuService.GetMenu();
+            ViewBag.Menus = menuList;
+
+            var x = await _Investor.BindInvestor();
+
+            var filterresults = from DataRow dr in x.Rows
+                                where Convert.ToInt32(dr["productid"]) == Convert.ToInt32(id)
+                                select dr;
+            clsInvestor objcls = new clsInvestor();
+            if (filterresults.Any())
+            {
+                objcls.Id = Convert.ToInt32(filterresults.First()["productid"]);
+                objcls.category = Convert.ToString(filterresults.First()["pcatid"]);
+                objcls.subcategory = Convert.ToString(filterresults.First()["psubcatid"]);
+                objcls.Name = Convert.ToString(filterresults.First()["productname"]);
+                objcls.ShortDetail = WebUtility.HtmlDecode(Convert.ToString(filterresults.First()["shortdetail"]));
+
+                objcls.vediourl = Convert.ToString(filterresults.First()["vedioname"]);
+                objcls.thirdpartyurl = Convert.ToString(filterresults.First()["purl"]);
+                objcls.investordate = Convert.ToDateTime(filterresults.First()["investordate"]);
+                objcls.doctype = Convert.ToString(filterresults.First()["modelno"]);
+                objcls.newexpiredate = filterresults.First().IsNull("expiraydate") ? (DateTime?)null : Convert.ToDateTime(filterresults.First()["expiraydate"]);
+                objcls.yearcategory = Convert.ToString(filterresults.First()["ycatid"]);
+                objcls.rewriteurl = Convert.ToString(filterresults.First()["rewrite_url"]);
+                objcls.uploadfile = Convert.ToString(filterresults.First()["prospectus"]);
+                objcls.uploadimage = Convert.ToString(filterresults.First()["uploadaimage"]);
+                ViewBag.CreateUpdate = "Update";
+                return View("~/Views/backoffice/investor/investor.cshtml", objcls);
+            }
+            return View("~/Views/backoffice/investor/viewinvestor.cshtml");
+        }
+
         [HttpGet]
         [Route("backoffice/investor/viewinvestor")]
         public async Task<IActionResult> viewinvestor()
@@ -622,10 +720,156 @@ namespace skipper_group_new.Controllers
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
 
+            var x = await _Investor.BindInvestor();
+            ViewBag.Bindinvestor = x;
+
             ViewBag.CreateUpdate = "Save";
 
             return View("~/Views/backoffice/investor/viewinvestor.cshtml");
         }
+        [HttpGet]
+        [Route("backoffice/investor/investorstatus/{id}")]
+        public async Task<IActionResult> investorstatus(int id)
+        {
+
+            clsInvestor obj = new clsInvestor();
+            var x = await _Investor.BindInvestor();
+            var filterresults = from DataRow dr in x.Rows
+                                where Convert.ToInt32(dr["productid"]) == id
+                                select dr;
+            if (filterresults.Any())
+            {
+                var row = filterresults.First();
+                obj.status = Convert.ToBoolean(row["status"]) == true ? true : false; // Toggle status
+
+                string status = obj.status ? "True" : "False";
+
+                int x1 = _Investor.UpdateInvestorStatus(status, id);
+                if (x1 > 0)
+                {
+                    HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Status Update successfully.");
+
+                    return RedirectToAction("viewinvestor", "investor");
+                }
+            }
+
+            return RedirectToAction("viewinvestor", "investor");
+        }
+        [HttpGet]
+        [Route("backoffice/investor/investorDelete/{id}")]
+        public async Task<IActionResult> investorDelete(int id)
+        {
+            HttpContext.Session.Remove("Message");
+            var result = _Investor.DeleteINvestor(id);
+            if (result > 0)
+            {
+                HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Investor deleted successfully.");
+            }
+            else
+            {
+                HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Failed to delete album. Please try again.");
+            }
+
+
+            return RedirectToAction("viewinvestor", "investor");
+        }
+        [HttpGet]
+        [Route("backoffice/investor/investorshowonhome/{id}")]
+        public async Task<IActionResult> investorshowonhome(int id)
+        {
+
+            clsInvestor obj = new clsInvestor();
+            var x = await _Investor.BindInvestor();
+            var filterresults = from DataRow dr in x.Rows
+                                where Convert.ToInt32(dr["productid"]) == id
+                                select dr;
+            if (filterresults.Any())
+            {
+                var row = filterresults.First();
+                obj.status = Convert.ToBoolean(row["showonhome"]) == true ? true : false; // Toggle status
+
+                string status = obj.status ? "True" : "False";
+
+                int x1 = _Investor.UpdateInvestorShowonHome(status, id);
+                if (x1 > 0)
+                {
+                    HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Status Update successfully.");
+
+                    return RedirectToAction("viewinvestor", "investor");
+                }
+            }
+
+            return RedirectToAction("viewinvestor", "investor");
+        }
+        [HttpGet]
+        [Route("investor/downloadfile/{id}")]
+        public IActionResult DownloadFile(string id)
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads", "prospectus", id);
+
+
+            if (!System.IO.File.Exists(filePath))
+                return NotFound();
+
+            var contentType = "application/octet-stream";
+            var fileBytes = System.IO.File.ReadAllBytes(filePath);
+            return File(fileBytes, contentType, id);
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetYearCategory()
+        {
+            DataTable dt = await _Investor.BindYearCategory();
+
+            var list = dt.AsEnumerable()
+               .Where(row => row.Field<bool>("status") == true)
+                         .Select(row => new
+                         {
+                             Value = row["ycatid"],
+                             Text = row["category"]
+                         })
+                         .ToList();
+
+
+            return Json(list);
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetCategory()
+        {
+            DataTable dt = await _Investor.GetCategory();
+
+            var list = dt.AsEnumerable()
+                .Where(row => row.Field<bool>("status") == true)
+                         .Select(row => new
+                         {
+                             Value = row["pcatid"],
+                             Text = row["category"]
+                         })
+                         .ToList();
+            return Json(list);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetSubCategory(int categoryId)
+        {
+            DataTable dt = await _Investor.GetSubCategory();
+            var filterresults = from DataRow dr in dt.Rows
+                                where Convert.ToInt32(dr["pcatid"]) == categoryId && Convert.ToBoolean(dr["status"]) == true
+                                select dr;
+
+            var list = filterresults
+            .Select(x => new
+            {
+                Value = x["psubcatid"].ToString(),
+                Text = x["category"].ToString()
+            })
+            .ToList();
+
+            return Json(list);
+
+
+        }
+
+
     }
 
 }

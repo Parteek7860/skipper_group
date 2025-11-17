@@ -1,0 +1,272 @@
+﻿@model skipper_group_new.Models.ResearchModel
+@using System.Data;
+@{
+    ViewBag.Title = "Add Project";
+    Layout = "~/Views/Shared/_homepage.cshtml";
+}
+@{
+    string nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @ViewBag.Title
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Project</a></li>
+                <li class="breadcrumb-item active">Add Project</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("addproject", "Projet", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="body">
+                    <h2 class="card-inside-title">
+                        Fields with * are mandatory
+                    </h2>
+                    <div class="row clearfix">                       
+                        @Html.HiddenFor(model => model.ResearchId)
+                        @Html.HiddenFor(model => model.Mode)
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Project type</label>
+                                    @Html.DropDownListFor(model => model.NTypeId, Model.selectProduct, "Select Product", new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Category</label>
+                                    @Html.DropDownListFor(model => model.CatId, Model.selectCategory, "Select Category", new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Title</label>
+                                    @Html.EditorFor(model => model.ResearchTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Tagline</label>
+                                    @Html.EditorFor(model => model.Tagline, new { htmlAttributes = new { @class = "form-control" } })                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Research Location</label>
+                                    @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Voltage</label>
+                                    @Html.EditorFor(model => model.Types, new { htmlAttributes = new { @class = "form-control" } })                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Date</label>
+                                    @Html.TextBoxFor(model => model.ResearchEDate, new { type = "date", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <label> Short Description</label>
+                                @Html.TextAreaFor(model => model.ShortDesc, new { @id = "editor1", @class = "form-control editor1", @rows = "10" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.ShortDesc, "", new { @class = "text-danger v-span" })
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <label> Detail</label>
+                                @Html.TextAreaFor(model => model.ResearchDesc, new { @id = "editor2", @class = "form-control editor1", @rows = "10" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.ResearchDesc, "", new { @class = "text-danger v-span" })
+                        </div>
+                    </div>
+                   
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label> Upload Small Image</label>
+                                <input type="file" name="file_Uploader" />
+                                <img src="/uploads/SmallImages/@Url.Content(Model.UploadEvents)" width="80" />
+                                @Html.HiddenFor(model => model.UploadEvents)
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label> Upload large Image </label>
+                                <input type="file" name="file_Uploader1" />
+                                <img src="/uploads/LargeImages/@Url.Content(Model.LargeImage)" width="80" />
+                                @Html.HiddenFor(model => model.LargeImage)
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label> Upload Home Image</label>
+                                <input type="file" name="file_Uploader2" />
+                                <img src="/uploads/SmallImages/@Url.Content(Model.HomeImage)" width="80" />
+                                @Html.HiddenFor(model => model.HomeImage)
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label> Upload File </label>
+                                <input type="file" name="file_Uploader3" />
+                                <img src="/uploads/LargeImages/@Url.Content(Model.VeryLargeImage)" width="80" />
+                                @Html.HiddenFor(model => model.VeryLargeImage)
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Display order</label>
+                                    @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                @Html.ValidationMessageFor(m => m.DisplayOrder, "", new { @class = "text-danger v-span" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5>SEO Section</h5>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Page Name</label>
+                                    @Html.EditorFor(model => model.PageTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Page Meta</label>
+                                    @Html.EditorFor(model => model.PageMeta, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Page Description </label>
+                                    @Html.EditorFor(model => model.PageMetaDesc, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Page Script</label>
+                                    @Html.EditorFor(model => model.OtherSchema, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Canonical </label>
+                                    @Html.EditorFor(model => model.Canonical, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>No Index Follow </label>
+                                    @Html.EditorFor(model => model.NoIndexFollow, new { htmlAttributes = new { @class = "form-control" } })
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" name="action" formaction="@Url.Action("AddProject", "Projet")" formmethod="post"> @ViewBag.CreateUpdate </button>
+                            <input type="submit" class="btn  btn-raised btn-close waves-effect" value="Cancel" name="action" formaction="Cancel" formmethod="post" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+
+
+    <script>
+        $('.editor1').each(function () {
+            CKEDITOR.replace($(this).prop('id'));
+        });
+    </script>
+
+}
+
+
+

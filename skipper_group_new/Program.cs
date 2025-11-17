@@ -41,6 +41,9 @@ builder.Services.AddScoped<clsMainMenuList>(provider =>
 builder.Services.AddScoped<IInvestor, InvestorService>();
 builder.Services.AddScoped<IInvestorRepository, InvestorRepository>();
 
+builder.Services.AddScoped<IBacofficeProject, clsBackofficeProject>();
+builder.Services.AddScoped<IBackofficeProjectRepository, BackofficeProjectRepository>();
+
 builder.Services.AddScoped<MenuDataService>();
 
 builder.Services.AddSession(options =>
