@@ -709,7 +709,7 @@ namespace skipper_group_new.Controllers
                 return View("~/Views/backoffice/investor/addinvestor.cshtml", objcls);
             }
 
-            
+
 
             //return View("~/Views/backoffice/investor/addinvestor.cshtml");
         }
@@ -742,6 +742,7 @@ namespace skipper_group_new.Controllers
                 objcls.newexpiredate = filterresults.First().IsNull("expiraydate") ? (DateTime?)null : Convert.ToDateTime(filterresults.First()["expiraydate"]);
                 objcls.yearcategory = Convert.ToString(filterresults.First()["ycatid"]);
                 objcls.rewriteurl = Convert.ToString(filterresults.First()["rewrite_url"]);
+                objcls.showongroup = Convert.ToBoolean(filterresults.First()["showongroup"]);
                 objcls.uploadfile = Convert.ToString(filterresults.First()["prospectus"]);
                 objcls.uploadimage = Convert.ToString(filterresults.First()["uploadaimage"]);
                 ViewBag.CreateUpdate = "Update";
@@ -757,8 +758,11 @@ namespace skipper_group_new.Controllers
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
 
-            var x = await _Investor.BindInvestor();
-            ViewBag.Bindinvestor = x;
+            DataTable x = await _Investor.BindInvestor();
+
+            ViewBag.Bindinvestor = x.AsEnumerable()
+        .OrderBy(r => r["productid"] == DBNull.Value ? int.MaxValue : Convert.ToInt32(r["productid"]))
+        .CopyToDataTable();
 
             ViewBag.CreateUpdate = "Save";
 
@@ -823,7 +827,7 @@ namespace skipper_group_new.Controllers
             if (filterresults.Any())
             {
                 var row = filterresults.First();
-                obj.status = Convert.ToBoolean(row["showonhome"]) == true ? true : false; // Toggle status
+                obj.status = Convert.ToBoolean(row["showongroup"]) == true ? true : false; // Toggle status
 
                 string status = obj.status ? "True" : "False";
 

@@ -16,6 +16,7 @@ namespace skipper_group_new.Models
         public string mode { get; set; }
         public bool showonhome { get; set; }
         public string rewriteurl { get; set; }
+        public bool showongroup { get; set; }
         public string ShortDetail { get; set; }
         public string uploadfile { get; set; }
         public string uploadimage { get; set; }

@@ -159,139 +159,132 @@
 @{
     var nonce = Context.Items["CSPNonce"]?.ToString();
 }
-<script nonce="@nonce">
+@* <script nonce="@nonce">
 
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
 
-        // DELETE CONFIRM
-        const deleteButtons = document.querySelectorAll('.btndelete');
-        deleteButtons.forEach(function (btn) {
-            btn.addEventListener('click', function (e) {
-                e.preventDefault();
-                const confirmed = confirm("Are you sure you want to delete this record?");
-                if (confirmed) {
-                    window.location.href = btn.getAttribute('data-href');
-                }
-            });
-        });
-
-        paginateTable();   // run pagination once
-
-    });
-
-
-    /* ------------------------------------
-       PAGINATION
-    ------------------------------------ */
-
-    let currentPage = 1;
-    const rowsPerPage = 10;
-
-    function getVisibleRows() {
-        const table = document.getElementById('categoryTable');
-        return Array.from(table.querySelectorAll('tbody tr'))
-                    .filter(r => r.style.display !== 'none'); // ONLY visible rows
-    }
-
-    function paginateTable() {
-        const rows = getVisibleRows();  // only filtered rows
-        const totalRows = rows.length;
-        const totalPages = Math.ceil(totalRows / rowsPerPage);
-
-        rows.forEach(row => row.style.display = 'none');
-
-        const start = (currentPage - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-
-        rows.forEach((row, index) => {
-            if (index >= start && index < end) {
-                row.style.display = '';
+    const deleteButtons = document.querySelectorAll('.btndelete');
+    deleteButtons.forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (confirm("Are you sure you want to delete this record?")) {
+                window.location.href = btn.getAttribute('data-href');
             }
         });
-
-        document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
-        document.getElementById('prevPage').disabled = currentPage === 1;
-        document.getElementById('nextPage').disabled = currentPage === totalPages;
-    }
-
-
-    document.getElementById('prevPage').addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            paginateTable();
-        }
     });
 
-    document.getElementById('nextPage').addEventListener('click', () => {
-        const rows = getVisibleRows();
-        const totalPages = Math.ceil(rows.length / rowsPerPage);
-        if (currentPage < totalPages) {
-            currentPage++;
-            paginateTable();
-        }
+    paginateTable();
+});
+
+
+/* -------------------------------
+   PAGINATION
+--------------------------------*/
+let currentPage = 1;
+const rowsPerPage = 10;
+
+function getVisibleRows() {
+    return Array.from(document.querySelectorAll('#categoryTable tbody tr'))
+        .filter(r => r.style.display !== 'none');
+}
+
+function paginateTable() {
+
+    const rows = getVisibleRows();
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+    rows.forEach(r => r.style.display = 'none');
+
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    rows.slice(start, end).forEach(r => r.style.display = '');
+
+    document.getElementById("pageInfo").textContent =
+        `Page ${currentPage} of ${totalPages}`;
+
+    document.getElementById("prevPage").disabled = currentPage === 1;
+    document.getElementById("nextPage").disabled = currentPage === totalPages;
+}
+
+document.getElementById("prevPage").onclick = () => {
+    if (currentPage > 1) {
+        currentPage--;
+        paginateTable();
+    }
+};
+
+document.getElementById("nextPage").onclick = () => {
+    const rows = getVisibleRows();
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+    if (currentPage < totalPages) {
+        currentPage++;
+        paginateTable();
+    }
+};
+
+
+/* -------------------------------
+   SEARCH
+--------------------------------*/
+function searchTable() {
+
+    const text = document.getElementById('searchInput').value.toLowerCase();
+
+    document.querySelectorAll('#categoryTable tbody tr').forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(text)
+            ? ''
+            : 'none';
     });
 
-
-    /* ------------------------------------
-       SEARCH
-    ------------------------------------ */
-    function searchTable() {
-        const input = document.getElementById('searchInput').value.toLowerCase();
-        const rows = document.querySelectorAll('#categoryTable tbody tr');
-
-        rows.forEach(row => {
-            row.style.display = row.textContent.toLowerCase().includes(input) ? "" : "none";
-        });
-
-        currentPage = 1;
-        paginateTable();
-    }
+    currentPage = 1;
+    paginateTable();
+}
 
 
-    /* ------------------------------------
-       DATE FILTER
-    ------------------------------------ */
-    function filterByDate() {
-        const fromDateInput = document.getElementById('fromDate').value;
-        const toDateInput = document.getElementById('toDate').value;
+/* -------------------------------
+   DATE FILTER (FIXED INDEX)
+--------------------------------*/
+function filterByDate() {
 
-        const fromDate = fromDateInput ? new Date(fromDateInput) : null;
-        const toDate = toDateInput ? new Date(toDateInput) : null;
+    const from = document.getElementById('fromDate').value;
+    const to = document.getElementById('toDate').value;
 
-        if (toDate) {
-            toDate.setDate(toDate.getDate() + 1);
-        }
+    const fromDate = from ? new Date(from) : null;
+    const toDate = to ? new Date(to) : null;
 
-        const rows = document.querySelectorAll('#categoryTable tbody tr');
+    if (toDate) toDate.setDate(toDate.getDate() + 1);
 
-        rows.forEach(row => {
-            const dateCell = row.getElementsByTagName('td')[2];
-            if (!dateCell) return;
+    document.querySelectorAll('#categoryTable tbody tr').forEach(row => {
 
-            const rowDate = new Date(dateCell.textContent.trim());
-            let show = true;
+        const dateCell = row.getElementsByTagName('td')[9]; // FIXED INDEX
 
-            if (fromDate && rowDate < fromDate) show = false;
-            if (toDate && rowDate >= toDate) show = false;
+        if (!dateCell) return;
 
-            row.style.display = show ? "" : "none";
-        });
+        const cellDate = new Date(dateCell.textContent.trim());
+        let show = true;
 
-        currentPage = 1;
-        paginateTable();
-    }
+        if (fromDate && cellDate < fromDate) show = false;
+        if (toDate && cellDate >= toDate) show = false;
 
+        row.style.display = show ? '' : 'none';
+    });
 
-    // SUCCESS MESSAGE HIDE
-    setTimeout(() => {
-        const msg = document.getElementById("message");
-        if (msg) msg.style.display = "none";
-    }, 2000);
+    currentPage = 1;
+    paginateTable();
+}
+
+setTimeout(() => {
+    const msg = document.getElementById("message");
+    if (msg) msg.style.display = "none";
+}, 2000);
 
 </script>
+ *@
 
 
-@* <script nonce="@nonce">
+ <script nonce="@nonce">
     document.addEventListener('DOMContentLoaded', function () {
         const deleteButtons = document.querySelectorAll('.btndelete');
         deleteButtons.forEach(function (btn) {
@@ -410,4 +403,4 @@
             msg.style.display = "none";
         }
     }, 2000);
-</script> *@
+</script> 

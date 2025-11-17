@@ -482,7 +482,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@expiraydate", obj.newexpiredate);
                     cmd.Parameters.AddWithValue("@displayorder", obj.displayorder ?? string.Empty);
                     cmd.Parameters.AddWithValue("@uname", obj.uname);
-                  //  cmd.Parameters.AddWithValue("@purl", obj.vediourl ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@showongroup", obj.showongroup);
                     cmd.Parameters.AddWithValue("@purl", obj.thirdpartyurl ?? string.Empty);
                     cmd.Parameters.AddWithValue("@Isfamilyproduct", "" ?? string.Empty);
                     cmd.Parameters.AddWithValue("@producttitle", obj.Name ?? string.Empty);
