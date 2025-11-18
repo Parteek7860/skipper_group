@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Thank You";
+    Layout = "~/Views/Shared/_cms.cshtml";
+}
+<section class="thankyou">
+    <div class="container ">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div id="message" class="alert alert-success"
+                 style="margin:20px auto; width:80%; text-align:center; border-radius:8px; font-weight:500; background-color:#d4edda; color:#155724; padding:12px;">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div id="message" class="alert alert-danger"
+                 style="margin:20px auto; width:80%; text-align:center; border-radius:8px; font-weight:500; background-color:#f8d7da; color:#721c24; padding:12px;">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="d-none">
+                    Thank You
+                </h2>
+                <p class="text-center">
+                    Your Enquiry has been successfully submitted. <br>Our representative will contact you soon.<br><br>
+
+                </p>
+                <div class="apply tankyou_btn" style="text-align:center;">
+                    <a href="/"><img src="/images/home_icon.webp" alt="" /> Back to Homepage </a>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <br />
+        </div>
+    </div>
+</section>
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<script nonce="@nonce">
+    setTimeout(function () {
+        var msg = document.getElementById("message");
+        if (msg) {
+            msg.style.display = "none";
+        }
+    }, 2500);
+</script>

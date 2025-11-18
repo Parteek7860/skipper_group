@@ -1,35 +1,42 @@
 ﻿<!DOCTYPE html>
 
 <html>
-    <head>
-        <meta name="viewport" content="width=device-width" />
-        @await Html.PartialAsync("~/Views/Shared/_seosection.cshtml")
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,700&amp;family=Roboto:wght@100;300;400;500;600;700;900&amp;display=swap" rel="stylesheet" />
-        <link rel="preload" type="text/css" href="https://cdnjs.cloudflare.com/" />
-        <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/bootstrap.min.css")" asp-append-version="true" />
-        <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/slick.css")" asp-append-version="true" />
-        <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/common.css")" asp-append-version="true" />
-        <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/header.css")" asp-append-version="true" />
-        <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/home-page.css")" asp-append-version="true" />
-        <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/home-responsive.css")" asp-append-version="true" />
-        <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/footer.css")" asp-append-version="true" />
-        <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/animate.css")" asp-append-version="true" />
-        <link href="~/css/dynamic.css" rel="stylesheet" asp-append-version="true" />
-        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-    </head>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @await Html.PartialAsync("~/Views/Shared/_seosection.cshtml") 
 
-    <body>
-        @RenderBody()
-        @await Html.PartialAsync("~/Views/Shared/_footer.cshtml")
-        <script src="@Url.Content("~/js/bootstrap.bundle.min.js")" asp-append-version="true"></script>
-        <script src="@Url.Content("~/js/slick.min.js")" asp-append-version="true"></script>
-        <script src="@Url.Content("~/js/jquery-3.7.1.min.js")" asp-append-version="true"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.19/jquery.touchSwipe.min.js"></script>
-        <script src="@Url.Content("~/js/main.js")" asp-append-version="true"></script>
-        <script src="~/js/navactive.js" asp-append-version="true"></script>
-    <script src="~/js/footer_select.js" asp-append-version="true"></script>
-    </body>
+
+    <link href="@Url.Content("~/css/bootstrap.min.css")" rel="stylesheet" asp-append-version="true">
+    <link href="@Url.Content("~/css/common.css")" rel="stylesheet" asp-append-version="true">
+    <link href="@Url.Content("~/css/header.css")" rel="stylesheet" asp-append-version="true">
+    <link href="@Url.Content("~/css/footer.css")" rel="stylesheet" asp-append-version="true">
+    <link href="@Url.Content("~/css/home-animation.css")" rel="stylesheet" asp-append-version="true">
+    <link href="@Url.Content("~/css/home.css")" rel="stylesheet" asp-append-version="true">
+    <link href="@Url.Content("~/css/home-responsive.css")" rel="stylesheet asp-append-version=" true"">
+    <link href="@Url.Content("~/css/swiper.css")" rel="stylesheet" asp-append-version="true">
+    <link href="@Url.Content("~/css/aos.css")" rel="stylesheet" asp-append-version="true">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
+    <script src="@Url.Content("~/js/jquery.min.js")" asp-append-version="true"></script>
+</head>
+
+<body>
+    @RenderBody()
+
+    @await Html.PartialAsync("~/Views/Shared/_footer.cshtml")
+
+    <script src="@Url.Content("/js/bootstrap.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("/js/swiper.js")" asp-append-version="true"></script>
+
+    <script src="@Url.Content("/js/TweenMax.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("/js/SmoothScroll.min.js")" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="@Url.Content("/js/aos.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("/js/common.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("/js/home.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("/js/home-animation.js")" asp-append-version="true"></script>
+</body>
 </html>

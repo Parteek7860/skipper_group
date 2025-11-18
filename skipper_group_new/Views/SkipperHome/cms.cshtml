@@ -1,0 +1,9 @@
+﻿@model skipper_group_new.Models.clsHomeModel
+@using skipper_group_new.Models
+
+@{
+    ViewData["Title"] = "CMS";
+    Layout = "~/Views/Shared/_cms.cshtml";
+    
+}
+@Html.Raw(Model.cmscontent)

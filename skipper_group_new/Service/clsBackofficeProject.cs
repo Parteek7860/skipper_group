@@ -36,5 +36,16 @@ namespace skipper_group_new.Service
         {
             return await _repository.ExecuteProjectAction(researchId, mode);
         }
+
+        //Rakesh Chauhan - 17/11/2025 - CategoryModule
+        public async Task<int> AddUpdateCategory(clsCategory category)
+        {
+            return await _repository.AddUpdateCategory(category);
+        }
+
+        public async Task<int> ExecuteCategoryAction(int pcatid, int mode)
+        {
+            return await _repository.ExecuteCategoryAction(pcatid, mode);
+        }   
     }
 }

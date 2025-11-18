@@ -1,9 +1,9 @@
-﻿@model skipper_group_new.Models.ResearchModel;
+﻿@model skipper_group_new.Models.clsCategory;
 @using System.Data;
 @{
-    ViewBag.Title = "View Photo Gallery";
+    ViewBag.Title = "View Category";
     Layout = "~/Views/Shared/_homepage.cshtml";
-    var medialist = ViewBag.ProjectList as System.Data.DataTable;
+    var medialist = ViewBag.CategoryList as System.Data.DataTable;
 }
 <div class="block-header">
     <div class="row">
@@ -15,8 +15,8 @@
         </div>
         <div class="col-lg-5 col-md-6 col-sm-12">
             <ul class="breadcrumb float-md-right">
-                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i>Photo Gallery</a></li>
-                <li class="breadcrumb-item active">View Photo Gallery</li>
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i>Category</a></li>
+                <li class="breadcrumb-item active">View Category</li>
             </ul>
         </div>
     </div>
@@ -61,10 +61,8 @@
                                     <thead class="table-header">
                                         <tr>
                                             <th>Title</th>
-                                            <th>Publish</th>
-                                            <th>Show On Home</th>
-                                            <th>Feature Project</th>
                                             <th>Display Order</th>
+                                            <th>Publish</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -72,12 +70,13 @@
                                         @foreach (DataRow row in medialist.Rows)
                                         {
                                             <tr>
-                                                <td>@(Convert.ToString(row["researchTitle"]))</td>
+                                                <td>@(Convert.ToString(row["category"]))</td>
+                                                <td>@(Convert.ToString(row["displayorder"]))</td>
                                                 @if ((Convert.ToBoolean(row["status"]) == true))
                                                 {
                                                     <td>
-                                                        <a data-value="@(Convert.ToString(row["researchid"]))"
-                                                           href="/backoffice/project/chngStatus/@(Convert.ToString(row["researchid"]))" class="btnstatus" onclick="return confirm('You want to unpublish');">
+                                                        <a data-value="@(Convert.ToString(row["pcatid"]))"
+                                                           href="/backoffice/project/chngCategoryStatus/@(Convert.ToString(row["pcatid"]))" class="btnstatus" onclick="return confirm('You want to unpublish');">
                                                             <img src="~/backoffice/images/active.png" width="25" />
                                                         </a>
 
@@ -86,64 +85,20 @@
                                                 else
                                                 {
                                                     <td>
-                                                        <a data-value="@(Convert.ToString(row["researchid"]))"
-                                                           href="/backoffice/project/chngStatus/@(Convert.ToString(row["researchid"]))" class="btnstatus" onclick="return confirm('You want to publish');">
+                                                        <a data-value="@(Convert.ToString(row["pcatid"]))"
+                                                           href="/backoffice/project/chngCategoryStatus/@(Convert.ToString(row["pcatid"]))" class="btnstatus" onclick="return confirm('You want to publish');">
                                                             <img src="~/backoffice/images/wrong.png" width="25" />
                                                         </a>
 
                                                     </td>
                                                 }
-
-                                                @if ((Convert.ToBoolean(row["showonhome"]) == true))
-                                                {
-                                                    <td>
-                                                        <a data-value="@(Convert.ToString(row["researchid"]))"
-                                                           href="/backoffice/project/chngShowHome/@(Convert.ToString(row["researchid"]))" class="btnhome" onclick="return confirm('You want to deactivate from home.');">
-                                                            <img src="~/backoffice/images/active.png" width="25" />
-                                                        </a>
-
-                                                    </td>
-                                                }
-                                                else
-                                                {
-                                                    <td>
-                                                        <a data-value="@(Convert.ToString(row["researchid"]))"
-                                                           href="/backoffice/project/chngShowHome/@(Convert.ToString(row["researchid"]))" class="btnstatus" onclick="return confirm('You want to activete to home.');">
-                                                            <img src="~/backoffice/images/wrong.png" width="25" />
-                                                        </a>
-
-                                                    </td>
-                                                }
-
-                                                @if ((Convert.ToBoolean(row["showonschool"]) == true))
-                                                {
-                                                    <td>
-                                                        <a data-value="@(Convert.ToString(row["researchid"]))"
-                                                           href="/backoffice/project/chngFeature/@(Convert.ToString(row["researchid"]))" class="btnstatus" onclick="return confirm('You want to deactivate feature project.');">
-                                                            <img src="~/backoffice/images/active.png" width="25" />
-                                                        </a>
-
-                                                    </td>
-                                                }
-                                                else
-                                                {
-                                                    <td>
-                                                        <a data-value="@(Convert.ToString(row["researchid"]))"
-                                                           href="/backoffice/project/chngFeature/@(Convert.ToString(row["researchid"]))" class="btnstatus" onclick="return confirm('You want to activate feature project.');">
-                                                            <img src="~/backoffice/images/wrong.png" width="25" />
-                                                        </a>
-
-                                                    </td>
-                                                }
-                                                <td>@(Convert.ToString(row["DisplayOrder"]))</td>
                                                 <td>
-                                                    <input type="hidden" value="@(Convert.ToString(row["researchid"]))" />
-
-                                                    <a id="1" data-value="@(Convert.ToString(row["researchid"]))"
-                                                       href="/backoffice/project/editProject/@(Convert.ToString(row["researchid"]))" class="btnEdit">
+                                                    <input type="hidden" value="@(Convert.ToString(row["pcatid"]))" />
+                                                    <a id="1" data-value="@(Convert.ToString(row["pcatid"]))"
+                                                       href="/backoffice/project/editCategory/@(Convert.ToString(row["pcatid"]))" class="btnEdit">
                                                         <img src="~/backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
                                                     </a>
-                                                    <a data-value="@(Convert.ToString(row["researchid"]))" href="/backoffice/project/deleteProject/@(Convert.ToString(row["researchid"]))" class="btndelete">
+                                                    <a data-value="@(Convert.ToString(row["pcatid"]))" href="/backoffice/project/deleteCategory/@(Convert.ToString(row["pcatid"]))" class="btndelete">
                                                         <img src="~/backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
                                                     </a>
                                                 </td>

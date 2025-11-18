@@ -472,33 +472,28 @@ namespace skipper_group_new.Controllers
 
         [HttpPost]
         [Route("backoffice/gallery/addPhoto")]
-        public async Task<IActionResult> addPhoto(clsGallery objgallery, IFormFile file_Uploader)
+        public async Task<IActionResult> addPhoto(clsGallery objgallery, IFormFile? file_Uploader)
         {
             HttpContext.Session.Remove("Message");
             var objAlbumType = new clsGallery();
             ViewBag.Menus = _menuService.GetMenu();
-            ModelState.Remove("mode");
-            ModelState.Remove("uname");
             ModelState.Remove("eventsdate");
-            ModelState.Remove("selectalbumtype");
             ModelState.Remove("pagetitle");
             ModelState.Remove("metakeywords");
             ModelState.Remove("metadesc");
             ModelState.Remove("canonical");
             ModelState.Remove("shortdetail");
             ModelState.Remove("bannerimage");
-            ModelState.Remove("uploadbanner");
             ModelState.Remove("largeimage");
-            ModelState.Remove("uploadlargeimage");
-            ModelState.Remove("status");
             ModelState.Remove("URL");
             ModelState.Remove("albumdesc");
             ModelState.Remove("searchname");
             ModelState.Remove("startdate");
             ModelState.Remove("enddate");
             ModelState.Remove("tagline");
-            ModelState.Remove("mode");
-            ModelState.Remove("uname");
+            ModelState.Remove("selectalbumtype");
+            ModelState.Remove("uploadlargeimage");
+
             if (ModelState.IsValid)
             {
                 try
@@ -529,20 +524,25 @@ namespace skipper_group_new.Controllers
 
                         objgallery.uploadbanner = fileName;
                     }
+                    else
+                    {
+                        objgallery.uploadbanner = objgallery.uploadbanner;
+                    }
                     int result = await _backofficeService.AddAlbumPhoto(objgallery);
                     if (result > 0)
                     {
                         if (objgallery.id == 0)
                         {
                             HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Photo gallary Added successfully.");
+                            TempData["Title"] = "Gallery Photo";
+                            return RedirectToAction("PhotoGallary", "Gallery");
                         }
                         else
                         {
                             HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Photo gallary Updated successfully.");
+                            TempData["Title"] = "Gallery Photo";
+                            return RedirectToAction("viewphotogallery", "Gallery");
                         }
-
-                        TempData["Title"] = "Gallery Photo";
-                        return RedirectToAction("PhotoGallary", "Gallery");
                     }
                     else
                     {
@@ -583,13 +583,16 @@ namespace skipper_group_new.Controllers
                 objAlbumType.uploadbanner = Convert.ToString(bannerTypes.Rows[0]["uploadphoto"]);
                 objAlbumType.mode = "2";
                 objAlbumType.uname = HttpContext.Session.GetString("UserName");
+                var selectedAlbumType = Convert.ToInt32(bannerTypes.Rows[0]["albumid"]);
+                objAlbumType.albumtype = selectedAlbumType;
                 objAlbumType.selectalbumtype = content.AsEnumerable()
-                   .Select(row => new SelectListItem
-                   {
-                       Value = row["Albumid"]?.ToString() ?? string.Empty,
-                       Text = row["Albumtitle"]?.ToString() ?? string.Empty
-                   })
-                   .ToList();
+                    .Select(row => new SelectListItem
+                    {
+                        Value = row["Albumid"].ToString(),
+                        Text = row["Albumtitle"].ToString(),
+                        Selected = (row["Albumid"].ToString() == selectedAlbumType.ToString())
+                    })
+                    .ToList();
                 ViewBag.CreateUpdate = "Update";
             }
             return View("~/Views/backoffice/gallery/addphotogallery.cshtml", objAlbumType);
@@ -643,5 +646,6 @@ namespace skipper_group_new.Controllers
             }
             return RedirectToAction("viewphotogallery", "Gallery");
         }
+
     }
 }

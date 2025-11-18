@@ -4,11 +4,13 @@ using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
 using skipper_group_new.Models;
 using System.Data;
+
 using System.Linq;
+using System.Net;
 
 namespace skipper_group_new.Controllers
 {
-    //Rakesh Chauhan - 12/06/2024 - Backoffice Project Controller Created
+    //Rakesh Chauhan - 14/11/2025 - Backoffice Project Controller Created
     public class ProjetController : Controller
     {
         private readonly clsMainMenuList _menuService;
@@ -77,7 +79,7 @@ namespace skipper_group_new.Controllers
             ModelState.Remove("PageMeta");
             ModelState.Remove("PageMetaDesc");
             ModelState.Remove("PageTitle");
-            ModelState.Remove("ResearchEDate");
+            ModelState.Remove("ResearchSDate");
             ModelState.Remove("RewriteUrl");
             ModelState.Remove("ShowOnGroup");
             ModelState.Remove("ShowOnSchool");
@@ -89,6 +91,12 @@ namespace skipper_group_new.Controllers
             ModelState.Remove("Status");
             ModelState.Remove("ResearchId");
             ModelState.Remove("Mode");
+            ModelState.Remove("TRDate");
+            ModelState.Remove("file_Uploader");
+            ModelState.Remove("file_Uploader1");
+            ModelState.Remove("file_Uploader2");
+            ModelState.Remove("file_Uploader3");
+            
             if (!ModelState.IsValid)
             {
                 HttpContext.Session.SetString("Message", "Please fill in all required fields.");
@@ -114,6 +122,10 @@ namespace skipper_group_new.Controllers
 
                     research.UploadEvents = fileName;
                 }
+                else
+                {
+                    research.UploadEvents = research.UploadEvents;
+                }
                 if (file_Uploader1 != null && file_Uploader1.Length > 0)
                 {
                     var fileName1 = Path.GetFileName(file_Uploader1.FileName);
@@ -122,6 +134,10 @@ namespace skipper_group_new.Controllers
                     await file_Uploader1.CopyToAsync(stream);
                     research.LargeImage = fileName1;
                 }
+                else
+                {
+                    research.LargeImage = research.LargeImage;
+                }
                 if (file_Uploader2 != null && file_Uploader2.Length > 0)
                 {
                     var fileName2 = Path.GetFileName(file_Uploader2.FileName);
@@ -129,6 +145,10 @@ namespace skipper_group_new.Controllers
                     using var stream = new FileStream(filePath2, FileMode.Create);
                     await file_Uploader2.CopyToAsync(stream);
                     research.HomeImage = fileName2;
+                }
+                else
+                {
+                    research.HomeImage = research.HomeImage;
                 }
                 if (file_Uploader3 != null && file_Uploader3.Length > 0)
                 {
@@ -140,12 +160,23 @@ namespace skipper_group_new.Controllers
 
                     research.VeryLargeImage = fileName3;
                 }
+                else
+                {
+                    research.VeryLargeImage = research.VeryLargeImage;
+                }
                 var newId = await _project.AddUpdateProject(research);
                 if (newId > 0)
                 {
-                    string msg = research.ResearchId == 0 ? "Project added successfully." : "Project updated successfully.";
-                    HttpContext.Session.SetString("Message", msg);
-                    return RedirectToAction("GetProject", "Projet");
+                    if(research.ResearchId == 0)
+                    {
+                        HttpContext.Session.SetString("Message", "Project added successfully.");
+                        return RedirectToAction("GetProject", "Projet");
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("Message", "Project updated successfully.");
+                        return RedirectToAction("ViewProject", "Projet");
+                    }
                 }
                 HttpContext.Session.SetString("Message", "Failed to save project.");
             }
@@ -155,7 +186,6 @@ namespace skipper_group_new.Controllers
             }
             return RedirectToAction("GetProject", "Projet");
         }
-
 
         [HttpGet]
         [Route("backoffice/project/viewproject")]
@@ -193,16 +223,16 @@ namespace skipper_group_new.Controllers
                 var research = new ResearchModel
                 {
                     ResearchId = row.Field<int>("researchid"),
-                    NTypeId = row.Field<int?>("ntypeid"),
+                    NTypeId = row.Field<int>("ntypeid"),
                     CatId = row.Field<string>("catid"),
                     ResearchTitle = row.Field<string>("researchtitle"),
                     Tagline = row.Field<string>("tagline"),
                     Location = row.Field<string>("location"),
                     Types = row.Field<string>("types"),
-                    ResearchSDate = row.IsNull("researchsdate") ? null : row.Field<DateTime?>("researchsdate"),
-                    ResearchEDate = row.IsNull("researchedate") ? null : row.Field<DateTime?>("researchedate"),
-                    ShortDesc = row.Field<string>("shortdesc"),
-                    ResearchDesc = row.Field<string>("researchdesc"),
+                    ResearchEDate = row.Field<DateTime?>("researchedate"),
+                    ResearchSDate = row.Field<DateTime?>("researchsdate"),
+                    ShortDesc = WebUtility.HtmlDecode(row.Field<string>("shortdesc")??""),
+                    ResearchDesc = WebUtility.HtmlDecode(row.Field<string>("researchdesc")??""),
                     UploadEvents = row.Field<string>("uploadevents"),
                     LargeImage = row.Field<string>("largeimage"),
                     HomeImage = row.Field<string>("homeimage"),
@@ -216,6 +246,7 @@ namespace skipper_group_new.Controllers
                     NoIndexFollow = row.Field<bool?>("no_indexfollow"),
                 };
 
+
                 var product = await _project.GetProduct();
                 var category = await _project.GetCategory();
                 if (product?.Rows.Count > 0)
@@ -225,7 +256,7 @@ namespace skipper_group_new.Controllers
                         {
                             Value = r["productid"].ToString(),
                             Text = r["productname"].ToString(),
-                            Selected = (research.NTypeId?.ToString() == r["productid"].ToString())
+                            Selected = (research.NTypeId.ToString() == r["productid"].ToString())
                         })
                         .ToList();
                 }
@@ -260,8 +291,8 @@ namespace skipper_group_new.Controllers
         {
             try
             {
-                int Mode = 3;   
-                var result = await _project.ExecuteProjectAction(id,Mode);
+                int Mode = 3;
+                var result = await _project.ExecuteProjectAction(id, Mode);
                 if (result > 0)
                 {
                     HttpContext.Session.SetString("Message", "Project deleted successfully.");
@@ -285,7 +316,7 @@ namespace skipper_group_new.Controllers
         {
             try
             {
-                int Mode = 8;                
+                int Mode = 8;
                 var result = await _project.ExecuteProjectAction(id, Mode);
                 if (result > 0)
                 {
@@ -310,7 +341,7 @@ namespace skipper_group_new.Controllers
         {
             try
             {
-                int Mode = 9;                
+                int Mode = 9;
                 var result = await _project.ExecuteProjectAction(id, Mode);
                 if (result > 0)
                 {
@@ -335,7 +366,7 @@ namespace skipper_group_new.Controllers
         {
             try
             {
-                int Mode = 10;                
+                int Mode = 10;
                 var result = await _project.ExecuteProjectAction(id, Mode);
                 if (result > 0)
                 {
@@ -352,5 +383,182 @@ namespace skipper_group_new.Controllers
             }
             return RedirectToAction("ViewProject", "Projet");
         }
+
+
+        //RAKESH CHAUHAN 17/11/2025
+        [HttpGet]
+        [Route("backoffice/project/category")]
+        public async Task<IActionResult> Category()
+        {
+            var cat = new clsCategory();
+            ViewBag.Menus = _menuService.GetMenu();
+            ViewBag.CreateUpdate = "Save";
+            return View("~/Views/backoffice/project/category.cshtml", cat);
+        }
+
+        [HttpGet]
+        [Route("backoffice/project/viewcategory")]
+        public async Task<IActionResult> ViewCategory()
+        {
+            var cat = new clsCategory();
+            ViewBag.Menus = _menuService.GetMenu();
+            var content = await _project.GetCategory();
+            if (content != null)
+            {
+                ViewBag.CategoryList = content;
+            }
+            return View("~/Views/backoffice/project/viewcategory.cshtml", cat);
+        }
+
+        [HttpPost]
+        [Route("backoffice/project/addCategory")]
+        public async Task<IActionResult> AddCategory(clsCategory m)
+        {
+            HttpContext.Session.Remove("Message");
+            ViewBag.Menus = _menuService.GetMenu();
+            ModelState.Remove("shortname");
+            ModelState.Remove("Detail");
+            ModelState.Remove("ShortDetail");
+            ModelState.Remove("ShowOnHome");
+            ModelState.Remove("Status");
+            ModelState.Remove("Banner");
+            ModelState.Remove("UploadAPDF");
+            ModelState.Remove("productid");
+            ModelState.Remove("PageTitle");
+            ModelState.Remove("PageMeta");
+            ModelState.Remove("PageMetaDesc");
+            ModelState.Remove("RewriteUrl");
+            ModelState.Remove("Canonical");
+            ModelState.Remove("NoIndexFollow");
+            ModelState.Remove("PageScript");
+            ModelState.Remove("HomeImage");
+            ModelState.Remove("HomeDesc");
+            ModelState.Remove("Uname");
+            ModelState.Remove("Mode");
+            var errors = ModelState
+   .Where(ms => ms.Value.Errors.Count > 0)
+   .Select(ms => new { Key = ms.Key, Errors = ms.Value.Errors })
+   .ToList();
+            if (!ModelState.IsValid)
+            {
+                HttpContext.Session.SetString("Message", "Please fill in all required fields.");
+                return RedirectToAction("Category", "Projet");
+            }
+
+            try
+            {
+                m.Mode = m.PcatId > 0 ? 2 : 1;
+                m.Status = true;
+                m.Uname = HttpContext.Session.GetString("UserName");
+                m.ShowOnHome = false;
+                var newId = await _project.AddUpdateCategory(m);
+                if (newId > 0)
+                {
+                    if(m.PcatId == 0)
+                    {
+                        HttpContext.Session.SetString("Message", "Category added successfully.");
+                        return RedirectToAction("Category", "Projet");
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("Message", "Category updated successfully.");
+                        return RedirectToAction("ViewCategory", "Projet");
+                    }   
+                }
+                HttpContext.Session.SetString("Message", "Failed to save project.");
+            }
+            catch (Exception ex)
+            {
+                HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
+            }
+            return RedirectToAction("Category", "Projet");
+        }
+
+        [HttpGet]
+        [Route("backoffice/project/editCategory/{id}")]
+        public async Task<IActionResult> GetCategoryByID(int id)
+        {
+            try
+            {
+                var x = await _project.GetCategory();
+                var rows = x.AsEnumerable().Where(r => r.Field<int>("pcatid") == id).ToList();
+                if (!rows.Any())
+                {
+                    HttpContext.Session.SetString("Message", "Category not found.");
+                    return RedirectToAction("Category", "Projet");
+                }
+                var row = rows.First();
+                var research = new clsCategory
+                {
+                    PcatId = row.Field<int>("pcatid"),
+                    Category = row.Field<string>("category"),
+                    Detail = WebUtility.HtmlDecode(row.Field<string>("detail")??""),
+                    DisplayOrder = row.Field<int?>("displayorder"),
+                    Mode = 2,
+                    PageTitle = row.Field<string>("PageTitle"),
+                    PageMeta = row.Field<string>("PageMeta"),
+                    PageMetaDesc = row.Field<string>("PageMetaDesc"),
+                    PageScript = row.Field<string>("pagescript"),
+                    Canonical = row.Field<string>("canonical"),
+                    NoIndexFollow = row.Field<bool>("no_indexfollow"),
+                };
+                ViewBag.Menus = _menuService.GetMenu();
+                ViewBag.CreateUpdate = "Update";
+                return View("~/Views/backoffice/project/category.cshtml", research);
+            }
+            catch (Exception ex)
+            {
+                HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
+                return RedirectToAction("Category", "Projet");
+            }
+        }
+
+        [HttpGet]
+        [Route("backoffice/project/deleteCategory/{id}")]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            try
+            {
+                int Mode = 3;
+                var result = await _project.ExecuteCategoryAction(id, Mode);
+                if (result > 0)
+                {
+                    HttpContext.Session.SetString("Message", "Category deleted successfully.");
+                }
+                else
+                {
+                    HttpContext.Session.SetString("Message", "Failed to delete category.");
+                }
+            }
+            catch (Exception ex)
+            {
+                HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
+            }
+            return RedirectToAction("ViewCategory", "Projet");
+        }
+
+        [HttpGet]
+        [Route("backoffice/project/chngCategoryStatus/{id}")]
+        public async Task<IActionResult> ChangeCategoryStatus(int id)
+        {
+            try
+            {
+                int Mode = 5;
+                var result = await _project.ExecuteCategoryAction(id, Mode);
+                if (result > 0)
+                {
+                    HttpContext.Session.SetString("Message", "Status changed successfully.");
+                }
+                else
+                {
+                    HttpContext.Session.SetString("Message", "Failed to change category status.");
+                }
+            }
+            catch (Exception ex)
+            {
+                HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
+            }
+            return RedirectToAction("ViewCategory", "Projet");
+        }        
     }
 }

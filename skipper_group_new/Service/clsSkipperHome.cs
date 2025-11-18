@@ -1,0 +1,27 @@
+﻿using skipper_group_new.Interface;
+
+using skipper_group_new.Models;
+using skipper_group_new.Repositories;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Data;
+using System.Threading.Tasks;
+
+namespace skipper_group_new.Service
+{
+    public class clsSkipperHome : ISkipperHome
+    {
+        private readonly ISkipperHomeRepository _repository;
+
+        public clsSkipperHome(ISkipperHomeRepository repository) => this._repository = repository;
+
+        public Task<DataTable> GetMenuList() => this._repository.GetMenuList();
+
+        public Task<DataTable> GetSubMenuList() => this._repository.GetSubMenuList();
+
+        public Task<DataTable> GetHamburgerMenuList() => this._repository.GetHamburgerMenuList();
+
+        public Task<DataTable> GetCMSData() => this._repository.GetCMSData();
+
+        public Task<DataTable> GetSeoFriendlyUrls() => this._repository.GetSeoFriendlyUrls();
+    }
+}

@@ -1,4 +1,5 @@
-﻿@model skipper_group_new.Models.ResearchModel
+﻿
+@model skipper_group_new.Models.ResearchModel
 @using System.Data;
 @{
     ViewBag.Title = "Add Project";
@@ -26,7 +27,7 @@
 
 @using (Html.BeginForm("addproject", "Projet", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.ValidationSummary(true)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
@@ -40,18 +41,20 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label> Project type</label>
+                                    <label> Project type<span style="color:red">*</span></label>
                                     @Html.DropDownListFor(model => model.NTypeId, Model.selectProduct, "Select Product", new { @class = "form-control" })
                                 </div>
                             </div>
+                            @Html.ValidationMessageFor(m => m.NTypeId, "", new { @class = "text-danger v-span" })
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label> Category</label>
+                                    <label> Category<span style="color:red">*</span></label>
                                     @Html.DropDownListFor(model => model.CatId, Model.selectCategory, "Select Category", new { @class = "form-control" })
                                 </div>
                             </div>
+                            @Html.ValidationMessageFor(m => m.CatId, "", new { @class = "text-danger v-span" })
                         </div>
                     </div>
 
@@ -59,10 +62,11 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label> Title</label>
+                                    <label> Title<span style="color:red">*</span></label>
                                     @Html.EditorFor(model => model.ResearchTitle, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>
                             </div>
+                            @Html.ValidationMessageFor(m => m.ResearchTitle, "", new { @class = "text-danger v-span" })
                         </div>
 
                         <div class="col-sm-6">
@@ -88,10 +92,11 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label> Voltage</label>
+                                    <label> Voltage<span style="color:red">*</span></label>
                                     @Html.EditorFor(model => model.Types, new { htmlAttributes = new { @class = "form-control" } })                                   
                                 </div>
                             </div>
+                            @Html.ValidationMessageFor(m => m.Types, "", new { @class = "text-danger v-span" })
                         </div>
                     </div>
 
@@ -111,8 +116,7 @@
                             <div class="form-group">
                                 <label> Short Description</label>
                                 @Html.TextAreaFor(model => model.ShortDesc, new { @id = "editor1", @class = "form-control editor1", @rows = "10" })
-                            </div>
-                            @Html.ValidationMessageFor(m => m.ShortDesc, "", new { @class = "text-danger v-span" })
+                            </div>                           
                         </div>
                     </div>
 
@@ -121,11 +125,10 @@
                             <div class="form-group">
                                 <label> Detail</label>
                                 @Html.TextAreaFor(model => model.ResearchDesc, new { @id = "editor2", @class = "form-control editor1", @rows = "10" })
-                            </div>
-                            @Html.ValidationMessageFor(m => m.ResearchDesc, "", new { @class = "text-danger v-span" })
+                            </div>                            
                         </div>
                     </div>
-                   
+
                     <div class="row clearfix">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="form-group">
@@ -174,8 +177,7 @@
                                 <div class="form-line">
                                     <label> Display order</label>
                                     @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                                @Html.ValidationMessageFor(m => m.DisplayOrder, "", new { @class = "text-danger v-span" })
+                                </div>                                
                             </div>
                         </div>
                     </div>
@@ -249,23 +251,31 @@
                     <div class="row clearfix">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" name="action" formaction="@Url.Action("AddProject", "Projet")" formmethod="post"> @ViewBag.CreateUpdate </button>
-                            <input type="submit" class="btn  btn-raised btn-close waves-effect" value="Cancel" name="action" formaction="Cancel" formmethod="post" />
+                            @if (Model.ResearchId == 0)
+                            {
+                                <a href="/backoffice/project/addproject"
+                                   class="btn btn-raised btn-close waves-effect">Cancel</a>
+                            }
+                            else
+                            {
+                                <a href="/backoffice/project/viewproject"
+                                   class="btn btn-raised btn-close waves-effect">Cancel</a>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/ckeditor/ckeditor.js"></script>
-
-
     <script>
         $('.editor1').each(function () {
             CKEDITOR.replace($(this).prop('id'));
         });
     </script>
-
 }
 
 

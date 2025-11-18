@@ -1,0 +1,237 @@
+﻿@model skipper_group_new.Models.clsHomeModel
+@using skipper_group_new.mainclass
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!---------header html start here--------->
+<header class="position-fixed d-flex align-items-center justify-content-between w-full">
+    <div class="logo">
+        <a href="/">
+            <img width="250" height="78" src="~/images/logo/logo.png" class="img-fluid before-sticky"
+                 alt="SKIPPER LIMITED">
+            <img width="250" height="78" src="~/images/logo/logo-sticky.png" class="img-fluid after-sticky"
+                 alt="SKIPPER LIMITED">
+        </a>
+    </div>
+    @await Html.PartialAsync("~/Views/PartialView/_MainMenu.cshtml")
+</header>
+
+<!--------------home banner section start here----------->
+<section class="home_banner">
+    <!-- start of hero -->
+    <div class="video">
+        <!-- Video Container initially hidden -->
+        <div class="video-wrapper">
+            <div class="video-container">
+                <video id="video" autoplay muted loop width="100%" height="700">
+                    <source src="~/video/poles_video.mp4" type="video/mp4">
+                </video>
+                <span class="mute-toggle muted"></span>
+            </div>
+        </div>
+
+
+    </div>
+
+</section>
+
+<!---------home banner end here-->
+<!---------home banner end here-->
+<!--------home about html start here---->
+<section class="skipper_home_about">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="about_img_panel image2">
+                    <figure><img src="images/tower.png" class="img-fluid"></figure>
+                </div>
+
+
+            </div>
+            <div class="col-md-7">
+                <div class="about_block2">
+                    <div class="we_are">
+                        <h1 data-aos="fade-up" data-aos-delay="200">We Are Skipper</h1>
+                        <p data-aos="fade-up" data-aos-delay="300">
+                            One of the world's leading manufacturers for
+                            <b>Transmission & Distribution Structures (Towers & Poles)</b> in it's Engineering
+                            Products segment, a leading and respected brand in the <b>Polymer Sector</b> as well as
+                            trusted partner for executing critical
+                            Infrastructure <b>EPC projects</b>.
+                        </p>
+                        <div class="read_icon" data-aos="fade-up" data-aos-delay="400">
+                            <a href="javascript:void(0)">
+                                <img src="images/icon/plus-icon.svg" class="img-fluid">
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="we_are_list" data-aos="fade-up" data-aos-delay="500">
+                        <ul>
+                            <li>
+                                <h2>40+</h2>
+                                <p>Years of excellence</p>
+                            </li>
+                            <li>
+                                <h2>65+</h2>
+                                <p>Countries of Global Reach</p>
+                            </li>
+                            <li>
+                                <h2>300K</h2>
+                                <p>MTPA engineering production <br> capacity</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section: Engineering -->
+<div class="wrapper">
+    <div class="eng-wrapper">
+        <section class="home_eng animated-section">
+            <div class="container">
+                <!-- Animation Elements -->
+                <div class="eng_panel">
+                    <div class="line_part">
+                        <svg class="top-line-svg" viewBox="0 0 100 1" preserveAspectRatio="none">
+                            <line x1="0" y1="0.5" x2="100" y2="0.5" />
+                        </svg>
+                    </div>
+                    <div class="tower_part mobile-none">
+                        <div class="tower-right"><img src="images/icon/tower_icon1.png" class="img-fluid" alt="Tower" /> </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section class="home_eng1">
+            <div class="container">
+                <div class="second-vertical-line-svg">
+                    <svg viewBox="0 0 1 200" preserveAspectRatio="none">
+                        <line x1="0.5" y1="0" x2="0.5" y2="200" />
+                    </svg>
+                </div>
+                <div class="second-dot"></div>
+                <div class="horizontal-line2"></div>
+
+                <div class="eng_gorup_img">
+                    <figure class="engineering-image">
+                        <div class="image-reveal-mask mobile-none">
+                            <img src="images/eng-pic.png" class="img-fluid" alt="Engineering" />
+                        </div>
+                        <div class="image-reveal-mask mobile-display">
+                            <img src="images/eng-pic-mobile.webp" class="img-fluid" alt="Engineering" />
+                        </div>
+                    </figure>
+
+                    <div class="engineering-bg"></div>
+                    <div class="text_eng">
+                        <div class="eng_text1">
+                            <figure>
+                                <img src="images/icon/Subtraction-1.svg" class="img-fluid" />
+                            </figure>
+                            <div class="eng_pic1">
+                                <h3>Engineering</h3>
+                                <p>
+                                    One of the world's largest <br />
+                                    integrated Transmission Tower <br />
+                                    manufacturing companies
+                                </p>
+                                <div class="read_icon">
+                                    <a href="#"><img src="images/icon/plus-icon.svg" /></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="eng_text2">
+                            <h4>300K</h4>
+                            <p>MTPA engineering <br /> production capacity</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section class="home_infra animated-section1">
+            <div class="container">
+                <div class="second-vertical-line2-wrapper">
+                    <div class="second-vertical-line2"></div>
+                    <div class="second-dot2"></div>
+
+                </div>
+                <!-- 4. Horizontal line after dot -->
+                <!-- Horizontal SVG Line -->
+                <div class="horizontal-line3-svg">
+                    <svg viewBox="0 0 200 1" preserveAspectRatio="none">
+                        <line x1="0" y1="0.5" x2="200" y2="0.5" />
+                    </svg>
+                </div>
+
+                <!-- Optional: Background reveal like engineering-bg -->
+
+                <div class="infra-content-wrapper">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="infra_box  left">
+                                <div class="top_icon"><img src="images/icon/Subtraction-2.svg" class="img-fluid image"></div>
+                                <h3 data-aos="fade-up" data-aos-delay="500">Infrastructure</h3>
+                                <p data-aos="fade-up" data-aos-delay="500">
+                                    The company is also engaged in EPC Projects in Power
+                                    Transmission & Distribution, Telecom infra and Railway Structures
+                                </p>
+                                <div class="read_icon" data-aos="fade-up" data-aos-delay="500">
+                                    <a href="#">
+                                        <img src="images/icon/plus-icon.svg">
+                                    </a>
+                                </div>
+                                <div class="infra_num">
+                                    <h4 data-aos="fade-up" data-aos-delay="600">300K</h4>
+                                    <p data-aos="fade-up" data-aos-delay="700">MTPA engineering <br> production capacity</p>
+                                </div>
+                                <figure data-aos="fade-up" data-aos-delay="800">
+                                    <img src="images/Infrastructure.png"
+                                         class="img-fluid image2">
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="infra_box  right">
+                                <div class="top_icon"><img src="images/icon/Subtraction-2.svg" class="img-fluid image"></div>
+                                <h3 data-aos="fade-up" data-aos-delay="350">Polymer Pipes</h3>
+                                <p data-aos="fade-up" data-aos-delay="450">
+                                    Skipper Limited is a national <br> powerhouse in the
+                                    Polymer Pipe <br> business.
+                                </p>
+                                <div class="read_icon" data-aos="fade-up" data-aos-delay="550">
+                                    <a href="#">
+                                        <img src="images/icon/plus-icon.svg">
+                                    </a>
+                                </div>
+                                <div class="infra_num">
+                                    <h4 data-aos="fade-up" data-aos-delay="650">70K</h4>
+                                    <p data-aos="fade-up" data-aos-delay="750">MTPA engineering <br> production capacity</p>
+                                </div>
+                                <figure data-aos="fade-up" data-aos-delay="800">
+                                    <img src="images/Polymer-Pipes.png"
+                                         class="img-fluid image2">
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+
+

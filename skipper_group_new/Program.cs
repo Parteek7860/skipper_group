@@ -45,6 +45,8 @@ builder.Services.AddScoped<IBacofficeProject, clsBackofficeProject>();
 builder.Services.AddScoped<IBackofficeProjectRepository, BackofficeProjectRepository>();
 
 builder.Services.AddScoped<MenuDataService>();
+builder.Services.AddScoped<ISkipperHomeRepository, SkipperHomeRepository>();
+builder.Services.AddScoped<ISkipperHome, clsSkipperHome>();
 
 builder.Services.AddSession(options =>
 {
@@ -61,7 +63,7 @@ var app = builder.Build();
 // -------------------------------------------------
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/MetroHome/Error");
+    app.UseExceptionHandler("/SkipperHome/Error");
     app.UseStatusCodePagesWithReExecute("/Error/Handle/{0}");
     app.UseHsts();
 }
@@ -156,11 +158,14 @@ app.UseEndpoints(endpoints =>
         name: "backoffice",
         pattern: "{controller=Backoffice}/{action=Signin}/{id?}");
 
-  
+    endpoints.MapControllerRoute(
+         name: "default",
+         pattern: "{controller=SkipperHome}/{action=Index}/{id?}");
+
     endpoints.MapControllerRoute(
         name: "dynamic",
         pattern: "{*url}",
-        defaults: new { controller = "MetroHome", action = "DynamicRoute" });
+        defaults: new { controller = "SkipperHome", action = "DynamicRoute" });
 });
 
 app.Run();

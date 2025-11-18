@@ -26,75 +26,87 @@
 
 @using (Html.BeginForm("addPhoto", "gallery", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.ValidationSummary(true)
-        <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="card">
-                    <div class="body">
-                        <h2 class="card-inside-title">
-                            Fields with * are mandatory
-                        </h2>
-                        <div class="row clearfix">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <label> Album</label>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="body">
+                    <h2 class="card-inside-title">
+                        Fields with * are mandatory
+                    </h2>
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Album <span style="color:red">*</span></label>
                                     @Html.HiddenFor(model => model.status)
                                     @Html.HiddenFor(model => model.uname)
                                     @Html.HiddenFor(model => model.id)
                                     @Html.HiddenFor(model => model.mode)
                                     @Html.DropDownListFor(model => model.albumtype, Model.selectalbumtype, "Select AlbumName", new { @class = "form-control" })
-                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <label>Image Title</label>
-                                    @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
-                                    </div>
-                                </div>
-                            @Html.ValidationMessageFor(m => m.title, "", new { @class = "text-danger v-span" })
-                            </div>
-                        </div>       
-                        <div class="row clearfix">                            
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="form-group">
-                                    <label> Upload Image </label>
-                                    <input type="file" name="file_Uploader" />
-                                <img src="@Url.Content("~/Uploads/LargeImages/" + Model.uploadbanner)" width="80" />
-                                @Html.HiddenFor(model => model.uploadlargeimage)
-                                </div>
-
-                            </div>
+                            @Html.ValidationMessageFor(m => m.albumtype, "", new { @class = "text-danger v-span" })
                         </div>
-                        <div class="row clearfix">
-                            <div class="col-lg-4 col-md-4 col-sm-4">
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <label> Display order</label>
-                                    @Html.EditorFor(model => model.displayorder, new { htmlAttributes = new { @class = "form-control" } })
-                                    </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Image Title</label>
+                                    @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>
-                            @Html.ValidationMessageFor(m => m.displayorder, "", new { @class = "text-danger v-span" })
                             </div>
-                        </div>                        
-                        <div class="row clearfix">
-                            <div class="col-lg-6 col-md-6 col-sm-6">
+                            @Html.ValidationMessageFor(m => m.title, "", new { @class = "text-danger v-span" })
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label> Upload Image <span style="color:red">*</span></label>
+                                <input type="file" name="file_Uploader" />
+                                <img src="@Url.Content("~/Uploads/LargeImages/" + Model.uploadbanner)" width="80" />
+                                @Html.HiddenFor(model => model.uploadbanner)
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Display order</label>
+                                    @Html.EditorFor(model => model.displayorder, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>                           
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
                             <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" name="action" formaction="@Url.Action("addPhoto", "Gallery")" formmethod="post"> @ViewBag.CreateUpdate </button>
-                                <input type="submit" class="btn  btn-raised btn-close waves-effect" value="Cancel" name="action" formaction="Cancel" formmethod="post" />
-                            </div>
+                            @if (Model.id == 0)
+                            {
+                                <a href="/backoffice/gallery/addphotogallery"
+                                   class="btn btn-raised btn-close waves-effect">Cancel</a>
+                            }
+                            else
+                            {
+                                <a href="/backoffice/gallery/viewphotogallery"
+                                   class="btn btn-raised btn-close waves-effect">Cancel</a>
+                            }
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="~/ckeditor/ckeditor.js"></script>
-        <script>
-            $('.editor1').each(function () {
-                CKEDITOR.replace($(this).prop('id'));
-            });
-        </script>
+    </div>
+    <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script>
+        $('.editor1').each(function () {
+            CKEDITOR.replace($(this).prop('id'));
+        });
+    </script>
 
 }

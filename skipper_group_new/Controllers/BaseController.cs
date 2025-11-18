@@ -1,0 +1,360 @@
+﻿
+using DocumentFormat.OpenXml.Bibliography;
+using skipper_group_new.Interface;
+using skipper_group_new.Models;
+using skipper_group_new.Service;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.CSharp.RuntimeBinder;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+
+namespace skipper_group_new.Controllers
+{
+    public class BaseController : Controller
+    {
+
+        private readonly ISkipperHome _homePageService;
+        protected readonly MenuDataService _menuService;
+        public SeoModel PageSeo { get; private set; } = new SeoModel();
+
+        public BaseController(ISkipperHome homePageService, MenuDataService menuService)
+        {
+            _homePageService = homePageService;
+            _menuService = menuService;
+        }
+        public List<clsHomeModel> TopMenuList => _menuService.TopMenuList;
+        public List<clsHomeModel> MainMenuList => _menuService.MainMenuList;
+        public List<clsHomeModel> HamBurgerList => _menuService.HamBurgerList;
+        public List<clsHomeModel> RightHamBurgerList => _menuService.RightHamBurgerList;
+        public List<SeoModel> SeoList => _menuService.SeoList;
+        
+
+        public List<clsHomeModel> MobileMenuList => _menuService.MobileMenu;
+        
+
+        public override async void OnActionExecuting(ActionExecutingContext context)
+        {
+
+            base.OnActionExecuting(context);
+
+
+           // _menuService.TopMenuList = await GetTopMenu();
+          //  _menuService.MobileMenu = await GetMobileMenu();
+         //   _menuService.MainMenuList = await LoadMainMenu();
+          
+
+           // (_menuService.HamBurgerList, _menuService.RightHamBurgerList) = await LoadHamburgerMenus();
+        
+
+        }
+
+        protected async Task LoadSeoDataAsync(int pageId)
+        {
+            var dt = await _homePageService.GetCMSData();
+            if (dt == null || dt.Rows.Count == 0)
+                return;
+
+            var row = dt.AsEnumerable()
+                .FirstOrDefault(r => r.Field<bool>("pagestatus") && r.Field<int>("pageid") == pageId);
+
+            if (row != null)
+            {
+                var seo = new SeoModel
+                {
+                    Title = row["pagetitle"]?.ToString() ?? "Metro Tyres",
+                    MetaDescription = row["pagemetadesc"]?.ToString() ?? "",
+                    MetaKeywords = row["pagemeta"]?.ToString() ?? "",
+                    Robots = row["no_indexfollow"]?.ToString() ?? "index,follow",
+                    CanonicalUrl = row["rewriteurl"]?.ToString() ?? ""
+                };
+
+                // Store in both ViewData and Service property (optional cache)
+                ViewData["PageSeo"] = seo;
+                _menuService.SeoList = new List<SeoModel> { seo };
+            }
+        }
+        protected async Task<IActionResult> LoadInnerMenuAsync(int id)
+        {
+            if (id <= 0)
+                return null;
+
+            var dtTask = _homePageService.GetHamburgerMenuList();
+            if (dtTask == null || dtTask.Result.Rows.Count == 0)
+                return null;
+
+            var dt = dtTask.Result;
+
+            // 🔹 Find current page row
+            DataRow currentRow = dt.AsEnumerable()
+                .FirstOrDefault(r => r["pageid"].ToString() == id.ToString());
+
+            if (currentRow == null)
+                return null;
+
+            string parentId = currentRow["ParentId"].ToString();
+            DataRow[] filterResults;
+
+            if (parentId != "0")
+                filterResults = dt.Select($"pagestatus=1 and parentid='{parentId}'");
+            else
+                filterResults = dt.Select($"pagestatus=1 and parentid='{id}'");
+
+            if (filterResults.Length == 0)
+                return null;
+
+            var list = filterResults.CopyToDataTable().AsEnumerable()
+                .Select(r => new clsHomeModel
+                {
+                    linkname = r["linkname"].ToString(),
+                    rewriteurl = r["rewriteurl"].ToString(),
+                    pageid = r["pageid"].ToString()
+                })
+                .ToList();
+
+            // ✅ Make available to the view
+            ViewBag.InnerMenu = list;
+            if (list.Count > 0 && parentId == "0")
+            {
+                string firstPageId = list.First().pageid;
+                string firstRewriteUrl = list.First().rewriteurl;
+
+                ViewBag.CurrentId = firstPageId;
+                ViewBag.CurrentPageid = firstPageId;
+
+                // 🔹 Redirect to that rewrite URL
+                return RedirectToAction("Page", "MetroHome");
+
+            }
+            else
+            {
+                ViewBag.CurrentId = id;
+            }
+            return null;
+        }
+       
+        private async Task SetSeoDataAsync(ActionExecutingContext context)
+        {
+            var request = context.HttpContext.Request;
+            string currentPath = request.Path.Value.Trim('/').ToLower();
+
+            // 🔹 Default path for home page
+            if (string.IsNullOrEmpty(currentPath))
+                currentPath = "home";
+
+            currentPath = currentPath.Split('?')[0];
+
+            string[] ignoredFolders = { "css", "js", "images", "uploads", "fonts", "lib", "content", "assets" };
+            string[] staticExtensions = { ".css", ".js", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".webp", ".woff", ".woff2", ".ttf", ".map", ".json", ".mp4", ".pdf" };
+            string[] ignoredRoutes = { "backoffice", "admin", "api", "swagger" };
+
+            // 🔹 Skip static or admin routes
+            if (ignoredFolders.Any(f => currentPath.StartsWith(f + "/", StringComparison.OrdinalIgnoreCase)) ||
+                staticExtensions.Any(ext => currentPath.EndsWith(ext, StringComparison.OrdinalIgnoreCase)) ||
+                ignoredRoutes.Any(r => currentPath.StartsWith(r, StringComparison.OrdinalIgnoreCase)))
+            {
+                return;
+            }
+
+            // 🔹 Load CMS data once
+            DataTable cmsData = await _homePageService.GetCMSData();
+            if (cmsData == null || cmsData.Rows.Count == 0)
+                return;
+
+            DataRow? row = null;
+
+            // 🔹 Case 1: Home page (default pageid = 1)
+            if (currentPath == "home" || currentPath == "home/index" || currentPath == "/")
+            {
+                row = cmsData.AsEnumerable()
+                    .Where(r => r.Field<bool>("pagestatus") == true && r.Field<int>("pageid") == 1)
+                    .FirstOrDefault();
+            }
+
+            // 🔹 Case 2: Match rewrite URL
+            if (row == null)
+            {
+                row = cmsData.AsEnumerable()
+                    .Where(r =>
+                        r.Field<bool>("pagestatus") == true &&
+                        (r.Field<string>("rewriteurl") ?? "").Trim('/').ToLower() == currentPath)
+                    .FirstOrDefault();
+            }
+
+            // 🔹 Case 3: Assign SEO data
+            if (row != null)
+            {
+                PageSeo = new SeoModel
+                {
+                    Title = row["pagetitle"]?.ToString() ?? "Metro Tyres",
+                    MetaDescription = row["pagemetadesc"]?.ToString() ?? "",
+                    MetaKeywords = row["pagemeta"]?.ToString() ?? "",
+                    Robots = row["no_indexfollow"]?.ToString() ?? "index,follow",
+                    CanonicalUrl = $"{request.Scheme}://{request.Host}{request.Path}"
+                };
+            }
+            else
+            {
+                // 🔹 Default fallback SEO (if nothing matches)
+                PageSeo = new SeoModel
+                {
+                    Title = "Metro Tyres",
+                    MetaDescription = "Best quality tyres in India by Metro Tyres.",
+                    MetaKeywords = "tyres, metro tyres, india",
+                    Robots = "index,follow",
+                    CanonicalUrl = $"{request.Scheme}://{request.Host}{request.Path}"
+                };
+            }
+
+            // 🔹 Safely assign to ViewData (optional, if you still want backward compatibility)
+            if (context.Controller is Controller controller)
+            {
+                controller.ViewData["PageSeo"] = PageSeo;
+            }
+        }
+
+
+        //private async Task<List<clsHomeModel>> GetTopMenu()
+        //{
+        //    var dt = await _homePageService.GetHamburgerMenuList();
+        //    if (dt == null || dt.Rows.Count == 0)
+        //        return new List<clsHomeModel>();
+
+        //    return dt.Select("pagestatus=1 and linkposition like '%Top-Links%'")
+        //        .CopyToDataTable().AsEnumerable()
+        //         .OrderBy(r => Convert.ToInt32(r["displayorder"]))
+        //        .Select(r => new clsHomeModel
+        //        {
+        //            linkname = r["linkname"].ToString(),
+        //            rewriteurl = r["rewriteurl"].ToString(),
+        //            pageid = r["pageid"].ToString(),
+        //            pageurl_Id= r["rewriteid"].ToString()
+        //        }).ToList();
+        //}
+       
+
+
+        private async Task<List<clsHomeModel>> GetMobileMenu()
+        {
+            var dt = await _homePageService.GetHamburgerMenuList();
+            if (dt == null || dt.Rows.Count == 0)
+                return (new List<clsHomeModel>());
+
+            var leftMenu = dt.Select("pagestatus=1 AND linkposition like '%Mobile%'")
+                .CopyToDataTable().AsEnumerable()
+                 .OrderBy(r => Convert.ToInt32(r["displayorder"]))
+                .Select(dr => new clsHomeModel
+                {
+                    Name = dr["linkname"].ToString(),
+                    rewriteurl = dr["rewriteurl"].ToString(),
+                    pageid = dr["pageid"].ToString(),
+                    SubMenus = dt.AsEnumerable()
+                        .Where(sub => sub["ParentId"].ToString() == dr["pageid"].ToString() && Convert.ToInt32(sub["pagestatus"]) == 1)
+                         .OrderBy(r => Convert.ToInt32(r["displayorder"]))
+                        .Select(sub => new SubhomeModel
+                        {
+                            linkname = sub["linkname"].ToString(),
+                            rewriteurl = sub["rewriteurl"].ToString(),
+                            ParentId = sub["ParentId"].ToString(),
+                            pageid = sub["pageid"].ToString()
+                        }).ToList()
+                }).ToList();
+            return leftMenu;
+        }
+
+        private async Task<List<clsHomeModel>> LoadMainMenu()
+        {
+            var menuDt = await _homePageService.GetMenuList();
+            var subDt = await _homePageService.GetSubMenuList();
+
+            if (menuDt == null || menuDt.Rows.Count == 0)
+                return new List<clsHomeModel>();
+
+            var result = menuDt.Select("status=1")
+                .CopyToDataTable().AsEnumerable()
+                .OrderBy(dr => Convert.ToInt32(dr["displayorder"]))
+                .Select(dr => new clsHomeModel
+                {
+                    Name = dr["product_typetitle"].ToString(),
+                    rewriteurl = dr["rewriteurl"].ToString(),
+                    uploadimage = dr["image_icon"].ToString(),
+                    pageid = dr["product_typeid"].ToString(),
+                    SubMenus = subDt.AsEnumerable()
+                        .Where(sub => sub["product_typeid"].ToString() == dr["product_typeid"].ToString() && Convert.ToInt32(sub["status"]) == 1)
+                        .Select(sub => new SubhomeModel
+                        {
+                            linkname = sub["vehicle_typetitle"].ToString(),
+                            pageid = sub["vehicle_typeid"].ToString(),
+                            ParentId = sub["product_typeid"].ToString(),
+                            uploadimage = dr["uploadimage"].ToString(),
+                            rewriteurl = sub["rewriteurl"].ToString()
+                        }).ToList()
+                }).ToList();
+
+            return result;
+        }
+
+        private async Task<(List<clsHomeModel> Left, List<clsHomeModel> Right)> LoadHamburgerMenus()
+        {
+            var dt = await _homePageService.GetHamburgerMenuList();
+            if (dt == null || dt.Rows.Count == 0)
+                return (new List<clsHomeModel>(), new List<clsHomeModel>());
+
+            var leftMenu = dt.Select("pagestatus=1 AND linkposition like '%Header'")
+                .CopyToDataTable().AsEnumerable()
+                 .OrderBy(r => Convert.ToInt32(r["displayorder"]))
+                .Select(dr => new clsHomeModel
+                {
+                    Name = dr["linkname"].ToString(),
+                    rewriteurl = dr["rewriteurl"].ToString(),
+                    pageid = dr["pageid"].ToString(),
+                    SubMenus = dt.AsEnumerable()
+                        .Where(sub => sub["ParentId"].ToString() == dr["pageid"].ToString() && Convert.ToInt32(sub["pagestatus"]) == 1)
+                         .OrderBy(r => Convert.ToInt32(r["displayorder"]))
+                        .Select(sub => new SubhomeModel
+                        {
+                            linkname = sub["linkname"].ToString(),
+                            rewriteurl = sub["rewriteurl"].ToString(),
+                            ParentId = sub["ParentId"].ToString(),
+                            pageid = sub["pageid"].ToString()
+                        }).ToList()
+                }).ToList();
+
+            var rightMenu = dt.Select("pagestatus=1 AND linkposition like '%Header%'")
+                .CopyToDataTable().AsEnumerable()
+                 .OrderBy(r => Convert.ToInt32(r["displayorder"]))
+                .Select(dr => new clsHomeModel
+                {
+                    Name = dr["linkname"].ToString(),
+                    rewriteurl = dr["rewriteurl"].ToString(),
+                    pageid = dr["pageid"].ToString(),
+                    SubMenus = dt.AsEnumerable()
+                        .Where(sub => sub["ParentId"].ToString() == dr["pageid"].ToString() && Convert.ToInt32(sub["pagestatus"]) == 1)
+                         .OrderBy(r => Convert.ToInt32(r["displayorder"]))
+                        .Select(sub => new SubhomeModel
+                        {
+                            linkname = sub["linkname"].ToString(),
+                            rewriteurl = sub["rewriteurl"].ToString(),
+                            ParentId = sub["ParentId"].ToString(),
+                            pageid = sub["pageid"].ToString()
+                        }).ToList()
+                }).ToList();
+
+            return (leftMenu, rightMenu);
+        }
+
+      
+
+
+    }
+}
+

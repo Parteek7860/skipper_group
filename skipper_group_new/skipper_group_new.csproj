@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Folder Include="Views\backoffice\download\" />
-    <Folder Include="Views\PartialView\" />
   </ItemGroup>
 
 </Project>

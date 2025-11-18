@@ -1,0 +1,152 @@
+﻿@model skipper_group_new.Models.clsCategory
+@using System.Data;
+@{
+    ViewBag.Title = "Add Project";
+    Layout = "~/Views/Shared/_homepage.cshtml";
+}
+@{
+    string nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @ViewBag.Title
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> Project</a></li>
+                <li class="breadcrumb-item active">Add Project</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("AddCategory", "Projet", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="body">
+                    <h2 class="card-inside-title">
+                        Fields with * are mandatory
+                    </h2>
+                    <div class="row clearfix">
+                        @Html.HiddenFor(model => model.PcatId)
+                        @Html.HiddenFor(model => model.Mode)
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Category<span style="color:red">*</span></label>
+                                    @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Category, "", new { @class = "text-danger v-span" })
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <label>Detail</label>
+                                @Html.TextAreaFor(model => model.Detail, new { @id = "editor1", @class = "form-control editor1", @rows = "10" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Display order</label>
+                                    @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h5>SEO Section</h5>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Page Name</label>
+                                    @Html.EditorFor(model => model.PageTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Page Meta</label>
+                                    @Html.EditorFor(model => model.PageMeta, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Page Description </label>
+                                    @Html.EditorFor(model => model.PageMetaDesc, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Page Script</label>
+                                    @Html.EditorFor(model => model.PageScript, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Canonical </label>
+                                    @Html.EditorFor(model => model.Canonical, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>No Index Follow </label>
+                                    @Html.EditorFor(model => model.NoIndexFollow, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" name="action" formaction="@Url.Action("AddCategory", "Projet")" formmethod="post"> @ViewBag.CreateUpdate </button>
+                            @if (Model.PcatId == 0)
+                            {
+                                <a href="/backoffice/project/category" class="btn btn-raised btn-close waves-effect">Cancel</a>
+                            }
+                            else
+                            {
+                                <a href="/backoffice/project/viewcategory" class="btn btn-raised btn-close waves-effect">Cancel</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script>
+        $('.editor1').each(function () {
+            CKEDITOR.replace($(this).prop('id'));
+        });
+    </script>
+}
+

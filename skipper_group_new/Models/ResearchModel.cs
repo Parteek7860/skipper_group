@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 namespace skipper_group_new.Models
 {
     public class ResearchModel
@@ -6,13 +7,21 @@ namespace skipper_group_new.Models
         public int ResearchId { get; set; }
 
         // Basic Data
-        public int? NTypeId { get; set; }
-        public string ResearchTitle { get; set; }
+        [Required(ErrorMessage ="This field is required.")]
+        public int NTypeId { get; set; }
+
+        [Required(ErrorMessage = "This field is required.")]
+        public string CatId { get; set; }
+
+        [Required(ErrorMessage = "This field is required.")]
+        public string ResearchTitle { get; set; }       
         public string? Tagline { get; set; }
-        public string ShortDesc { get; set; }
-        public string ResearchDesc { get; set; }
-        public string Location { get; set; }
-        public string? Types { get; set; }
+        public string? ShortDesc { get; set; }
+        public string? ResearchDesc { get; set; }
+        public string? Location { get; set; }
+
+        [Required(ErrorMessage = "This field is required.")]
+        public string Types { get; set; }
 
         // Dates
         public DateTime? ResearchSDate { get; set; }
@@ -44,14 +53,13 @@ namespace skipper_group_new.Models
 
         // Other
         public int? LCID { get; set; }
-        public string? OtherSchema { get; set; }
-        public string? CatId { get; set; }
+        public string? OtherSchema { get; set; }       
 
         // Audit
         public string? UName { get; set; }
         public string? ColorCode { get; set; }
         public DateTime? TRDate { get; set; }
-        public int Mode { get; set; }
+        public int? Mode { get; set; }
         //dropdown
         public List<SelectListItem> ?selectProduct { get; set; }
         public List<SelectListItem> ?selectCategory { get; set; }

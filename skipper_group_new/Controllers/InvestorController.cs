@@ -688,7 +688,7 @@ namespace skipper_group_new.Controllers
                 {
                     objcls.uploadfile = cls.uploadfile ?? string.Empty;
                 }
-
+                objcls.yearcategory = cls.yearcategory;
                 objcls.uname = HttpContext.Session.GetString("UserName");
                 int x = _Investor.AddInvestor(objcls);
                 {
@@ -745,6 +745,7 @@ namespace skipper_group_new.Controllers
                 objcls.showongroup = Convert.ToBoolean(filterresults.First()["showongroup"]);
                 objcls.uploadfile = Convert.ToString(filterresults.First()["prospectus"]);
                 objcls.uploadimage = Convert.ToString(filterresults.First()["uploadaimage"]);
+                objcls.status = Convert.ToBoolean(filterresults.First()["status"]);
                 ViewBag.CreateUpdate = "Update";
                 return View("~/Views/backoffice/investor/addinvestor.cshtml", objcls);
             }
@@ -856,7 +857,7 @@ namespace skipper_group_new.Controllers
             var fileBytes = System.IO.File.ReadAllBytes(filePath);
             return File(fileBytes, contentType, id);
         }
-        [HttpGet]
+        [HttpGet("investor/GetYearCategory")]
         public async Task<JsonResult> GetYearCategory()
         {
             DataTable dt = await _Investor.BindYearCategory();
@@ -873,7 +874,7 @@ namespace skipper_group_new.Controllers
 
             return Json(list);
         }
-        [HttpGet]
+        [HttpGet("investor/GetCategory")]
         public async Task<JsonResult> GetCategory()
         {
             DataTable dt = await _Investor.GetCategory();
@@ -889,7 +890,7 @@ namespace skipper_group_new.Controllers
             return Json(list);
         }
 
-        [HttpGet]
+        [HttpGet("investor/GetSubCategory")]
         public async Task<JsonResult> GetSubCategory(int categoryId)
         {
             DataTable dt = await _Investor.GetSubCategory();
