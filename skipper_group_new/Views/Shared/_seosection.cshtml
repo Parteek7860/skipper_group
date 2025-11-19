@@ -1,6 +1,7 @@
 ﻿@inject skipper_group_new.Service.MenuDataService MenuService
 @{
-   // var seo = ViewData["PageSeo"] as skipper_group_new.Models.SeoModel;
+   
+
     var seo = MenuService.SeoList;
 }
 @if (seo != null && seo.Any())
@@ -19,14 +20,14 @@
         <meta property="og:url" content="@seo1.CanonicalUrl" />
         <meta property="og:title" content="@seo1.Title" />
         <meta property="og:description" content="@seo1.MetaDescription" />
-        <meta property="og:image" content="https://www.metrotyres.com/images/logo.png" />
+        <meta property="og:image" content="/images/logo.png" />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="@seo1.CanonicalUrl" />
         <meta property="twitter:title" content="@seo1.Title" />
         <meta property="twitter:description" content="@seo1.MetaDescription" />
-        <meta property="twitter:image" content="https://www.metrotyres.com/images/logo.png" />
+        <meta property="twitter:image" content="/images/logo.png" />
 
         <link rel="canonical" href="@seo1.CanonicalUrl" />
        @*  <meta name="robots" content="@seo1.Robots" /> *@

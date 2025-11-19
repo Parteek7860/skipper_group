@@ -28,10 +28,10 @@ namespace skipper_group_new.Controllers
         [Route("/")]
         public async Task<IActionResult> Index()
         {
-           
+
             clsHomeModel obj = new clsHomeModel();
             await LoadSeoDataAsync(1);
-
+            await BindProjectsList();
             await Task.Delay(1);
 
             Task<DataTable> x = this._homePageService.GetCMSData();
@@ -88,7 +88,7 @@ namespace skipper_group_new.Controllers
                     DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
                     obj.cmscontent = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
                     obj.SmallDescription = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["smalldesc"]));
-                  
+
 
                     return View("contactus", obj);
                 }
@@ -112,7 +112,7 @@ namespace skipper_group_new.Controllers
             await LoadSeoDataAsync(id);
             await LoadCMSDataAsync(id);
             clsHomeModel obj = new clsHomeModel();
-            
+
 
             return View("leadership", obj);
         }
@@ -121,9 +121,38 @@ namespace skipper_group_new.Controllers
         public IActionResult newsevents()
         {
             clsHomeModel obj = new clsHomeModel();
-          
+
 
             return View(obj);
+        }
+        [HttpGet]
+        public async Task<IActionResult> projectlist(int id)
+        {
+            await LoadSeoDataAsync(id);
+            await LoadCMSDataAsync(id);
+            GetProjectList();
+            clsHomeModel obj = new clsHomeModel();
+
+            return View("projectlist", obj);
+        }
+        public IActionResult GetProjectList()
+        {
+            var list = _homePageService.GetProjectsList();
+            var filterlist = list.Result.Select("status=1").OrderBy(r => Convert.ToInt32(r["displayorder"]));
+            ViewBag.ProjectsList = filterlist.CopyToDataTable();
+            return View();
+
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> BindProjectsList()
+        {
+            ResearchModel obj = new ResearchModel();
+            var list = _homePageService.GetProjectsList();
+            var filterlist = list.Result.Select("status=1 and showonhome=1 and showonschool=1");
+            var top3 = filterlist.Take(3).CopyToDataTable();
+            ViewBag.ProjectsList = top3;
+            return View();
         }
         [HttpGet]
         [Route("cms/{title}/{id}")]

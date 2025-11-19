@@ -1,4 +1,5 @@
 ﻿@model skipper_group_new.Models.clsHomeModel
+@using System.Data
 @using skipper_group_new.mainclass
 @{
 
@@ -39,7 +40,7 @@
         <section class="animated-section home_eng">
             @Html.Raw(Model.cmscontent)
         </section>
-       @Html.Raw(Model.pagedesc2)
+        @Html.Raw(Model.pagedesc2)
     </div>
     @Html.Raw(Model.pagedesc3)
     <section class=home_sustainbility>
@@ -88,115 +89,127 @@
             </div>
         </div>
     </section>
-    <section class=featured_project>
-        <div class=scroll-spacer></div>
-        <div class=trigger-placeholder></div>
-        <div class=icon_project>
-            <figure><img src=images/icon/Subtraction-4.svg alt="skipper image" class=img-fluid></figure>
-        </div>
-        <div class=container>
-            <h2>Featured Projects</h2>
-            <div class=project_slider>
-                <div class="mySwiper swiper">
-                    <div class=swiper-wrapper>
-                        <div class=swiper-slide>
-                            <div class=swiper-container>
-                                <div class=slider_grid>
-                                    <div class=left-slide id=rptinnerleft_ctl00_panelleft>
-                                        <div class=corner-accent>
-                                            <figure>
-                                                <img src=uploads/SmallImages/4krs-4krs-pro-2.png
-                                                     alt="skipper image" class=img-fluid>
-                                            </figure>
-                                        </div>
-                                        <div class=text-content>
-                                            <div class=bottom_left_icon>
-                                                <img src=images/icon/Subtraction-6.svg
-                                                     alt="skipper image" class=img-fluid>
-                                            </div>
-                                            <div class=project-title>
-                                                330 Kv & 500 Kv Project Energy Connect
-                                                (Pec) South Australia To New South Wales, Australia
-                                            </div>
-                                            <div class=description>Transgrid</div>
-                                        </div>
-                                        <div class=voltage></div><a href="/project-details.aspx?mpgid=5&pgidtrail=5&projectid=4"
-                                                                    id=rptinnerleft_ctl00_ank class=streched_link></a>
-                                    </div>
-                                    <div class=right-container id=panelright>
-                                        <div class=right-top id=rptinnerright_ctl00_panel1>
-                                            <div class=corner-accent>
-                                                <figure>
-                                                    <img src=uploads/SmallImages/5krs-pro-3.webp
-                                                         alt="skipper image" class=img-fluid>
-                                                </figure>
-                                            </div>
-                                            <div class=text-content>
-                                                <div class=bottom_left_icon>
-                                                    <img src=images/icon/Subtraction-6.svg class=img-fluid>
-                                                </div>
-                                                <div class=project-title>
-                                                    500 Kv Mantaro Montalvo (Mamo), Peru
-                                                </div>
-                                                <div class=description>
-                                                    Ministry Of Energy And Mines Peru<div class=loctn_grid>
-                                                        <div class=prjt_nme>
-                                                            <h4>Project Authority</h4>
-                                                            <p>Ceylon Electricity Board (CEB)
-                                                        </div>
-                                                        <div class=prjt_nme>
-                                                            <h4>Location</h4>
-                                                            <p>Sri Lanka
-                                                        </div>
+    @if (ViewBag.ProjectsList != null)
+    {
+
+        <section class=featured_project>
+            <div class=scroll-spacer></div>
+            <div class=trigger-placeholder></div>
+            <div class=icon_project>
+                <figure><img src=/images/icon/Subtraction-4.svg alt="skipper image" class=img-fluid></figure>
+            </div>
+            <div class=container>
+                <h2>Featured Projects</h2>
+                <div class=project_slider>
+                    <div class="mySwiper swiper">
+                        <div class=swiper-wrapper>
+                            <div class=swiper-slide>
+                                <div class=swiper-container>
+                                    <div class=slider_grid>
+                                        @{
+                                            var dt = ViewBag.ProjectsList as DataTable;
+
+
+                                        }
+                                        @if (dt != null && dt.Rows.Count > 0)
+                                        {
+                                            @for (int i = 1; i <= dt.Rows.Count - 2; i++)
+                                            {
+                                                DataRow data = dt.Rows[i];
+                                                <div class=left-slide id=rptinnerleft_ctl00_panelleft>
+                                                    <div class=corner-accent>
+                                                        <figure>
+                                                            <img src=/uploads/SmallImages/@data["uploadevents"]
+                                                                 alt="skipper image" class=img-fluid>
+                                                        </figure>
                                                     </div>
+                                                    <div class=text-content>
+                                                        <div class=bottom_left_icon>
+                                                            <img src=/images/icon/Subtraction-6.svg
+                                                                 alt="skipper image" class=img-fluid>
+                                                        </div>
+                                                        <div class=project-title>
+                                                            @data["researchtitle"]
+                                                        </div>
+                                                        <div class=description>Transgrid</div>
+                                                    </div>
+                                                    <div class=voltage></div><a href="/projects"
+                                                                                class=streched_link></a>
                                                 </div>
-                                            </div>
-                                            <div class=voltage></div><a href="/project-details.aspx?mpgid=5&pgidtrail=5&projectid=5"
-                                                                        id=rptinnerright_ctl00_ank class=streched_link></a>
-                                        </div>
-                                        <div class=right-bottom id=rptinnerright_ctl01_panel1>
-                                            <div class=corner-accent>
-                                                <figure>
-                                                    <img src=uploads/SmallImages/6krs-pro-4.webp
-                                                         alt="skipper image" class=img-fluid>
-                                                </figure>
-                                            </div>
-                                            <div class=text-content>
-                                                <div class=bottom_left_icon>
-                                                    <img src=images/icon/Subtraction-6.svg class=img-fluid>
-                                                </div>
-                                                <div class=project-title>
-                                                    500 Kv & 220 Kv Obras Nuevas Stt Ds
-                                                    115-2011 Transmission Line, Chile
-                                                </div>
-                                                <div class=description>Interchile</div>
-                                            </div>
-                                            <div class=voltage></div><a href="/project-details.aspx?mpgid=5&pgidtrail=5&projectid=6"
-                                                                        id=rptinnerright_ctl01_ank class=streched_link></a>
+                                            }
+
+                                        }
+
+                                        <div class=right-container id=panelright>
+
+
+                                            @if (dt != null && dt.Rows.Count > 1)
+                                            {
+                                                @for (int i = 1; i <= dt.Rows.Count - 1; i++)
+                                                {
+                                                    DataRow data = dt.Rows[i];
+                                                    <div class=right-top>
+                                                        <div class=corner-accent>
+                                                            <figure>
+                                                                <img src=/uploads/SmallImages/@data["uploadevents"]
+                                                                     alt="skipper image" class=img-fluid>
+                                                            </figure>
+                                                        </div>
+                                                        <div class=text-content>
+                                                            <div class=bottom_left_icon>
+                                                                <img src=images/icon/Subtraction-6.svg class=img-fluid>
+                                                            </div>
+                                                            <div class=project-title>
+                                                                @data["researchtitle"]
+                                                            </div>
+                                                            <div class=description>
+                                                                @data["tagline"]
+                                                                <div class=loctn_grid>
+                                                                    <div class=prjt_nme>
+                                                                        <h4>Project Authority</h4>
+                                                                        <p>Ceylon Electricity Board (CEB)
+                                                                    </div>
+                                                                    <div class=prjt_nme>
+                                                                        <h4>Location</h4>
+                                                                        <p>@data["location"]</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class=voltage></div>
+                                                        <a href="/project-details.aspx?mpgid=5&pgidtrail=5&projectid=5"
+                                                           id=rptinnerright_ctl00_ank class=streched_link></a>
+                                                    </div>
+                                                }
+
+                                            }
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="button_group d-none">
-                        <div class=container>
-                            <div class=swiper-button-next></div>
-                            <div class=swiper-button-prev></div>
+                        <div class="button_group d-none">
+                            <div class=container>
+                                <div class=swiper-button-next></div>
+                                <div class=swiper-button-prev></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class=container>
-                        <div class=view_all>
-                            <a href="/projects.aspx?mpgid=5&pgidtrail=5">
-                                View All Projects
-                                <figure><img src=images/icon/right_icon.svg alt="project icon"></figure>
-                            </a>
+                        <div class=container>
+                            <div class=view_all>
+                                <a href="/projects">
+                                    View All Projects
+                                    <figure><img src=/images/icon/right_icon.svg alt="project icon"></figure>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+    }
+
     <section class=skipper_news>
         <div class=full_container>
             <div class=item>

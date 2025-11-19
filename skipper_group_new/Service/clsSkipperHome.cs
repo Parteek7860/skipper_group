@@ -23,5 +23,7 @@ namespace skipper_group_new.Service
         public Task<DataTable> GetCMSData() => this._repository.GetCMSData();
 
         public Task<DataTable> GetSeoFriendlyUrls() => this._repository.GetSeoFriendlyUrls();
+
+        public Task<DataTable> GetProjectsList() => this._repository.GetProjectsList();
     }
 }

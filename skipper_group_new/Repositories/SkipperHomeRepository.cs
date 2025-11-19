@@ -117,5 +117,24 @@ namespace skipper_group_new.Repositories
             }
             return cmsData;
         }
+        public async Task<DataTable> GetProjectsList()
+        {
+            DataTable menuList;
+            using (SqlConnection conn = new SqlConnection(this._connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("BindProjectListSP", conn))
+                {
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        DataTable table = new DataTable();
+                        await conn.OpenAsync();
+                        da.Fill(table);
+                        menuList = table;
+                    }
+                }
+            }
+            return menuList;
+        }
     }
 }

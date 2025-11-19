@@ -15,5 +15,7 @@ namespace skipper_group_new.Repositories
         Task<DataTable> GetCMSData();
 
         Task<DataTable> GetSeoFriendlyUrls();
+
+        Task<DataTable> GetProjectsList();
     }
 }

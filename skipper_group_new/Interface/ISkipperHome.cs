@@ -8,6 +8,8 @@ namespace skipper_group_new.Interface
     {
         Task<DataTable> GetMenuList();
 
+        Task<DataTable> GetProjectsList();
+
         Task<DataTable> GetSubMenuList();
 
         Task<DataTable> GetHamburgerMenuList();
