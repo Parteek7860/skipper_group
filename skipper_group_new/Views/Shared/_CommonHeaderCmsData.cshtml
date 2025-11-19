@@ -1,0 +1,56 @@
+﻿@inject skipper_group_new.Service.MenuDataService MenuService
+@{
+
+
+    var cms = MenuService.GetCMSData;
+}
+@if (cms != null && cms.Any())
+{
+    var data = cms.FirstOrDefault();
+    <section class="inner_banner">
+        <figure>
+            <img src="/uploads/banner/@data.uploadimage" alt="contact us" class="img-fluid w-100">
+        </figure>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-bar">
+                        <div class="breadcrumb-left">
+                            @if (data.parentname != "")
+                            {
+                                <h5>@data.parentname</h5>
+                            }
+                            else
+                            {
+                                <h5>@data.Name</h5>
+                            }
+
+                        </div>
+                        <div class="breadcrumb-right">
+                            <a href="/">Home</a><img src="/images/icon/arrow-right.webp" alt="arrow-right">
+                            @if (data.parentname != "")
+                            {
+                                <a href="#">@data.parentname</a>
+                                <img src="/images/icon/arrow-right.webp" alt="arrow-right">
+
+                            }
+
+                            <span>@data.Name</span>
+                        </div>
+                    </div>
+                    <div class="bread_btm">
+                        <h5>@data.Name</h5>
+                    </div>
+                    <div class="shrt-title">
+                        <h6>
+                            @Html.Raw(data.tagline)
+                        </h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+
+

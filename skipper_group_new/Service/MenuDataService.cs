@@ -13,7 +13,7 @@ namespace skipper_group_new.Service
 
         public List<SeoModel> SeoList { get; set; } = new();
 
-        public List<ProductTypeModel> GetVehicleList { get; set; } = new();
+        public List<clsHomeModel> GetCMSData { get; set; } = new();
         public List<clsHomeModel> MobileMenu { get; set; } = new();
         public List<clsProduct> FooterList { get; set; } = new();
     }

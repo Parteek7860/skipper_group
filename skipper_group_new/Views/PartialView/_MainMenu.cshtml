@@ -1,39 +1,725 @@
-﻿@{
-
+﻿@using skipper_group_new.Models
+@inject skipper_group_new.Service.MenuDataService MenuService
+@{
+    var leftHam = MenuService.HamBurgerList;
+    var mainmenu = MenuService.MainMenuList;
 }
-    <nav>
-        <ul class="d-flex align-items-center justify-content-between">
-            <li><a href="javascript:void(0)">About Us</a></li>
-            <li><a href="javascript:void(0)">Businesses</a></li>
-            <li><a href="javascript:void(0)">Investors</a></li>
-            <li><a href="javascript:void(0)">Projects</a></li>
-            <li><a href="javascript:void(0)">Sustainability</a></li>
-            <li class="ps_d">
-                <a href="javascript:void(0)">
-                    Products & Solutions
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         width="15.008" height="8.918" viewBox="0 0 15.008 8.918">
-                        <path id="Path_1" data-name="Path 1" d="M1555.5-19.993l6.8,6.8,6.8-6.8"
-                              transform="translate(-1554.797 20.7)" fill="none" stroke="" stroke-width="2" />
-                    </svg>
-                </a>
-            </li>
-            <li class="hum_d">
-                <a href="javascript:void(0)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="17.544"
-                         height="14.275" viewBox="0 0 17.544 14.275">
-                        <g id="Group_8214" data-name="Group 8214" transform="translate(-22627.184 9604.25) rotate(90)">
-                            <line id="Line_40" data-name="Line 40" y2="12.544" transform="translate(-9603.5 -22644.729)"
-                                  fill="none" stroke="" stroke-width="1.5" />
-                            <line id="Line_41" data-name="Line 41" y2="12.544"
-                                  transform="translate(-9596.952 -22639.729)" fill="none" stroke="" stroke-width="1.5" />
-                            <line id="Line_42" data-name="Line 42" y2="12.544"
-                                  transform="translate(-9590.725 -22644.729)" fill="none" stroke="" stroke-width="1.5" />
-                        </g>
-                    </svg>
-                </a>
-            </li>
-        </ul>
-    </nav>
+<nav>
+    <ul class="align-items-center d-flex justify-content-between">
+        @if(mainmenu != null && mainmenu.Count > 0)
+        {
+            @foreach(var menu in mainmenu)
+            {
+                var subHref = !string.IsNullOrEmpty(menu.rewriteurl)
+                ? $"/{menu.rewriteurl}"
+                : $"/cms/{menu.linkname}/{menu.pageid}";
+                <li class="menu-item menudrop-item">
+
+                    <a href=@subHref>@menu.Name</a>
+                    @if (menu.SubMenus != null && menu.SubMenus.Count > 0)
+                    {
+                        <div class="mega_dropdown mega_dropdown01" id=mainmenu1_rptmainmenu_ctl00_panelabout>
+                            <div class=menu_tower_icon1>
+                                <figure><img src=images/icon2/about-tower1.svg class=img-fluid></figure>
+                            </div>
+                            <div class=menu_tower_icon2>
+                                <figure><img src=images/icon2/about-tower1.svg class=img-fluid></figure>
+                            </div>
+                            <div class=mega_item_left>
+                                <ul>
+                                    <li id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl00_l1 class="dropmenu active"
+                                        data-target=.drop_menu_1>
+                                        <a href=about-us/company-profile
+                                           id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl00_ank>Company Overview</a>
+                                    <li id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl01_l1 class=dropmenu
+                                        data-target=.drop_menu_2>
+                                        <a href=javascript:void(0);
+                                           id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl01_ank>Our Story</a>
+                                    <li id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl02_l1 class="dropmenu leadership"
+                                        data-target=.drop_menu_1>
+                                        <a href=about-us/leadership-team
+                                           id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl02_ank>Leadership Team</a>
+                                    <li id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl03_l1 class=dropmenu
+                                        data-target=.drop_menu_4>
+                                        <a href=javascript:void(0);
+                                           id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl03_ank>
+                                            Manufacturing
+                                            Capabitities
+                                        </a>
+                                </ul>
+                            </div>
+                            <div class="mega_item_right about-menu">
+                                <div class="mega_dropmenu drop_menu_1 show"
+                                     id=mainmenu1_rptmainmenu_ctl00_rptaboutinner_ctl00_panel1 data-target=.drop_menu_1>
+                                    <div class=mega_border></div>
+                                    <div class=mega_overview>
+                                        <p>
+                                            Skipper Limited is a global leader in Transmission & Distribution
+                                            infrastructure, EPC services, and Polymer solutions.
+                                            <div class="read_icon aos-animate aos-init" data-aos=fade-up data-aos-delay=550>
+                                                <a href="/cpage.aspx?mpgid=2&pgidtrail=17">
+                                                    <img src=images/icon/plus-icon.svg alt="">
+                                                </a>
+                                            </div>
+                                    </div>
+                                    <div class=mega_overFigure>
+                                        <figure>
+                                            <img src=images/abt-menu.webp alt=SKIPPER class="img-fluid w-100">
+                                        </figure><a href="/leadershipdetails.aspx?mpgid=2&pgidtrail=19&teamid=1"
+                                                    class=arrow_btn>
+                                            Chairman & Managing Director <span>
+                                                (Skipper
+                                                Limited)
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class=mega_overLink>
+                                        <p>
+                                            Mr. Sajan Kumar Bansal incorporated Skipper Limited during the year 1981, and
+                                            there was no looking back. Under his leadership the company grew from single
+                                            product manufacturer of Steel Tube to multi unit, multi product
+                                            organization.
+                                    </div>
+                                </div>
+                                <div class="mega_dropmenu drop_menu_2"
+                                     id=mainmenu1_rptmainmenu_ctl00_rptaboutinner_ctl01_panel1 data-target=.drop_menu_2>
+                                    <div class=mega_border></div>
+                                    <div class=sustain_link_text>
+                                        <ul>
+                                            <li>
+                                                <a href="/cpage.aspx?mpgid=2&pgid1=18&pgidtrail=61">
+                                                    History &
+                                                    Milestone
+                                                </a>
+                                            <li>
+                                                <a href="/cpage.aspx?mpgid=2&pgid1=18&pgidtrail=62">
+                                                    Founders &
+                                                    Leadership
+                                                </a>
+                                            <li>
+                                                <a href="/cpage.aspx?mpgid=2&pgid1=18&pgidtrail=63">
+                                                    Awards &
+                                                    Recognitions
+                                                </a>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mega_dropmenu drop_menu_3"
+                                     id=mainmenu1_rptmainmenu_ctl00_rptaboutinner_ctl02_panel1 data-target=.drop_menu_3>
+                                    <div class=mega_border></div>
+                                </div>
+                                <div class="mega_dropmenu drop_menu_4"
+                                     id=mainmenu1_rptmainmenu_ctl00_rptaboutinner_ctl03_panel1 data-target=.drop_menu_4>
+                                    <div class=mega_border></div>
+                                    <div class=sustain_link_text>
+                                        <ul>
+                                            <li>
+                                                <a href="/cpage.aspx?mpgid=2&pgid1=20&pgidtrail=36">
+                                                    Facilities &
+                                                    Infrastructure
+                                                </a>
+                                            <li>
+                                                <a href="/cpage.aspx?mpgid=2&pgid1=20&pgidtrail=59">
+                                                    Quality Assurance &
+                                                    Certifications
+                                                </a>
+                                            <li><a href="/cpage.aspx?mpgid=2&pgid1=20&pgidtrail=60">Innovation R&D</a>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                   
+                </li>
+            }
+        }
+       
+        @*  <li id=mainmenu1_rptmainmenu_ctl01_l1>
+            <a href=projects
+               id=mainmenu1_rptmainmenu_ctl01_ank>Projects</a>
+        <li id=mainmenu1_rptmainmenu_ctl02_l1 class="menu-item menudrop-item sutain_d">
+            <a href=javascript:void(0); id=mainmenu1_rptmainmenu_ctl02_ank>Sustainability</a>
+            <div class="mega_dropdown mega_dropdown01" id=mainmenu1_rptmainmenu_ctl02_panelstanbility>
+                <div class=menu_tower_icon1>
+                    <figure><img src=images/icon2/about-tower1.svg class=img-fluid></figure>
+                </div>
+                <div class=menu_tower_icon2>
+                    <figure><img src=images/icon2/about-tower1.svg class=img-fluid></figure>
+                </div>
+                <div class=mega_item_left>
+                    <ul>
+                        <li id=mainmenu1_rptmainmenu_ctl02_rptsustainability_ctl00_l1
+                            class="dropmenu active" data-target=.drop_menu_1>
+                            <a href=sustainability/environmental-responsibility#energy
+                               id=mainmenu1_rptmainmenu_ctl02_rptsustainability_ctl00_ank>
+                                Environmental
+                                Responsibility
+                            </a>
+                        <li id=mainmenu1_rptmainmenu_ctl02_rptsustainability_ctl01_l1 class=dropmenu
+                            data-target=.drop_menu_2>
+                            <a href=sustainability/social-responsibility#employee-well-being
+                               id=mainmenu1_rptmainmenu_ctl02_rptsustainability_ctl01_ank>
+                                Social
+                                Responsibility
+                            </a>
+                        <li id=mainmenu1_rptmainmenu_ctl02_rptsustainability_ctl02_l1 class=dropmenu
+                            data-target=.drop_menu_3>
+                            <a href=sustainability/governance-compliance#sustainabilit-standards-certifications
+                               id=mainmenu1_rptmainmenu_ctl02_rptsustainability_ctl02_ank>
+                                Governance &
+                                Compliance
+                            </a>
+                        <li id=mainmenu1_rptmainmenu_ctl02_rptsustainability_ctl03_l1 class=dropmenu
+                            data-target=.drop_menu_4>
+                            <a href=javascript:void(0);
+                               id=mainmenu1_rptmainmenu_ctl02_rptsustainability_ctl03_ank>
+                                Reports &
+                                Disclosures
+                            </a>
+                    </ul>
+                </div>
+                <div class=mega_item_right>
+                    <div class="mega_dropmenu sustain_box drop_menu_1 show"
+                         id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl00_panel1>
+                        <div class=mega_border></div>
+                        <div class=sustain_link_text>
+                            <ul>
+                                <li>
+                                    <a href=sustainability/environmental-responsibility#carbon
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl00_rptsustaininner1_ctl00_ank>
+                                        Carbon
+                                        Footprint Reduction
+                                    </a>
+                                <li>
+                                    <a href=sustainability/environmental-responsibility#energy
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl00_rptsustaininner1_ctl01_ank>
+                                        Energy
+                                        Efficiency Initiative
+                                    </a>
+                                <li>
+                                    <a href=sustainability/environmental-responsibility#water-conservation
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl00_rptsustaininner1_ctl02_ank>
+                                        Water
+                                        Conservation
+                                    </a>
+                                <li>
+                                    <a href=sustainability/environmental-responsibility#waste-management
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl00_rptsustaininner1_ctl03_ank>
+                                        Waste
+                                        Management & Recycling
+                                    </a>
+                                <li>
+                                    <a href=sustainability/environmental-responsibility#sustainable-materials
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl00_rptsustaininner1_ctl04_ank>
+                                        Sustainable
+                                        Materials
+                                    </a>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mega_dropmenu sustain_box drop_menu_2"
+                         id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl01_panel1>
+                        <div class=mega_border></div>
+                        <div class=sustain_link_text>
+                            <ul>
+                                <li>
+                                    <a href=sustainability/social-responsibility#employee-well-being
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl01_rptsustaininner1_ctl00_ank>
+                                        Employee
+                                        Well-being & Safety
+                                    </a>
+                                <li>
+                                    <a href=sustainability/social-responsibility#diversity-inclusion
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl01_rptsustaininner1_ctl01_ank>
+                                        Diversity
+                                        & Inclusion
+                                    </a>
+                                <li>
+                                    <a href=sustainability/social-responsibility#community-engagement
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl01_rptsustaininner1_ctl02_ank>
+                                        Community
+                                        Engagement
+                                    </a>
+                                <li>
+                                    <a href=sustainability/social-responsibility#ethical-sourcing
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl01_rptsustaininner1_ctl03_ank>
+                                        Ethical
+                                        Sourcing & Supply Chain Transparency
+                                    </a>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mega_dropmenu sustain_box drop_menu_3"
+                         id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl02_panel1>
+                        <div class=mega_border></div>
+                        <div class=sustain_link_text>
+                            <ul>
+                                <li>
+                                    <a href=sustainability/governance-compliance#sustainabilit-standards-certifications
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl02_rptsustaininner1_ctl00_ank>
+                                        Sustainability
+                                        Standards & Certifications
+                                    </a>
+                                <li>
+                                    <a href=sustainability/governance-compliance#esg
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl02_rptsustaininner1_ctl01_ank>
+                                        ESG
+                                        (Environmental, Social, Governance) Reporting
+                                    </a>
+                                <li>
+                                    <a href=sustainability/governance-compliance#compliance-with-regulations
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl02_rptsustaininner1_ctl02_ank>
+                                        Compliance
+                                        with Regulations
+                                    </a>
+                                <li>
+                                    <a href=sustainability/governance-compliance#ethical-business-practices
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl02_rptsustaininner1_ctl03_ank>
+                                        Ethical
+                                        Business Practices
+                                    </a>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mega_dropmenu sustain_box drop_menu_4"
+                         id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl03_panel1>
+                        <div class=mega_border></div>
+                        <div class=sustain_link_text>
+                            <ul>
+                                <li>
+                                    <a href=uploads/prospectus/33_Skipper-Ltd-BRSR-23-8-2024-v1_new0.pdf
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl03_rptsustaininner1_ctl00_ank
+                                       target=_blank>Annual Sustainability Reports</a>
+                                <li>
+                                    <a href=uploads/prospectus/34_20240911_Skipper_ReportDigital.pdf
+                                       id=mainmenu1_rptmainmenu_ctl02_rptsustaininner_ctl03_rptsustaininner1_ctl01_ank
+                                       target=_blank>ESG Reports</a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        
+            <li id=mainmenu1_rptmainmenu_ctl03_l1 class="menu-item menudrop-item investor_mega_menu">
+            <a href=investor-relations/ id=mainmenu1_rptmainmenu_ctl03_ank>Investors</a>
+            <div class="mega_dropdown mega_dropdown01 full_investor"
+                 id=mainmenu1_rptmainmenu_ctl03_panelinvestor>
+                <div class=tab-column>
+                    <div class=tab-item>
+                        <div class=accordion_hed>
+                            <p>Financial Performance</p><button class=toggle-btn
+                                                                id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl00_btn>
+                                +
+                            </button> <a href=investor-relations/financial-performance/annual-reports.html
+                                         id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl00_ank
+                                         class=streched_link></a>
+                        </div>
+                    </div>
+                    <div class=tab-item>
+                        <div class=accordion_hed>
+                            <p>Corporate Governance</p><button class=toggle-btn
+                                                               id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl01_btn>
+                                +
+                            </button> <a href=investor-relations/corporate-governance/corporate-governance
+                                         id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl01_ank
+                                         class=streched_link></a>
+                        </div>
+                    </div>
+                    <div class=tab-item>
+                        <div class=accordion_hed>
+                            <p>Shareholder Information</p><button class=toggle-btn
+                                                                  id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl02_btn>
+                                +
+                            </button> <a href=investor-relations/shareholder-information/shareholding-pattern
+                                         id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl02_ank
+                                         class=streched_link></a>
+                        </div>
+                    </div>
+                    <div class=tab-item>
+                        <div class=accordion_hed>
+                            <p>Right Issue</p><button class=toggle-btn
+                                                      id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl03_btn>
+                                +
+                            </button> <a href="/investor-details.aspx?mpgid=40&pgidtrail=40&pcatid=10&psubcatid=53"
+                                         id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl03_ank
+                                         class=streched_link></a>
+                        </div>
+                    </div>
+                    <div class=tab-item>
+                        <div class=accordion_hed>
+                            <p>MOA & AOA</p><button class=toggle-btn
+                                                    id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl04_btn>
+                                +
+                            </button> <a href="/investor-details.aspx?mpgid=40&pgidtrail=40&pcatid=11&psubcatid=54"
+                                         id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl04_ank
+                                         class=streched_link></a>
+                        </div>
+                    </div>
+                    <div class=tab-item>
+                        <div class=accordion_hed>
+                            <p>QIP</p><button class=toggle-btn
+                                              id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl05_btn>
+                                +
+                            </button> <a href="/investor-details.aspx?mpgid=40&pgidtrail=40&pcatid=12&psubcatid=55"
+                                         id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl05_ank
+                                         class=streched_link></a>
+                        </div>
+                    </div>
+                    <div class=tab-item>
+                        <div class=accordion_hed>
+                            <p>Codes & Policies</p><button class=toggle-btn
+                                                           id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl06_btn>
+                                +
+                            </button> <a href=investor-relations/codes-and-policies/code-of-conduct-for-directors
+                                         id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl06_ank
+                                         class=streched_link></a>
+                        </div>
+                    </div>
+                    <div class=tab-item>
+                        <div class=accordion_hed>
+                            <p>Demerger</p><button class=toggle-btn
+                                                   id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl07_btn>
+                                +
+                            </button> <a href=investor-relations/demerger/application-under-regulation-37-bse
+                                         id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl07_ank
+                                         class=streched_link></a>
+                        </div>
+                    </div>
+                    <div class=tab-item>
+                        <div class=accordion_hed>
+                            <p>Other Disclosures</p><button class=toggle-btn
+                                                            id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl08_btn>
+                                +
+                            </button> <a href=investor-relations/other-disclosures/appointment-letter-to-independent-director
+                                         id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl08_ank
+                                         class=streched_link></a>
+                        </div>
+                    </div>
+                    <div class=tab-item>
+                        <div class=accordion_hed>
+                            <p>Investor Contact</p><button class=toggle-btn
+                                                           id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl09_btn>
+                                +
+                            </button> <a href=investor-relations/investor-contact
+                                         id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl09_ank
+                                         class=streched_link></a>
+                        </div>
+                    </div>
+                    <div class=tab-item>
+                        <div class=accordion_hed>
+                            <p>Disclosure under Regulation 46</p><button class=toggle-btn
+                                                                         id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl10_btn>
+                                +
+                            </button> <a href="/investor-details.aspx?mpgid=40&pgidtrail=40&pcatid=13"
+                                         id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl10_ank
+                                         class=streched_link></a>
+                        </div>
+                    </div>
+                    <div class=tab-item>
+                        <div class=accordion_hed>
+                            <p>Investor Query</p><button class=toggle-btn
+                                                         id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl11_btn>
+                                +
+                            </button> <a href=investor-relations/investor-query
+                                         id=mainmenu1_rptmainmenu_ctl03_rptinvestor_ctl11_ank
+                                         class=streched_link></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <li id=mainmenu1_rptmainmenu_ctl04_l1 class="menu-item menudrop-item ps_d">
+            <a href=javascript:void(0); id=mainmenu1_rptmainmenu_ctl04_ank>
+                Products & Solutions
+                <svg viewBox="0 0 15.008 8.918" height=8.918 width=15.008 xmlns=http://www.w3.org/2000/svg
+                     id=mainmenu1_rptmainmenu_ctl04_svgicon>
+                    <path d=M1555.5-19.993l6.8,6.8,6.8-6.8 data-name="Path 1" fill=none id=Path_1
+                          transform="translate(-1554.797 20.7)" stroke="" stroke-width=2 />
+                </svg>
+            </a>
+            <div class="mega_dropdown mega_dropdown01" id=mainmenu1_rptmainmenu_ctl04_panelproduct>
+                <div class=menu_tower_icon1>
+                    <figure><img src=images/icon2/about-tower1.svg class=img-fluid></figure>
+                </div>
+                <div class=menu_tower_icon2>
+                    <figure><img src=images/icon2/about-tower1.svg class=img-fluid></figure>
+                </div>
+                <div class=mega_item_left>
+                    <ul>
+                        <li id=mainmenu1_rptmainmenu_ctl04_rptproducttype_ctl00_l1 class="dropmenu active"
+                            data-target=.drop_menu_1>
+                            <a href="/engineering.aspx?mpgid=37&pgidtrail=37&productid=1"
+                               id=mainmenu1_rptmainmenu_ctl04_rptproducttype_ctl00_ank>Engineering</a>
+                        <li id=mainmenu1_rptmainmenu_ctl04_rptproducttype_ctl01_l1 class=dropmenu
+                            data-target=.drop_menu_2>
+                            <a href="/engineering.aspx?mpgid=37&pgidtrail=37&productid=2"
+                               id=mainmenu1_rptmainmenu_ctl04_rptproducttype_ctl01_ank>Infrastructure</a>
+                        <li id=mainmenu1_rptmainmenu_ctl04_rptproducttype_ctl02_l1 class=dropmenu
+                            data-target=.drop_menu_3>
+                            <a href="/engineering.aspx?mpgid=37&pgidtrail=37&productid=3"
+                               id=mainmenu1_rptmainmenu_ctl04_rptproducttype_ctl02_ank>Polymer</a>
+                    </ul>
+                </div>
+                <div class=mega_item_right>
+                    <div class="mega_dropmenu drop_menu_1 show pro_drop"
+                         id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl00_panel1>
+                        <div class=mega_border></div>
+                        <div class=mega_border> </div>
+                        <div class=mega_overview>
+                            <p>
+                                Skipper Limited's Engineering Division stands as a pillar of innovation,
+                                quality, and reliability in the global power infrastructure industry.
+                                <div class=read_icon data-aos=fade-up data-aos-delay=550>
+                                    <a href=/engineering /><img src=images/icon/plus-icon.svg alt=""></a>
+                                </div>
+                        </div>
+                        <div class=mega_overLink
+                             id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl00_panelinner>
+                            <ul class=menu_list>
+                                <li>
+                                    <a href=engineering/transmission-towers
+                                       id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl00_rptproductinner_ctl00_ank>
+                                        Transmission
+                                        Towers
+                                    </a>
+                                <li>
+                                    <a href=engineering/transmission-monopoles
+                                       id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl00_rptproductinner_ctl01_ank>
+                                        Transmission
+                                        Monopoles
+                                    </a>
+                                <li>
+                                    <a href=engineering/telecom-towers
+                                       id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl00_rptproductinner_ctl02_ank>
+                                        Telecom
+                                        Towers
+                                    </a>
+                                <li>
+                                    <a href=engineering/poles
+                                       id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl00_rptproductinner_ctl03_ank>
+                                        Steel
+                                        Poles
+                                    </a>
+                                <li>
+                                    <a href=engineering/fasteners-tower-accessories
+                                       id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl00_rptproductinner_ctl04_ank>
+                                        Fasteners
+                                        & Accessories
+                                    </a>
+                                <li>
+                                    <a href=engineering/hotroll
+                                       id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl00_rptproductinner_ctl05_ank>
+                                        Hot
+                                        Rolled Structures
+                                    </a>
+                                <li>
+                                    <a href=engineering/rail
+                                       id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl00_rptproductinner_ctl06_ank>
+                                        Railway
+                                        Structures
+                                    </a>
+                                <li>
+                                    <a href=engineering/solar-structures
+                                       id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl00_rptproductinner_ctl07_ank>
+                                        Solar
+                                        Structures
+                                    </a>
+                                <li>
+                                    <a href=engineering/wind-towers
+                                       id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl00_rptproductinner_ctl08_ank>
+                                        Wind
+                                        Towers
+                                    </a>
+                                <li>
+                                    <a href=engineering/teststation
+                                       id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl00_rptproductinner_ctl09_ank>
+                                        Test
+                                        Station and R&D Centre
+                                    </a>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mega_dropmenu drop_menu_2"
+                         id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl01_panel1>
+                        <div class=mega_border></div>
+                        <div class=mega_border> </div>
+                        <div class=mega_overview>
+                            <p>
+                                Skipper Limited stands as India’s largest Transmission & Distribution (T&D)
+                                manufacturer and ranks among the top 10 globally.
+                                <div class=read_icon data-aos=fade-up data-aos-delay=550>
+                                    <a href=/infrastructure><img src=images/icon/plus-icon.svg alt=""></a>
+                                </div>
+                        </div>
+                        <div class=mega_overLink
+                             id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl01_panelinner>
+                            <ul class=menu_list>
+                                <li>
+                                    <a href=infrastructure/transmission-epc
+                                       id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl01_rptproductinner_ctl00_ank>
+                                        Transmission
+                                        EPC
+                                    </a>
+                                <li>
+                                    <a href=infrastructure/substation-epc
+                                       id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl01_rptproductinner_ctl01_ank>
+                                        Substation
+                                        EPC
+                                    </a>
+                                <li>
+                                    <a href=infrastructure/tower-epc
+                                       id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl01_rptproductinner_ctl02_ank>
+                                        Telecom
+                                        EPC
+                                    </a>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mega_dropmenu drop_menu_3"
+                         id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_panel1>
+                        <div class=mega_border></div>
+                        <div class=mega_border> </div>
+                        <div class=mega_overview>
+                            <p>
+                                Skipper Pipes is a nationally reputed pipe manufacturing company that
+                                specialises in premium quality polymer pipes and fittings.
+                                <div class=read_icon data-aos=fade-up data-aos-delay=550>
+                                    <a href=/water>
+                                        <img src=images/icon/plus-icon.svg alt="">
+                                    </a>
+                                </div>
+                        </div>
+                        <div class=polymer_link
+                             id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_panelpolymer>
+                            <div class=link_item>
+                                <h3>Plumbing</h3><a href=water/upvc-pipes
+                                                    id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl00_rptpolymerinner_ctl00_ank>
+                                    UPVC
+                                    Pipes and Fittings
+                                </a> <a href=water/cpvc-pipes
+                                        id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl00_rptpolymerinner_ctl01_ank>
+                                    CPVC
+                                    Pipes and Fittings
+                                </a>
+                            </div>
+                            <div class=link_item>
+                                <h3>Sewerage</h3><a href=water/UGD-pipes-fittings
+                                                    id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl01_rptpolymerinner_ctl00_ank>
+                                    UGD
+                                    Pipes & Fittings
+                                </a> <a href=water/swr-pipes
+                                        id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl01_rptpolymerinner_ctl01_ank>
+                                    SWR
+                                    Pipes & Fittings
+                                </a>
+                            </div>
+                            <div class=link_item>
+                                <h3>Industrial</h3><a href=water/prp-c-pipes-and-fittings
+                                                      id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl02_rptpolymerinner_ctl00_ank>
+                                    PPR-C
+                                    Pipes & Fittings
+                                </a> <a href=water/hdpe-pipes-and-fittings
+                                        id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl02_rptpolymerinner_ctl01_ank>
+                                    HDPE
+                                    Pipes & Fittings
+                                </a> <a href=water/plb-duct
+                                        id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl02_rptpolymerinner_ctl02_ank>
+                                    PLB
+                                    Duct
+                                </a>
+                            </div>
+                            <div class=link_item>
+                                <h3>Agri & Borewell</h3><a href=water/agriculture-Pipes-fittings
+                                                           id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl03_rptpolymerinner_ctl00_ank>
+                                    Agriculture
+                                    Pipes & Fittings
+                                </a> <a href=infrastructure/bore-casing-pipes
+                                        id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl03_rptpolymerinner_ctl01_ank>
+                                    Casing,
+                                    Ribbed & Screen Pipes
+                                </a> <a href=infrastructure/column-pipes
+                                        id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl03_rptpolymerinner_ctl02_ank>
+                                    Column
+                                    Pipes
+                                </a>
+                            </div>
+                            <div class=link_item>
+                                <h3>Solvent</h3><a href=water/cpvc-upvc-pvc
+                                                   id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl04_rptpolymerinner_ctl00_ank>
+                                    CPVC,
+                                    UPVC & PVC
+                                </a>
+                            </div>
+                            <div class=link_item>
+                                <h3>Bath Fittings & Accessories</h3><a href=water/cisterns-seat-covers
+                                                                       id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl05_rptpolymerinner_ctl00_ank>
+                                    Cisterns
+                                    & Seat Covers
+                                </a> <a href=water/ptmt-bath-fittings
+                                        id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl05_rptpolymerinner_ctl01_ank>
+                                    PTMT
+                                    Bath Fittings
+                                </a> <a href=water/cp-fittings
+                                        id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl05_rptpolymerinner_ctl02_ank>
+                                    CP
+                                    Fittings
+                                </a> <a href=water/cp-shower-accessories
+                                        id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl05_rptpolymerinner_ctl03_ank>
+                                    CP
+                                    Shower & Accessories
+                                </a>
+                            </div>
+                            <div class=link_item>
+                                <h3>Skipper Tanks</h3><a href=water/skipper-marina-water-tanks
+                                                         id=mainmenu1_rptmainmenu_ctl04_rptprouctlist_ctl02_rptpolymer_ctl06_rptpolymerinner_ctl00_ank>Marina</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li> *@
+        <div class=top-humburger>
+            <div class="c-hamburger c-hamburger--htx"><a href=javascript:void(0)></a></div>
+            <nav class="open sub-menu">
+                <div id=accordian>
+                    @if (leftHam != null && leftHam.Count > 0)
+                    {
+                        <ul class=list-unstyled>
+                            @foreach (var ham in leftHam)
+                            {
+                                var subHref = !string.IsNullOrEmpty(ham.rewriteurl)
+                                ? $"/{ham.rewriteurl}"
+                                : $"/cms/{ham.Name.Replace(" ","-").ToLower()}/{ham.pageid}";
+                                <li class="@(ham.SubMenus.Count == 0 ? "no_drop_menu" : null)">
+                                    <h3>
+
+                                        <a href="@((ham.SubMenus != null && ham.SubMenus.Count > 0) ? "javascript:void(0)" : subHref)">
+                                            @ham.Name
+                                        </a>
+                                    </h3>
+                                    @if (ham.SubMenus != null)
+                                    {
+                                        <ul class=submenu>
+                                            @foreach (var sub in ham.SubMenus)
+                                            {
+                                                var subHref1 = !string.IsNullOrEmpty(sub.rewriteurl)
+                                                ? $"/{sub.rewriteurl}"
+                                                : $"/cms/{sub.linkname.ToLower().Replace(" ","-")}/{sub.pageid}";
+                                                <li>  <a href="@subHref1">@sub.linkname</a> </li>
+                                            }
+                                        </ul>
+                                    }
+
+                                </li>
+                            }
+                        </ul>
+                    }
+
+                </div>
+            </nav>
+        </div>
+    </ul>
+</nav>
 
 

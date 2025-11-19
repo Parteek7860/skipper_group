@@ -24,7 +24,7 @@ namespace skipper_group_new.Repositories
             DataTable menuList;
             using (SqlConnection conn = new SqlConnection(this._connectionString))
             {
-                using (SqlCommand cmd = new SqlCommand("BindproducttypeSP", conn))
+                using (SqlCommand cmd = new SqlCommand("BindPageMasterSP", conn))
                 {
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {

@@ -333,8 +333,8 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@other_schema", DBNull.Value); 
                     cmd.Parameters.AddWithValue("@dynamicurlvalue", DBNull.Value); 
                     cmd.Parameters.AddWithValue("@dynamicurlrewrte", DBNull.Value); 
-                    cmd.Parameters.AddWithValue("@PageDescription1", DBNull.Value);
-                    cmd.Parameters.AddWithValue("@PageDescription2", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PageDescription1", cls.pagedesc2);
+                    cmd.Parameters.AddWithValue("@PageDescription2", cls.pagedesc3);
                     cmd.Parameters.AddWithValue("@PageDescription", cls.pagedesc ?? "");
                     cmd.Parameters.AddWithValue("@controller", cls.controllername);
                     cmd.Parameters.AddWithValue("@action", cls.actionname);

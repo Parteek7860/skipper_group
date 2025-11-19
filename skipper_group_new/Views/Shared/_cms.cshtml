@@ -38,40 +38,13 @@
 
         @await Html.PartialAsync("~/Views/PartialView/_MainMenu.cshtml")
     </header>
-    <section class="inner_banner">
-        <figure>
-            <img src="/images/about-banner.webp" alt="contact us" class="img-fluid w-100">
-        </figure>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-bar">
-                        <div class="breadcrumb-left">
-                            <h5>ABOUT US</h5>
-                        </div>
-                        <div class="breadcrumb-right">
-                            <a href="#">Home</a><img src="/images/icon/arrow-right.webp" alt="arrow-right">
-                            <a href="#">About Us</a>
-                            <img src="/images/icon/arrow-right.webp" alt="arrow-right">
-                            <span>Company Overview</span>
-                        </div>
-                    </div>
-                    <div class="bread_btm">
-                        <h5>Company Overview</h5>
-                    </div>
-                    <div class="shrt-title">
-                        <h6>Powering Global  <span>Infrastructure with Innovation </span> <span>& Excellence</span></h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    @await Html.PartialAsync("~/Views/Shared/_CommonHeaderCmsData.cshtml")
     @RenderBody();
     @await Html.PartialAsync("~/Views/Shared/_footer.cshtml")
 
 
     <script src="https://code.jquery.com/jquery-migrate-3.4.1.min.js"></script>
-    <script src="@Url.Content("/js/bootstrap.min.js")" ></script>
+    <script src="@Url.Content("/js/bootstrap.min.js")"></script>
     <script src="@Url.Content("/js/owl.carousel.min.js")"></script>
     <script src="@Url.Content("/js/swiper.js")"></script>
 

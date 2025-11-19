@@ -119,11 +119,27 @@
                         </div>
                     </div>
                     <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label> Mega Menu</label>
+                                @Html.TextAreaFor(model => model.pagedesc2, new { @id = "editor4", @class = "form-control editor1", @rows = "10" })
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label> Short Desc</label>
+                                @Html.TextAreaFor(model => model.pagedesc3, new { @id = "editor5", @class = "form-control editor1", @rows = "10" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
                         <div class="col-lg-8 col-md-8 col-sm-8">
                             <div class="form-group">
                                 <label> Upload Banner</label>
                                 <input type="file" name="file_Uploader" />
-                                <img src="@Url.Content(Model.bannerimage)" width="80" />
+                                <img src="/uploads/banner/@Url.Content(Model.uploadbanner)" width="80" />
                                 @Html.HiddenFor(model => model.uploadbanner)
                             </div>
 

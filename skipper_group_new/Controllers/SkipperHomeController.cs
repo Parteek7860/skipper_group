@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.Extensions;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using skipper_group_new.Interface;
 using skipper_group_new.Models;
@@ -27,9 +28,32 @@ namespace skipper_group_new.Controllers
         [Route("/")]
         public async Task<IActionResult> Index()
         {
-            //await LoadSeoDataAsync(1);
+           
             clsHomeModel obj = new clsHomeModel();
+            await LoadSeoDataAsync(1);
+
             await Task.Delay(1);
+
+            Task<DataTable> x = this._homePageService.GetCMSData();
+            if (x != null)
+            {
+                DataRow[] results = x.Result.Select($"pagestatus=1 and pageid='1'");
+                if (results.Length == 0)
+                {
+                    return (IActionResult)this.RedirectToAction("Index", "SkipperHome");
+                }
+                else
+                {
+                    DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
+                    obj.cmscontent = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
+                    obj.SmallDescription = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["smalldesc"]));
+                    obj.pagedesc2 = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription1"]));
+                    obj.pagedesc3 = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription2"]));
+
+                    return View(obj);
+                }
+
+            }
 
             return View(obj);
         }
@@ -42,11 +66,71 @@ namespace skipper_group_new.Controllers
             return View(obj);
         }
         [HttpGet]
+        public async Task<IActionResult> contactus(int id)
+        {
+            await LoadSeoDataAsync(id);
+
+
+            clsHomeModel obj = new clsHomeModel();
+            await LoadSeoDataAsync(id);
+            await LoadCMSDataAsync(id);
+
+            Task<DataTable> x = this._homePageService.GetCMSData();
+            if (x != null)
+            {
+                DataRow[] results = x.Result.Select($"pagestatus=1 and pageid='{id.ToString()}'");
+                if (results.Length == 0)
+                {
+                    return (IActionResult)this.RedirectToAction("Index", "SkipperHome");
+                }
+                else
+                {
+                    DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
+                    obj.cmscontent = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
+                    obj.SmallDescription = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["smalldesc"]));
+                  
+
+                    return View("contactus", obj);
+                }
+
+            }
+
+            return View("contactus", obj);
+        }
+        [HttpGet]
+        [Route("blogs")]
+        public IActionResult blogs()
+        {
+            clsHomeModel obj = new clsHomeModel();
+            obj.Name = "Thankyou";
+            return View(obj);
+        }
+        [HttpGet]
+
+        public async Task<IActionResult> leadership(int id)
+        {
+            await LoadSeoDataAsync(id);
+            await LoadCMSDataAsync(id);
+            clsHomeModel obj = new clsHomeModel();
+            
+
+            return View("leadership", obj);
+        }
+        [HttpGet]
+        [Route("whats-new")]
+        public IActionResult newsevents()
+        {
+            clsHomeModel obj = new clsHomeModel();
+          
+
+            return View(obj);
+        }
+        [HttpGet]
         [Route("cms/{title}/{id}")]
         public async Task<IActionResult> cms(string title, int id)
         {
             await LoadSeoDataAsync(id);
-            // await LoadInnerMenuAsync(id);
+
             if (!string.IsNullOrEmpty(ViewBag.CurrentPageid))
             {
                 //   await LoadInnerMenuAsync(Convert.ToInt32(ViewBag.Currentid));
@@ -67,7 +151,8 @@ namespace skipper_group_new.Controllers
                     DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
                     obj.cmscontent = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
                     obj.Name = Convert.ToString(dt.Rows[0]["pagename"]);
-
+                    obj.uploadimage = Convert.ToString(dt.Rows[0]["uploadbanner"]);
+                    obj.parentname = "";
 
                     return View("~/Views/SkipperHome/cms.cshtml", obj);
                 }

@@ -49,7 +49,7 @@ namespace skipper_group_new.Controllers
         }
         [HttpPost]
         [Route("backoffice/cms/addpages")]
-        public IActionResult addpages(clsCMS cls, IFormCollection frm)
+        public IActionResult addpages(clsCMS cls, IFormCollection frm, IFormFile file_Uploader)
         {
             var obj = new clsCMS();
             ViewBag.Menus = _menuService.GetMenu();
@@ -99,9 +99,27 @@ namespace skipper_group_new.Controllers
             obj.metadesc = cls.metadesc;
             obj.canonical = cls.canonical;
             obj.rewriteurl = cls.rewriteurl;
-            obj.controllername=cls.controllername;
-            obj.actionname=cls.actionname;
-            obj.displayorder= cls.displayorder;
+            obj.controllername = cls.controllername;
+            obj.actionname = cls.actionname;
+            obj.displayorder = cls.displayorder;
+            obj.pagedesc2 = cls.pagedesc2;
+            obj.pagedesc3 = cls.pagedesc3;
+            if (file_Uploader != null && file_Uploader.Length > 0)
+            {
+                var fileName = Path.GetFileName(file_Uploader.FileName); // captures name
+                var filePath = Path.Combine("wwwroot/uploads/banner", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file_Uploader.CopyTo(stream);
+                }
+
+                obj.uploadbanner = fileName;
+            }
+            else
+            {
+                obj.uploadbanner = cls.uploadbanner;
+            }
             int x = _backofficeService.AddCMS(obj);
             if (x > 0)
             {
@@ -232,6 +250,9 @@ namespace skipper_group_new.Controllers
                 obj.rewriteurl = dt.Rows[0]["rewriteurl"].ToString();
                 obj.controllername = dt.Rows[0]["controller"].ToString();
                 obj.actionname = dt.Rows[0]["action"].ToString();
+                obj.uploadbanner = dt.Rows[0]["uploadbanner"].ToString();
+                obj.pagedesc2 = WebUtility.HtmlDecode(dt.Rows[0]["pagedescription1"].ToString());
+                obj.pagedesc3 = WebUtility.HtmlDecode(dt.Rows[0]["pagedescription2"].ToString());
 
                 foreach (SelectListItem item in obj.linkposition)
                 {
@@ -262,6 +283,6 @@ namespace skipper_group_new.Controllers
             return View("~/Views/backoffice/cms/viewpages.cshtml");
         }
 
-        
+
     }
 }

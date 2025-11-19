@@ -40,9 +40,9 @@ namespace skipper_group_new.Controllers
         
 
         public List<clsHomeModel> MobileMenuList => _menuService.MobileMenu;
-        
 
-        public override async void OnActionExecuting(ActionExecutingContext context)
+
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
 
             base.OnActionExecuting(context);
@@ -50,14 +50,53 @@ namespace skipper_group_new.Controllers
 
            // _menuService.TopMenuList = await GetTopMenu();
           //  _menuService.MobileMenu = await GetMobileMenu();
-         //   _menuService.MainMenuList = await LoadMainMenu();
-          
+            _menuService.MainMenuList = await LoadMainMenu();
+           
 
-           // (_menuService.HamBurgerList, _menuService.RightHamBurgerList) = await LoadHamburgerMenus();
-        
+
+            _menuService.HamBurgerList = await LoadHamburgerMenus();
+      
+
+            await next();
 
         }
+        protected async Task LoadCMSDataAsync(int pageId)
+        {
+            var dt = await _homePageService.GetCMSData();
+            if (dt == null || dt.Rows.Count == 0)
+                return;
 
+            var row = dt.AsEnumerable()
+                .FirstOrDefault(r => r.Field<bool>("pagestatus") && r.Field<int>("pageid") == pageId);
+
+            var parentId = Convert.ToInt32(row["parentid"]);
+
+            var parent = dt.AsEnumerable()
+                ?.FirstOrDefault(r => r.Field<bool>("pagestatus") && r.Field<int>("pageid") == parentId);
+
+            string parentName = parent?["linkname"]?.ToString() ?? "";
+
+
+            if (row != null)
+            {
+                var seo = new clsHomeModel
+                {
+                    Name = row["linkname"]?.ToString() ?? "Metro Tyres",
+                    uploadimage = row["uploadbanner"]?.ToString() ?? "",
+                    SmallDescription = row["smalldesc"]?.ToString() ?? "",
+                    cmscontent = row["pagedescription"]?.ToString() ?? "",
+                    tagline = row["tagline"]?.ToString() ?? "",
+                    parentname = parentName,
+                    id = row["parentid"]?.ToString() ?? ""
+                   
+
+                    
+                };
+
+
+                _menuService.GetCMSData = new List<clsHomeModel> { seo };
+            }
+        }
         protected async Task LoadSeoDataAsync(int pageId)
         {
             var dt = await _homePageService.GetCMSData();
@@ -273,43 +312,43 @@ namespace skipper_group_new.Controllers
 
         private async Task<List<clsHomeModel>> LoadMainMenu()
         {
-            var menuDt = await _homePageService.GetMenuList();
-            var subDt = await _homePageService.GetSubMenuList();
+            var dt = await _homePageService.GetMenuList();
+            ///  var subDt = await _homePageService.GetSubMenuList();
 
-            if (menuDt == null || menuDt.Rows.Count == 0)
-                return new List<clsHomeModel>();
+            if (dt == null || dt.Rows.Count == 0)
+                return (new List<clsHomeModel>());
 
-            var result = menuDt.Select("status=1")
+            var result = dt.Select("pagestatus=1 and collageid=0 AND linkposition like '%header%'")
                 .CopyToDataTable().AsEnumerable()
-                .OrderBy(dr => Convert.ToInt32(dr["displayorder"]))
+                 .OrderBy(r => Convert.ToInt32(r["displayorder"]))
                 .Select(dr => new clsHomeModel
                 {
-                    Name = dr["product_typetitle"].ToString(),
+                    Name = dr["linkname"].ToString(),
                     rewriteurl = dr["rewriteurl"].ToString(),
-                    uploadimage = dr["image_icon"].ToString(),
-                    pageid = dr["product_typeid"].ToString(),
-                    SubMenus = subDt.AsEnumerable()
-                        .Where(sub => sub["product_typeid"].ToString() == dr["product_typeid"].ToString() && Convert.ToInt32(sub["status"]) == 1)
+                    pageid = dr["pageid"].ToString(),
+                    SubMenus = dt.AsEnumerable()
+                        .Where(sub => sub["ParentId"].ToString() == dr["pageid"].ToString() && Convert.ToInt32(sub["pagestatus"]) == 1)
+                         .OrderBy(r => Convert.ToInt32(r["displayorder"]))
                         .Select(sub => new SubhomeModel
                         {
-                            linkname = sub["vehicle_typetitle"].ToString(),
-                            pageid = sub["vehicle_typeid"].ToString(),
-                            ParentId = sub["product_typeid"].ToString(),
-                            uploadimage = dr["uploadimage"].ToString(),
-                            rewriteurl = sub["rewriteurl"].ToString()
+                            linkname = sub["linkname"].ToString(),
+                            rewriteurl = sub["rewriteurl"].ToString(),
+                            ParentId = sub["ParentId"].ToString(),
+                            pageid = sub["pageid"].ToString()
                         }).ToList()
                 }).ToList();
+
 
             return result;
         }
 
-        private async Task<(List<clsHomeModel> Left, List<clsHomeModel> Right)> LoadHamburgerMenus()
+        private async Task<List<clsHomeModel>> LoadHamburgerMenus()
         {
             var dt = await _homePageService.GetHamburgerMenuList();
             if (dt == null || dt.Rows.Count == 0)
-                return (new List<clsHomeModel>(), new List<clsHomeModel>());
+                return (new List<clsHomeModel>());
 
-            var leftMenu = dt.Select("pagestatus=1 AND linkposition like '%Header'")
+            var leftMenu = dt.Select("pagestatus=1 and collageid=0 AND linkposition like '%Hamburger%'")
                 .CopyToDataTable().AsEnumerable()
                  .OrderBy(r => Convert.ToInt32(r["displayorder"]))
                 .Select(dr => new clsHomeModel
@@ -329,27 +368,10 @@ namespace skipper_group_new.Controllers
                         }).ToList()
                 }).ToList();
 
-            var rightMenu = dt.Select("pagestatus=1 AND linkposition like '%Header%'")
-                .CopyToDataTable().AsEnumerable()
-                 .OrderBy(r => Convert.ToInt32(r["displayorder"]))
-                .Select(dr => new clsHomeModel
-                {
-                    Name = dr["linkname"].ToString(),
-                    rewriteurl = dr["rewriteurl"].ToString(),
-                    pageid = dr["pageid"].ToString(),
-                    SubMenus = dt.AsEnumerable()
-                        .Where(sub => sub["ParentId"].ToString() == dr["pageid"].ToString() && Convert.ToInt32(sub["pagestatus"]) == 1)
-                         .OrderBy(r => Convert.ToInt32(r["displayorder"]))
-                        .Select(sub => new SubhomeModel
-                        {
-                            linkname = sub["linkname"].ToString(),
-                            rewriteurl = sub["rewriteurl"].ToString(),
-                            ParentId = sub["ParentId"].ToString(),
-                            pageid = sub["pageid"].ToString()
-                        }).ToList()
-                }).ToList();
+           
 
-            return (leftMenu, rightMenu);
+
+            return (leftMenu);
         }
 
       

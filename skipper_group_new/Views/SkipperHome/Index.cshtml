@@ -18,220 +18,263 @@
     @await Html.PartialAsync("~/Views/PartialView/_MainMenu.cshtml")
 </header>
 
-<!--------------home banner section start here----------->
-<section class="home_banner">
-    <!-- start of hero -->
-    <div class="video">
-        <!-- Video Container initially hidden -->
-        <div class="video-wrapper">
-            <div class="video-container">
-                <video id="video" autoplay muted loop width="100%" height="700">
-                    <source src="~/video/poles_video.mp4" type="video/mp4">
-                </video>
-                <span class="mute-toggle muted"></span>
+
+<section class=home_banner>
+    <div class=video>
+        <div class=video-wrapper>
+            <div class=video-container>
+                <div id=homebanner1_rptbanner_ctl00_panel2>
+                    <video autoplay height=700 id=video loop muted
+                           width=100%>
+                        <source src=video/banner_video.mp4 type=video/mp4>
+                    </video><span class="mute-toggle muted"></span>
+                </div>
             </div>
         </div>
-
-
     </div>
-
 </section>
-
-<!---------home banner end here-->
-<!---------home banner end here-->
-<!--------home about html start here---->
-<section class="skipper_home_about">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-5">
-                <div class="about_img_panel image2">
-                    <figure><img src="images/tower.png" class="img-fluid"></figure>
+@Html.Raw(Model.SmallDescription)
+<div class=wrapper>
+    <div class=eng-wrapper>
+        <section class="animated-section home_eng">
+            @Html.Raw(Model.cmscontent)
+        </section>
+       @Html.Raw(Model.pagedesc2)
+    </div>
+    @Html.Raw(Model.pagedesc3)
+    <section class=home_sustainbility>
+        <div class=home_sustain_panel>
+            <div class="image-container image_full">
+                <figure><img src=images/home_sustainbility.jpg alt=Sustainbility class=img-fluid></figure>
+                <div class="icon_sustain mobile-display">
+                    <figure class=c-shape-reveal>
+                        <img src=images/icon/Subtraction-3.svg alt=icon
+                             class=img-fluid>
+                    </figure>
                 </div>
-
-
             </div>
-            <div class="col-md-7">
-                <div class="about_block2">
-                    <div class="we_are">
-                        <h1 data-aos="fade-up" data-aos-delay="200">We Are Skipper</h1>
-                        <p data-aos="fade-up" data-aos-delay="300">
-                            One of the world's leading manufacturers for
-                            <b>Transmission & Distribution Structures (Towers & Poles)</b> in it's Engineering
-                            Products segment, a leading and respected brand in the <b>Polymer Sector</b> as well as
-                            trusted partner for executing critical
-                            Infrastructure <b>EPC projects</b>.
-                        </p>
-                        <div class="read_icon" data-aos="fade-up" data-aos-delay="400">
-                            <a href="javascript:void(0)">
-                                <img src="images/icon/plus-icon.svg" class="img-fluid">
+            <div class=container>
+                <div class=sustain_text>
+                    <div class=mobile_view>
+                        <div class=top_icon>
+                            <img src=images/icon/Subtraction-2.svg alt=icon1
+                                 class="img-fluid image">
+                        </div>
+                        <div class=bottom_icon>
+                            <img src=images/icon/Subtraction-5.svg alt=icon2
+                                 class="img-fluid image">
+                        </div>
+                        <h2 data-aos=fade-up data-aos-delay=300>Sustainability</h2>
+                        <p data-aos=fade-up data-aos-delay=400>
+                            Skipper Limited focuses on sustainable
+                            infrastructure, emphasizing eco-friendly manufacturing and responsible resource
+                            management.
+                            <div class=read_icon data-aos=fade-up data-aos-delay=500>
+                                <a href="cpage.aspx?mpgid=6&pgidtrail=22">
+                                    <img src=images/icon/plus-icon.svg
+                                         alt=Sustainability class=img-fluid>
+                                </a>
+                            </div>
+                    </div>
+                    <div class=people_link_list data-aos=fade-up data-aos-delay=600>
+                        <a href="cpage.aspx?mpgid=6&pgidtrail=23">CSR Activities</a> <a href=pdf/sustainability-report.pdf target=_blank>Sustainability Report</a> <a href="cpage.aspx?mpgid=6&pgidtrail=24#esg">ESG Policy</a>
+                    </div>
+                </div>
+                <div class=icon_sustain>
+                    <figure class=c-shape-reveal>
+                        <img src=images/icon/Subtraction-3.svg alt="" class=img-fluid>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class=featured_project>
+        <div class=scroll-spacer></div>
+        <div class=trigger-placeholder></div>
+        <div class=icon_project>
+            <figure><img src=images/icon/Subtraction-4.svg alt="skipper image" class=img-fluid></figure>
+        </div>
+        <div class=container>
+            <h2>Featured Projects</h2>
+            <div class=project_slider>
+                <div class="mySwiper swiper">
+                    <div class=swiper-wrapper>
+                        <div class=swiper-slide>
+                            <div class=swiper-container>
+                                <div class=slider_grid>
+                                    <div class=left-slide id=rptinnerleft_ctl00_panelleft>
+                                        <div class=corner-accent>
+                                            <figure>
+                                                <img src=uploads/SmallImages/4krs-4krs-pro-2.png
+                                                     alt="skipper image" class=img-fluid>
+                                            </figure>
+                                        </div>
+                                        <div class=text-content>
+                                            <div class=bottom_left_icon>
+                                                <img src=images/icon/Subtraction-6.svg
+                                                     alt="skipper image" class=img-fluid>
+                                            </div>
+                                            <div class=project-title>
+                                                330 Kv & 500 Kv Project Energy Connect
+                                                (Pec) South Australia To New South Wales, Australia
+                                            </div>
+                                            <div class=description>Transgrid</div>
+                                        </div>
+                                        <div class=voltage></div><a href="/project-details.aspx?mpgid=5&pgidtrail=5&projectid=4"
+                                                                    id=rptinnerleft_ctl00_ank class=streched_link></a>
+                                    </div>
+                                    <div class=right-container id=panelright>
+                                        <div class=right-top id=rptinnerright_ctl00_panel1>
+                                            <div class=corner-accent>
+                                                <figure>
+                                                    <img src=uploads/SmallImages/5krs-pro-3.webp
+                                                         alt="skipper image" class=img-fluid>
+                                                </figure>
+                                            </div>
+                                            <div class=text-content>
+                                                <div class=bottom_left_icon>
+                                                    <img src=images/icon/Subtraction-6.svg class=img-fluid>
+                                                </div>
+                                                <div class=project-title>
+                                                    500 Kv Mantaro Montalvo (Mamo), Peru
+                                                </div>
+                                                <div class=description>
+                                                    Ministry Of Energy And Mines Peru<div class=loctn_grid>
+                                                        <div class=prjt_nme>
+                                                            <h4>Project Authority</h4>
+                                                            <p>Ceylon Electricity Board (CEB)
+                                                        </div>
+                                                        <div class=prjt_nme>
+                                                            <h4>Location</h4>
+                                                            <p>Sri Lanka
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class=voltage></div><a href="/project-details.aspx?mpgid=5&pgidtrail=5&projectid=5"
+                                                                        id=rptinnerright_ctl00_ank class=streched_link></a>
+                                        </div>
+                                        <div class=right-bottom id=rptinnerright_ctl01_panel1>
+                                            <div class=corner-accent>
+                                                <figure>
+                                                    <img src=uploads/SmallImages/6krs-pro-4.webp
+                                                         alt="skipper image" class=img-fluid>
+                                                </figure>
+                                            </div>
+                                            <div class=text-content>
+                                                <div class=bottom_left_icon>
+                                                    <img src=images/icon/Subtraction-6.svg class=img-fluid>
+                                                </div>
+                                                <div class=project-title>
+                                                    500 Kv & 220 Kv Obras Nuevas Stt Ds
+                                                    115-2011 Transmission Line, Chile
+                                                </div>
+                                                <div class=description>Interchile</div>
+                                            </div>
+                                            <div class=voltage></div><a href="/project-details.aspx?mpgid=5&pgidtrail=5&projectid=6"
+                                                                        id=rptinnerright_ctl01_ank class=streched_link></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button_group d-none">
+                        <div class=container>
+                            <div class=swiper-button-next></div>
+                            <div class=swiper-button-prev></div>
+                        </div>
+                    </div>
+                    <div class=container>
+                        <div class=view_all>
+                            <a href="/projects.aspx?mpgid=5&pgidtrail=5">
+                                View All Projects
+                                <figure><img src=images/icon/right_icon.svg alt="project icon"></figure>
                             </a>
                         </div>
                     </div>
-
-                    <div class="we_are_list" data-aos="fade-up" data-aos-delay="500">
-                        <ul>
-                            <li>
-                                <h2>40+</h2>
-                                <p>Years of excellence</p>
-                            </li>
-                            <li>
-                                <h2>65+</h2>
-                                <p>Countries of Global Reach</p>
-                            </li>
-                            <li>
-                                <h2>300K</h2>
-                                <p>MTPA engineering production <br> capacity</p>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- Section: Engineering -->
-<div class="wrapper">
-    <div class="eng-wrapper">
-        <section class="home_eng animated-section">
-            <div class="container">
-                <!-- Animation Elements -->
-                <div class="eng_panel">
-                    <div class="line_part">
-                        <svg class="top-line-svg" viewBox="0 0 100 1" preserveAspectRatio="none">
-                            <line x1="0" y1="0.5" x2="100" y2="0.5" />
-                        </svg>
-                    </div>
-                    <div class="tower_part mobile-none">
-                        <div class="tower-right"><img src="images/icon/tower_icon1.png" class="img-fluid" alt="Tower" /> </div>
-                    </div>
-                </div>
-
-
+    </section>
+    <section class=skipper_news>
+        <div class=full_container>
+            <div class=item>
+                <figure><img src=images/skipper_news.png alt="skipper news" class=img-fluid></figure>
             </div>
-
-        </section>
-
-        <section class="home_eng1">
-            <div class="container">
-                <div class="second-vertical-line-svg">
-                    <svg viewBox="0 0 1 200" preserveAspectRatio="none">
-                        <line x1="0.5" y1="0" x2="0.5" y2="200" />
-                    </svg>
-                </div>
-                <div class="second-dot"></div>
-                <div class="horizontal-line2"></div>
-
-                <div class="eng_gorup_img">
-                    <figure class="engineering-image">
-                        <div class="image-reveal-mask mobile-none">
-                            <img src="images/eng-pic.png" class="img-fluid" alt="Engineering" />
-                        </div>
-                        <div class="image-reveal-mask mobile-display">
-                            <img src="images/eng-pic-mobile.webp" class="img-fluid" alt="Engineering" />
-                        </div>
+            <div class=item id=rptnewsevents_ctl00_panelimage>
+                <div class=home_news>
+                    <figure>
+                        <img src=uploads/smallimages/7krs-mee25.webp alt="skipper icon2" class=img-fluid>
                     </figure>
-
-                    <div class="engineering-bg"></div>
-                    <div class="text_eng">
-                        <div class="eng_text1">
-                            <figure>
-                                <img src="images/icon/Subtraction-1.svg" class="img-fluid" />
-                            </figure>
-                            <div class="eng_pic1">
-                                <h3>Engineering</h3>
-                                <p>
-                                    One of the world's largest <br />
-                                    integrated Transmission Tower <br />
-                                    manufacturing companies
-                                </p>
-                                <div class="read_icon">
-                                    <a href="#"><img src="images/icon/plus-icon.svg" /></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="eng_text2">
-                            <h4>300K</h4>
-                            <p>MTPA engineering <br /> production capacity</p>
-                        </div>
-                    </div>
+                    <div class="fade-container home_news_detail">
+                        <div class=h_date>07-Apr-2025</div>
+                        <h3>2nd Tower Testing Facility Launching in 2025</h3>
+                    </div><a href=/news-details/2nd-tower-testing-facility-launching-in-2025/7
+                             id=rptnewsevents_ctl00_ank class=streched_link></a>
                 </div>
             </div>
-        </section>
-
-
-
-        <section class="home_infra animated-section1">
-            <div class="container">
-                <div class="second-vertical-line2-wrapper">
-                    <div class="second-vertical-line2"></div>
-                    <div class="second-dot2"></div>
-
-                </div>
-                <!-- 4. Horizontal line after dot -->
-                <!-- Horizontal SVG Line -->
-                <div class="horizontal-line3-svg">
-                    <svg viewBox="0 0 200 1" preserveAspectRatio="none">
-                        <line x1="0" y1="0.5" x2="200" y2="0.5" />
-                    </svg>
-                </div>
-
-                <!-- Optional: Background reveal like engineering-bg -->
-
-                <div class="infra-content-wrapper">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="infra_box  left">
-                                <div class="top_icon"><img src="images/icon/Subtraction-2.svg" class="img-fluid image"></div>
-                                <h3 data-aos="fade-up" data-aos-delay="500">Infrastructure</h3>
-                                <p data-aos="fade-up" data-aos-delay="500">
-                                    The company is also engaged in EPC Projects in Power
-                                    Transmission & Distribution, Telecom infra and Railway Structures
-                                </p>
-                                <div class="read_icon" data-aos="fade-up" data-aos-delay="500">
-                                    <a href="#">
-                                        <img src="images/icon/plus-icon.svg">
-                                    </a>
-                                </div>
-                                <div class="infra_num">
-                                    <h4 data-aos="fade-up" data-aos-delay="600">300K</h4>
-                                    <p data-aos="fade-up" data-aos-delay="700">MTPA engineering <br> production capacity</p>
-                                </div>
-                                <figure data-aos="fade-up" data-aos-delay="800">
-                                    <img src="images/Infrastructure.png"
-                                         class="img-fluid image2">
-                                </figure>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="infra_box  right">
-                                <div class="top_icon"><img src="images/icon/Subtraction-2.svg" class="img-fluid image"></div>
-                                <h3 data-aos="fade-up" data-aos-delay="350">Polymer Pipes</h3>
-                                <p data-aos="fade-up" data-aos-delay="450">
-                                    Skipper Limited is a national <br> powerhouse in the
-                                    Polymer Pipe <br> business.
-                                </p>
-                                <div class="read_icon" data-aos="fade-up" data-aos-delay="550">
-                                    <a href="#">
-                                        <img src="images/icon/plus-icon.svg">
-                                    </a>
-                                </div>
-                                <div class="infra_num">
-                                    <h4 data-aos="fade-up" data-aos-delay="650">70K</h4>
-                                    <p data-aos="fade-up" data-aos-delay="750">MTPA engineering <br> production capacity</p>
-                                </div>
-                                <figure data-aos="fade-up" data-aos-delay="800">
-                                    <img src="images/Polymer-Pipes.png"
-                                         class="img-fluid image2">
-                                </figure>
-                            </div>
-                        </div>
-                    </div>
+            <div class=item id=rptnewsevents_ctl01_panelimage>
+                <div class=home_news>
+                    <figure>
+                        <img src=uploads/smallimages/8krs-New-Project.jpg alt="skipper icon2"
+                             class=img-fluid>
+                    </figure>
+                    <div class="fade-container home_news_detail">
+                        <div class=h_date>01-Mar-2025</div>
+                        <h3>Proud to Represent Skipper Limited at Middle East Energy Dubai 2025</h3>
+                    </div><a href=/news-details/proud-to-represent-skipper-limited-at-middle-east-energy-dubai-2025/8
+                             id=rptnewsevents_ctl01_ank class=streched_link></a>
                 </div>
             </div>
-        </section>
-    </div>
+            <div class=item id=rptnewsevents_ctl02_panelimage>
+                <div class=home_news>
+                    <figure>
+                        <img src=uploads/smallimages/9rks-news2img.webp alt="skipper icon2" class=img-fluid>
+                    </figure>
+                    <div class="fade-container home_news_detail">
+                        <div class=h_date>20-Jun-2025</div>
+                        <h3>When you work with a customer like HDEC</h3>
+                    </div><a href=/news-details/when-you-work-with-a-customer-like-hdec/9
+                             id=rptnewsevents_ctl02_ank class=streched_link></a>
+                </div>
+            </div>
+            <div class=item id=rptnewsevents_ctl03_panelimage>
+                <div class=home_news>
+                    <figure>
+                        <img src=uploads/smallimages/10krs-NewProject.webp alt="skipper icon2"
+                             class=img-fluid>
+                    </figure>
+                    <div class="fade-container home_news_detail">
+                        <div class=h_date>01-May-2024</div>
+                        <h3>400KV SC Padhge Ghatkopar Monopole Line</h3>
+                    </div><a href=/news-details/400kv-sc-padhge-ghatkopar-monopole-line/10
+                             id=rptnewsevents_ctl03_ank class=streched_link></a>
+                </div>
+            </div>
+            <div class=item id=rptnewsevents_ctl04_panelimage>
+                <div class=home_news>
+                    <figure>
+                        <img src=uploads/smallimages/11krs-outstandingq4.webp alt="skipper icon2"
+                             class=img-fluid>
+                    </figure>
+                    <div class="fade-container home_news_detail">
+                        <div class=h_date>01-May-2025</div>
+                        <h3>Skipper is Excited to Announce Outstanding Q4 Results for FY25!</h3>
+                    </div><a href=/news-details/skipper-is-excited-to-announce-outstanding-q4-results-for-fy25!/11
+                             id=rptnewsevents_ctl04_ank class=streched_link></a>
+                </div>
+            </div>
+        </div>
+        <div class=view_all>
+            <a href="/news.aspx?mpgid=12&pgidtrail=12">
+                View All News & Updates
+                <figure>
+                    <img src=images/icon/right_icon.svg alt="nes icon">
+                </figure>
+            </a>
+        </div>
+    </section>
 </div>
-
 
 

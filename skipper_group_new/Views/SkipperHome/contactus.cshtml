@@ -1,0 +1,208 @@
+﻿@model skipper_group_new.Models.clsHomeModel;
+@using System.Data;
+
+@{
+    Layout = "~/Views/Shared/_cms.cshtml";
+}
+<section class=contact_one>
+    <div class=container>
+        <div class=row>
+            <div class="col-lg-11 ms-auto">
+                <div class=contact-title>
+                    <h3 data-aos=fade-up data-aos-delay=200>Offices</h3>
+                </div>
+                <div class=contact_grid>
+                    
+                    @Html.Raw(@Model.cmscontent)
+                    <div class=contact_rght>
+                        <div class=inquiry-form-wrapper>
+                            <h2 data-aos=fade-up data-aos-delay=200>Contact Form</h2>
+                            <div class=input_bx data-aos=fade-up data-aos-delay=300>
+                                <input id=ctl00_ContentPlaceHolder1_txtname name=ctl00$ContentPlaceHolder1$txtname
+                                       placeholder=Name> <input id=ctl00_ContentPlaceHolder1_ValidatorCalloutExtender9_ClientState
+                                                                name=ctl00$ContentPlaceHolder1$ValidatorCalloutExtender9_ClientState
+                                                                type=hidden>
+                            </div>
+                            <div class=input_bx data-aos=fade-up data-aos-delay=400>
+                                <input id=ctl00_ContentPlaceHolder1_txtcountry
+                                       name=ctl00$ContentPlaceHolder1$txtcountry placeholder="Country / Region">
+                                <input id=ctl00_ContentPlaceHolder1_ValidatorCalloutExtender7_ClientState
+                                       name=ctl00$ContentPlaceHolder1$ValidatorCalloutExtender7_ClientState
+                                       type=hidden>
+                            </div>
+                            <div class=input_bx data-aos=fade-up data-aos-delay=500>
+                                <input id=ctl00_ContentPlaceHolder1_txtcompany
+                                       name=ctl00$ContentPlaceHolder1$txtcompany placeholder=Company> <input id=ctl00_ContentPlaceHolder1_ValidatorCalloutExtender2_ClientState
+                                                                                                             name=ctl00$ContentPlaceHolder1$ValidatorCalloutExtender2_ClientState
+                                                                                                             type=hidden>
+                            </div>
+                            <div class=input_bx data-aos=fade-up data-aos-delay=600>
+                                <input id=ctl00_ContentPlaceHolder1_txtemail
+                                       name=ctl00$ContentPlaceHolder1$txtemail placeholder="Email Address"> <input id=ctl00_ContentPlaceHolder1_ValidatorCalloutExtender1_ClientState
+                                                                                                                   name=ctl00$ContentPlaceHolder1$ValidatorCalloutExtender1_ClientState
+                                                                                                                   type=hidden> <input id=ctl00_ContentPlaceHolder1_ValidatorCalloutExtender3_ClientState
+                                                                                                                                       name=ctl00$ContentPlaceHolder1$ValidatorCalloutExtender3_ClientState
+                                                                                                                                       type=hidden>
+                            </div>
+                            <div class=input_bx data-aos=fade-up data-aos-delay=700>
+                                <input id=ctl00_ContentPlaceHolder1_txtmobno
+                                       name=ctl00$ContentPlaceHolder1$txtmobno maxlength=10
+                                       placeholder="Mobile No"> <input id=ctl00_ContentPlaceHolder1_ValidatorCalloutExtender22_ClientState
+                                                                       name=ctl00$ContentPlaceHolder1$ValidatorCalloutExtender22_ClientState
+                                                                       type=hidden> <input id=ctl00_ContentPlaceHolder1_ValidatorCalloutExtender5_ClientState
+                                                                                           name=ctl00$ContentPlaceHolder1$ValidatorCalloutExtender5_ClientState
+                                                                                           type=hidden>
+                            </div>
+                            <div class=input_bx data-aos=fade-up data-aos-delay=800>
+                                <input id=ctl00_ContentPlaceHolder1_txtaddress
+                                       name=ctl00$ContentPlaceHolder1$txtaddress placeholder=Address> <input id=ctl00_ContentPlaceHolder1_ValidatorCalloutExtender8_ClientState
+                                                                                                             name=ctl00$ContentPlaceHolder1$ValidatorCalloutExtender8_ClientState
+                                                                                                             type=hidden>
+                            </div>
+                            <div class=input_bx data-aos=fade-up data-aos-delay=900>
+                                @* <select class=form-select
+                                            id=ctl00_ContentPlaceHolder1_ddldivision
+                                            name=ctl00$ContentPlaceHolder1$ddldivision>
+                                            <option value=0 selected>All Divisions
+                                            <option value=1>Engineering
+                                            <option value=2>Infrastructure
+                                            <option value=3>Polymer
+                                        </select> *@ <input id=ctl00_ContentPlaceHolder1_ValidatorCalloutExtender10_ClientState
+                                                    name=ctl00$ContentPlaceHolder1$ValidatorCalloutExtender10_ClientState
+                                                    type=hidden>
+                            </div>
+                            <div class=input_bx data-aos=fade-up data-aos-delay=900>
+                                @* <select class=form-select
+                                            id=ctl00_ContentPlaceHolder1_ddlcorpotrategroup
+                                            name=ctl00$ContentPlaceHolder1$ddlcorpotrategroup>
+                                            <option value=0>Corporate Group
+                                            <option value=IT>IT
+                                            <option value=HR>HR
+                                            <option value=Finance>Finance
+                                            <option value=Admin>Admin
+                                            <option value="Corporate Communication">Corporate Communication
+                                        </select>  *@<input id=ctl00_ContentPlaceHolder1_ValidatorCalloutExtender11_ClientState
+                                                    name=ctl00$ContentPlaceHolder1$ValidatorCalloutExtender11_ClientState
+                                                    type=hidden>
+                            </div>
+                            <div class=input_bx data-aos=fade-up data-aos-delay=900>
+                                <textarea cols=20
+                                          id=ctl00_ContentPlaceHolder1_txtmsg name=ctl00$ContentPlaceHolder1$txtmsg
+                                          placeholder=Comment rows=2>
+</textarea> <input id=ctl00_ContentPlaceHolder1_ValidatorCalloutExtender4_ClientState
+                   name=ctl00$ContentPlaceHolder1$ValidatorCalloutExtender4_ClientState
+                   type=hidden>
+                            </div>
+                            <div class=input_bx data-aos=fade-up data-aos-delay=900>
+                                <figure class=captcha_wrap>
+                                    <input id=ctl00_ContentPlaceHolder1_captcha
+                                           name=ctl00$ContentPlaceHolder1$captcha
+                                           placeholder="Enter captcha code *">
+                                    <input id=ctl00_ContentPlaceHolder1_ValidatorCalloutExtender6_ClientState
+                                           name=ctl00$ContentPlaceHolder1$ValidatorCalloutExtender6_ClientState
+                                           type=hidden>
+                                    <div class=captcha-colm>
+                                        <img src=/Handler.ashx alt="" id=imgCaptchanew> <a href=javascript:void(0) class=refresh-capcha
+                                                                                           onclick=RefreshCaptchanew()>
+                                            <img src=~/images/loader.png alt=""
+                                                 class=cap-loader>
+                                        </a>
+                                    </div>
+                                    <div></div>
+                                </figure>
+                            </div><input id=ctl00_ContentPlaceHolder1_btnsubmit
+                                         name=ctl00$ContentPlaceHolder1$btnsubmit type=submit value=Submit
+                                         data-aos=fade-up data-aos-delay=900
+                                         onclick='WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$ContentPlaceHolder1$btnsubmit","",!0,"validcontact","",!1,!1))'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=vrtcl-line>
+            <figure><img src=~/images/icon/vertical-line.svg alt=vertical-line class=image2></figure>
+        </div>
+    </div>
+</section>
+<section class="contact_one contact_two">
+    <div class=contact-outer>
+        <div class=container>
+            <div class=row>
+                <div class="col-lg-11 ms-auto">
+                    <div class=contact_grid>
+                        <div class=contact_lft>
+                            <div class=contact-title data-aos=fade-up data-aos-delay=200>
+                                <h3>Manufacturing Facilities</h3>
+                            </div>
+                            <div class=ofc-loctn>
+                                <h4 data-aos=fade-up data-aos-delay=300>Unit Uluberia</h4>
+                                <p data-aos=fade-up data-aos-delay=400>
+                                    NH6, Madhabpur, Post: Uluberia, Howrah -
+                                    711303, India
+                                    <div class=contact_bx data-aos=fade-up data-aos-delay=500>
+                                        <figure><img src=~/images/icon/phone.svg alt=email></figure>
+                                        <div class=cntact_txt><a href="tel:+91 9051417755">+91 9051417755</a></div>
+                                    </div>
+                            </div>
+                            <div class=ofc-loctn>
+                                <h4 data-aos=fade-up data-aos-delay=200>Jangalpur - Unit 1</h4>
+                                <p data-aos=fade-up data-aos-delay=300>
+                                    Jalan Complex, NH6 (Bombay Road),
+                                    Village: Jangalpur, Post: Andul Mouri, Howrah - 711302, India
+                                    <div class=contact_bx data-aos=fade-up data-aos-delay=400>
+                                        <figure><img src=~/images/icon/phone.svg alt=phone></figure>
+                                        <div class=cntact_txt>
+                                            <a href="tel:+91 33 26691251">+91 33 26691251</a>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class=ofc-loctn>
+                                <h4 data-aos=fade-up data-aos-delay=200>Jangalpur - Unit BCTL</h4>
+                                <p data-aos=fade-up data-aos-delay=300>
+                                    Jalan Complex, NH6 (Bombay Road),
+                                    Village: Jangalpur, Post: Andul Mouri, Howrah - 711302, India
+                                    <div class=contact_bx data-aos=fade-up data-aos-delay=400>
+                                        <figure><img src=~/images/icon/phone.svg alt=phone></figure>
+                                        <div class=cntact_txt>
+                                            <a href="tel:+91 33 26691251">+91 33 26691251</a>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class=ofc-loctn>
+                                <h4 data-aos=fade-up data-aos-delay=200>Unit Ghoraghata</h4>
+                                <p data-aos=fade-up data-aos-delay=300>
+                                    Skipper Limited, Village & P.O- Barunda,
+                                    P.S- Bagnan, District- Howrah, West Bengal
+                                    <div class=contact_bx data-aos=fade-up data-aos-delay=400>
+                                        <figure><img src=~/images/icon/phone.svg alt=phone></figure>
+                                        <div class=cntact_txt><a href="tel:+91 7980006214">+91 7980006214</a></div>
+                                    </div>
+                            </div>
+                            <div class=ofc-loctn>
+                                <h4 data-aos=fade-up data-aos-delay=200>Unit Palasbari </h4>
+                                <p data-aos=fade-up data-aos-delay=300>
+                                    Skipper Limited, Mouza Chayani, Village -
+                                    Parlley, Revenue Circle, Palashbari, Kamrup Rural, Assam – 781128
+                                    <div class=contact_bx data-aos=fade-up data-aos-delay=400>
+                                        <figure><img src=~/images/icon/phone.svg alt=phone></figure>
+                                        <div class=cntact_txt><a href="tel:+91 7578998068">+91 7578998068</a></div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class=contact_rght data-aos=fade-up data-aos-delay=400>
+                            <iframe allowfullscreen
+                                    height=100% loading=lazy referrerpolicy=no-referrer-when-downgrade
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d112120.34385191409!2d77.26084778955077!3d28.576946353957148!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfb57b0000001%3A0xa086c23b62d38df3!2sSkipper%20Limited!5e0!3m2!1sen!2sin!4v1748065205826!5m2!1sen!2sin"
+                                    style=border:0 width=100%></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=bottom-icon>
+            <figure class=image2><img src=~/images/icon/Subtraction-11.svg alt=Subtraction></figure>
+        </div>
+    </div>
+</section>
+@Html.Raw(@Model.SmallDescription)
+
