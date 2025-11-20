@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace skipper_group_new.Models
 {
@@ -58,5 +59,9 @@ namespace skipper_group_new.Models
         public string Uname { get; set; }
         public DateTime? trDate { get; set; }
         public int? Mode { get; set; }
+        public string capacha { get; set; }
+        [BindProperty]
+        public string CaptchaInput { get; set; }
+        public string CaptchaCode { get; set; }
     }
 }

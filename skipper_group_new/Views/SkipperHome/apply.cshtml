@@ -1,0 +1,119 @@
+﻿@using System.Data;
+@model skipper_group_new.Models.EnquiryModel;
+@using Microsoft.AspNetCore.Http.Extensions;
+@{
+    Layout = "~/Views/Shared/_cms.cshtml";
+}
+<style>
+    .v-span {
+        font-size: 12px !important;
+        line-height: 14px !important;
+        display: block;
+    }
+
+</style>
+@using (Html.BeginForm("apply", "SkipperHome", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    <section class="contact_one apply-form">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-11 ms-auto">
+                    <div class="contact-title">
+                        <h3 data-aos="fade-up" data-aos-delay="200">Apply Now</h3>
+                    </div>
+                    <div class="contact_rght">
+                        <div class="inquiry-form-wrapper">
+
+
+                            <div class="apply-input">
+                                <div class="input_bx" data-aos="fade-up" data-aos-delay="300">
+
+                                    @Html.EditorFor(model => model.FName, new { htmlAttributes = new { @class = "form-control", placeholder = "Name" } })
+                                    @Html.ValidationMessageFor(m => m.FName, "", new { @class = "text-danger v-span" })
+
+                                </div>
+                                <div class="input_bx" data-aos="fade-up" data-aos-delay="300">
+                                    @Html.EditorFor(model => model.lastname, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name" } })
+                                </div>
+                                <div class="input_bx" data-aos="fade-up" data-aos-delay="400">
+                                    @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control", placeholder = "Address" } })
+                                </div>
+                                <div class="input_bx" data-aos="fade-up" data-aos-delay="400">
+                                    @Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "form-control", placeholder = "City" } })
+                                    @Html.ValidationMessageFor(m => m.city, "", new { @class = "text-danger v-span" })
+                                </div>
+                                <div class="input_bx" data-aos="fade-up" data-aos-delay="500">
+                                    @Html.EditorFor(model => model.country, new { htmlAttributes = new { @class = "form-control", placeholder = "Country" } })
+                                    @Html.ValidationMessageFor(m => m.country, "", new { @class = "text-danger v-span" })
+                                </div>
+                                <div class="input_bx" data-aos="fade-up" data-aos-delay="500">
+                                    @Html.EditorFor(model => model.state, new { htmlAttributes = new { @class = "form-control", placeholder = "State" } })
+                                    @Html.ValidationMessageFor(m => m.state, "", new { @class = "text-danger v-span" })
+                                </div>
+
+                                <div class="input_bx" data-aos="fade-up" data-aos-delay="600">
+                                    @Html.EditorFor(model => model.zipcode, new { htmlAttributes = new { @class = "form-control", placeholder = "Zip Code" } })
+                                </div>
+                                <div class="input_bx" data-aos="fade-up" data-aos-delay="600">
+                                    @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", placeholder = "Mobile No", maxlength = "10" } })
+                                    @Html.ValidationMessageFor(m => m.phone, "", new { @class = "text-danger v-span" })
+
+
+                                </div>
+                                <div class="input_bx" data-aos="fade-up" data-aos-delay="700">
+                                    @Html.EditorFor(model => model.EmailId, new { htmlAttributes = new { @class = "form-control", placeholder = "Enail Address" } })
+                                    @Html.ValidationMessageFor(m => m.EmailId, "", new { @class = "text-danger v-span" })
+
+                                </div>
+
+                                <div class="input_bx" data-aos="fade-up" data-aos-delay="800">
+                                    <input type="file" name="file_Uploader" />
+                                    @Html.HiddenFor(model => model.uploadfile)
+
+
+                                </div>
+                            </div>
+                            <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="800">
+                                <figure class="captcha_wrap">
+                                    <div class="d-flex align-items-center">
+                                        <div style="background:#f1f1f1; padding:10px 20px; font-weight:bold; letter-spacing:4px; font-size:18px; border-radius:6px;">
+                                            @Model.capacha
+                                            @Html.HiddenFor(model => model.capacha)
+                                        </div>
+                                        @{
+                                            string jobid = Context.Request.GetDisplayUrl();
+                                            string id = Context.Request.Path + Context.Request.QueryString;
+                                          
+
+                                        }
+                                        <a href="@id" class="btn btn-link ms-2">↻ Refresh</a>
+                                    </div>
+                                    <input asp-for="CaptchaInput" class="form-control mt-2" placeholder="Enter the code above" />
+                                    <span asp-validation-for="CaptchaInput" class="text-danger"></span>
+
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="text-center">
+
+                            <Button type="submit" data-aos="fade-up" data-aos-delay="900" Text="Submit" class="btn btn-success" formmethod="post" action="@Url.Action("apply", "SkipperHome")">Submit</Button>
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="vrtcl-line">
+            <figure>
+                <img src="/images/icon/vertical-line.svg" class="image2" alt="vertical-line">
+            </figure>
+        </div>
+
+
+    </section>
+}

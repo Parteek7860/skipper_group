@@ -1,0 +1,36 @@
+﻿@using System.Data;
+@model skipper_group_new.Models.clsProduct;
+
+@{
+    Layout = "~/Views/Shared/_cms.cshtml";
+ 
+
+}
+@if (Model != null)
+{
+    <section class="inner_banner">
+        <figure>
+            <img src="/uploads/LargeImages/@Convert.ToString(Model.UploadAImage)" alt="@Model.ProductName" class="img-fluid w-100" />
+        </figure>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-bar">
+                        <div class="breadcrumb-left">
+                            <h5>PROJECTS</h5>
+                        </div>
+                        <div class="breadcrumb-right">
+                            <a href="/">Home</a><img src="/images/icon/arrow-right.webp" alt="arrow-right">
+                            <span>Projects</span>
+                        </div>
+                    </div>
+                    <div id="ctl00_paneltagline" class="shrt-title without-bread_btm">
+                        <h6>@Convert.ToString(Model.ProductName)</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    @Html.Raw(Model.ProductDetail.ToString())
+}
+

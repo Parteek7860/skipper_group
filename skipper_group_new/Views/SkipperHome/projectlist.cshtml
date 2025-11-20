@@ -1,4 +1,5 @@
 ﻿@using System.Data
+@using skipper_group_new.mainclass;
 @{
     Layout = "~/Views/Shared/_cms.cshtml";
 }
@@ -60,7 +61,7 @@
                                         <p>Project Authority: Transgrid</p>
 
                                     </figcaption>
-                                    <a href="/project-details/the-colectora-substation-500kv-transmission-lines-colectora-–-cuestecitas-and-cuestecitas-la-loma-500kvcolombia/10" class="links"></a>
+                                    <a href="/project-details/@Convert.ToString(@row["researchtitle"]).ToLower().ToSlug()/@row["researchid"]" class="links"></a>
                                 </div>
                             }
                           

@@ -17,5 +17,7 @@ namespace skipper_group_new.Interface
         Task<DataTable> GetCMSData();
 
         Task<DataTable> GetSeoFriendlyUrls();
+        Task<DataTable> GetCarrer();
+        int SaveEnquiryDetails(EnquiryModel model);
     }
 }

@@ -37,7 +37,7 @@ namespace skipper_group_new.Controllers
         public List<clsHomeModel> HamBurgerList => _menuService.HamBurgerList;
         public List<clsHomeModel> RightHamBurgerList => _menuService.RightHamBurgerList;
         public List<SeoModel> SeoList => _menuService.SeoList;
-        
+
 
         public List<clsHomeModel> MobileMenuList => _menuService.MobileMenu;
 
@@ -48,14 +48,11 @@ namespace skipper_group_new.Controllers
             base.OnActionExecuting(context);
 
 
-           // _menuService.TopMenuList = await GetTopMenu();
-          //  _menuService.MobileMenu = await GetMobileMenu();
+            // _menuService.TopMenuList = await GetTopMenu();
+            //  _menuService.MobileMenu = await GetMobileMenu();
             _menuService.MainMenuList = await LoadMainMenu();
-           
-
-
             _menuService.HamBurgerList = await LoadHamburgerMenus();
-      
+
 
             await next();
 
@@ -88,9 +85,9 @@ namespace skipper_group_new.Controllers
                     tagline = row["tagline"]?.ToString() ?? "",
                     parentname = parentName,
                     id = row["parentid"]?.ToString() ?? ""
-                   
 
-                    
+
+
                 };
 
 
@@ -180,7 +177,7 @@ namespace skipper_group_new.Controllers
             }
             return null;
         }
-       
+
         private async Task SetSeoDataAsync(ActionExecutingContext context)
         {
             var request = context.HttpContext.Request;
@@ -279,9 +276,42 @@ namespace skipper_group_new.Controllers
         //            pageurl_Id= r["rewriteid"].ToString()
         //        }).ToList();
         //}
-       
 
 
+        public async Task<string> GetParentID(int pageId)
+        {
+            var dt = await _homePageService.GetCMSData();
+
+
+
+            var row = dt.AsEnumerable()
+                .FirstOrDefault(r => r.Field<bool>("pagestatus") && r.Field<int>("pageid") == pageId);
+
+            var parentId = Convert.ToInt32(row["parentid"]);
+
+            var parent = dt.AsEnumerable()
+                ?.FirstOrDefault(r => r.Field<bool>("pagestatus") && r.Field<int>("pageid") == parentId);
+
+
+            return parentId.ToString();
+        }
+        public async Task<string> GetParentName(int pageId)
+        {
+            var dt = await _homePageService.GetCMSData();
+
+
+
+            var row = dt.AsEnumerable()
+                .FirstOrDefault(r => r.Field<bool>("pagestatus") && r.Field<int>("pageid") == pageId);
+
+            var parentId = Convert.ToInt32(row["parentid"]);
+
+            var parent = dt.AsEnumerable()
+                ?.FirstOrDefault(r => r.Field<bool>("pagestatus") && r.Field<int>("pageid") == parentId);
+            string parentName = parent?["linkname"]?.ToString() ?? "";
+
+            return parentName.ToString();
+        }
         private async Task<List<clsHomeModel>> GetMobileMenu()
         {
             var dt = await _homePageService.GetHamburgerMenuList();
@@ -334,6 +364,7 @@ namespace skipper_group_new.Controllers
                             linkname = sub["linkname"].ToString(),
                             rewriteurl = sub["rewriteurl"].ToString(),
                             ParentId = sub["ParentId"].ToString(),
+                            smalldesc = sub["smalldesc"].ToString(),
                             pageid = sub["pageid"].ToString()
                         }).ToList()
                 }).ToList();
@@ -368,13 +399,13 @@ namespace skipper_group_new.Controllers
                         }).ToList()
                 }).ToList();
 
-           
+
 
 
             return (leftMenu);
         }
 
-      
+
 
 
     }

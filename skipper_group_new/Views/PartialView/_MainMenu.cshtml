@@ -6,135 +6,68 @@
 }
 <nav>
     <ul class="align-items-center d-flex justify-content-between">
-        @if(mainmenu != null && mainmenu.Count > 0)
+        @if (mainmenu != null && mainmenu.Count > 0)
         {
-            @foreach(var menu in mainmenu)
+            @foreach (var menu in mainmenu)
             {
                 var subHref = !string.IsNullOrEmpty(menu.rewriteurl)
                 ? $"/{menu.rewriteurl}"
                 : $"/cms/{menu.linkname}/{menu.pageid}";
                 <li class="menu-item menudrop-item">
 
-                    <a href=@subHref>@menu.Name</a>
+                    <a href="@((menu.SubMenus != null && menu.SubMenus.Count > 0) ? "javascript:void(0)" : subHref)">@menu.Name</a>
                     @if (menu.SubMenus != null && menu.SubMenus.Count > 0)
                     {
-                        <div class="mega_dropdown mega_dropdown01" id=mainmenu1_rptmainmenu_ctl00_panelabout>
+                        <div class="mega_dropdown mega_dropdown01">
                             <div class=menu_tower_icon1>
-                                <figure><img src=images/icon2/about-tower1.svg class=img-fluid></figure>
+                                <figure><img src=/images/icon2/about-tower1.svg class=img-fluid></figure>
                             </div>
                             <div class=menu_tower_icon2>
-                                <figure><img src=images/icon2/about-tower1.svg class=img-fluid></figure>
+                                <figure><img src=/images/icon2/about-tower1.svg class=img-fluid></figure>
                             </div>
                             <div class=mega_item_left>
                                 <ul>
-                                    <li id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl00_l1 class="dropmenu active"
-                                        data-target=.drop_menu_1>
-                                        <a href=about-us/company-profile
-                                           id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl00_ank>Company Overview</a>
-                                    <li id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl01_l1 class=dropmenu
-                                        data-target=.drop_menu_2>
-                                        <a href=javascript:void(0);
-                                           id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl01_ank>Our Story</a>
-                                    <li id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl02_l1 class="dropmenu leadership"
-                                        data-target=.drop_menu_1>
-                                        <a href=about-us/leadership-team
-                                           id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl02_ank>Leadership Team</a>
-                                    <li id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl03_l1 class=dropmenu
-                                        data-target=.drop_menu_4>
-                                        <a href=javascript:void(0);
-                                           id=mainmenu1_rptmainmenu_ctl00_rptabout_ctl03_ank>
-                                            Manufacturing
-                                            Capabitities
-                                        </a>
+                                    @{
+                                        int i = 0;
+                                    }
+                                    @foreach (var submenu in menu.SubMenus)
+                                    {
+                                        string activeClass = i == 0 ? "active" : "";
+                                        var subHref1 = !string.IsNullOrEmpty(submenu.rewriteurl)
+                                        ? $"/{submenu.rewriteurl}"
+                                        : $"/cms/{submenu.linkname}/{submenu.pageid}";
+                                        <li class="dropmenu @activeClass" data-target=.drop_menu_@submenu.pageid>
+                                            <a href="@subHref1">@submenu.linkname</a>
+                                        </li>
+                                        i++;
+                                    }
                                 </ul>
                             </div>
                             <div class="mega_item_right about-menu">
-                                <div class="mega_dropmenu drop_menu_1 show"
-                                     id=mainmenu1_rptmainmenu_ctl00_rptaboutinner_ctl00_panel1 data-target=.drop_menu_1>
-                                    <div class=mega_border></div>
-                                    <div class=mega_overview>
-                                        <p>
-                                            Skipper Limited is a global leader in Transmission & Distribution
-                                            infrastructure, EPC services, and Polymer solutions.
-                                            <div class="read_icon aos-animate aos-init" data-aos=fade-up data-aos-delay=550>
-                                                <a href="/cpage.aspx?mpgid=2&pgidtrail=17">
-                                                    <img src=images/icon/plus-icon.svg alt="">
-                                                </a>
-                                            </div>
+
+                                
+                                @{
+                                    i = 0;
+                                }
+                                @foreach (var submenu in menu.SubMenus)
+                                {
+                                    string activeClass = i == 0 ? "show" : "";
+                                    <div class="mega_dropmenu drop_menu_@submenu.pageid @activeClass" data-target=.drop_menu_@submenu.pageid>
+                                        <div class="mega_border"></div>
+                                        @Html.Raw(System.Net.WebUtility.HtmlDecode(submenu.smalldesc))
                                     </div>
-                                    <div class=mega_overFigure>
-                                        <figure>
-                                            <img src=images/abt-menu.webp alt=SKIPPER class="img-fluid w-100">
-                                        </figure><a href="/leadershipdetails.aspx?mpgid=2&pgidtrail=19&teamid=1"
-                                                    class=arrow_btn>
-                                            Chairman & Managing Director <span>
-                                                (Skipper
-                                                Limited)
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <div class=mega_overLink>
-                                        <p>
-                                            Mr. Sajan Kumar Bansal incorporated Skipper Limited during the year 1981, and
-                                            there was no looking back. Under his leadership the company grew from single
-                                            product manufacturer of Steel Tube to multi unit, multi product
-                                            organization.
-                                    </div>
-                                </div>
-                                <div class="mega_dropmenu drop_menu_2"
-                                     id=mainmenu1_rptmainmenu_ctl00_rptaboutinner_ctl01_panel1 data-target=.drop_menu_2>
-                                    <div class=mega_border></div>
-                                    <div class=sustain_link_text>
-                                        <ul>
-                                            <li>
-                                                <a href="/cpage.aspx?mpgid=2&pgid1=18&pgidtrail=61">
-                                                    History &
-                                                    Milestone
-                                                </a>
-                                            <li>
-                                                <a href="/cpage.aspx?mpgid=2&pgid1=18&pgidtrail=62">
-                                                    Founders &
-                                                    Leadership
-                                                </a>
-                                            <li>
-                                                <a href="/cpage.aspx?mpgid=2&pgid1=18&pgidtrail=63">
-                                                    Awards &
-                                                    Recognitions
-                                                </a>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="mega_dropmenu drop_menu_3"
-                                     id=mainmenu1_rptmainmenu_ctl00_rptaboutinner_ctl02_panel1 data-target=.drop_menu_3>
-                                    <div class=mega_border></div>
-                                </div>
-                                <div class="mega_dropmenu drop_menu_4"
-                                     id=mainmenu1_rptmainmenu_ctl00_rptaboutinner_ctl03_panel1 data-target=.drop_menu_4>
-                                    <div class=mega_border></div>
-                                    <div class=sustain_link_text>
-                                        <ul>
-                                            <li>
-                                                <a href="/cpage.aspx?mpgid=2&pgid1=20&pgidtrail=36">
-                                                    Facilities &
-                                                    Infrastructure
-                                                </a>
-                                            <li>
-                                                <a href="/cpage.aspx?mpgid=2&pgid1=20&pgidtrail=59">
-                                                    Quality Assurance &
-                                                    Certifications
-                                                </a>
-                                            <li><a href="/cpage.aspx?mpgid=2&pgid1=20&pgidtrail=60">Innovation R&D</a>
-                                        </ul>
-                                    </div>
-                                </div>
+                                    i++;
+                                }
+
+
                             </div>
                         </div>
                     }
-                   
+
                 </li>
             }
         }
-       
+
         @*  <li id=mainmenu1_rptmainmenu_ctl01_l1>
             <a href=projects
                id=mainmenu1_rptmainmenu_ctl01_ank>Projects</a>
@@ -690,7 +623,7 @@
                             {
                                 var subHref = !string.IsNullOrEmpty(ham.rewriteurl)
                                 ? $"/{ham.rewriteurl}"
-                                : $"/cms/{ham.Name.Replace(" ","-").ToLower()}/{ham.pageid}";
+                                : $"/cms/{ham.Name.Replace(" ", "-").ToLower()}/{ham.pageid}";
                                 <li class="@(ham.SubMenus.Count == 0 ? "no_drop_menu" : null)">
                                     <h3>
 
@@ -705,7 +638,7 @@
                                             {
                                                 var subHref1 = !string.IsNullOrEmpty(sub.rewriteurl)
                                                 ? $"/{sub.rewriteurl}"
-                                                : $"/cms/{sub.linkname.ToLower().Replace(" ","-")}/{sub.pageid}";
+                                                : $"/cms/{sub.linkname.ToLower().Replace(" ", "-")}/{sub.pageid}";
                                                 <li>  <a href="@subHref1">@sub.linkname</a> </li>
                                             }
                                         </ul>

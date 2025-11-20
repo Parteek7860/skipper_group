@@ -16,4 +16,5 @@ public class SubhomeModel
 
     public string ParentId { get; set; }
     public string uploadimage { get; set; }
+    public string smalldesc { get; set; }
 }

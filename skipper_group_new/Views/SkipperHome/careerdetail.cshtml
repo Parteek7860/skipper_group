@@ -1,0 +1,64 @@
+﻿@using System.Data
+@model skipper_group_new.Models.PostJobModel;
+@using skipper_group_new.mainclass;
+
+@{
+    Layout = "~/Views/Shared/_cms.cshtml";
+ 
+
+}
+<section class="contact_one apply-details">
+    <div class="container">
+        <div class="row">
+
+            @if (Model != null)
+            {
+                
+                <div class="col-lg-11 ms-auto">
+                    <div class="contact-title">
+                        <div class="apply-title">
+                            <h3 data-aos="fade-up" data-aos-delay="200">People</h3>
+                            <h2>@Model.JobTitle</h2>
+                            <p>@Model.Location, Full Time</p>
+                        </div>
+                        <div class="apply-btn">
+                            <a href="/apply-now/@Model.JobTitle.ToSlug().ToLower()/@Model.Jobid" class="custom-btn">Apply Now <span>›</span></a>
+                        </div>
+                    </div>
+                    <div class="employ-info">
+                        <div class="emplo1-box">
+                            <h4>Department</h4>
+                            <p>@Model.department</p>
+                        </div>
+                        <div class="emplo1-box">
+                            <h4>Qualification</h4>
+                            <p>@Html.Raw(@Model.Qualification)</p>
+                        </div>
+                        <div class="emplo1-box">
+                            <h4>Experience</h4>
+                            <p>@Model.Min_Expyear - @Model.Max_Expyear years</p>
+                        </div>
+                        <div class="emplo1-box">
+                            <h4>Industry(s)</h4>
+                            <p>@Model.company</p>
+                        </div>
+                    </div>
+                    @Html.Raw(Model.shortdesc.ToString())
+                    <div class="apply-btn">
+                        <a href="/apply-now/@Model.JobTitle.ToSlug().ToLower()/@Model.Jobid" class="custom-btn">Apply Now <span>›</span></a>
+                    </div>
+                </div>
+            }
+
+
+
+
+
+        </div>
+        <div class="vrtcl-line">
+            <figure>
+                <img src="/images/icon/vertical-line.svg" class="image2" alt="vertical-line">
+            </figure>
+        </div>
+    </div>
+</section>

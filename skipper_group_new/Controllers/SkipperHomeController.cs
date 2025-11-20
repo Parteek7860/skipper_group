@@ -1,13 +1,19 @@
-﻿using DocumentFormat.OpenXml.Office2010.Excel;
+﻿using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using skipper_group_new.Interface;
+using skipper_group_new.mainclass;
 using skipper_group_new.Models;
 using skipper_group_new.Service;
 using System.Data;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+
 
 namespace skipper_group_new.Controllers
 {
@@ -62,7 +68,8 @@ namespace skipper_group_new.Controllers
         public IActionResult Thankyou()
         {
             clsHomeModel obj = new clsHomeModel();
-            obj.Name = "Thankyou";
+            LoadCMSDataAsync(21);
+
             return View(obj);
         }
         [HttpGet]
@@ -117,14 +124,124 @@ namespace skipper_group_new.Controllers
             return View("leadership", obj);
         }
         [HttpGet]
-        [Route("whats-new")]
-        public IActionResult newsevents()
+        public async Task<IActionResult> career(int id)
         {
             clsHomeModel obj = new clsHomeModel();
+            await LoadSeoDataAsync(id);
+            string parentid = await GetParentID(id);
+            await LoadCMSDataAsync(Convert.ToInt32(parentid));
+
+            var list = await _homePageService.GetCMSData();
+            DataRow[] results = list.Select($"pagestatus=1 and pageid='{parentid}'");
+            if (results.Length > 0)
+            {
+                DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
+                obj.Description = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
+                obj.SmallDescription = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["smalldesc"]));
 
 
-            return View(obj);
+            }
+            var x = await _homePageService.GetCarrer();
+            var filterlist = x.AsEnumerable()
+                   .Where(r => r.Field<DateTime>("jobclosing_date") >= DateTime.Now)
+                   .OrderBy(r => r.Field<int>("displayorder"))
+                   .CopyToDataTable();
+
+
+
+            ViewBag.CurrentOpenings = filterlist;
+            return View("career", obj);
         }
+        [HttpGet]
+        [Route("career-details/{title}/{jobid}")]
+        public async Task<IActionResult> careerdetail(string title, string jobid)
+        {
+            PostJobModel obj = new PostJobModel();
+            await LoadCMSDataAsync(8);
+            var x = await _homePageService.GetCarrer();
+            DataRow[] results = x.Select($"status=1 and jobid='{jobid.ToString()}'");
+            if (results.Length > 0)
+            {
+                DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
+                obj.Jobid = Convert.ToInt32(dt.Rows[0]["jobid"]);
+                obj.JobTitle = Convert.ToString(dt.Rows[0]["jobtitle"]);
+                obj.department = Convert.ToString(dt.Rows[0]["department"]);
+                obj.company = Convert.ToString(dt.Rows[0]["company"]);
+                obj.JobCode = Convert.ToString(dt.Rows[0]["jobcode"]);
+                obj.Min_Expyear = Convert.ToInt32(dt.Rows[0]["min_expyear"]);
+                obj.Max_Expyear = Convert.ToInt32(dt.Rows[0]["max_expyear"]);
+                obj.Qualification = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["qualification"]));
+
+
+
+                obj.Location = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["location"]));
+                obj.shortdesc = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["shortdesc"]));
+            }
+
+            return View("careerdetail", obj);
+        }
+
+        [HttpGet]
+        [Route("apply-now/{title}/{id}")]
+        public async Task<IActionResult> apply(string title, string id)
+        {
+            await LoadSeoDataAsync(81);
+            await LoadCMSDataAsync(81);
+            EnquiryModel obj = new EnquiryModel();
+            obj.capacha = CaptchaHelper.GenerateCaptcha();
+            return View("apply", obj);
+        }
+        [HttpPost]
+        [Route("apply-now/{title}/{id}")]
+        public async Task<IActionResult> apply(EnquiryModel cls, IFormFile file_uploader)
+        {
+            await LoadSeoDataAsync(81);
+            await LoadCMSDataAsync(81);
+            EnquiryModel obj = new EnquiryModel();
+
+            if (cls.CaptchaInput != cls.capacha)
+            {
+                ModelState.AddModelError("CaptchaInput", "Invalid Captcha. Please try again.");
+                obj = cls;
+                obj.capacha = CaptchaHelper.GenerateCaptcha();
+                return View("apply", obj);
+            }
+            obj.Eid = Convert.ToInt32(HttpContext.Request.RouteValues["id"]?.ToString());
+            obj.phone = cls.phone;
+            obj.FName = cls.FName;
+            obj.EmailId = cls.EmailId;
+            obj.EmailId = cls.EmailId;
+            obj.OrganizationName = cls.OrganizationName;
+            obj.address = cls.address;
+            obj.city = cls.city;
+            obj.state = cls.state;
+            obj.country = cls.country;
+            obj.zipcode = cls.zipcode;
+            obj.FMessage = cls.FMessage;
+
+
+            if (file_uploader != null && file_uploader.Length > 0)
+            {
+                var fileName = Path.GetFileName(file_uploader.FileName); // captures name
+                var filePath = Path.Combine("wwwroot/uploads/files", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file_uploader.CopyTo(stream);
+                }
+
+                obj.uploadfile = fileName;
+            }
+            var x = _homePageService.SaveEnquiryDetails(obj);
+            if (x > 0)
+            {
+                return RedirectToAction("Thankyou", "SkipperHome");
+            }
+
+            return View("apply", obj);
+        }
+
+        #region Projects
         [HttpGet]
         public async Task<IActionResult> projectlist(int id)
         {
@@ -135,6 +252,42 @@ namespace skipper_group_new.Controllers
 
             return View("projectlist", obj);
         }
+        [HttpGet]
+        [Route("project-details/{projectname}/{projectid}")]
+        public async Task<IActionResult> projectdetail(string projectname, string projectid)
+        {
+            clsProduct obj = new clsProduct();
+            obj.id = Convert.ToInt16(projectid);
+            if (string.IsNullOrEmpty(projectid) || !int.TryParse(projectid, out int projId))
+            {
+                return RedirectToAction("projectlist", "SkipperHome");
+            }
+            else
+            {
+                var x = await this._homePageService.GetProjectsList();
+                DataRow[] results = x.Select($"status=1 and researchid='{projectid.ToString()}'");
+                if (results.Length > 0)
+
+                {
+                    DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
+                    obj.ProductId = Convert.ToInt32(dt.Rows[0]["researchid"]);
+                    obj.ProductName = Convert.ToString(dt.Rows[0]["researchtitle"]);
+                    obj.ProductTitle = Convert.ToString(dt.Rows[0]["tagline"]);
+                    obj.ShortDetail = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["shortdesc"]));
+                    obj.ProductDetail = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["researchdesc"]));
+                    obj.UploadAImage = Convert.ToString(dt.Rows[0]["largeimage"]);
+                    obj.ModelNo = Convert.ToString(dt.Rows[0]["location"]);
+
+
+                }
+                return View("projectdetail", obj);
+            }
+
+
+            // return View("projectdetail", obj);
+        }
+
+
         public IActionResult GetProjectList()
         {
             var list = _homePageService.GetProjectsList();
@@ -154,19 +307,23 @@ namespace skipper_group_new.Controllers
             ViewBag.ProjectsList = top3;
             return View();
         }
+
+        #endregion
+
         [HttpGet]
         [Route("cms/{title}/{id}")]
         public async Task<IActionResult> cms(string title, int id)
         {
             await LoadSeoDataAsync(id);
+            //string parentid = await GetParentID(id);
+            //if (parentid == "0")
+            //{
+            //    //   await LoadInnerMenuAsync(Convert.ToInt32(ViewBag.Currentid));
+            //    id = Convert.ToInt32(parentid);
 
-            if (!string.IsNullOrEmpty(ViewBag.CurrentPageid))
-            {
-                //   await LoadInnerMenuAsync(Convert.ToInt32(ViewBag.Currentid));
-                id = Convert.ToInt32(ViewBag.Currentid);
-
-            }
+            //}
             clsHomeModel obj = new clsHomeModel();
+            await LoadCMSDataAsync(id);
             Task<DataTable> x = this._homePageService.GetCMSData();
             if (x != null)
             {

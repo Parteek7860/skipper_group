@@ -17,5 +17,7 @@ namespace skipper_group_new.Repositories
         Task<DataTable> GetSeoFriendlyUrls();
 
         Task<DataTable> GetProjectsList();
+        Task<DataTable> GetCarrer();
+        int SaveEnquiryDetails(EnquiryModel model);
     }
 }
