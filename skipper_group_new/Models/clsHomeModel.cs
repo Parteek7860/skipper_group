@@ -41,6 +41,8 @@ namespace skipper_group_new.Models
 
      
         public List<SubhomeModel> SubMenus { get; set; } = new List<SubhomeModel>();
+
+        public List<SubhomeModel> SubMenus2 { get; set; } = new List<SubhomeModel>();
         public List<SearchItem> SearchResults { get; set; } = new();
         public string megamenu { get; set; }
         public int TotalCount { get; set; }

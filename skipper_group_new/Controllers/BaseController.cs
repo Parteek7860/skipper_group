@@ -348,26 +348,45 @@ namespace skipper_group_new.Controllers
             if (dt == null || dt.Rows.Count == 0)
                 return (new List<clsHomeModel>());
 
-            var result = dt.Select("pagestatus=1 and collageid=0 AND linkposition like '%header%'")
-                .CopyToDataTable().AsEnumerable()
-                 .OrderBy(r => Convert.ToInt32(r["displayorder"]))
-                .Select(dr => new clsHomeModel
-                {
-                    Name = dr["linkname"].ToString(),
-                    rewriteurl = dr["rewriteurl"].ToString(),
-                    pageid = dr["pageid"].ToString(),
-                    SubMenus = dt.AsEnumerable()
-                        .Where(sub => sub["ParentId"].ToString() == dr["pageid"].ToString() && Convert.ToInt32(sub["pagestatus"]) == 1)
-                         .OrderBy(r => Convert.ToInt32(r["displayorder"]))
-                        .Select(sub => new SubhomeModel
-                        {
-                            linkname = sub["linkname"].ToString(),
-                            rewriteurl = sub["rewriteurl"].ToString(),
-                            ParentId = sub["ParentId"].ToString(),
-                            smalldesc = sub["smalldesc"].ToString(),
-                            pageid = sub["pageid"].ToString()
-                        }).ToList()
-                }).ToList();
+            var result = dt.Select("pagestatus=1 AND collageid=0 AND linkposition LIKE '%header%'")
+     .CopyToDataTable()
+     .AsEnumerable()
+     .OrderBy(r => Convert.ToInt32(r["displayorder"]))
+     .Select(dr => new clsHomeModel
+     {
+         Name = dr["linkname"].ToString(),
+         rewriteurl = dr["rewriteurl"].ToString(),
+         pageid = dr["pageid"].ToString(),
+
+         // FIRST LEVEL SUB MENUS
+         SubMenus = dt.AsEnumerable()
+             .Where(sub => sub["ParentId"].ToString() == dr["pageid"].ToString()
+                           && Convert.ToInt32(sub["pagestatus"]) == 1)
+             .OrderBy(sub => Convert.ToInt32(sub["displayorder"]))
+             .Select(sub => new SubhomeModel
+             {
+                 linkname = sub["linkname"].ToString(),
+                 rewriteurl = sub["rewriteurl"].ToString(),
+                 ParentId = sub["ParentId"].ToString(),
+                 smalldesc = sub["smalldesc"].ToString(),
+                 pageid = sub["pageid"].ToString(),
+
+                 // SECOND LEVEL SUBMENUS
+                 SubMenus2 = dt.AsEnumerable()
+                     .Where(sub2 => sub2["ParentId"].ToString() == sub["pageid"].ToString()
+                                    && Convert.ToInt32(sub2["pagestatus"]) == 1)
+                     .OrderBy(sub2 => Convert.ToInt32(sub2["displayorder"]))
+                     .Select(sub2 => new SubhomeModel2
+                     {
+                         linkname = sub2["linkname"].ToString(),
+                         rewriteurl = sub2["rewriteurl"].ToString(),
+                         ParentId = sub2["ParentId"].ToString(),
+                         smalldesc = sub2["smalldesc"].ToString(),
+                         pageid = sub2["pageid"].ToString()
+                     }).ToList()
+             }).ToList()
+     }).ToList();
+
 
 
             return result;

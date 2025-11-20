@@ -45,7 +45,6 @@
                             </div>
                             <div class="mega_item_right about-menu">
 
-                                
                                 @{
                                     i = 0;
                                 }
@@ -55,6 +54,21 @@
                                     <div class="mega_dropmenu drop_menu_@submenu.pageid @activeClass" data-target=.drop_menu_@submenu.pageid>
                                         <div class="mega_border"></div>
                                         @Html.Raw(System.Net.WebUtility.HtmlDecode(submenu.smalldesc))
+                                        <div class="sustain_link_text">
+                                            <ul>
+                                                @foreach (var submenu2 in submenu.SubMenus2)
+                                                {
+                                                    var subHref1 = !string.IsNullOrEmpty(submenu2.rewriteurl)
+                                                    ? $"/{submenu2.rewriteurl}"
+                                                    : $"/cms/{submenu2.linkname}/{submenu2.pageid}";
+                                                    <li>
+                                                        <a href="@subHref">@submenu2.linkname</a>
+                                                    </li>
+                                                }
+                                              
+                                            </ul>
+                                        </div>
+
                                     </div>
                                     i++;
                                 }
