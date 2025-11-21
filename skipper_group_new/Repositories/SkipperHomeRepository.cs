@@ -209,5 +209,81 @@ namespace skipper_group_new.Repositories
             return result;
 
         }
+        public async Task<DataTable> GetInvestorList()
+        {
+            DataTable menuList;
+            using (SqlConnection conn = new SqlConnection(this._connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("BindInvestorProductCateSP", conn))
+                {
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        DataTable table = new DataTable();
+                        await conn.OpenAsync();
+                        da.Fill(table);
+                        menuList = table;
+                    }
+                }
+            }
+            return menuList;
+        }
+        public async Task<DataTable> GetProductList()
+        {
+            DataTable menuList;
+            using (SqlConnection conn = new SqlConnection(this._connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("BindProductSolutionSP", conn))
+                {
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        DataTable table = new DataTable();
+                        await conn.OpenAsync();
+                        da.Fill(table);
+                        menuList = table;
+                    }
+                }
+            }
+            return menuList;
+        }
+        public async Task<DataTable> GetProductCategoryList()
+        {
+            DataTable menuList;
+            using (SqlConnection conn = new SqlConnection(this._connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("BindProductCategorySP", conn))
+                {
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        DataTable table = new DataTable();
+                        await conn.OpenAsync();
+                        da.Fill(table);
+                        menuList = table;
+                    }
+                }
+            }
+            return menuList;
+        }
+        public async Task<DataTable> GetProductSubCategoryList()
+        {
+            DataTable menuList;
+            using (SqlConnection conn = new SqlConnection(this._connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("BindProductSubCategorySP", conn))
+                {
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        DataTable table = new DataTable();
+                        await conn.OpenAsync();
+                        da.Fill(table);
+                        menuList = table;
+                    }
+                }
+            }
+            return menuList;
+        }
     }
 }

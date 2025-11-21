@@ -173,9 +173,17 @@ namespace skipper_group_new.Controllers
             clsHomeModel obj = new clsHomeModel();
             await LoadSeoDataAsync(id);
             string parentid = await GetParentID(id);
-            await LoadCMSDataAsync(Convert.ToInt32(parentid));
+            if(parentid != "0")
+            {
+                await LoadCMSDataAsync(Convert.ToInt32(parentid));
+            }
+            else
+            {
+                parentid = Convert.ToString(id);
+            }
 
-            var list = await _homePageService.GetCMSData();
+
+                var list = await _homePageService.GetCMSData();
             DataRow[] results = list.Select($"pagestatus=1 and pageid='{parentid}'");
             if (results.Length > 0)
             {
@@ -443,7 +451,7 @@ namespace skipper_group_new.Controllers
                 return RedirectToAction("Index", "SkipperHome");
 
             var matchedRow = dt.AsEnumerable()
-                .FirstOrDefault(r => Convert.ToString(r["rewriteurl"]).Trim('/').ToLower() == url);
+                .FirstOrDefault(r => Convert.ToString(r["rewriteurl"]).Split('#')[0].Trim('/').ToLower() == url);
 
             if (matchedRow == null)
                 //return RedirectToAction("Index", "SkipperHome");

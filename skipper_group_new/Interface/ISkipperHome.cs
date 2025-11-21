@@ -20,5 +20,10 @@ namespace skipper_group_new.Interface
         Task<DataTable> GetCarrer();
         int SaveEnquiryDetails(EnquiryModel model);
         int SaveContactEnquiry(EnquiryModel model);
+
+        Task<DataTable> GetInvestorList();
+        Task<DataTable> GetProductList();
+        Task<DataTable> GetProductCategoryList();
+        Task<DataTable> GetProductSubCategoryList();
     }
 }

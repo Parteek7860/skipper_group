@@ -9,12 +9,12 @@ namespace skipper_group_new.Service
         public List<clsHomeModel> TopMenuList { get; set; } = new();
         public List<clsHomeModel> MainMenuList { get; set; } = new();
         public List<clsHomeModel> HamBurgerList { get; set; } = new();
-        public List<clsHomeModel> RightHamBurgerList { get; set; } = new();
+        public List<clsHomeModel> productlist { get; set; } = new();
 
         public List<SeoModel> SeoList { get; set; } = new();
 
         public List<clsHomeModel> GetCMSData { get; set; } = new();
-        public List<clsHomeModel> MobileMenu { get; set; } = new();
+        public List<clsHomeModel> InvestorList { get; set; } = new();
         public List<clsProduct> FooterList { get; set; } = new();
     }
 }

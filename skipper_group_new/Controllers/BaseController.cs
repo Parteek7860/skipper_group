@@ -35,11 +35,11 @@ namespace skipper_group_new.Controllers
         public List<clsHomeModel> TopMenuList => _menuService.TopMenuList;
         public List<clsHomeModel> MainMenuList => _menuService.MainMenuList;
         public List<clsHomeModel> HamBurgerList => _menuService.HamBurgerList;
-        public List<clsHomeModel> RightHamBurgerList => _menuService.RightHamBurgerList;
+        public List<clsHomeModel> productlist => _menuService.productlist;
         public List<SeoModel> SeoList => _menuService.SeoList;
 
 
-        public List<clsHomeModel> MobileMenuList => _menuService.MobileMenu;
+        public List<clsHomeModel> InvestorList => _menuService.InvestorList;
 
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -48,8 +48,8 @@ namespace skipper_group_new.Controllers
             base.OnActionExecuting(context);
 
 
-            // _menuService.TopMenuList = await GetTopMenu();
-            //  _menuService.MobileMenu = await GetMobileMenu();
+            _menuService.productlist = await GetProductlist();
+            _menuService.InvestorList = await GetInvestorList();
             _menuService.MainMenuList = await LoadMainMenu();
             _menuService.HamBurgerList = await LoadHamburgerMenus();
 
@@ -312,38 +312,87 @@ namespace skipper_group_new.Controllers
 
             return parentName.ToString();
         }
-        private async Task<List<clsHomeModel>> GetMobileMenu()
+        private async Task<List<clsHomeModel>> GetInvestorList()
         {
-            var dt = await _homePageService.GetHamburgerMenuList();
+            var dt = await _homePageService.GetInvestorList();
             if (dt == null || dt.Rows.Count == 0)
                 return (new List<clsHomeModel>());
 
-            var leftMenu = dt.Select("pagestatus=1 AND linkposition like '%Mobile%'")
+            var investormenu = dt.Select("status=1")
                 .CopyToDataTable().AsEnumerable()
                  .OrderBy(r => Convert.ToInt32(r["displayorder"]))
                 .Select(dr => new clsHomeModel
                 {
-                    Name = dr["linkname"].ToString(),
+                    Name = dr["category"].ToString(),
                     rewriteurl = dr["rewriteurl"].ToString(),
-                    pageid = dr["pageid"].ToString(),
-                    SubMenus = dt.AsEnumerable()
-                        .Where(sub => sub["ParentId"].ToString() == dr["pageid"].ToString() && Convert.ToInt32(sub["pagestatus"]) == 1)
+                    pageid = dr["pcatid"].ToString(),
+                    //SubMenus = dt.AsEnumerable()
+                    //    .Where(sub => sub["ParentId"].ToString() == dr["pageid"].ToString() && Convert.ToInt32(sub["pagestatus"]) == 1)
+                    //     .OrderBy(r => Convert.ToInt32(r["displayorder"]))
+                    //    .Select(sub => new SubhomeModel
+                    //    {
+                    //        linkname = sub["linkname"].ToString(),
+                    //        rewriteurl = sub["rewriteurl"].ToString(),
+                    //        ParentId = sub["ParentId"].ToString(),
+                    //        pageid = sub["pageid"].ToString()
+                    //    }).ToList()
+                }).ToList();
+            return investormenu;
+        }
+
+        private async Task<List<clsHomeModel>> GetProductlist()
+        {
+            var dt = await _homePageService.GetProductList();
+            var dt1 = await _homePageService.GetProductCategoryList();
+            var dt2 = await _homePageService.GetProductSubCategoryList();
+            if (dt == null || dt.Rows.Count == 0)
+                return (new List<clsHomeModel>());
+
+            var products = dt.Select("status=1")
+                .CopyToDataTable().AsEnumerable()
+                 .OrderBy(r => Convert.ToInt32(r["displayorder"]))
+                .Select(dr => new clsHomeModel
+                {
+                    Name = dr["productname"].ToString(),
+                    rewriteurl = dr["rewrite_url"].ToString(),
+                    SmallDescription = dr["productshortdescp"].ToString(),
+                    pageid = dr["productid"].ToString(),
+
+                    SubMenus = dt1.AsEnumerable()
+                        .Where(sub => sub["productid"].ToString() == dr["productid"].ToString() && Convert.ToInt32(sub["status"]) == 1)
                          .OrderBy(r => Convert.ToInt32(r["displayorder"]))
                         .Select(sub => new SubhomeModel
                         {
-                            linkname = sub["linkname"].ToString(),
+                            linkname = sub["category"].ToString(),
                             rewriteurl = sub["rewriteurl"].ToString(),
-                            ParentId = sub["ParentId"].ToString(),
-                            pageid = sub["pageid"].ToString()
-                        }).ToList()
+                            smalldesc = sub["shortdetail"].ToString(),
+                            ParentId = sub["productid"].ToString(),
+                            pageid = sub["pcatid"].ToString(),
+                            // SECOND LEVEL SUBMENUS
+                            SubMenus2 = dt2.AsEnumerable()
+                     .Where(sub2 => sub2["pcatid"].ToString() == sub["pcatid"].ToString()
+                                    && Convert.ToInt32(sub2["status"]) == 1)
+                     .OrderBy(sub2 => Convert.ToInt32(sub2["displayorder"]))
+                     .Select(sub2 => new SubhomeModel2
+                     {
+                         linkname = sub2["category"].ToString(),
+                         rewriteurl = sub2["rewriteurl"].ToString(),
+                         ParentId = sub2["pcatid"].ToString(),
+                         smalldesc = sub2["shortdetail"].ToString(),
+                         pageid = sub2["psubcatid"].ToString()
+                     }).ToList()
+                        }).ToList(),
+
+
                 }).ToList();
-            return leftMenu;
+            return products;
         }
 
         private async Task<List<clsHomeModel>> LoadMainMenu()
         {
             var dt = await _homePageService.GetMenuList();
-            ///  var subDt = await _homePageService.GetSubMenuList();
+
+
 
             if (dt == null || dt.Rows.Count == 0)
                 return (new List<clsHomeModel>());

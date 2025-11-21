@@ -28,5 +28,9 @@ namespace skipper_group_new.Service
         public Task<DataTable> GetCarrer() => this._repository.GetCarrer();
         public int SaveEnquiryDetails(EnquiryModel model) => this._repository.SaveEnquiryDetails(model);
         public int SaveContactEnquiry(EnquiryModel model) => this._repository.SaveContactEnquiry(model);
+        public Task<DataTable> GetInvestorList() => this._repository.GetInvestorList();
+        public Task<DataTable> GetProductList() => this._repository.GetProductList();
+        public Task<DataTable> GetProductCategoryList() => this._repository.GetProductCategoryList();
+        public Task<DataTable> GetProductSubCategoryList() => this._repository.GetProductSubCategoryList();
     }
 }
