@@ -10,14 +10,27 @@
         {
             @foreach (var menu in mainmenu)
             {
+                string parentclass = "";
+                string aboutclass = "";
+                if (menu.pageid == "6")
+                {
+                    parentclass = "sutain_d";
+                }
+                if (menu.pageid == "2")
+                {
+                    aboutclass = "about-menu";
+                }
                 var subHref = !string.IsNullOrEmpty(menu.rewriteurl)
                 ? $"/{menu.rewriteurl}"
                 : $"/cms/{menu.linkname}/{menu.pageid}";
-                <li class="menu-item menudrop-item">
+                <li class="menu-item menudrop-item @parentclass">
 
                     <a href="@((menu.SubMenus != null && menu.SubMenus.Count > 0) ? "javascript:void(0)" : subHref)">@menu.Name</a>
                     @if (menu.SubMenus != null && menu.SubMenus.Count > 0)
                     {
+                        
+                        
+
                         <div class="mega_dropdown mega_dropdown01">
                             <div class=menu_tower_icon1>
                                 <figure><img src=/images/icon2/about-tower1.svg class=img-fluid></figure>
@@ -28,30 +41,35 @@
                             <div class=mega_item_left>
                                 <ul>
                                     @{
-                                        int i = 0;
+                                        int i = 1;
                                     }
                                     @foreach (var submenu in menu.SubMenus)
                                     {
-                                        string activeClass = i == 0 ? "active" : "";
+                                        string activeClass = i == 1 ? "active" : "";
                                         var subHref1 = !string.IsNullOrEmpty(submenu.rewriteurl)
                                         ? $"/{submenu.rewriteurl}"
                                         : $"/cms/{submenu.linkname}/{submenu.pageid}";
-                                        <li class="dropmenu @activeClass" data-target=.drop_menu_@submenu.pageid>
+                                        <li class="dropmenu @activeClass" data-target=.drop_menu_@i>
                                             <a href="@subHref1">@submenu.linkname</a>
                                         </li>
                                         i++;
                                     }
                                 </ul>
                             </div>
-                            <div class="mega_item_right about-menu">
+                            <div class="mega_item_right @aboutclass">
 
                                 @{
-                                    i = 0;
+                                    i = 1;
+                                    string classnanme = "";
+                                    if (menu.pageid == "6")
+                                    {
+                                        classnanme = "sustain_box";
+                                    }
                                 }
                                 @foreach (var submenu in menu.SubMenus)
                                 {
-                                    string activeClass = i == 0 ? "show" : "";
-                                    <div class="mega_dropmenu drop_menu_@submenu.pageid @activeClass" data-target=.drop_menu_@submenu.pageid>
+                                    string activeClass = i == 1 ? "active show" : "";
+                                    <div class="mega_dropmenu @classnanme drop_menu_@i @activeClass" data-target=.drop_menu_@i>
                                         <div class="mega_border"></div>
                                         @Html.Raw(System.Net.WebUtility.HtmlDecode(submenu.smalldesc))
                                         <div class="sustain_link_text">
@@ -65,7 +83,7 @@
                                                         <a href="@subHref">@submenu2.linkname</a>
                                                     </li>
                                                 }
-                                              
+
                                             </ul>
                                         </div>
 
