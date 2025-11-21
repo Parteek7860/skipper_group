@@ -15,7 +15,10 @@ namespace skipper_group_new.Models
     ErrorMessage = "Please enter a valid email address")]
         public string EmailId { get; set; }
         public string Subject { get; set; }
-        public string FMessage { get; set; }        
+        public string FMessage { get; set; } 
+        
+        public string SmallDescription { get; set; }
+        public string desc { get; set; }
         public DateTime trdate { get; set; }
 
         public string zipcode { get; set; }

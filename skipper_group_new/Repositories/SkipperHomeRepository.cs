@@ -182,5 +182,32 @@ namespace skipper_group_new.Repositories
             return result;
 
         }
+        public int SaveContactEnquiry(EnquiryModel objML_contact)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+
+                SqlCommand cmd = new SqlCommand("enquirysp", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+              
+
+                cmd.Parameters.AddWithValue("@fName", objML_contact.FName);
+                cmd.Parameters.AddWithValue("@organizationname", objML_contact.company);
+                cmd.Parameters.AddWithValue("@emailid", objML_contact.EmailId);
+                cmd.Parameters.AddWithValue("@mobile", objML_contact.phone);
+                cmd.Parameters.AddWithValue("@City", objML_contact.country);
+                cmd.Parameters.AddWithValue("@Address", objML_contact.address);
+                cmd.Parameters.AddWithValue("@fmessage", objML_contact.country);
+
+                cmd.Parameters.AddWithValue("@uname", "user");
+                cmd.Parameters.AddWithValue("@mode", 1);
+                cmd.Parameters.Add("@eid", SqlDbType.Int, 0, "@eid").Direction = ParameterDirection.Output;
+                conn.Open();
+                result = cmd.ExecuteNonQuery();
+            }
+            return result;
+
+        }
     }
 }

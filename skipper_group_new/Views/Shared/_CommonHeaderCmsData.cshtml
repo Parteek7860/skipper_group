@@ -9,7 +9,11 @@
     var data = cms.FirstOrDefault();
     <section class="inner_banner">
         <figure>
-            <img src="/uploads/banner/@data.uploadimage" alt="contact us" class="img-fluid w-100">
+            @if (data.uploadimage != null)
+            {
+                <img src="/uploads/banner/@data.uploadimage" alt="contact us" class="img-fluid w-100">
+            }
+
         </figure>
         <div class="container">
             <div class="row">

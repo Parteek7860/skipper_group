@@ -75,12 +75,10 @@ namespace skipper_group_new.Controllers
         [HttpGet]
         public async Task<IActionResult> contactus(int id)
         {
-            await LoadSeoDataAsync(id);
-
-
-            clsHomeModel obj = new clsHomeModel();
+            EnquiryModel obj = new EnquiryModel();
             await LoadSeoDataAsync(id);
             await LoadCMSDataAsync(id);
+            obj.capacha = CaptchaHelper.GenerateCaptcha();
 
             Task<DataTable> x = this._homePageService.GetCMSData();
             if (x != null)
@@ -93,13 +91,59 @@ namespace skipper_group_new.Controllers
                 else
                 {
                     DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
-                    obj.cmscontent = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
+                    obj.desc = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
                     obj.SmallDescription = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["smalldesc"]));
-
-
                     return View("contactus", obj);
                 }
 
+            }
+
+            return View("contactus", obj);
+        }
+        [HttpPost]
+
+        public async Task<IActionResult> contactus(EnquiryModel cls, int id)
+        {
+            await LoadSeoDataAsync(10);
+            await LoadCMSDataAsync(10);
+            EnquiryModel obj = new EnquiryModel();
+
+
+            Task<DataTable> x1 = this._homePageService.GetCMSData();
+            if (x1 != null)
+            {
+                DataRow[] results = x1.Result.Select($"pagestatus=1 and pageid='10'");
+                if (results.Length > 0)
+                {
+                    DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
+                    obj.desc = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
+                    obj.SmallDescription = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["smalldesc"]));
+                    
+
+                }
+
+            }
+
+            if (cls.CaptchaInput != cls.capacha)
+            {
+                ModelState.AddModelError("CaptchaInput", "Invalid Captcha. Please try again.");
+                //obj = cls;
+                obj.capacha = CaptchaHelper.GenerateCaptcha();
+                return View("contactus", obj);
+            }
+
+
+            obj.phone = cls.phone;
+            obj.FName = cls.FName;
+            obj.EmailId = cls.EmailId;
+            obj.address = cls.address;
+            obj.country = cls.country;
+            obj.company = cls.company;
+            obj.FMessage = cls.FMessage;
+            var x = _homePageService.SaveContactEnquiry(obj);
+            if (x > 0)
+            {
+                return RedirectToAction("Thankyou", "SkipperHome");
             }
 
             return View("contactus", obj);
