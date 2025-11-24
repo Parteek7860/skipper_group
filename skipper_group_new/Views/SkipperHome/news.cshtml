@@ -1,0 +1,150 @@
+﻿@using System.Data
+@using skipper_group_new.mainclass;
+
+@{
+    Layout = "~/Views/Shared/_cms.cshtml";
+    DataTable dttop = (ViewBag.Top2 as System.Data.DataTable);
+    DataTable dtNext2 = (ViewBag.Next2 as System.Data.DataTable);
+    DataTable dtBalance = (ViewBag.Balance as System.Data.DataTable);
+}
+<section class="whats_new_one">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-11 mx-auto">
+                <div class="whats_new_grid">
+                    @if (dttop != null)
+                    {
+                        <div class="swiper-containe1">
+                            <div class="swiper-wrapper">
+                                @foreach (DataRow row in dttop.Rows)
+                                {
+                                    <div class="swiper-slide">
+                                        <div class="whts_new_text">
+                                            <h6>@Convert.ToDateTime(row["eventsdate"]).ToString("dd-MMM-yyyy")</h6>
+                                            <h4>
+                                                <a href="/news-details/@row["eventstitle"].ToString().ToSlug()/@row["eventsid"]">
+                                                    @row["eventstitle"]
+                                                </a>
+                                            </h4>
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="swiper-containe2">
+                            <div class="swiper-wrapper">
+                                @foreach (DataRow row in dttop.Rows)
+                                {
+                                    <div class="swiper-slide">
+                                        <figure>
+                                            <a href="/news-details/@row["eventstitle"].ToString().ToSlug()/@row["eventsid"]">
+                                                <img src="/uploads/smallimages/@row["uploadevents"]"
+                                                     alt="@row["eventstitle"]" class="img-fluid w-100">
+                                            </a>
+                                        </figure>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                    }
+
+
+                </div>
+            </div>
+        </div>
+        <div class="vrtcl-line">
+            <figure class="image2"><img src="images/icon/vertical-line.svg" alt="vertical-line"></figure>
+        </div>
+        <div class="upng-btn">
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </div>
+</section>
+<section class="whats_new_two">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="whtsnew_btm_grid">
+                    @if (dtNext2 != null)
+                    {
+                        if (dtNext2.Rows.Count > 0)
+                        {
+                            <div class="whts_left" data-aos="fade-up" data-aos-delay="200">
+                                <div class="evnt_bx_img">
+                                    <figure>
+                                        <img src="/uploads/smallimages/@dtNext2.Rows[0]["uploadevents"]" alt="@Convert.ToString(dtNext2.Rows[0]["eventstitle"])"
+                                             class="img-fluid w-100">
+                                        <figcaption>
+                                            <div class="txt_bx">
+                                                <p>@(dtNext2.Rows[0]["eventsdate"] == DBNull.Value ? "" : Convert.ToDateTime(dtNext2.Rows[0]["eventsdate"]).ToString("dd-MMM-yyyy"))</p>
+
+                                                <p>@Convert.ToString(dtNext2.Rows[0]["eventstitle"])</p>
+                                            </div>
+                                            <div class="img-icon">
+                                                <img src="/images/icon/Subtraction-1731.svg"
+                                                     class="image2" alt="Subtraction-1">
+                                            </div>
+                                        </figcaption>
+                                    </figure>
+                                </div><a href="/news-details/@Convert.ToString(dtNext2.Rows[0]["eventstitle"]).ToSlug()/@Convert.ToInt16(dtNext2.Rows[0]["eventsid"])" class="streched_link"></a>
+                            </div>
+                            <div class="whts_right" data-aos="fade-up" data-aos-delay="200">
+                                <div class="evnt_bx_txt">
+                                    <div class="evnt-nme">
+                                        <h6>@Convert.ToString(dtNext2.Rows[0]["eventstitle"]) </h6>
+                                    </div>
+                                    <div class="evnt-shrt">
+                                        <p></p>
+                                    </div>
+                                    <figure>
+                                        <img src="/images/icon/subtraction-99.svg" alt="subtraction" class="image2">
+                                    </figure>
+                                </div>
+                                <a href="/news-details/@Convert.ToString(dtNext2.Rows[0]["eventstitle"]).ToSlug()/@Convert.ToInt16(dtNext2.Rows[0]["eventsid"])" class="streched_link"></a>
+                            </div>
+                        }
+
+                    }
+
+                </div>
+                @if (dtBalance != null)
+                {
+                    if (dtBalance.Rows.Count > 0)
+                    {
+                        <div class="whtsnew_btm_grid whtsnew_btm_grid3">
+                            <div class="whts_left">
+                                @foreach (DataRow row in dtBalance.Rows)
+                                {
+
+                                    <div class="evnt_bx_img"
+                                         data-aos="fade-up" data-aos-delay="300">
+                                        <figure>
+                                            <img src="/uploads/smallimages/@Convert.ToString(row["uploadevents"])"
+                                                 alt="@Convert.ToString(row["eventstitle"])"
+                                                 class="img-fluid w-100">
+                                        </figure>
+                                        <div class="evnt-desp">
+                                            <p>@(row["eventsdate"] == DBNull.Value ? "" : Convert.ToDateTime(row["eventsdate"]).ToString("dd-MMM-yyyy"))</p>
+
+                                            <p>@Convert.ToString(row["eventstitle"])</p>
+                                            <img src="/images/icon/subtraction-103.svg" alt="subtraction-103" class="image2">
+                                        </div>
+                                        <a href="/news-details/@Convert.ToString(row["eventstitle"]).ToSlug()/@Convert.ToInt32(row["eventsid"])" class="streched_link"></a>
+                                    </div>
+
+
+
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+</section>

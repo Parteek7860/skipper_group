@@ -11,6 +11,7 @@ namespace skipper_group_new.Controllers
     {
         private readonly IHomePage _homePageService;
         private readonly clsMainMenuList _menuService;
+        public int parentcode = 0;
         public BackofficeController(IHomePage homePageService, clsMainMenuList menuService)
         {
             _homePageService = homePageService;
@@ -58,12 +59,26 @@ namespace skipper_group_new.Controllers
             return View();
         }
 
+
         [HttpGet]
         [Route("backoffice/dashboard")]
-        public IActionResult dashboard()
+        public async Task<IActionResult> dashboard()
         {
             BindListofdashBoard();
-            BindMenuList();
+            await BindMenuList();
+            return View("/Views/Backoffice/DashBoard.cshtml");
+        }
+        [HttpGet]
+        [Route("backoffice/dashboard/{id}")]
+        public async Task<IActionResult> dashboard(int id)
+        {
+            BindListofdashBoard();
+            int id2 = (int)HttpContext.Items["route_menu_id"];
+            if (Convert.ToInt32(id2) > 0)
+            {
+                parentcode = 1;
+            }
+            await BindMenuList();
             return View("/Views/Backoffice/DashBoard.cshtml");
         }
 
@@ -77,15 +92,22 @@ namespace skipper_group_new.Controllers
             HttpContext.Session.Clear();
             return View("/Views/Backoffice/Index.cshtml");
         }
-        public IActionResult BindMenuList()
+        public async Task<IActionResult> BindMenuList()
         {
-            var menuList = _homePageService.GetMenuList();
+            var menuList = await _homePageService.GetMenuList();
+            if (parentcode > 0)
+            {
+                var rows = menuList.AsEnumerable()
+                                   .Where(r => r.Field<int>("pareentcode") == parentcode);
+
+                menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
+            }
             var menus = new List<clsmainmenu>();
             var menusform = new List<clsmainmenu>();
 
-            if (menuList.Result != null && menuList.Result.Rows.Count > 0)
+            if (menuList != null && menuList.Rows.Count > 0)
             {
-                foreach (DataRow row in menuList.Result.Rows)
+                foreach (DataRow row in menuList.Rows)
                 {
                     var menu = new clsmainmenu
                     {
@@ -352,8 +374,8 @@ namespace skipper_group_new.Controllers
             var html = "<ul style='list-style:none; margin:0; padding:5px;'>";
             foreach (DataRow row in dt.Rows)
             {
-                var formId = row["FormId"];              
-                var formCaption = row["FormCaption"];    
+                var formId = row["FormId"];
+                var formCaption = row["FormCaption"];
                 var url = "/backoffice/" + row["formname"].ToString().Replace(".aspx", "");
 
                 html += $@"

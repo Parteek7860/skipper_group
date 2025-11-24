@@ -65,6 +65,7 @@
                                         <th>Date</th>
                                         <th>Status</th>
                                         <th>Action</th>
+                                        <th>Details / View</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -104,6 +105,11 @@
 
                                                 <a href="#" class="btndelete" data-href="/Backoffice/Products/delete/@c["productid"]">
                                                     <img src="~/Backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
+                                                </a>
+                                            </td>
+                                            <td width="10%">
+                                                <a href="/backoffice/dashboard/@Convert.ToString(c["productid"])">
+                                                    <img src="~/backoffice/images/viewdetail.png" style="width:40px;" />
                                                 </a>
                                             </td>
                                         </tr>

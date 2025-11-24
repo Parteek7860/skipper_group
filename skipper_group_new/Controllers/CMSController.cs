@@ -23,18 +23,41 @@ namespace skipper_group_new.Controllers
             return View();
         }
         [HttpGet]
-        [Route("backoffice/cms/addpages")]
+        [Route("backoffice/cms/addpages/{id?}")]
         public IActionResult addPages()
         {
             var obj = new clsCMS();
-            ViewBag.Menus = _menuService.GetMenu();
+            var routeId = HttpContext.GetRouteValue("id")?.ToString();
+            var menuList = _menuService.GetMenu();
 
-            obj.selectparent = _backofficeService.GetPageList().Result.AsEnumerable()
-                .Select(row => new SelectListItem
-                {
-                    Value = row.Field<int>("pageid").ToString(),
-                    Text = row.Field<string>("linkname")
-                }).ToList();
+            if (routeId != null)
+            {
+                menuList = menuList
+        .Where(x => x.pareentcode == "1")
+        .ToList();
+            }
+            ViewBag.Menus = menuList;
+            if (routeId != null)
+            {
+                obj.selectparent = _backofficeService.GetPageList().Result.AsEnumerable()
+            .Where(row => row.Field<int>("collageid") != 0)
+            .Select(row => new SelectListItem
+            {
+                Value = row.Field<int>("pageid").ToString(),
+                Text = row.Field<string>("linkname")
+            }).ToList();
+            }
+            else
+            {
+                obj.selectparent = _backofficeService.GetPageList().Result.AsEnumerable()
+            .Where(row => row.Field<int>("collageid") == 0)
+            .Select(row => new SelectListItem
+            {
+                Value = row.Field<int>("pageid").ToString(),
+                Text = row.Field<string>("linkname")
+            }).ToList();
+            }
+            
 
             List<SelectListItem> names = new List<SelectListItem>();
             names.Add(new SelectListItem { Text = "Header", Value = "Header" });
@@ -141,7 +164,7 @@ namespace skipper_group_new.Controllers
             return View("~/Views/backoffice/cms/addpages.cshtml", obj);
         }
         [HttpGet]
-        [Route("backoffice/cms/viewpages")]
+        [Route("backoffice/cms/viewpages/{id?}")]
         public IActionResult viewpages()
         {
             var obj = new clsCMS();

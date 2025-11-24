@@ -118,7 +118,7 @@ namespace skipper_group_new.Controllers
                     DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
                     obj.desc = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
                     obj.SmallDescription = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["smalldesc"]));
-                    
+
 
                 }
 
@@ -148,14 +148,66 @@ namespace skipper_group_new.Controllers
 
             return View("contactus", obj);
         }
+        #region News and Events
         [HttpGet]
-        [Route("blogs")]
-        public IActionResult blogs()
+        public async Task<IActionResult> news(int id)
         {
-            clsHomeModel obj = new clsHomeModel();
-            obj.Name = "Thankyou";
-            return View(obj);
+            clsMediatype obj = new clsMediatype();
+
+            await LoadSeoDataAsync(id);
+            await LoadCMSDataAsync(id);
+            var x = await _homePageService.GetNewsEvents();
+            var filterlist = x.AsEnumerable()
+                   .Where(r => r.Field<bool>("status") == true)
+                   .OrderBy(r => r.Field<int>("displayorder"))
+                   .ToList();
+
+            var top2 = filterlist.Take(2).ToList();
+
+            var next3 = filterlist.Skip(2).Take(2).ToList();
+
+            // --- Balance records ---
+            var balance = filterlist.Skip(4).ToList();
+
+            // Convert to DataTable only if needed
+            DataTable dtTop2 = top2.Any() ? top2.CopyToDataTable() : x.Clone();
+            DataTable dtNext3 = next3.Any() ? next3.CopyToDataTable() : x.Clone();
+            DataTable dtBalance = balance.Any() ? balance.CopyToDataTable() : x.Clone();
+
+            // Send to ViewBag
+            ViewBag.Top2 = dtTop2;
+            ViewBag.Next2 = dtNext3;
+            ViewBag.Balance = dtBalance;
+
+            return View("news", obj);
         }
+        [HttpGet]
+        [Route("news-details/{title}/{eventsid}")]
+        public async Task<IActionResult> newsdetail(string title, string eventsid)
+        {
+            clsMediatype obj = new clsMediatype();
+            await LoadCMSDataAsync(12);
+            var x1 = await _homePageService.GetNewsEvents();
+            ViewBag.RelatedEvents = x1.Select($"status=1 and eventsid not in ('{eventsid.ToString()}')").CopyToDataTable();
+            var x = await _homePageService.GetNewsEvents();
+            DataRow[] results = x.Select($"status=1 and eventsid='{eventsid.ToString()}'");
+            if (results.Length > 0)
+            {
+                DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
+                obj.id = Convert.ToInt32(dt.Rows[0]["eventsid"]);
+                obj.eventstitle= Convert.ToString(dt.Rows[0]["eventstitle"]);
+                obj.eventsdate = dt.Rows[0]["eventsdate"] == DBNull.Value ? DateTime.MinValue
+    : Convert.ToDateTime(dt.Rows[0]["eventsdate"]);
+                obj.shortdetail = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["eventsdesc"]));
+                obj.Largeimage = Convert.ToString(dt.Rows[0]["largeimage"]);
+                // obj.detail = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["detail"]));
+
+            }
+
+            return View("newsdetail", obj);
+        }
+        #endregion
+
         [HttpGet]
 
         public async Task<IActionResult> leadership(int id)
@@ -167,13 +219,15 @@ namespace skipper_group_new.Controllers
 
             return View("leadership", obj);
         }
+
+        #region Career
         [HttpGet]
         public async Task<IActionResult> career(int id)
         {
             clsHomeModel obj = new clsHomeModel();
             await LoadSeoDataAsync(id);
             string parentid = await GetParentID(id);
-            if(parentid != "0")
+            if (parentid != "0")
             {
                 await LoadCMSDataAsync(Convert.ToInt32(parentid));
             }
@@ -183,7 +237,7 @@ namespace skipper_group_new.Controllers
             }
 
 
-                var list = await _homePageService.GetCMSData();
+            var list = await _homePageService.GetCMSData();
             DataRow[] results = list.Select($"pagestatus=1 and pageid='{parentid}'");
             if (results.Length > 0)
             {
@@ -292,6 +346,8 @@ namespace skipper_group_new.Controllers
 
             return View("apply", obj);
         }
+
+        #endregion
 
         #region Projects
         [HttpGet]

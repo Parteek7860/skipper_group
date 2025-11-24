@@ -25,6 +25,7 @@ namespace skipper_group_new.mainclass
                     {
                         Title = row["moduleid"].ToString(),
                         linkname = row["modulename"].ToString(),
+                        pareentcode = row["pareentcode"].ToString(),
                         Forms = new List<clsmainmenu>()
                     };
 

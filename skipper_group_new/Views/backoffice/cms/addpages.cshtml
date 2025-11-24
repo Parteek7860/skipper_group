@@ -40,7 +40,7 @@
                                     @Html.HiddenFor(model => model.rewriteurl)
                                     @Html.HiddenFor(model => model.controllername)
                                     @Html.HiddenFor(model => model.actionname)
-                                    @Html.DropDownListFor(model => model.parentid, Model.selectparent, "", new { @class = "form-control" })
+                                    @Html.DropDownListFor(model => model.parentid, Model.selectparent, "", new { @class = "form-control", style = "border:1px solid #ccc; border-radius:4px;" })
                                 </div>
                             </div>
                         </div>

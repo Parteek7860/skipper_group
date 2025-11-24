@@ -26,7 +26,7 @@
     <!-- Custom Css -->
     <link rel="stylesheet" href="~/backoffice/css/main.css">
     <link rel="stylesheet" href="~/backoffice/css/color_skins.css">
-      <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
     <style nonce="@nonce">
         /* Minimum height for CKEditor editing area */
         .ck-editor__editable_inline {
@@ -66,7 +66,6 @@
                 background: transparent; /* Removes background track */
             }
 
-
     </style>
 </head>
 <body class="theme-orange" style="overflow-x: hidden;>
@@ -90,7 +89,7 @@
                     @if (Context.Session.GetString("ClientName") != null)
                     {
                         @* <img src="~/images/metro_tyre_logo.png" width="100" height="100" alt="User" /> *@
-                        @Context.Session.GetString("ClientName") 
+                        @Context.Session.GetString("ClientName")
                     }
                 </a>
             </div>
@@ -141,13 +140,13 @@
         <div class="menu" style="max-height: calc(100vh - 60px); overflow-y: auto; overflow-x: hidden;">
             <ul class="list">
                 <li>
-                    
+
                     <input type="text" id="txtSearch" placeholder="Menu search..."
                            style="width:100%; max-width:300px; padding:8px 10px; border:1px solid #ccc; border-radius:5px;">
                     <div id="suggestions"
                          style="border:1px solid #ccc;border-radius:5px;background:#fff;z-index:1000;margin-left: 10px;margin-right: 14px;"></div>
 
-                   
+
                 </li>
                 <li>
                     <a href="@Url.Action("dashboard", "Backoffice")"><i class="zmdi zmdi-home"></i><span>DashBoard</span> </a>
@@ -167,11 +166,30 @@
                                 <ul class="ml-menu">
                                     @foreach (var form in menu1.Forms)
                                     {
+                                        @if (Context.Items["route_menu_id"] == null)
+                                        {
+                                            Context.Items["route_menu_id"] = 0;
+                                        }
+                                        int id2 = (int)Context.Items["route_menu_id"];
                                         <li>
-                                            <a href="@form.Url_name">
-                                                <i class="your-default-icon"></i>
-                                                <span>@form.modulename</span>
-                                            </a>
+                                            @if (id2 > 0)
+                                            {
+                                                <a href="@form.Url_name/@Convert.ToInt16(id2)">
+                                                    <i class="your-default-icon"></i>
+
+                                                    <span>@form.modulename</span>
+
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a href="@form.Url_name">
+                                                    <i class="your-default-icon"></i>
+
+                                                    <span>@form.modulename</span>
+
+                                                </a>
+                                            }
                                         </li>
                                     }
                                 </ul>
@@ -194,7 +212,7 @@
             </div>
 
             {
-                
+
                 Context.Session.Remove("Message");
             }
         }
@@ -272,7 +290,7 @@
 
     </script>
 
-    
+
 
     <style nonce="@nonce">
         .ck-editor__editable_inline {

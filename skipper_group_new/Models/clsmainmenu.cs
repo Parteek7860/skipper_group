@@ -15,6 +15,8 @@
         public string Moduleid { get; set; }
         public string modulename { get; set; }
 
+        public string pareentcode { get; set; }
+
         public List<clsmainmenu> Forms { get; set; } = new List<clsmainmenu>();
     }
 }

@@ -257,7 +257,7 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"select 0 Pageid, 'Main Page' as linkname union all select Pageid, case when Parentid<>0 then '>>'+pagename else pagename end as linkname from pagemaster";
+                string query = @"select 0 Pageid, 'Main Page' as linkname,50 as collageid union all select Pageid, case when Parentid<>0 then '>>'+pagename else pagename end as linkname,collageid from pagemaster";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {

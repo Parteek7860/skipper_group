@@ -1,0 +1,108 @@
+﻿@using System.Data
+@model skipper_group_new.Models.clsMediatype;
+@using skipper_group_new.mainclass;
+@{
+    Layout = "~/Views/Shared/_cms.cshtml";
+    DataTable dt = ViewBag.RelatedEvents as DataTable;
+}
+
+<section class="whats_new_one">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 mx-auto">
+                <div class="whats_new_grid details">
+                    <div class="whts_new_text">
+                        <h6 data-aos="fade-up" data-aos-delay="200">@Model.eventsdate.ToString("dd-MMM-yyyy")</h6>
+                        <h4 data-aos="fade-up" data-aos-delay="300">
+                            @Model.eventstitle
+                        </h4>
+                    </div>
+                    <div class="whts_new-image">
+                        @if (Model.Largeimage != null && Model.Largeimage != "")
+                        {
+                            <figure data-aos="fade-up" data-aos-delay="400">
+                                <img src="/uploads/largeimages/@Model.Largeimage" alt="@Model.eventstitle"
+                                     class="img-fluid w-100" />
+                            </figure>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="vrtcl-line">
+            <figure class="image2">
+                <img src="/images/icon/vertical-line.svg" alt="vertical-line" />
+            </figure>
+        </div>
+    </div>
+</section>
+@Html.Raw(Model.shortdetail)
+@if (dt != null)
+{
+    if (dt.Rows.Count > 0)
+    {
+        <section class="whats_new_two whats_new_two_details">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 mx-auto">
+                        <div class="title_sec" data-aos="fade-up" data-aos-delay="300">
+                            <h3>Related News</h3>
+                        </div>
+                        <div class="whtsnew_btm_grid" data-aos="fade-up" data-aos-delay="400">
+                            <div class="whts_left">
+                                <div class="swiper related-news">
+                                    <div class="swiper-wrapper">
+                                        @foreach (DataRow row in dt.Rows)
+                                        {
+                                            <div class="swiper-slide">
+                                                <div class="evnt_bx_img">
+                                                    <figure>
+                                                        <img src="/uploads/smallimages/@Convert.ToString(row["uploadevents"])"
+                                                             alt="event1" class="img-fluid w-100">
+                                                        <figcaption>
+                                                            <div class="txt_bx">
+                                                                <p>@(row["eventsdate"] == DBNull.Value ? "" : Convert.ToDateTime(row["eventsdate"]).ToString("dd-MMM-yyyy"))</p>
+                                                                <p>@Convert.ToString(row["eventstitle"]) </p>
+                                                            </div>
+                                                            <div class="img-icon">
+                                                                <img src="/images/icon/Subtraction112.svg"
+                                                                     class="image2" alt="@Convert.ToString(row["eventstitle"])">
+                                                            </div>
+                                                        </figcaption>
+                                                    </figure>
+                                                </div><a href="/news-details/@Convert.ToString(row["eventstitle"]).ToSlug()/@Convert.ToInt16(row["eventsid"])" class="streched_link"></a>
+                                            </div>
+
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="whts_right">
+                                <div class="evnt_bx_txt">
+                                    <div class="evnt-nme">
+                                        <h6>
+                                            2023 IEEE/PES Transmission and Distribution Conference &amp; Exposition
+                                            (T&amp;D)
+                                        </h6>
+                                    </div>
+                                    <div class="evnt-shrt">
+                                        <p>New Orleans Ernest N. Morial Convention Center</p>
+                                        <h5>Stall # 3821</h5>
+                                    </div>
+                                    <figure>
+                                        <img src="../../images/icon/subtraction-99.svg" alt="subtraction"
+                                             class="image2">
+                                    </figure>
+                                </div><a href="#" class="streched_link"></a>
+                            </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+}
