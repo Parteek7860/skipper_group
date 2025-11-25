@@ -1,0 +1,125 @@
+﻿@model IEnumerable<ReportModel>
+
+@if (Model != null && Model.Any())
+{
+    var first = Model.First();
+
+    <div class="invest_rght">        
+        <div class="shrt-title">
+            <h6>Navigating Growth, <span>Empowering Progress</span></h6>
+            <h4>@first.productname</h4>
+        </div>
+
+        @if (first.shortDetail==null)
+        {
+            <div class="anul_grid">
+                @foreach (var item in Model)
+                {
+                    <div class="pdf-img">
+                        <figure>
+                            <img src="/Uploads/ProductsImage/@item.uploadaimage"
+                                 class="img-fluid w-100"
+                                 alt="@item.productname" />
+
+                            <figcaption>
+                                <div class="pdf-text">
+                                    <p>@item.productname</p>
+                                    <p><span>@item.yearcategory</span></p>
+                                </div>
+                                <img src="/images/icon/pdf-icon.svg" alt="pdf-icon">
+                            </figcaption>
+                        </figure>
+
+                        <a href="/uploads/prospectus/@item.prospectus" class="links" target="_blank"></a>
+                    </div>
+                }
+            </div>
+
+        }
+        else
+        {               
+            if(first.shortDetail == "")
+            {
+                <div id="ctl00_ContentPlaceHolder1_panelcontact" class="cont-sec">
+                    <h3>Investor Query</h3>
+                    <div class="contact_one ">
+                        <div class="contact_rght">
+                            <div class="inquiry-form-wrapper">
+                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+                                    <input name="ctl00$ContentPlaceHolder1$txtname" type="text" id="ctl00_ContentPlaceHolder1_txtname" placeholder="Name">
+                                    <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1" style="color:Red;font-size:Smaller;display:none;"></span>
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$ValidatorCalloutExtender9_ClientState" id="ctl00_ContentPlaceHolder1_ValidatorCalloutExtender9_ClientState">
+                                    <span style="font-size: smaller; display: none; color: red;"></span>
+                                    <input type="hidden">
+                                </div>
+                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="600">
+                                    <input name="ctl00$ContentPlaceHolder1$txtemail" type="text" id="ctl00_ContentPlaceHolder1_txtemail" placeholder="Email Address">
+                                    <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3" style="color:Red;font-size:Smaller;display:none;"></span>
+                                    <span id="ctl00_ContentPlaceHolder1_RegularExpressionValidator5" style="color:Red;font-size:Smaller;display:none;"></span>
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$ValidatorCalloutExtender1_ClientState" id="ctl00_ContentPlaceHolder1_ValidatorCalloutExtender1_ClientState">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$ValidatorCalloutExtender3_ClientState" id="ctl00_ContentPlaceHolder1_ValidatorCalloutExtender3_ClientState">
+                                    <span style="font-size: smaller; display: none; color: red;"></span>
+                                    <span style="font-size: smaller; display: none; color: red;"></span>
+                                    <input type="hidden">
+                                    <input type="hidden">
+                                </div>
+                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="700">
+                                    <input name="ctl00$ContentPlaceHolder1$txtmobno" type="text" maxlength="10" id="ctl00_ContentPlaceHolder1_txtmobno" placeholder="Mobile No">
+                                    <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator22" style="color:Red;font-size:Smaller;display:none;"></span>
+                                    <span id="ctl00_ContentPlaceHolder1_RegularExpressionValidator12" style="color:Red;font-size:Smaller;display:none;"></span>
+
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$ValidatorCalloutExtender22_ClientState" id="ctl00_ContentPlaceHolder1_ValidatorCalloutExtender22_ClientState">
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$ValidatorCalloutExtender5_ClientState" id="ctl00_ContentPlaceHolder1_ValidatorCalloutExtender5_ClientState">
+                                    <span style="font-size: smaller; display: none; color: red;"></span>
+                                    <span style="font-size: smaller; display: none; color: red;"></span>
+                                    <input type="hidden">
+                                    <input type="hidden">
+                                </div>
+                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="800">
+                                    <input name="ctl00$ContentPlaceHolder1$txtaddress" type="text" id="ctl00_ContentPlaceHolder1_txtaddress" placeholder="Address">
+                                </div>
+                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="900">
+                                    <textarea name="ctl00$ContentPlaceHolder1$txtmsg" rows="2" cols="20" id="ctl00_ContentPlaceHolder1_txtmsg" placeholder="Comment"></textarea>
+                                    <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator5" style="color:Red;font-size:Smaller;display:none;"></span>
+                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$ValidatorCalloutExtender4_ClientState" id="ctl00_ContentPlaceHolder1_ValidatorCalloutExtender4_ClientState">
+                                    <span style="font-size: smaller; display: none; color: red;"></span>
+                                    <input type="hidden">
+                                </div>
+                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="900">
+                                    <figure class="captcha_wrap">
+                                        <input name="ctl00$ContentPlaceHolder1$captcha" type="text" id="ctl00_ContentPlaceHolder1_captcha" placeholder="Enter captcha code *">
+                                        <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator13" style="color:Red;display:none;"></span>
+
+                                        <div class="captcha-colm">
+                                            <img src="/Handler.ashx?query=0.07530922813341212" id="imgCaptchanew" alt="">
+
+                                            <a class="refresh-capcha" href="javascript:void(0)" onclick="javascript:RefreshCaptchanew();">
+                                                <img src="/images/loader.png" alt="" class="cap-loader">
+                                            </a>
+
+                                        </div>
+                                        <div>
+                                        </div>
+
+                                    </figure>
+                                </div>
+                            </div>
+                            <div class="submit-btn">
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$btnsubmit" value="Submit" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnsubmit&quot;, &quot;&quot;, true, &quot;validcontact1&quot;, &quot;&quot;, false, false))" id="ctl00_ContentPlaceHolder1_btnsubmit" class="aos-init aos-animate" data-aos="fade-up" data-aos-delay="900">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+            else{
+            @Html.Raw(first.shortDetail)         
+            }
+        }
+    </div>
+}
+else
+{
+    <h4>No Data Available</h4>
+}

@@ -417,6 +417,70 @@ namespace skipper_group_new.Controllers
         }
 
         #endregion
+        [HttpGet]
+        [Route("/{name}/{productname}/{productid:int}")]
+        public async Task<IActionResult> productdetail(string productname, string productid)
+        {
+            clsProduct obj = new clsProduct();
+            obj.id = Convert.ToInt16(productid);
+            if (string.IsNullOrEmpty(productid) || !int.TryParse(productid, out int projId))
+            {
+                return RedirectToAction("productdetail", "SkipperHome");
+            }
+            else
+            {
+                var x = await this._homePageService.GetProductCategoryList();
+                DataRow[] results = x.Select($"status=1 and pcatid='{productid.ToString()}'");
+                if (results.Length > 0)
+
+                {
+                    DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
+                    obj.ProductId = Convert.ToInt32(dt.Rows[0]["pcatid"]);
+                    obj.ProductName = Convert.ToString(dt.Rows[0]["category"]);
+                    obj.ProductTitle = Convert.ToString(dt.Rows[0]["tagline"]);
+                    obj.ShortDetail = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["shortdetail"]));
+                    obj.ProductDetail = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["detail"]));
+                    obj.UploadAImage = Convert.ToString(dt.Rows[0]["banner"]);
+                    obj.LongDesc = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["homedesc"]));
+                    obj.LongDesc2 = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["homedesc2"]));
+
+                }
+                return View("productdetail", obj);
+            }
+        }
+
+        [HttpGet]
+        [Route("water/{productname}/{productid:int}")]
+        public async Task<IActionResult> productdetail(string productid)
+        {
+            clsProduct obj = new clsProduct();
+            obj.id = Convert.ToInt16(productid);
+            if (string.IsNullOrEmpty(productid) || !int.TryParse(productid, out int projId))
+            {
+                return RedirectToAction("productdetail", "SkipperHome");
+            }
+            else
+            {
+                var x = await this._homePageService.GetProductSubCategoryList();
+                DataRow[] results = x.Select($"status=1 and psubcatid='{productid.ToString()}'");
+                if (results.Length > 0)
+
+                {
+                    DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
+                    obj.ProductId = Convert.ToInt32(dt.Rows[0]["psubcatid"]);
+                    obj.ProductName = Convert.ToString(dt.Rows[0]["category"]);
+                    obj.ProductTitle = Convert.ToString(dt.Rows[0]["tagline"]);
+                    obj.ShortDetail = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["shortdetail"]));
+                    obj.ProductDetail = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["detail"]));
+                    obj.UploadAImage = Convert.ToString(dt.Rows[0]["banner"]);
+                    obj.LongDesc = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["homedesc"]));
+                    obj.LongDesc2 = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["homedesc2"]));
+
+                }
+                return View("productdetail", obj);
+            }
+        }
+
 
         [HttpGet]
         [Route("cms/{title}/{id}")]
@@ -444,10 +508,12 @@ namespace skipper_group_new.Controllers
                 {
                     DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
                     obj.cmscontent = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
+                    obj.SmallDescription = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["smalldesc"]));
                     obj.Name = Convert.ToString(dt.Rows[0]["pagename"]);
                     obj.uploadimage = Convert.ToString(dt.Rows[0]["uploadbanner"]);
+                    obj.pageid = Convert.ToString(dt.Rows[0]["pageid"]);
                     obj.parentname = "";
-
+                    obj.collageid = Convert.ToString(dt.Rows[0]["collageid"]);
                     return View("~/Views/SkipperHome/cms.cshtml", obj);
                 }
 

@@ -17,6 +17,7 @@ namespace skipper_group_new.Models
         public string tagline { get; set; }
 
         public string? linkname { get; set; }
+        public string collageid { get; set; }
 
         public string? rewriteurl { get; set; }
 

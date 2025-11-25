@@ -47,6 +47,8 @@ builder.Services.AddScoped<IBackofficeProjectRepository, BackofficeProjectReposi
 builder.Services.AddScoped<MenuDataService>();
 builder.Services.AddScoped<ISkipperHomeRepository, SkipperHomeRepository>();
 builder.Services.AddScoped<ISkipperHome, clsSkipperHome>();
+builder.Services.AddScoped<ISkipperInvestorPage, SkipperInvestorService>();
+builder.Services.AddScoped<ISkipperInvestorRepo, SkipperInvestorRepository>();
 
 builder.Services.AddSession(options =>
 {
@@ -178,6 +180,9 @@ app.UseEndpoints(endpoints =>
         name: "dynamic",
         pattern: "{*url}",
         defaults: new { controller = "SkipperHome", action = "DynamicRoute" });
+
+   
+
 });
 
 app.Run();

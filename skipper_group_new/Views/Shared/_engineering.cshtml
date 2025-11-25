@@ -1,0 +1,116 @@
+﻿
+<!DOCTYPE html>
+@model skipper_group_new.Models.clsHomeModel
+@using System.Data;
+@using skipper_group_new.mainclass;
+@{
+
+  
+    DataTable dtmenu = ViewBag.MenuList as DataTable;
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @* @await Html.PartialAsync("~/Views/Shared/_seosection.cshtml") *@
+
+    <link href="@Url.Content("/css/bootstrap.min.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("/css/common.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("/css/header.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("/css/footer.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("/css/engineering.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("/css/inner-page.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("/css/inner-page1.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("/css/inner-responsive.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("/css/swiper.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("/css/aos.css")" rel="stylesheet" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&amp;display=swap"
+          rel="stylesheet" />
+    <script src="@Url.Content("/js/jquery.min.js")" asp-append-version="true"></script>
+    <link href="@Url.Content("/css/dynamic.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("/css/vendor.css")" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+</head>
+
+<body>
+    <header class="position-fixed d-flex align-items-center justify-content-between w-full">
+        <div class="logo">
+            <a href="/">
+                <img width="250" height="78" src="~/images/logo/logo.png" class="img-fluid before-sticky"
+                     alt="SKIPPER LIMITED">
+                <img width="250" height="78" src="~/images/logo/logo-sticky.png" class="img-fluid after-sticky"
+                     alt="SKIPPER LIMITED">
+            </a>
+        </div>
+
+        <nav>
+            @if (dtmenu != null)
+            {
+                <ul class="d-flex align-items-center justify-content-between">
+                    @foreach (DataRow row1 in dtmenu.Rows)
+                    {
+                        var href = !string.IsNullOrEmpty(Convert.ToString(row1["rewriteurl"]))
+                        ? $"/{Convert.ToString(row1["rewriteurl"])}"
+                        : $"/cms/{Convert.ToString(row1["linkname"]).ToSlug()}/{Convert.ToInt32(row1["pageid"])}/{Convert.ToInt32(row1["collageid"])}";
+                        <li>
+                            <a href="@href">@Convert.ToString(row1["linkname"])</a>
+                        </li>
+                    }
+                    <li class="ps_d"><a href="javascript:void(0)">Enquiry Now</a></li>
+                    <li class="ps_d blu_clr">
+                        <a href="/">
+                            Skipper Group <img src="images/icon/arrow-right.webp"
+                                               alt="">
+                        </a>
+                    </li>
+                    <div class="top-humburger">
+                        <div class="c-hamburger c-hamburger--htx">
+                            <a href="javascript:void(0)">
+                                <img src="images/icon/humburger-icon.svg" class="img-fluid" />
+                            </a>
+                        </div>
+                        <nav class="sub-menu open">
+                            <div id="accordian">
+                                <ul class="list-unstyled">
+                                    <li id="ctl00_rpthamburger_ctl00_l1" class="no_drop_menu">
+                                        <h3>
+                                            <a href="infrastructure/contact-us"
+                                               id="ctl00_rpthamburger_ctl00_ank">Contact Us</a>
+                                        </h3>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </ul>
+            }
+
+        </nav>
+    </header>
+   
+
+    @RenderBody();
+    @await Html.PartialAsync("~/Views/Shared/_footer.cshtml")
+
+
+    <script src="https://code.jquery.com/jquery-migrate-3.4.1.min.js"></script>
+    <script src="@Url.Content("/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("/js/owl.carousel.min.js")"></script>
+    <script src="@Url.Content("/js/swiper.js")"></script>
+
+    <script src="@Url.Content("/js/TweenMax.min.js")"></script>
+    <script src="@Url.Content("/js/SmoothScroll.min.js")"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="@Url.Content("/js/aos.js")"></script>
+    <script src="@Url.Content("/js/common.js")"></script>
+    <script src="@Url.Content("/js/inner.js")"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+    <script src="@Url.Content("/js/timeline.js")"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

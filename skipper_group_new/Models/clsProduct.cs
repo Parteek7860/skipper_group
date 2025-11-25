@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DocumentFormat.OpenXml.Presentation;
+using System.ComponentModel.DataAnnotations;
 
 namespace skipper_group_new.Models
 {
@@ -31,6 +32,7 @@ namespace skipper_group_new.Models
         public bool NoIndexFollow { get; set; }
         public string PageScript { get; set; }
         public string LongDesc { get; set; }
+        public string LongDesc2 { get; set; }
         public DateTime? InvestorDate { get; set; }
         public int? YcatId { get; set; }
         public string Specification { get; set; }

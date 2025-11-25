@@ -1,5 +1,6 @@
 ﻿@using skipper_group_new.Models
 @inject skipper_group_new.Service.MenuDataService MenuService
+@using skipper_group_new.mainclass;
 @{
     var leftHam = MenuService.HamBurgerList;
     var mainmenu = MenuService.MainMenuList;
@@ -160,7 +161,7 @@
                                         {
                                             string activeClass = i == 1 ? "active" : "";
                                             var subHref1 = !string.IsNullOrEmpty(product.rewriteurl)
-                                            ? $"/{product.rewriteurl}"
+                                            ? $"/{product.rewriteurl}/{product.pageid}"
                                             : $"/cms/{product.linkname}/{product.pageid}";
 
                                             <li class="dropmenu @activeClass" data-target=".drop_menu_@i">
@@ -193,7 +194,7 @@
                                                         foreach (var submenu in product.SubMenus)
                                                         {
                                                             var href = !string.IsNullOrEmpty(submenu.rewriteurl)
-                                                            ? $"/{submenu.rewriteurl}"
+                                                            ? $"/{product.Name}/{submenu.linkname.ToString().ToSlug()}/{submenu.pageid}"
                                                             : $"/cms/{submenu.linkname}/{submenu.pageid}";
                                                             <div class="link_item">
                                                                 <h3>@submenu.linkname</h3>
@@ -202,7 +203,7 @@
                                                                     foreach(var submenu2 in submenu.SubMenus2)
                                                                     {
                                                                         var href2 = !string.IsNullOrEmpty(submenu2.rewriteurl)
-                                                                        ? $"/{submenu2.rewriteurl}"
+                                                                        ? $"/{submenu2.rewriteurl}/{submenu2.pageid}"
                                                                         : $"/cms/{submenu2.linkname}/{submenu2.pageid}";
                                                                         <a href="@href2">
                                                                           @submenu2.linkname
@@ -223,7 +224,7 @@
                                                             foreach (var submenu in product.SubMenus)
                                                             {
                                                                 var href = !string.IsNullOrEmpty(submenu.rewriteurl)
-                                                                ? $"/{submenu.rewriteurl}"
+                                                                ? $"/{submenu.rewriteurl}/{submenu.pageid}"
                                                                 : $"/cms/{submenu.linkname}/{submenu.pageid}";
                                                                 <li>
                                                                     <a href="@href">

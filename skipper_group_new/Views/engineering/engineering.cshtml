@@ -1,0 +1,295 @@
+﻿@using System.Data;
+@model skipper_group_new.Models.clsHomeModel;
+@using skipper_group_new.mainclass;
+
+@{
+    Layout = "~/Views/Shared/_engineering.cshtml";
+    DataTable dt = ViewBag.ProductList as DataTable;
+}
+@if (Model != null)
+{
+    <section class="engineering">
+        <figure class="eng2">
+            <img src="/uploads/banner/@Model.uploadimage"
+                 alt="@Model.linkname" class="img-fluid w-100">
+        </figure>
+        @Html.Raw(Model.shortdesc.ToString())
+        <div class="vrtcl-line">
+            <figure><img src="/images/icon/engineer-vertical-line.svg" class="image2" alt="vertical-line" /></figure>
+        </div>
+        <div class="eng_header">
+            @if (dt != null && dt.Rows.Count > 0)
+            {
+                <ul class="main_list">
+                    @foreach (DataRow row in dt.Rows)
+                    {
+                        string classactive = "";
+                        var routeId = Convert.ToInt32(ViewBag.CurrentProductId);
+
+                        if (Convert.ToInt32(row["productid"]) == routeId)
+                        {
+                            classactive = "active";
+                        }
+
+                        <li class="@classactive">
+                            <a href="/@Convert.ToString(row["productname"]).ToSlug()/@Convert.ToInt32(row["productid"])">@Convert.ToString(row["productname"]) </a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </section>
+}
+
+<section class="skipper_home_about">
+    <div class="container">
+        <div class="row">
+            <div class="skiper_eng_grid">
+                <div class="about_img_panel">
+                    <figure>
+                        <img alt="" src="images/icon/eng-tower.svg"
+                             class="img-fluid w-100 tower-image2 image2" />
+                        <img src="images/icon/subtraction-98.svg" alt="subtraction-97" class="lft-icon" />
+                        <img data-aos-delay="300" src="images/icon/subtraction-97.svg" alt="subtraction-97"
+                             class="rght-icon" />
+                    </figure>
+                </div>
+                <div class="about_block2">
+                    <div class="we_are">
+                        <h1 data-aos="fade-up" data-aos-delay="300">
+                            Empowering Infrastructure, Connecting the
+                            Future
+                        </h1>
+                        <p data-aos="fade-up" data-aos-delay="400">
+                            Skipper Limited stands as
+                            <strong>
+                                India&rsquo;s
+                                largest
+                                Transmission &amp; Distribution (T&amp;D) manufacturer
+                            </strong>and ranks among
+                            the
+                            <strong>Top 5 globally.</strong>With a
+                            legacy of excellence and innovation, our world-class manufacturing infrastructure is
+                            designed to deliver end-to-end <strong>power transmission solutions </strong>that
+                            meet the evolving needs of
+                            the <strong>global energy sector.</strong>
+                        </p>
+                        <div class="read_icon aos-init aos-animate" data-aos="fade-up" data-aos-delay="500">
+                            <a href="/cpage.aspx?mpgid=48&amp;pgidtrail=48&amp;productid=2">
+                                <img alt=""
+                                     src="images/icon/plus-icon.svg" class="img-fluid" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="we_are_list aos-init aos-animate" data-aos="fade-up" data-aos-delay="500">
+                        <ul>
+                            <li>
+                                <h2 data-aos="fade-up" data-aos-delay="300">44+</h2>
+                                <p data-aos="fade-up" data-aos-delay="400">Years of Experience</p>
+                            </li>
+                            <li>
+                                <h2 data-aos="fade-up" data-aos-delay="300">65+</h2>
+                                <p data-aos="fade-up" data-aos-delay="400">
+                                    Countries of Global
+                                    <span>Reach</span>
+                                </p>
+                            </li>
+                            <li>
+                                <h2 data-aos="fade-up" data-aos-delay="300">375K</h2>
+                                <p data-aos="fade-up" data-aos-delay="400">
+                                    Metric Ton Per Annum (MTPA)
+                                    Engineering
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="ctl00_ContentPlaceHolder1_panel1" class="product_sec eng-prod">
+    <div class="container">
+        <div class="product_sec_slider">
+            <div class="title">
+                <h3 data-aos="fade-up" data-aos-delay="300">Services </h3>
+            </div>
+            <div class="product-slider">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="slide_bx">
+                            <figure>
+                                <a href="infrastructure/transmission-epc"
+                                   id="ctl00_ContentPlaceHolder1_rptproductlist_ctl00_ank">
+                                    <img id="ctl00_ContentPlaceHolder1_rptproductlist_ctl00_img1"
+                                         class="img-fluid w-100"
+                                         src="uploads/ProductsImage/11himg_transmissionepc.webp"
+                                         border="0" />
+                                </a>
+                                <figcaption>
+                                    <p>Transmission EPC</p>
+                                </figcaption>
+                                <img src="images/icon/subtraction-11.svg" alt="subtraction-11"
+                                     class="icon-top">
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="slide_bx">
+                            <figure>
+                                <a href="infrastructure/substation-epc"
+                                   id="ctl00_ContentPlaceHolder1_rptproductlist_ctl01_ank">
+                                    <img id="ctl00_ContentPlaceHolder1_rptproductlist_ctl01_img1"
+                                         class="img-fluid w-100" src="uploads/ProductsImage/12himg_eng-pro2.webp"
+                                         border="0" />
+                                </a>
+                                <figcaption>
+                                    <p>Substation EPC</p>
+                                </figcaption>
+                                <img src="images/icon/subtraction-11.svg" alt="subtraction-11"
+                                     class="icon-top">
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="slide_bx">
+                            <figure>
+                                <a href="infrastructure/tower-epc"
+                                   id="ctl00_ContentPlaceHolder1_rptproductlist_ctl02_ank">
+                                    <img id="ctl00_ContentPlaceHolder1_rptproductlist_ctl02_img1"
+                                         class="img-fluid w-100" src="uploads/ProductsImage/13himg_eng-pro3.webp"
+                                         border="0" />
+                                </a>
+                                <figcaption>
+                                    <p>Telecom EPC</p>
+                                </figcaption>
+                                <img src="images/icon/subtraction-11.svg" alt="subtraction-11"
+                                     class="icon-top">
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-div">
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="video_sec image-container">
+    <a href="/video/engineering_video.mp4" data-fancybox="gallery"
+       data-caption="Caption Images 1">
+        <figure>
+            <img src="images/video-banner.webp" alt="video-banner" class="img-fluid w-100" />
+            <figcaption>
+                <h6 data-aos="fade-up" data-aos-delay="300">
+                    Skipper is one of the largest manufacturers of
+                    value-added Steel products.
+                </h6>
+                <div class="ply-btn" data-aos="fade-up" data-aos-delay="350">
+                    <img src="images/icon/play-icon.svg" alt="play-icon" />
+                </div>
+            </figcaption>
+        </figure>
+    </a>
+</section>
+<section id="ctl00_ContentPlaceHolder1_panelproject" class="featured_project">
+    <div class="scroll-spacer"></div>
+    <div class="trigger-placeholder"></div>
+    <div class="icon_project">
+        <figure><img src="images/icon/Subtraction-4.svg" class="img-fluid"></figure>
+    </div>
+    <div class="container">
+        <h2>Featured Projects</h2>
+        <div class="project_slider">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="swiper-container">
+                            <div class="slider_grid">
+                                <div id="ctl00_ContentPlaceHolder1_rptinnerleft_ctl00_panelleft"
+                                     class="left-slide">
+                                    <div class="corner-accent">
+                                        <figure>
+                                            <img src="uploads/SmallImages/16krs-pro-14.webp"
+                                                 class="img-fluid ">
+                                        </figure>
+                                    </div>
+                                    <div class="text-content">
+                                        <div class="bottom_left_icon">
+                                            <img src="images/icon/Subtraction-6.svg"
+                                                 class="img-fluid">
+                                        </div>
+                                        <div class="project-title">STERLITE, WRNER</div>
+                                        <div class="description">400kv D/C Monopoles</div>
+                                    </div>
+                                    <div class="voltage"></div><a href="/project-details.aspx?mpgid=5&pgidtrail=5&projectid=16"
+                                                                  id="ctl00_ContentPlaceHolder1_rptinnerleft_ctl00_ank"
+                                                                  class="streched_link"></a>
+                                </div>
+                                <div id="ctl00_ContentPlaceHolder1_panelright" class="right-container">
+                                    <div id="ctl00_ContentPlaceHolder1_rptinnerright_ctl00_panel1"
+                                         class="right-top">
+                                        <div class="corner-accent">
+                                            <figure>
+                                                <img src="uploads/SmallImages/17krs-pro-15.webp"
+                                                     class="img-fluid ">
+                                            </figure>
+                                        </div>
+                                        <div class="text-content">
+                                            <div class="bottom_left_icon">
+                                                <img src="images/icon/Subtraction-6.svg" class="img-fluid">
+                                            </div>
+                                            <div class="project-title">MSRDC, MSETCL</div>
+                                            <div class="description">
+                                                220kv D/C Monopoles, 400kv D/C Monopoles
+                                            </div>
+                                        </div>
+                                        <div class="voltage"></div><a href="/project-details.aspx?mpgid=5&pgidtrail=5&projectid=17"
+                                                                      id="ctl00_ContentPlaceHolder1_rptinnerright_ctl00_ank"
+                                                                      class="streched_link"></a>
+                                    </div>
+                                    <div id="ctl00_ContentPlaceHolder1_rptinnerright_ctl01_panel1"
+                                         class="right-bottom">
+                                        <div class="corner-accent">
+                                            <figure>
+                                                <img src="uploads/SmallImages/18krs-Torrent-sbanner.webp"
+                                                     class="img-fluid ">
+                                            </figure>
+                                        </div>
+                                        <div class="text-content">
+                                            <div class="bottom_left_icon">
+                                                <img src="images/icon/Subtraction-6.svg" class="img-fluid">
+                                            </div>
+                                            <div class="project-title">TORRENT</div>
+                                            <div class="description">220kv M/C And D/C Monopoles</div>
+                                        </div>
+                                        <div class="voltage"></div><a href="/project-details.aspx?mpgid=5&pgidtrail=5&projectid=18"
+                                                                      id="ctl00_ContentPlaceHolder1_rptinnerright_ctl01_ank"
+                                                                      class="streched_link"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="button_group d-none">
+                    <div class="container">
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="view_all">
+                        <a href="/projects.aspx?mpgid=5&pgidtrail=5">
+                            View All Projects
+                            <figure><img src="images/icon/right_icon.svg"></figure>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

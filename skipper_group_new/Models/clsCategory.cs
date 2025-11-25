@@ -13,6 +13,7 @@ namespace skipper_group_new.Models
 
 
         public string Detail { get; set; }
+        public string homedesc2 { get; set; }
 
         public string ShortDetail { get; set; }
 

@@ -3,7 +3,19 @@
 
 @{
     ViewData["Title"] = "CMS";
-    Layout = "~/Views/Shared/_cms.cshtml";
-    
+    if (Model.collageid != "0")
+    {
+        Layout = "~/Views/Shared/_engineering.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_cms.cshtml";
+    }
+
 }
 @Html.Raw(Model.cmscontent)
+@if (Model.pageid == "4")
+{
+    @Html.Raw(Model.SmallDescription)
+}
+

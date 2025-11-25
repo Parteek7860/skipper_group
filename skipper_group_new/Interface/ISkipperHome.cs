@@ -26,5 +26,6 @@ namespace skipper_group_new.Interface
         Task<DataTable> GetProductCategoryList();
         Task<DataTable> GetProductSubCategoryList();
         Task<DataTable> GetNewsEvents();
+        Task<DataTable> GetBannerList();
     }
 }

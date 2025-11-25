@@ -269,10 +269,11 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/Products/category")]
         public async Task<IActionResult> category()
         {
+            clsCategory obj = new clsCategory();
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
             ViewBag.UpdateStatus = "Save";
-            return View("~/Views/backoffice/Products/category.cshtml");
+            return View("~/Views/backoffice/Products/category.cshtml", obj);
         }
 
         [HttpGet]
@@ -413,9 +414,12 @@ namespace skipper_group_new.Controllers
                     if (filteredRows != null)
                     {
                         obj.Category = filteredRows[0]["category"].ToString();
-                        obj.Detail = filteredRows[0]["detail"].ToString();
+                        obj.Detail = WebUtility.HtmlDecode(filteredRows[0]["detail"].ToString());
                         obj.ShortDetail = WebUtility.HtmlDecode(filteredRows[0]["shortdetail"].ToString());
-                        obj.HomeDesc = WebUtility.HtmlDecode(filteredRows[0]["detail"].ToString());
+                        obj.HomeDesc = WebUtility.HtmlDecode(filteredRows[0]["homedesc"].ToString());
+                        obj.homedesc2 = WebUtility.HtmlDecode(filteredRows[0]["homedesc2"].ToString());
+                        
+
                         obj.Status = Convert.ToBoolean(Convert.ToInt32(filteredRows[0]["Status"]));
                         obj.DisplayOrder = Convert.ToInt32(filteredRows[0]["displayorder"]);
                         obj.PcatId = Convert.ToInt32(filteredRows[0]["pcatid"]);
@@ -571,7 +575,7 @@ namespace skipper_group_new.Controllers
             {
 
                 var categoryList = filterresult.AsEnumerable()
-                    
+
                     .Select(row => new SelectListItem
                     {
                         Value = row["PcatId"].ToString(),  // or your key column
@@ -667,7 +671,7 @@ namespace skipper_group_new.Controllers
 
                 if (c != null)
                 {
-                    int x =  _products.AddSubProductCategory(obj);
+                    int x = _products.AddSubProductCategory(obj);
                     if (x > 0)
                     {
                         if (obj.PSubCatId > 0)
@@ -730,7 +734,7 @@ namespace skipper_group_new.Controllers
                         obj.PageMetaDesc = cat[0]["pagemetadesc"].ToString();
                         obj.Canonical = cat[0]["canonical"].ToString();
                         obj.tagline = cat[0]["tagline"].ToString();
-                        obj.homedesc= WebUtility.HtmlDecode(cat[0]["homedesc"].ToString());
+                        obj.homedesc = WebUtility.HtmlDecode(cat[0]["homedesc"].ToString());
                         obj.homedesc2 = WebUtility.HtmlDecode(cat[0]["homedesc2"].ToString());
                         ViewBag.CreateUpdate = "Update";
                         var catd = await _products.BindProductCategory();
@@ -972,7 +976,7 @@ namespace skipper_group_new.Controllers
                     int x = await _products.AddProductSolution(objcls);
                     if (x > 0)
                     {
-                        if (obj.productid =="0")
+                        if (obj.productid == "0")
                         {
                             HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Save successfully.");
                             return RedirectToAction("addproductsolution", "products");
@@ -1033,7 +1037,7 @@ namespace skipper_group_new.Controllers
                         HttpContext.Session.Remove("Message");
                         clsProduct objbannertype = new clsProduct();
                         // Get the Media list by ID
-                        var productTypes =  _products.BindProductSolution();
+                        var productTypes = _products.BindProductSolution();
 
                         var filterresults = productTypes.Result.AsEnumerable()
                        .Where(pt => pt.Field<int>("productid") == id)
@@ -1084,7 +1088,7 @@ namespace skipper_group_new.Controllers
                         HttpContext.Session.Remove("Message");
                         clsCategory obj = new clsCategory();
                         // Get the Media list by ID
-                        var productTypes =  _products.BindProductSolution();
+                        var productTypes = _products.BindProductSolution();
 
                         var filterresults = productTypes.Result.AsEnumerable()
                        .Where(pt => pt.Field<int>("productid") == id)
@@ -1104,7 +1108,7 @@ namespace skipper_group_new.Controllers
                             obj.PageTitle = filterresults[0]["pagetitle"].ToString();
                             obj.PageMeta = filterresults[0]["pagemeta"].ToString();
                             obj.PageMetaDesc = filterresults[0]["pagemetadesc"].ToString();
-                            obj.UploadAPDF= filterresults[0]["productsmallmg"].ToString();
+                            obj.UploadAPDF = filterresults[0]["productsmallmg"].ToString();
                             ViewBag.CreateUpdate = "Update";
 
                             return View("~/Views/backoffice/products/addproductsolution.cshtml", obj);
@@ -1144,7 +1148,7 @@ namespace skipper_group_new.Controllers
                         HttpContext.Session.Remove("Message");
                         clsBannerType objbannertype = new clsBannerType();
                         // Get the Media list by ID
-                      //  var productTypes = await _products.GetProductTypeyTblData();
+                        //  var productTypes = await _products.GetProductTypeyTblData();
 
 
 
