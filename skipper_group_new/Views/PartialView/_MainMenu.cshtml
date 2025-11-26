@@ -1,4 +1,5 @@
-﻿@using skipper_group_new.Models
+﻿@using System.Data
+@using skipper_group_new.Models
 @inject skipper_group_new.Service.MenuDataService MenuService
 @using skipper_group_new.mainclass;
 @{
@@ -6,299 +7,370 @@
     var mainmenu = MenuService.MainMenuList;
     var investorlist = MenuService.InvestorList;
     var productlist = MenuService.productlist;
+
+    DataTable dtmenu = ViewBag.MenuList as DataTable;
+    DataTable dthamburgar = ViewBag.SubHamburger as DataTable;
+    List<DataRow> mainmenuFiltered = new List<DataRow>();
+    if (dtmenu != null)
+    {
+        mainmenuFiltered = dtmenu.AsEnumerable()
+                                .Where(r => r.Field<int>("collageid") != 0).ToList();
+    }
+
 }
-<nav>
-    <ul class="align-items-center d-flex justify-content-between">
-        @if (mainmenu != null && mainmenu.Count > 0)
-        {
-            @foreach (var menu in mainmenu)
+@if (mainmenuFiltered.Count > 0)
+{
+    @if (dtmenu != null)
+    {
+        <ul class="d-flex align-items-center justify-content-between">
+            @foreach (DataRow row1 in dtmenu.Rows)
             {
-                string parentclass = "";
-                string aboutclass = "";
-                if (menu.pageid == "6")
-                {
-                    parentclass = "sutain_d";
-                }
-                if (menu.pageid == "4")
-                {
-                    parentclass = "investor_mega_menu";
-                }
-                if (menu.pageid == "2")
-                {
-                    aboutclass = "about-menu";
-                }
-                if (menu.pageid == "7")
-                {
-                    parentclass = "ps_d";
-                }
-                var subHref = !string.IsNullOrEmpty(menu.rewriteurl)
-                ? $"/{menu.rewriteurl}"
-                : $"/cms/{menu.linkname}/{menu.pageid}";
-                <li class="menu-item menudrop-item @parentclass">
+                var href = !string.IsNullOrEmpty(Convert.ToString(row1["rewriteurl"]))
+                ? $"/{Convert.ToString(row1["rewriteurl"])}"
+                : $"/cms/{Convert.ToString(row1["linkname"]).ToSlug()}/{Convert.ToInt32(row1["pageid"])}/{Convert.ToInt32(row1["collageid"])}";
+                <li>
+                    <a href="@href">@Convert.ToString(row1["linkname"])</a>
+                </li>
+            }
+            <li class="ps_d"><a href="javascript:void(0)">Enquiry Now</a></li>
+            <li class="ps_d blu_clr">
+                <a href="/">
+                    Skipper Group <img src="images/icon/arrow-right.webp"
+                                       alt="">
+                </a>
+            </li>
+            <div class="top-humburger">
+                <div class="c-hamburger c-hamburger--htx">
+                    <a href="javascript:void(0)">
+                        <img src="/images/icon/humburger-icon.svg" class="img-fluid" />
+                    </a>
+                </div>
+                <nav class="sub-menu open">
+                    <div id="accordian">
+                        <ul class="list-unstyled">
+                            @if (dthamburgar != null)
+                            {
+                                @foreach (DataRow row in dthamburgar.Rows)
+                                {
+                                    var subHref = !string.IsNullOrEmpty(Convert.ToString(row["rewriteurl"]))
+                                    ? $"/{Convert.ToString(row["rewriteurl"])}"
+                                    : $"/cms/{Convert.ToString(row["linkname"]).ToSlug()}/{Convert.ToInt32(row["pageid"])}/{Convert.ToInt32(row["collageid"])}";
+                                    <li class="no_drop_menu">
+                                        <h3>
+                                            <a href="@subHref">@Convert.ToString(row["linkname"])</a>
+                                        </h3>
+                                    </li>
+                                }
+                            }
 
-                    <a href="@((menu.SubMenus != null && menu.SubMenus.Count > 0) ? "javascript:void(0)" : subHref)">@menu.Name</a>
 
-                    @if (menu.pageid == "2" || menu.pageid == "6")
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </ul>
+    }
+
+}
+else
+{
+    <nav>
+        <ul class="align-items-center d-flex justify-content-between">
+            @if (mainmenu != null && mainmenu.Count > 0)
+            {
+                @foreach (var menu in mainmenu)
+                {
+                    string parentclass = "";
+                    string aboutclass = "";
+                    if (menu.pageid == "6")
                     {
-                        @if (menu.SubMenus != null && menu.SubMenus.Count > 0)
+                        parentclass = "sutain_d";
+                    }
+                    if (menu.pageid == "4")
+                    {
+                        parentclass = "investor_mega_menu";
+                    }
+                    if (menu.pageid == "2")
+                    {
+                        aboutclass = "about-menu";
+                    }
+                    if (menu.pageid == "7")
+                    {
+                        parentclass = "ps_d";
+                    }
+                    var subHref = !string.IsNullOrEmpty(menu.rewriteurl)
+                    ? $"/{menu.rewriteurl}"
+                    : $"/cms/{menu.linkname}/{menu.pageid}";
+                    <li class="menu-item menudrop-item @parentclass">
+
+                        <a href="@((menu.SubMenus != null && menu.SubMenus.Count > 0) ? "javascript:void(0)" : subHref)">@menu.Name</a>
+
+                        @if (menu.pageid == "2" || menu.pageid == "6")
+                        {
+                            @if (menu.SubMenus != null && menu.SubMenus.Count > 0)
+                            {
+                                <div class="mega_dropdown mega_dropdown01">
+                                    <div class=menu_tower_icon1>
+                                        <figure><img src=/images/icon2/about-tower1.svg class=img-fluid></figure>
+                                    </div>
+                                    <div class=menu_tower_icon2>
+                                        <figure><img src=/images/icon2/about-tower1.svg class=img-fluid></figure>
+                                    </div>
+                                    <div class=mega_item_left>
+                                        <ul>
+                                            @{
+                                                int i = 1;
+                                            }
+                                            @foreach (var submenu in menu.SubMenus)
+                                            {
+                                                string activeClass = i == 1 ? "active" : "";
+                                                var subHref1 = !string.IsNullOrEmpty(submenu.rewriteurl)
+                                                ? $"/{submenu.rewriteurl}"
+                                                : $"/cms/{submenu.linkname}/{submenu.pageid}";
+                                                <li class="dropmenu @activeClass" data-target=.drop_menu_@i>
+                                                    <a href="@subHref1">@submenu.linkname</a>
+                                                </li>
+                                                i++;
+                                            }
+                                        </ul>
+                                    </div>
+
+                                    <div class="mega_item_right @aboutclass">
+
+                                        @{
+                                            i = 1;
+                                            string classnanme = "";
+                                            if (menu.pageid == "6")
+                                            {
+                                                classnanme = "sustain_box";
+                                            }
+                                        }
+                                        @foreach (var submenu in menu.SubMenus)
+                                        {
+                                            string activeClass = i == 1 ? "active show" : "";
+                                            <div class="mega_dropmenu @classnanme drop_menu_@i @activeClass" data-target=.drop_menu_@i>
+                                                <div class="mega_border"></div>
+                                                @Html.Raw(System.Net.WebUtility.HtmlDecode(submenu.smalldesc))
+                                                @if (submenu.SubMenus2 != null)
+                                                {
+                                                    <div class="sustain_link_text">
+                                                        <ul>
+                                                            @foreach (var submenu2 in submenu.SubMenus2)
+                                                            {
+                                                                var subHref1 = !string.IsNullOrEmpty(submenu2.rewriteurl)
+                                                                ? $"/{submenu2.rewriteurl}"
+                                                                : $"/cms/{submenu2.linkname}/{submenu2.pageid}";
+                                                                <li>
+                                                                    <a href="@subHref1">@submenu2.linkname</a>
+                                                                </li>
+                                                            }
+
+                                                        </ul>
+                                                    </div>
+                                                }
+
+
+                                            </div>
+                                            i++;
+                                        }
+
+
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                        @if (menu.pageid == "4")
+                        {
+                            <div class="mega_dropdown mega_dropdown01 full_investor">
+                                <div class=tab-column>
+                                    @if (investorlist != null)
+                                    {
+                                        foreach (var list in investorlist)
+                                        {
+                                            <div class=tab-item>
+                                                <div class=accordion_hed>
+                                                    <p>@list.Name</p>
+                                                    <button class=toggle-btn>
+                                                        +
+                                                    </button>
+                                                    <a href="javascript:void(0)" class=streched_link></a>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+
+
+
+                                </div>
+                            </div>
+
+                        }
+
+                        @if (menu.pageid == "7")
                         {
                             <div class="mega_dropdown mega_dropdown01">
-                                <div class=menu_tower_icon1>
-                                    <figure><img src=/images/icon2/about-tower1.svg class=img-fluid></figure>
+                                <div class="menu_tower_icon1">
+                                    <figure><img src="/images/icon2/about-tower1.svg" class="img-fluid"></figure>
                                 </div>
-                                <div class=menu_tower_icon2>
-                                    <figure><img src=/images/icon2/about-tower1.svg class=img-fluid></figure>
+                                <div class="menu_tower_icon2">
+                                    <figure><img src="/images/icon2/about-tower1.svg" class="img-fluid"></figure>
                                 </div>
-                                <div class=mega_item_left>
+                                <div class="mega_item_left">
                                     <ul>
                                         @{
                                             int i = 1;
                                         }
-                                        @foreach (var submenu in menu.SubMenus)
+                                        @if (productlist != null)
                                         {
-                                            string activeClass = i == 1 ? "active" : "";
-                                            var subHref1 = !string.IsNullOrEmpty(submenu.rewriteurl)
-                                            ? $"/{submenu.rewriteurl}"
-                                            : $"/cms/{submenu.linkname}/{submenu.pageid}";
-                                            <li class="dropmenu @activeClass" data-target=.drop_menu_@i>
-                                                <a href="@subHref1">@submenu.linkname</a>
-                                            </li>
-                                            i++;
+                                            foreach (var product in productlist)
+                                            {
+                                                string activeClass = i == 1 ? "active" : "";
+                                                var subHref1 = !string.IsNullOrEmpty(product.rewriteurl)
+                                                ? $"/{product.rewriteurl}/{product.pageid}"
+                                                : $"/cms/{product.linkname}/{product.pageid}";
+
+                                                <li class="dropmenu @activeClass" data-target=".drop_menu_@i">
+                                                    <a href="@subHref1">@product.Name</a>
+                                                </li>
+                                                i++;
+                                            }
                                         }
                                     </ul>
                                 </div>
-
-                                <div class="mega_item_right @aboutclass">
-
-                                    @{
-                                        i = 1;
-                                        string classnanme = "";
-                                        if (menu.pageid == "6")
-                                        {
-                                            classnanme = "sustain_box";
-                                        }
-                                    }
-                                    @foreach (var submenu in menu.SubMenus)
-                                    {
-                                        string activeClass = i == 1 ? "active show" : "";
-                                        <div class="mega_dropmenu @classnanme drop_menu_@i @activeClass" data-target=.drop_menu_@i>
-                                            <div class="mega_border"></div>
-                                            @Html.Raw(System.Net.WebUtility.HtmlDecode(submenu.smalldesc))
-                                            @if (submenu.SubMenus2 != null)
-                                            {
-                                                <div class="sustain_link_text">
-                                                    <ul>
-                                                        @foreach (var submenu2 in submenu.SubMenus2)
-                                                        {
-                                                            var subHref1 = !string.IsNullOrEmpty(submenu2.rewriteurl)
-                                                            ? $"/{submenu2.rewriteurl}"
-                                                            : $"/cms/{submenu2.linkname}/{submenu2.pageid}";
-                                                            <li>
-                                                                <a href="@subHref1">@submenu2.linkname</a>
-                                                            </li>
-                                                        }
-
-                                                    </ul>
-                                                </div>
-                                            }
-
-
-                                        </div>
-                                        i++;
-                                    }
-
-
-                                </div>
-                            </div>
-                        }
-                    }
-
-                    @if (menu.pageid == "4")
-                    {
-                        <div class="mega_dropdown mega_dropdown01 full_investor">
-                            <div class=tab-column>
-                                @if (investorlist != null)
-                                {
-                                    foreach (var list in investorlist)
-                                    {
-                                        <div class=tab-item>
-                                            <div class=accordion_hed>
-                                                <p>@list.Name</p>
-                                                <button class=toggle-btn>
-                                                    +
-                                                </button>
-                                                <a href="javascript:void(0)" class=streched_link></a>
-                                            </div>
-                                        </div>
-                                    }
-
-                                }
-
-
-
-                            </div>
-                        </div>
-
-                    }
-
-                    @if (menu.pageid == "7")
-                    {
-                        <div class="mega_dropdown mega_dropdown01">
-                            <div class="menu_tower_icon1">
-                                <figure><img src="/images/icon2/about-tower1.svg" class="img-fluid"></figure>
-                            </div>
-                            <div class="menu_tower_icon2">
-                                <figure><img src="/images/icon2/about-tower1.svg" class="img-fluid"></figure>
-                            </div>
-                            <div class="mega_item_left">
-                                <ul>
-                                    @{
-                                        int i = 1;
-                                    }
+                                <div class="mega_item_right">
                                     @if (productlist != null)
                                     {
+                                        int ii = 1;
                                         foreach (var product in productlist)
                                         {
-                                            string activeClass = i == 1 ? "active" : "";
-                                            var subHref1 = !string.IsNullOrEmpty(product.rewriteurl)
-                                            ? $"/{product.rewriteurl}/{product.pageid}"
-                                            : $"/cms/{product.linkname}/{product.pageid}";
+                                            <div class="mega_dropmenu drop_menu_@ii pro_drop show">
+                                                <div class="mega_border"></div>
+                                                <div class="mega_border">&nbsp;</div>
+                                                <div class="mega_overview">
 
-                                            <li class="dropmenu @activeClass" data-target=".drop_menu_@i">
-                                                <a href="@subHref1">@product.Name</a>
-                                            </li>
-                                            i++;
-                                        }
-                                    }
-                                </ul>
-                            </div>
-                            <div class="mega_item_right">
-                                @if (productlist != null)
-                                {
-                                    int ii = 1;
-                                    foreach (var product in productlist)
-                                    {
-                                        <div class="mega_dropmenu drop_menu_@ii pro_drop show">
-                                            <div class="mega_border"></div>
-                                            <div class="mega_border">&nbsp;</div>
-                                            <div class="mega_overview">
+                                                    @Html.Raw(System.Net.WebUtility.HtmlDecode(product.SmallDescription))
 
-                                                @Html.Raw(System.Net.WebUtility.HtmlDecode(product.SmallDescription))
-
-                                            </div>
-                                            @if (product.pageid == "3")
-                                            {
-                                                <div class="polymer_link">
-                                                    @if (product.SubMenus != null)
-                                                    {
-                                                        foreach (var submenu in product.SubMenus)
-                                                        {
-                                                            var href = !string.IsNullOrEmpty(submenu.rewriteurl)
-                                                            ? $"/{product.Name}/{submenu.linkname.ToString().ToSlug()}/{submenu.pageid}"
-                                                            : $"/cms/{submenu.linkname}/{submenu.pageid}";
-                                                            <div class="link_item">
-                                                                <h3>@submenu.linkname</h3>
-                                                                @if (submenu.SubMenus2 != null)
-                                                                {
-                                                                    foreach(var submenu2 in submenu.SubMenus2)
-                                                                    {
-                                                                        var href2 = !string.IsNullOrEmpty(submenu2.rewriteurl)
-                                                                        ? $"/{submenu2.rewriteurl}/{submenu2.pageid}"
-                                                                        : $"/cms/{submenu2.linkname}/{submenu2.pageid}";
-                                                                        <a href="@href2">
-                                                                          @submenu2.linkname
-                                                                        </a>
-                                                                    }
-                                                                }
-                                                            </div>
-                                                        }
-                                                    }
                                                 </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="mega_overLink">
-                                                    <ul class="menu_list">
+                                                @if (product.pageid == "3")
+                                                {
+                                                    <div class="polymer_link">
                                                         @if (product.SubMenus != null)
                                                         {
                                                             foreach (var submenu in product.SubMenus)
                                                             {
                                                                 var href = !string.IsNullOrEmpty(submenu.rewriteurl)
-                                                                ? $"/{submenu.rewriteurl}/{submenu.pageid}"
+                                                                ? $"/{product.Name}/{submenu.linkname.ToString().ToSlug()}/{submenu.pageid}"
                                                                 : $"/cms/{submenu.linkname}/{submenu.pageid}";
-                                                                <li>
-                                                                    <a href="@href">
-                                                                        @submenu.linkname
-                                                                    </a>
-                                                                </li>
+                                                                <div class="link_item">
+                                                                    <h3>@submenu.linkname</h3>
+                                                                    @if (submenu.SubMenus2 != null)
+                                                                    {
+                                                                        foreach (var submenu2 in submenu.SubMenus2)
+                                                                        {
+                                                                            var href2 = !string.IsNullOrEmpty(submenu2.rewriteurl)
+                                                                            ? $"/{submenu2.rewriteurl}/{submenu2.pageid}"
+                                                                            : $"/cms/{submenu2.linkname}/{submenu2.pageid}";
+                                                                            <a href="@href2">
+                                                                                @submenu2.linkname
+                                                                            </a>
+                                                                        }
+                                                                    }
+                                                                </div>
                                                             }
-
                                                         }
-                                                    </ul>
-                                                </div>
-                                            }
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="mega_overLink">
+                                                        <ul class="menu_list">
+                                                            @if (product.SubMenus != null)
+                                                            {
+                                                                foreach (var submenu in product.SubMenus)
+                                                                {
+                                                                    var href = !string.IsNullOrEmpty(submenu.rewriteurl)
+                                                                    ? $"/{submenu.rewriteurl}/{submenu.pageid}"
+                                                                    : $"/cms/{submenu.linkname}/{submenu.pageid}";
+                                                                    <li>
+                                                                        <a href="@href">
+                                                                            @submenu.linkname
+                                                                        </a>
+                                                                    </li>
+                                                                }
+
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                }
 
 
-                                        </div>
+                                            </div>
 
-                                        ii++;
+                                            ii++;
+                                        }
                                     }
-                                }
 
 
+                                </div>
                             </div>
-                        </div>
 
-                    }
-
+                        }
 
 
-                </li>
+
+                    </li>
+                }
             }
-        }
 
 
-        <div class=top-humburger>
-            <div class="c-hamburger c-hamburger--htx"><a href=javascript:void(0)></a></div>
-            <nav class="open sub-menu">
-                <div id=accordian>
-                    @if (leftHam != null && leftHam.Count > 0)
-                    {
-                        <ul class=list-unstyled>
-                            @foreach (var ham in leftHam)
-                            {
-                                var subHref = !string.IsNullOrEmpty(ham.rewriteurl)
-                                ? $"/{ham.rewriteurl}"
-                                : $"/cms/{ham.Name.Replace(" ", "-").ToLower()}/{ham.pageid}";
-                                <li class="@(ham.SubMenus.Count == 0 ? "no_drop_menu" : null)">
-                                    <h3>
+            <div class=top-humburger>
+                <div class="c-hamburger c-hamburger--htx"><a href=javascript:void(0)></a></div>
+                <nav class="open sub-menu">
+                    <div id=accordian>
+                        @if (leftHam != null && leftHam.Count > 0)
+                        {
+                            <ul class=list-unstyled>
+                                @foreach (var ham in leftHam)
+                                {
+                                    var subHref = !string.IsNullOrEmpty(ham.rewriteurl)
+                                    ? $"/{ham.rewriteurl}"
+                                    : $"/cms/{ham.Name.Replace(" ", "-").ToLower()}/{ham.pageid}";
+                                    <li class="@(ham.SubMenus.Count == 0 ? "no_drop_menu" : null)">
+                                        <h3>
 
-                                        <a href="@((ham.SubMenus != null && ham.SubMenus.Count > 0) ? "javascript:void(0)" : subHref)">
-                                            @ham.Name
-                                        </a>
-                                    </h3>
-                                    @if (ham.SubMenus != null)
-                                    {
-                                        <ul class=submenu>
-                                            @foreach (var sub in ham.SubMenus)
-                                            {
-                                                var subHref1 = !string.IsNullOrEmpty(sub.rewriteurl)
-                                                ? $"/{sub.rewriteurl}"
-                                                : $"/cms/{sub.linkname.ToLower().Replace(" ", "-")}/{sub.pageid}";
-                                                <li>  <a href="@subHref1">@sub.linkname</a> </li>
-                                            }
-                                        </ul>
-                                    }
+                                            <a href="@((ham.SubMenus != null && ham.SubMenus.Count > 0) ? "javascript:void(0)" : subHref)">
+                                                @ham.Name
+                                            </a>
+                                        </h3>
+                                        @if (ham.SubMenus != null)
+                                        {
+                                            <ul class=submenu>
+                                                @foreach (var sub in ham.SubMenus)
+                                                {
+                                                    var subHref1 = !string.IsNullOrEmpty(sub.rewriteurl)
+                                                    ? $"/{sub.rewriteurl}"
+                                                    : $"/cms/{sub.linkname.ToLower().Replace(" ", "-")}/{sub.pageid}";
+                                                    <li>  <a href="@subHref1">@sub.linkname</a> </li>
+                                                }
+                                            </ul>
+                                        }
 
-                                </li>
-                            }
-                        </ul>
-                    }
+                                    </li>
+                                }
+                            </ul>
+                        }
 
-                </div>
-            </nav>
-        </div>
-    </ul>
-</nav>
+                    </div>
+                </nav>
+            </div>
+        </ul>
+    </nav>
+}
+
+
+
+
 
 

@@ -3,15 +3,13 @@
 @model skipper_group_new.Models.clsHomeModel
 @using System.Data;
 @using skipper_group_new.mainclass;
-@{
-
-  
-    DataTable dtmenu = ViewBag.MenuList as DataTable;
+@{  
+    DataTable dt = ViewBag.ProductList as DataTable;
 }
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    @* @await Html.PartialAsync("~/Views/Shared/_seosection.cshtml") *@
+     @await Html.PartialAsync("~/Views/Shared/_seosection.cshtml")
 
     <link href="@Url.Content("/css/bootstrap.min.css")" rel="stylesheet" asp-append-version="true" />
     <link href="@Url.Content("/css/common.css")" rel="stylesheet" asp-append-version="true" />
@@ -43,52 +41,13 @@
                      alt="SKIPPER LIMITED">
             </a>
         </div>
-
         <nav>
-            @if (dtmenu != null)
-            {
-                <ul class="d-flex align-items-center justify-content-between">
-                    @foreach (DataRow row1 in dtmenu.Rows)
-                    {
-                        var href = !string.IsNullOrEmpty(Convert.ToString(row1["rewriteurl"]))
-                        ? $"/{Convert.ToString(row1["rewriteurl"])}"
-                        : $"/cms/{Convert.ToString(row1["linkname"]).ToSlug()}/{Convert.ToInt32(row1["pageid"])}/{Convert.ToInt32(row1["collageid"])}";
-                        <li>
-                            <a href="@href">@Convert.ToString(row1["linkname"])</a>
-                        </li>
-                    }
-                    <li class="ps_d"><a href="javascript:void(0)">Enquiry Now</a></li>
-                    <li class="ps_d blu_clr">
-                        <a href="/">
-                            Skipper Group <img src="images/icon/arrow-right.webp"
-                                               alt="">
-                        </a>
-                    </li>
-                    <div class="top-humburger">
-                        <div class="c-hamburger c-hamburger--htx">
-                            <a href="javascript:void(0)">
-                                <img src="images/icon/humburger-icon.svg" class="img-fluid" />
-                            </a>
-                        </div>
-                        <nav class="sub-menu open">
-                            <div id="accordian">
-                                <ul class="list-unstyled">
-                                    <li id="ctl00_rpthamburger_ctl00_l1" class="no_drop_menu">
-                                        <h3>
-                                            <a href="infrastructure/contact-us"
-                                               id="ctl00_rpthamburger_ctl00_ank">Contact Us</a>
-                                        </h3>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                </ul>
-            }
-
+            @await Html.PartialAsync("~/Views/PartialView/_MainMenu.cshtml")
         </nav>
+
+
     </header>
-   
+  
 
     @RenderBody();
     @await Html.PartialAsync("~/Views/Shared/_footer.cshtml")

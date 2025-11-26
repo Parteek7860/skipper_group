@@ -27,19 +27,24 @@
                     <ul>
                         @foreach (var cat in Model)
                         {
+                            var catSlug = cat.category.Replace(" ", "");
+
                             if (cat.subcategory != null && cat.subcategory.Count > 0)
                             {
                                 <li>
                                     <h3>
                                         <a class="@(Context.Request.Path.Value.Contains($"/{cat.pcatid}/") ? "active-report" : "")"
-                                           href="/investor-relations/@cat.pcatid/0">@cat.category</a>
+                                           href="/investor-relations/@catSlug/All/@cat.pcatid/0">@cat.category</a>
                                     </h3>
                                     <ul class="subcat-list">
                                         @foreach (var sub in cat.subcategory)
                                         {
+                                            var cat1 = cat.category.Replace(" ", "");
+                                            var subSlug = sub.subcategory.Replace(" ", "");
+
                                             <li class="sub-item">
                                                 <a class="@(Context.Request.Path.Value.EndsWith($"/{sub.psubcatid}") ? "active-report" : "")"
-                                                   href="/investor-relations/@cat.pcatid/@sub.psubcatid">
+                                                   href="/investor-relations/@cat1/@subSlug/@cat.pcatid/@sub.psubcatid">
                                                     @sub.subcategory
                                                 </a>
                                             </li>
@@ -52,7 +57,7 @@
                                 <li>
                                     <h3>
                                         <a class="@(Context.Request.Path.Value.Contains($"/{cat.pcatid}/") ? "active-report" : "")"
-                                           href="/investor-relations/@cat.pcatid/0">@cat.category</a>
+                                           href="/investor-relations/@catSlug/All/@cat.pcatid/0">@cat.category</a>
                                     </h3>
                                 </li>
                             }
@@ -65,243 +70,7 @@
                 <div class="invest_rght">
                     @await Html.PartialAsync("_InvestorReports", (IEnumerable<ReportModel>)ViewBag.RightPartData)
                 </div>
-            }
-            else
-            {
-            <div class=invest_rght>
-                <div class=shrt-title>
-                    <h6>Navigating Growth, <span>Empowering Progress</span></h6>
-                    <h4>Annual Reports</h4>
-                </div>
-                <div class=anul_grid id=ctl00_ContentPlaceHolder1_panelinvestor>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/1006simg_annu24.webp alt=1006
-                                 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl00_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2024-2025</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/1006pdctfile_Skipper29.08.25.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl00_ank class=links
-                                    target=_blank></a>
-                    </div>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/3simg_annual-report-2023-2024.webp
-                                 alt=3 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl01_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2023-2024</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/3pdctfile_Skipper-Limited-Annual-Report-2023-24.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl01_ank class=links
-                                    target=_blank></a>
-                    </div>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/1simg_annual-report-2022-2023.webp
-                                 alt=1 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl02_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2022-2023</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/1pdctfile_Skipper-AR-22-23_Final-Web-ready_240823.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl02_ank class=links
-                                    target=_blank></a>
-                    </div>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/4simg_annual-report-2021-2022.webp
-                                 alt=4 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl03_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2021-2022</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/4pdctfile_Final-2022-Skipper-Annual-report.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl03_ank class=links
-                                    target=_blank></a>
-                    </div>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/5simg_annual-report-2020-2021.webp
-                                 alt=5 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl04_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2020-2021</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/5pdctfile_Skipper-AR2021-Stitched-File-03-09-2021-min.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl04_ank class=links
-                                    target=_blank></a>
-                    </div>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/6simg_annual-report-2019-2020.webp
-                                 alt=6 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl05_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2019-2020</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/6pdctfile_SkipperReport2020.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl05_ank class=links
-                                    target=_blank></a>
-                    </div>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/7simg_annual-report-2018-2019.webp
-                                 alt=7 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl06_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2018-2019</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/7pdctfile_Skipper-AR-2018-19-Final15.07.2019.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl06_ank class=links
-                                    target=_blank></a>
-                    </div>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/8simg_annual-report-2017-2018.webp
-                                 alt=8 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl07_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2017-2018</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/8pdctfile_Annual-Report-2017-2018.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl07_ank class=links
-                                    target=_blank></a>
-                    </div>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/9simg_annual-report-2016-2017.webp
-                                 alt=9 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl08_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2016-2017</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/9pdctfile_Annual-Report-2016-2017.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl08_ank class=links
-                                    target=_blank></a>
-                    </div>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/10simg_annual-report-2015-2016.webp
-                                 alt=10 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl09_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2015-2016</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/10pdctfile_Annual-Report-2015-2016.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl09_ank class=links
-                                    target=_blank></a>
-                    </div>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/11simg_annual-rep14-15.webp alt=11
-                                 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl10_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2014-2015</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/11pdctfile_Annual-Report-2014-2015.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl10_ank class=links
-                                    target=_blank></a>
-                    </div>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/12simg_annual-rep13-14.webp alt=12
-                                 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl11_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2013-2014</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/12pdctfile_Annual-Report-2013-2014.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl11_ank class=links
-                                    target=_blank></a>
-                    </div>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/13simg_annual-rep12-13.webp alt=13
-                                 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl12_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2012-2013</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/13pdctfile_Annual-Report-2012-2013.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl12_ank class=links
-                                    target=_blank></a>
-                    </div>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/14simg_annual-rep11-12.webp alt=14
-                                 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl13_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2011-2012</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/14pdctfile_Annual-Report-2011-2012.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl13_ank class=links
-                                    target=_blank></a>
-                    </div>
-                    <div class=pdf-img>
-                        <figure>
-                            <img src=../../uploads/ProductsImage/15simg_annual-rep10-11.webp alt=15
-                                 class="img-fluid w-100"
-                                 id=ctl00_ContentPlaceHolder1_rptinvestor_ctl14_fg1>
-                            <figcaption>
-                                <div class=pdf-text>
-                                    <p>Annual Report
-                                    <p><span>2010-2011</span>
-                                </div><img src=../../images/icon/pdf-icon.svg alt=pdf-icon>
-                            </figcaption>
-                        </figure><a href=../../uploads/prospectus/15pdctfile_Annual-Report-2010-2011.pdf
-                                    id=ctl00_ContentPlaceHolder1_rptinvestor_ctl14_ank class=links
-                                    target=_blank></a>
-                    </div>
-                </div>
-            </div>
-            }
+            }            
             <div class="vertical-line">
                 <img src="/images/icon/investor-line.svg" alt="investor line">
             </div>

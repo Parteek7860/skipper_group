@@ -10,5 +10,6 @@ namespace skipper_group_new.Repositories
         Task<DataTable> GetSubCategoryItem(int id);
         Task<DataTable> GetReports(int pcatid, int psubcatid);
         Task<DataTable> GetCategoryDetail(int pcatid);
+        Task<int> SaveQueryData(InvestorQueryModel model);
     }
 }

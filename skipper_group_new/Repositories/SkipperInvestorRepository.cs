@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using skipper_group_new.Models;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace skipper_group_new.Repositories
@@ -81,6 +82,36 @@ namespace skipper_group_new.Repositories
             var catDetailTable = new DataTable();
             catDetailTable.Load(reader);
             return catDetailTable;
+        }
+
+        public async Task<int> SaveQueryData(InvestorQueryModel m)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("investorenquirysp", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@eid", m.Id);
+                    cmd.Parameters.AddWithValue("@fname", m.Name);
+                    cmd.Parameters.AddWithValue("@emailid", m.Email);
+                    cmd.Parameters.AddWithValue("@Mobile", m.Mobile);
+                    cmd.Parameters.AddWithValue("@City", "");
+                    cmd.Parameters.AddWithValue("@Address", m.Address);
+                    cmd.Parameters.AddWithValue("@FMessage",m.Comment);
+                    cmd.Parameters.AddWithValue("@Subject", "");
+                    cmd.Parameters.AddWithValue("@category", "");
+                    cmd.Parameters.AddWithValue("@state", "");
+                    cmd.Parameters.AddWithValue("@organizationname", "");
+                    cmd.Parameters.AddWithValue("@country", "");
+                    cmd.Parameters.AddWithValue("@Uname", "");
+                    cmd.Parameters.AddWithValue("@Mode",1);                    
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
         }
     }
 }

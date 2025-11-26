@@ -33,5 +33,10 @@ namespace skipper_group_new.Service
         {
             return await _skipperInvestorRepo.GetCategoryDetail(pcatid);
         }
+
+        public async Task<int> SaveQuery(InvestorQueryModel model)
+        {
+            return await _skipperInvestorRepo.SaveQueryData(model);
+        }
     }
 }

@@ -1,11 +1,14 @@
 ﻿@model skipper_group_new.Models.clsHomeModel
 @using skipper_group_new.Models
-
+@using System.Data;
+@using skipper_group_new.mainclass;
 @{
     ViewData["Title"] = "CMS";
+    DataTable dt = new DataTable();
     if (Model.collageid != "0")
     {
         Layout = "~/Views/Shared/_engineering.cshtml";
+         dt = ViewBag.ProductList as DataTable;
     }
     else
     {
@@ -13,9 +16,56 @@
     }
 
 }
+@if (Model.collageid != "0")
+{
+    <section class="inner_banner eng_css_banner">
+        @if (Model.uploadimage != null)
+        {
+            <figure>
+                <img src="/uploads/banner/@Model.uploadimage"
+                     alt="@Model.linkname" class="img-fluid w-100">
+            </figure>
+        }
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="ctl00_Div1" class="bread_btm">
+                        <h5>@Model.linkname</h5>
+                    </div>
+                    <div class="shrt-title">
+                        <h6>@Model.tagline</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="eng_header">
+            @if (dt != null && dt.Rows.Count > 0)
+            {
+                <ul class="main_list">
+                    @foreach (DataRow row in dt.Rows)
+                    {
+                        string classactive = "";
+                        var routeId = Convert.ToInt32(ViewBag.CurrentProductId);
+
+                        if (Convert.ToInt32(row["productid"]) == routeId)
+                        {
+                            classactive = "active";
+                        }
+
+                        <li class="@classactive">
+                            <a href="/@Convert.ToString(row["productname"]).ToSlug()/@Convert.ToInt32(row["productid"])">@Convert.ToString(row["productname"]) </a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </section>
+}
 @Html.Raw(Model.cmscontent)
 @if (Model.pageid == "4")
 {
     @Html.Raw(Model.SmallDescription)
 }
+
 

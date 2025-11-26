@@ -4,23 +4,23 @@
 {
     var first = Model.First();
 
-    <div class="invest_rght">        
+    <div class="invest_rght">
         <div class="shrt-title">
             <h6>Navigating Growth, <span>Empowering Progress</span></h6>
-            <h4>@first.productname</h4>
+            <h4>@first.title</h4>
         </div>
 
-        @if (first.shortDetail==null)
+        @if (first.shortDetail == null)
         {
             <div class="anul_grid">
                 @foreach (var item in Model)
                 {
                     <div class="pdf-img">
                         <figure>
-                            <img src="/Uploads/ProductsImage/@item.uploadaimage"
-                                 class="img-fluid w-100"
-                                 alt="@item.productname" />
-
+                            @if (!string.IsNullOrEmpty(item.uploadaimage))
+                            {
+                                <img src="/Uploads/ProductsImage/@item.uploadaimage" class="img-fluid w-100" alt="@item.productname" />
+                            }
                             <figcaption>
                                 <div class="pdf-text">
                                     <p>@item.productname</p>
@@ -29,97 +29,155 @@
                                 <img src="/images/icon/pdf-icon.svg" alt="pdf-icon">
                             </figcaption>
                         </figure>
-
                         <a href="/uploads/prospectus/@item.prospectus" class="links" target="_blank"></a>
                     </div>
                 }
             </div>
-
         }
         else
-        {               
-            if(first.shortDetail == "")
+        {
+            @if (first.shortDetail == "")
             {
-                <div id="ctl00_ContentPlaceHolder1_panelcontact" class="cont-sec">
+                <div class="cont-sec">
                     <h3>Investor Query</h3>
-                    <div class="contact_one ">
+                    <div class="contact_one">
                         <div class="contact_rght">
                             <div class="inquiry-form-wrapper">
-                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
-                                    <input name="ctl00$ContentPlaceHolder1$txtname" type="text" id="ctl00_ContentPlaceHolder1_txtname" placeholder="Name">
-                                    <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator1" style="color:Red;font-size:Smaller;display:none;"></span>
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$ValidatorCalloutExtender9_ClientState" id="ctl00_ContentPlaceHolder1_ValidatorCalloutExtender9_ClientState">
-                                    <span style="font-size: smaller; display: none; color: red;"></span>
-                                    <input type="hidden">
+                                <input type="hidden" id="eid" name="name" value=0 />
+                                <div class="input_bx">
+                                    <input type="text" id="invName" placeholder="Name">
                                 </div>
-                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="600">
-                                    <input name="ctl00$ContentPlaceHolder1$txtemail" type="text" id="ctl00_ContentPlaceHolder1_txtemail" placeholder="Email Address">
-                                    <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3" style="color:Red;font-size:Smaller;display:none;"></span>
-                                    <span id="ctl00_ContentPlaceHolder1_RegularExpressionValidator5" style="color:Red;font-size:Smaller;display:none;"></span>
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$ValidatorCalloutExtender1_ClientState" id="ctl00_ContentPlaceHolder1_ValidatorCalloutExtender1_ClientState">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$ValidatorCalloutExtender3_ClientState" id="ctl00_ContentPlaceHolder1_ValidatorCalloutExtender3_ClientState">
-                                    <span style="font-size: smaller; display: none; color: red;"></span>
-                                    <span style="font-size: smaller; display: none; color: red;"></span>
-                                    <input type="hidden">
-                                    <input type="hidden">
+                                <div class="input_bx">
+                                    <input type="text" id="invEmail" placeholder="Email Address">
                                 </div>
-                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="700">
-                                    <input name="ctl00$ContentPlaceHolder1$txtmobno" type="text" maxlength="10" id="ctl00_ContentPlaceHolder1_txtmobno" placeholder="Mobile No">
-                                    <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator22" style="color:Red;font-size:Smaller;display:none;"></span>
-                                    <span id="ctl00_ContentPlaceHolder1_RegularExpressionValidator12" style="color:Red;font-size:Smaller;display:none;"></span>
+                                <div class="input_bx">
+                                    <input type="text" id="invMobile" maxlength="10" placeholder="Mobile No">
+                                </div>
+                                <div class="input_bx">
+                                    <input type="text" id="invAddress" placeholder="Address">
+                                </div>
+                                <div class="input_bx">
+                                    <textarea id="invComment" rows="2" placeholder="Comment"></textarea>
+                                </div>
 
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$ValidatorCalloutExtender22_ClientState" id="ctl00_ContentPlaceHolder1_ValidatorCalloutExtender22_ClientState">
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$ValidatorCalloutExtender5_ClientState" id="ctl00_ContentPlaceHolder1_ValidatorCalloutExtender5_ClientState">
-                                    <span style="font-size: smaller; display: none; color: red;"></span>
-                                    <span style="font-size: smaller; display: none; color: red;"></span>
-                                    <input type="hidden">
-                                    <input type="hidden">
-                                </div>
-                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="800">
-                                    <input name="ctl00$ContentPlaceHolder1$txtaddress" type="text" id="ctl00_ContentPlaceHolder1_txtaddress" placeholder="Address">
-                                </div>
-                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="900">
-                                    <textarea name="ctl00$ContentPlaceHolder1$txtmsg" rows="2" cols="20" id="ctl00_ContentPlaceHolder1_txtmsg" placeholder="Comment"></textarea>
-                                    <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator5" style="color:Red;font-size:Smaller;display:none;"></span>
-                                    <input type="hidden" name="ctl00$ContentPlaceHolder1$ValidatorCalloutExtender4_ClientState" id="ctl00_ContentPlaceHolder1_ValidatorCalloutExtender4_ClientState">
-                                    <span style="font-size: smaller; display: none; color: red;"></span>
-                                    <input type="hidden">
-                                </div>
-                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="900">
+                                <div class="input_bx">
                                     <figure class="captcha_wrap">
-                                        <input name="ctl00$ContentPlaceHolder1$captcha" type="text" id="ctl00_ContentPlaceHolder1_captcha" placeholder="Enter captcha code *">
-                                        <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator13" style="color:Red;display:none;"></span>
-
-                                        <div class="captcha-colm">
-                                            <img src="/Handler.ashx?query=0.07530922813341212" id="imgCaptchanew" alt="">
-
-                                            <a class="refresh-capcha" href="javascript:void(0)" onclick="javascript:RefreshCaptchanew();">
-                                                <img src="/images/loader.png" alt="" class="cap-loader">
-                                            </a>
-
-                                        </div>
-                                        <div>
-                                        </div>
-
+                                        <input type="text" id="invCaptcha" placeholder="Enter captcha code *">
                                     </figure>
+                                    <span id="captchaError" style="color:red;font-size:13px;"></span> 
+                                </div>
+
+
+                                <div class="captcha-colm" style="display:flex;align-items:center;gap:10px;padding:8px 12px;">
+                                    <span id="captchaText"
+                                          style="font-weight:700;font-size:20px;color:#2c3e50;letter-spacing:3px;font-family:monospace;">
+                                    </span>
+                                    <a href="javascript:;" onclick="RefreshCaptcha()" style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;">
+                                        <img src="/images/loader.png" alt="" class="cap-loader" style="width:18px;height:18px;object-fit:contain;">
+                                    </a>
+                                </div>
+                               
+                                <div class="submit-btn">
+                                    <input type="submit" onclick="SubmitQuery()" class="aos-init aos-animate">
                                 </div>
                             </div>
-                            <div class="submit-btn">
-                                <input type="submit" name="ctl00$ContentPlaceHolder1$btnsubmit" value="Submit" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnsubmit&quot;, &quot;&quot;, true, &quot;validcontact1&quot;, &quot;&quot;, false, false))" id="ctl00_ContentPlaceHolder1_btnsubmit" class="aos-init aos-animate" data-aos="fade-up" data-aos-delay="900">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
+                        </div> 
+                    </div> 
+                </div> 
             }
-            else{
-            @Html.Raw(first.shortDetail)         
+            else
+            {
+                @Html.Raw(first.shortDetail)
             }
         }
-    </div>
+    </div> 
 }
 else
 {
     <h4>No Data Available</h4>
 }
+
+
+
+<script >
+    $(document).ready(function () {
+        RefreshCaptcha();
+    });
+
+    function RefreshCaptcha() {
+        $.get("/SkipperInvestor/GetCaptcha", function (res) {
+            $("#captchaText").text(res.code);
+        });
+    }
+
+        function SubmitQuery() {
+
+        let isValid = true;
+
+        // Clear old errors
+        $(".input-error").remove();
+
+        // Validate each field
+        if ($("#invName").val().trim() == "") {
+            $("#invName").after('<span class="input-error" style="color:red;font-size:12px;">Name is required</span>');
+            isValid = false;
+        }
+        if ($("#invEmail").val().trim() == "") {
+            $("#invEmail").after('<span class="input-error" style="color:red;font-size:12px;">Email is required</span>');
+            isValid = false;
+        }
+        if ($("#invMobile").val().trim() == "") {
+            $("#invMobile").after('<span class="input-error" style="color:red;font-size:12px;">Mobile No. is required</span>');
+            isValid = false;
+        }
+        if ($("#invAddress").val().trim() == "") {
+            $("#invAddress").after('<span class="input-error" style="color:red;font-size:12px;">Address is required</span>');
+            isValid = false;
+        }
+        if ($("#invComment").val().trim() == "") {
+            $("#invComment").after('<span class="input-error" style="color:red;font-size:12px;">Comment is required</span>');
+            isValid = false;
+        }
+        if ($("#invCaptcha").val().trim() == "") {
+            $("#invCaptcha").after('<span class="input-error" style="color:red;font-size:12px;">Captcha is required</span>');
+            isValid = false;
+        }
+
+        if (!isValid) return;
+
+        let data = {
+            Id: $("#eid").val(),
+            Name: $("#invName").val(),
+            Email: $("#invEmail").val(),
+            Mobile: $("#invMobile").val(),
+            Address: $("#invAddress").val(),
+            Comment: $("#invComment").val(),
+            CaptchaCode: $("#invCaptcha").val()
+        };
+
+        $.ajax({
+            url: '/SkipperInvestor/SaveInvestorQuery',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (res) {
+                $("#captchaError").text("");
+
+                if (res.status) {
+                    alert(res.message);
+                    $("input,textarea").val("");
+                    RefreshCaptcha();
+                } else {
+                    if (res.message.includes("Captcha")) {
+                        $("#captchaError").text(res.message);
+                    } else {
+                        alert(res.message);
+                    }
+                    RefreshCaptcha();
+                }
+            }
+        });
+    }
+
+</script>
+

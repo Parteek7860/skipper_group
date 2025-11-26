@@ -195,7 +195,7 @@ namespace skipper_group_new.Controllers
             {
                 DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
                 obj.id = Convert.ToInt32(dt.Rows[0]["eventsid"]);
-                obj.eventstitle= Convert.ToString(dt.Rows[0]["eventstitle"]);
+                obj.eventstitle = Convert.ToString(dt.Rows[0]["eventstitle"]);
                 obj.eventsdate = dt.Rows[0]["eventsdate"] == DBNull.Value ? DateTime.MinValue
     : Convert.ToDateTime(dt.Rows[0]["eventsdate"]);
                 obj.shortdetail = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["eventsdesc"]));
@@ -514,6 +514,21 @@ namespace skipper_group_new.Controllers
                     obj.pageid = Convert.ToString(dt.Rows[0]["pageid"]);
                     obj.parentname = "";
                     obj.collageid = Convert.ToString(dt.Rows[0]["collageid"]);
+                    if (obj.collageid != "0")
+                    {
+                        var menuData = await _homePageService.GetMenuList();
+                        DataRow[] menuresult = menuData.Select($"pagestatus=1 and linkposition like '%Header,External%' and collageid='{obj.collageid}'");
+                        ViewBag.MenuList = menuresult.CopyToDataTable();
+
+                        DataRow[] menuresult1 = menuData.Select($"pagestatus=1 and linkposition like '%Hamburger%' and collageid='{obj.collageid}'");
+                        ViewBag.SubHamburger = menuresult1.CopyToDataTable();
+
+                        // Product Master List
+                        var x1 = await _homePageService.GetProductList();
+                        DataRow[] data = x1.Select($"status=1");
+                        ViewBag.ProductList = data.CopyToDataTable();
+                        ViewBag.CurrentProductId = obj.collageid;
+                    }
                     return View("~/Views/SkipperHome/cms.cshtml", obj);
                 }
 
