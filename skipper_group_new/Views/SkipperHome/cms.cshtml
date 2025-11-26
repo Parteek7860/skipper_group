@@ -16,7 +16,7 @@
     }
 
 }
-@if (Model.collageid != "0")
+@* @if (Model.collageid != "0")
 {
     <section class="inner_banner eng_css_banner">
         @if (Model.uploadimage != null)
@@ -61,7 +61,7 @@
             }
         </div>
     </section>
-}
+} *@
 @Html.Raw(Model.cmscontent)
 @if (Model.pageid == "4")
 {

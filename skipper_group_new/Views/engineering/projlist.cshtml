@@ -1,0 +1,81 @@
+﻿@using System.Data;
+@using skipper_group_new.mainclass;
+
+@{
+    Layout = "~/Views/Shared/_engineering.cshtml";
+    DataTable dt = ViewBag.ProductList as DataTable;
+}
+
+<section class="featured_projects">
+    <div class="container">
+        <div class="line-sec">
+            <div class="vrtcl-line">
+                <figure>
+                    <img src="/images/icon/vertical-line.svg" class="image2 reveal-image2" alt="vertical-line">
+                </figure>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-11 projectspace">
+                <div class="row justify-content-center align-items-center text-center">
+                    <div class="col-lg-9">
+                        <p data-aos="fade-up" data-aos-delay="200" class="aos-init aos-animate">Skipper Ltd. has had the previliege to play a key role in several marquee T&amp;D infrastructure projects across the world. Some of the notable projects are showcased here.</p>
+                    </div>
+                </div>
+                <div class="row justify-content-end align-items-center mt-5">
+                    <div class="col-lg-4 col-xl-3 col-md-5 project-filter-container project-filter-containernew text-md-end">
+                        <span>Select Type of Project</span>
+                    </div>
+                    <div class="col-lg-2 col-md-3 project-filter-container project-filter-containernew">
+                        <div class="select_icon">
+                            <img src="/images/angle-down.webp" alt="icon">
+                        </div>
+                        <select class="form-select project-filter">
+                            <option selected="selected" value="0">Select</option>
+                            <option value="3">Towers</option>
+                            <option value="4">Poles</option>
+                            <option value="5">EPC</option>
+                            <option value="6">Test Station and R&amp;D Centre</option>
+
+                        </select>
+                    </div>
+                </div>
+                @if (ViewBag.ProjList != null)
+                {
+                    var dt1 = ViewBag.ProjList as DataTable;
+                    if (dt1.Rows.Count > 0)
+                    {
+                        <div class="feture_grid">
+                            @foreach (DataRow row in dt1.Rows)
+                            {
+                                <div class="ledr_bx">
+                                    <figure class="image2 reveal-image2">
+                                        <img src="/uploads/SmallImages/@row["uploadevents"]" alt="leadership-img" class="img-fluid w-100">
+
+                                        <div class="direc-img">
+                                            <img src="/images/icon/subtraction-103.svg" alt="subtraction-103" class="image2 reveal-image2">
+                                        </div>
+                                    </figure>
+                                    <figcaption>
+                                        <h6>
+                                            @row["researchtitle"]
+                                        </h6>
+                                        <p>Project Authority: Transgrid</p>
+
+                                    </figcaption>
+                                    <a href="/project-details/@Convert.ToString(@row["researchtitle"]).ToLower().ToSlug()/@row["researchid"]" class="links"></a>
+                                </div>
+                            }
+
+
+
+
+
+                        </div>
+                    }
+                }
+    
+            </div>
+        </div>
+</section>

@@ -28,7 +28,17 @@ namespace skipper_group_new.Controllers
         public async Task<IActionResult> engineering(string productname, string productid)
         {
             clsHomeModel obj = new clsHomeModel();
-
+            await LoadMenu(productid);
+            //  About Product (landing Page)
+            var i = await _homePageService.GetAboutProduct();
+            var filter = $" productid='{productid.ToString()}'";
+            DataRow[] res = i.Select(filter);
+            if (res.Length > 0)
+            {
+                DataTable dt = ((IEnumerable<DataRow>)res).CopyToDataTable<DataRow>();
+                obj.Description = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["details"]));
+                
+            }
             if (string.IsNullOrEmpty(productid) || !int.TryParse(productid, out int projId))
             {
                 return RedirectToAction("engineering", "Engineering");
@@ -46,18 +56,7 @@ namespace skipper_group_new.Controllers
 
                 }
                 // Product Master List
-                var x1 = await _homePageService.GetProductList();
-                DataRow[] data = x1.Select($"status=1");
-                ViewBag.ProductList = data.CopyToDataTable();
-                ViewBag.CurrentProductId = productid;
 
-                // Menu List
-                var menuData = await _homePageService.GetMenuList();
-                DataRow[] menuresult = menuData.Select($"pagestatus=1 and linkposition like '%Header,External%' and collageid='{productid.ToString()}'");
-                ViewBag.MenuList = menuresult.CopyToDataTable();
-
-                DataRow[] menuresult1 = menuData.Select($"pagestatus=1 and linkposition like '%Hamburger%' and collageid='{productid.ToString()}'");
-                ViewBag.SubHamburger = menuresult1.CopyToDataTable();
 
                 return View("engineering", obj);
             }
@@ -66,8 +65,51 @@ namespace skipper_group_new.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> projlist(int id)
+        {
 
+            await LoadSeoDataAsync(id);
+            //await LoadCMSDataAsync(id);
+            clsHomeModel obj = new clsHomeModel();
+            var x = await this._homePageService.GetCMSData();
+            DataRow[] results = x.Select($"pagestatus=1 and pageid='{id.ToString()}'");
+            if (results.Length > 0)
+            {
+                DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
+                obj.id = Convert.ToString(dt.Rows[0]["collageid"]);
+                obj.uploadimage = Convert.ToString(dt.Rows[0]["uploadbanner"]);
+                obj.Name = Convert.ToString(dt.Rows[0]["linkname"]);
+                obj.tagline = Convert.ToString(dt.Rows[0]["tagline"]);
 
+            }
+            await LoadMenu(obj.id);
+
+            // Projects Master List
+            var x1 = await _homePageService.GetProjectsList();
+            DataRow[] data = x1.Select($"status=1 and ntypeid={obj.id}");
+            ViewBag.ProjList = data.CopyToDataTable();
+
+            return View("/Views/engineering/projlist.cshtml", obj);
+        }
+
+        public async Task<IActionResult> LoadMenu(string productid)
+        {
+            var x1 = await _homePageService.GetProductList();
+            DataRow[] data = x1.Select($"status=1");
+            ViewBag.ProductList = data.CopyToDataTable();
+            ViewBag.CurrentProductId = productid;
+
+            // Menu List
+            var menuData = await _homePageService.GetMenuList();
+            DataRow[] menuresult = menuData.Select($"pagestatus=1 and linkposition like '%Header,External%' and collageid='{productid.ToString()}'");
+            ViewBag.MenuList = menuresult.CopyToDataTable();
+
+            DataRow[] menuresult1 = menuData.Select($"pagestatus=1 and linkposition like '%Hamburger%' and collageid='{productid.ToString()}'");
+            ViewBag.SubHamburger = menuresult1.CopyToDataTable();
+
+            return View();
+        }
 
     }
 }

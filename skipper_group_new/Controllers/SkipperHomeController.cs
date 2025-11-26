@@ -514,6 +514,7 @@ namespace skipper_group_new.Controllers
                     obj.pageid = Convert.ToString(dt.Rows[0]["pageid"]);
                     obj.parentname = "";
                     obj.collageid = Convert.ToString(dt.Rows[0]["collageid"]);
+                    obj.tagline = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["tagline"]));
                     if (obj.collageid != "0")
                     {
                         var menuData = await _homePageService.GetMenuList();
