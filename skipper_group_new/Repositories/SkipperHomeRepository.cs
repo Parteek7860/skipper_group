@@ -342,5 +342,24 @@ namespace skipper_group_new.Repositories
             }
             return menuList;
         }
+        public async Task<DataTable> GetProductCapabilities()
+        {
+            DataTable menuList;
+            using (SqlConnection conn = new SqlConnection(this._connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("GetProductCapabilitiesSP", conn))
+                {
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        DataTable table = new DataTable();
+                        await conn.OpenAsync();
+                        da.Fill(table);
+                        menuList = table;
+                    }
+                }
+            }
+            return menuList;
+        }
     }
 }

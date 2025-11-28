@@ -29,6 +29,7 @@ namespace skipper_group_new.Controllers
         {
             clsHomeModel obj = new clsHomeModel();
             await LoadMenu(productid);
+
             //  About Product (landing Page)
             var i = await _homePageService.GetAboutProduct();
             var filter = $" productid='{productid.ToString()}'";
@@ -37,7 +38,17 @@ namespace skipper_group_new.Controllers
             {
                 DataTable dt = ((IEnumerable<DataRow>)res).CopyToDataTable<DataRow>();
                 obj.Description = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["details"]));
-                
+
+            }
+            //  About Product  capabilities(landing Page)
+            var i1 = await _homePageService.GetProductCapabilities();
+            var filter1 = $" productid='{productid.ToString()}'";
+            DataRow[] res1 = i1.Select(filter1);
+            if (res1.Length > 0)
+            {
+                DataTable dt = ((IEnumerable<DataRow>)res1).CopyToDataTable<DataRow>();
+                obj.Capabilities = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["details"]));
+
             }
             if (string.IsNullOrEmpty(productid) || !int.TryParse(productid, out int projId))
             {
@@ -48,21 +59,43 @@ namespace skipper_group_new.Controllers
                 var x = await this._homePageService.GetBannerList();
                 DataRow[] results = x.Select($"status=1 and collageid='{productid.ToString()}'");
                 if (results.Length > 0)
-
                 {
                     DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
                     obj.uploadimage = Convert.ToString(dt.Rows[0]["bannerimage"]);
                     obj.shortdesc = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["tagline1"]));
 
                 }
-                // Product Master List
+                if (productid != "3")
+                {
+                    // Product Category List (Landing Page)
+                    var pcat = await _homePageService.GetProductCategoryList();
+                    DataRow[] pcatdata = pcat.Select($"status=1 and productid={productid}");
+                    ViewBag.ProductCatList = pcatdata.CopyToDataTable();
 
+                    // Featured Projects List (Landing Page)
+                    var proj = await _homePageService.GetProjectsList();
+
+
+                    DataRow[] projdata = proj.Select($"status=1 and ntypeid={productid}").OrderBy(r => r.Field<int>("displayorder")).ToArray();
+
+                    var firstOne = projdata.Take(1).CopyToDataTable();
+                    var firstTwo = projdata.Skip(1).Take(2).CopyToDataTable();
+
+
+                    ViewBag.FeaturedProjList1 = firstOne;
+                    ViewBag.FeaturedProjList2 = firstTwo;
+                }
+                else
+                {
+                    obj.id = productid;
+                }
 
                 return View("engineering", obj);
             }
 
 
-            return View();
+
+            return View(obj);
         }
 
         [HttpGet]
@@ -103,10 +136,25 @@ namespace skipper_group_new.Controllers
             // Menu List
             var menuData = await _homePageService.GetMenuList();
             DataRow[] menuresult = menuData.Select($"pagestatus=1 and linkposition like '%Header,External%' and collageid='{productid.ToString()}'");
-            ViewBag.MenuList = menuresult.CopyToDataTable();
+            if (menuresult.Length > 0)
+            {
+                ViewBag.MenuList = menuresult.CopyToDataTable();
+            }
+            else
+            {
+                ViewBag.MenuList = menuData.Clone();
+            }
+
 
             DataRow[] menuresult1 = menuData.Select($"pagestatus=1 and linkposition like '%Hamburger%' and collageid='{productid.ToString()}'");
-            ViewBag.SubHamburger = menuresult1.CopyToDataTable();
+            if (menuresult1.Length > 0)
+            {
+                ViewBag.SubHamburger = menuresult1.CopyToDataTable();
+            }
+            else
+            {
+                ViewBag.SubHamburger = menuresult1.Clone();
+            }
 
             return View();
         }

@@ -4,172 +4,132 @@
 
 @{
     Layout = "~/Views/Shared/_engineering.cshtml";
-    DataTable dt = ViewBag.ProductList as DataTable;
+    DataTable dt = null, dt1 = null, dt2 = null;
+    if (Model.id != "3")
+    {
+         dt = ViewBag.ProductCatList as DataTable;
+         dt1 = ViewBag.FeaturedProjList1 as DataTable;
+         dt2 = ViewBag.FeaturedProjList2 as DataTable;
+    }
+
 }
 @Html.Raw(Model.Description)
 
-<section id="ctl00_ContentPlaceHolder1_panel1" class="product_sec eng-prod">
-    <div class="container">
-        <div class="product_sec_slider">
-            <div class="title">
-                <h3 data-aos="fade-up" data-aos-delay="300">Services </h3>
-            </div>
-            <div class="product-slider">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="slide_bx">
-                            <figure>
-                                <a href="infrastructure/transmission-epc"
-                                   id="ctl00_ContentPlaceHolder1_rptproductlist_ctl00_ank">
-                                    <img id="ctl00_ContentPlaceHolder1_rptproductlist_ctl00_img1"
-                                         class="img-fluid w-100"
-                                         src="uploads/ProductsImage/11himg_transmissionepc.webp"
-                                         border="0" />
-                                </a>
-                                <figcaption>
-                                    <p>Transmission EPC</p>
-                                </figcaption>
-                                <img src="images/icon/subtraction-11.svg" alt="subtraction-11"
-                                     class="icon-top">
-                            </figure>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="slide_bx">
-                            <figure>
-                                <a href="infrastructure/substation-epc"
-                                   id="ctl00_ContentPlaceHolder1_rptproductlist_ctl01_ank">
-                                    <img id="ctl00_ContentPlaceHolder1_rptproductlist_ctl01_img1"
-                                         class="img-fluid w-100" src="uploads/ProductsImage/12himg_eng-pro2.webp"
-                                         border="0" />
-                                </a>
-                                <figcaption>
-                                    <p>Substation EPC</p>
-                                </figcaption>
-                                <img src="images/icon/subtraction-11.svg" alt="subtraction-11"
-                                     class="icon-top">
-                            </figure>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="slide_bx">
-                            <figure>
-                                <a href="infrastructure/tower-epc"
-                                   id="ctl00_ContentPlaceHolder1_rptproductlist_ctl02_ank">
-                                    <img id="ctl00_ContentPlaceHolder1_rptproductlist_ctl02_img1"
-                                         class="img-fluid w-100" src="uploads/ProductsImage/13himg_eng-pro3.webp"
-                                         border="0" />
-                                </a>
-                                <figcaption>
-                                    <p>Telecom EPC</p>
-                                </figcaption>
-                                <img src="images/icon/subtraction-11.svg" alt="subtraction-11"
-                                     class="icon-top">
-                            </figure>
-                        </div>
-                    </div>
+@if (dt != null)
+{
+    <section class="product_sec eng-prod">
+        <div class="container">
+            <div class="product_sec_slider">
+                <div class="title">
+                    <h3 data-aos="fade-up" data-aos-delay="300">Services </h3>
                 </div>
-                <div class="swiper-pagination"></div>
-                <div class="swiper-div">
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
+                <div class="product-slider swiper-container-horizontal">
+                    <div class="swiper-wrapper">
+                        @if (dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow row1 in dt.Rows)
+                            {
+                                var href = string.IsNullOrEmpty(row1["rewriteurl"].ToString()) ? "javascript:void(0);" : row1["rewriteurl"].ToString();
+                                <div class="swiper-slide">
+                                    <div class="slide_bx">
+                                        <figure>
+                                            <a href="@href">
+                                                <img class="img-fluid w-100"
+                                                     src="/uploads/ProductsImage/@row1["banner"]"
+                                                     border="0" />
+                                            </a>
+                                            <figcaption>
+                                                <p>@row1["category"]</p>
+                                            </figcaption>
+                                            <img src="/images/icon/subtraction-11.svg" alt="subtraction-11"
+                                                 class="icon-top">
+                                        </figure>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-div">
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<section class="video_sec image-container">
-    <a href="/video/engineering_video.mp4" data-fancybox="gallery"
-       data-caption="Caption Images 1">
-        <figure>
-            <img src="images/video-banner.webp" alt="video-banner" class="img-fluid w-100" />
-            <figcaption>
-                <h6 data-aos="fade-up" data-aos-delay="300">
-                    Skipper is one of the largest manufacturers of
-                    value-added Steel products.
-                </h6>
-                <div class="ply-btn" data-aos="fade-up" data-aos-delay="350">
-                    <img src="images/icon/play-icon.svg" alt="play-icon" />
-                </div>
-            </figcaption>
-        </figure>
-    </a>
-</section>
-<section id="ctl00_ContentPlaceHolder1_panelproject" class="featured_project">
-    <div class="scroll-spacer"></div>
-    <div class="trigger-placeholder"></div>
-    <div class="icon_project">
-        <figure><img src="images/icon/Subtraction-4.svg" class="img-fluid"></figure>
-    </div>
-    <div class="container">
-        <h2>Featured Projects</h2>
-        <div class="project_slider">
-            <div class="swiper mySwiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="swiper-container">
-                            <div class="slider_grid">
-                                <div id="ctl00_ContentPlaceHolder1_rptinnerleft_ctl00_panelleft"
-                                     class="left-slide">
-                                    <div class="corner-accent">
-                                        <figure>
-                                            <img src="uploads/SmallImages/16krs-pro-14.webp"
-                                                 class="img-fluid ">
-                                        </figure>
-                                    </div>
-                                    <div class="text-content">
-                                        <div class="bottom_left_icon">
-                                            <img src="images/icon/Subtraction-6.svg"
-                                                 class="img-fluid">
-                                        </div>
-                                        <div class="project-title">STERLITE, WRNER</div>
-                                        <div class="description">400kv D/C Monopoles</div>
-                                    </div>
-                                    <div class="voltage"></div><a href="/project-details.aspx?mpgid=5&pgidtrail=5&projectid=16"
-                                                                  id="ctl00_ContentPlaceHolder1_rptinnerleft_ctl00_ank"
-                                                                  class="streched_link"></a>
-                                </div>
-                                <div id="ctl00_ContentPlaceHolder1_panelright" class="right-container">
-                                    <div id="ctl00_ContentPlaceHolder1_rptinnerright_ctl00_panel1"
-                                         class="right-top">
-                                        <div class="corner-accent">
-                                            <figure>
-                                                <img src="uploads/SmallImages/17krs-pro-15.webp"
-                                                     class="img-fluid ">
-                                            </figure>
-                                        </div>
-                                        <div class="text-content">
-                                            <div class="bottom_left_icon">
-                                                <img src="images/icon/Subtraction-6.svg" class="img-fluid">
+    </section>
+}
+
+
+@Html.Raw(Model.Capabilities)
+
+@if (dt1 != null && dt1.Rows.Count > 0)
+{
+    <section class="featured_project">
+        <div class="scroll-spacer"></div>
+        <div class="trigger-placeholder"></div>
+        <div class="icon_project">
+            <figure><img src="/images/icon/Subtraction-4.svg" class="img-fluid"></figure>
+        </div>
+        <div class="container">
+            <h2>Featured Projects</h2>
+            <div class="project_slider">
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="swiper-container">
+                                <div class="slider_grid">
+                                    @if (dt1.Rows.Count > 0)
+                                    {
+                                        <div class="left-slide">
+                                            <div class="corner-accent">
+                                                <figure>
+                                                    <img src="/uploads/SmallImages/@Convert.ToString(dt1.Rows[0]["uploadevents"])"
+                                                         class="img-fluid ">
+                                                </figure>
                                             </div>
-                                            <div class="project-title">MSRDC, MSETCL</div>
-                                            <div class="description">
-                                                220kv D/C Monopoles, 400kv D/C Monopoles
+                                            <div class="text-content">
+                                                <div class="bottom_left_icon">
+                                                    <img src="images/icon/Subtraction-6.svg"
+                                                         class="img-fluid">
+                                                </div>
+                                                <div class="project-title">@Convert.ToString(dt1.Rows[0]["researchtitle"])</div>
+                                                <div class="description">@Convert.ToString(dt1.Rows[0]["tagline"])</div>
                                             </div>
+                                            <div class="voltage"></div>
+                                            <a href="/project-details/@Convert.ToString(dt1.Rows[0]["researchtitle"]).ToSlug()/@Convert.ToInt16(dt1.Rows[0]["researchid"])" class="streched_link"></a>
                                         </div>
-                                        <div class="voltage"></div><a href="/project-details.aspx?mpgid=5&pgidtrail=5&projectid=17"
-                                                                      id="ctl00_ContentPlaceHolder1_rptinnerright_ctl00_ank"
-                                                                      class="streched_link"></a>
-                                    </div>
-                                    <div id="ctl00_ContentPlaceHolder1_rptinnerright_ctl01_panel1"
-                                         class="right-bottom">
-                                        <div class="corner-accent">
-                                            <figure>
-                                                <img src="uploads/SmallImages/18krs-Torrent-sbanner.webp"
-                                                     class="img-fluid ">
-                                            </figure>
+                                    }
+
+                                    @if (dt2.Rows.Count > 0)
+                                    {
+                                        <div class="right-container">
+                                            @foreach (DataRow row2 in dt2.Rows)
+                                            {
+                                                <div class="right-top">
+                                                    <div class="corner-accent">
+                                                        <figure>
+                                                            <img src="/uploads/SmallImages/@Convert.ToString(row2["uploadevents"])"
+                                                                 class="img-fluid ">
+                                                        </figure>
+                                                    </div>
+                                                    <div class="text-content">
+                                                        <div class="bottom_left_icon">
+                                                            <img src="images/icon/Subtraction-6.svg" class="img-fluid">
+                                                        </div>
+                                                        <div class="project-title">@Convert.ToString(row2["researchtitle"])</div>
+                                                        <div class="description">
+                                                            @Convert.ToString(row2["tagline"])
+                                                        </div>
+                                                    </div>
+                                                    <div class="voltage"></div>
+                                                    <a href="/project-details/@Convert.ToString(row2["researchtitle"]).ToSlug()/@Convert.ToInt16(row2["researchid"])" class="streched_link"></a>
+                                                </div>
+                                            }
                                         </div>
-                                        <div class="text-content">
-                                            <div class="bottom_left_icon">
-                                                <img src="images/icon/Subtraction-6.svg" class="img-fluid">
-                                            </div>
-                                            <div class="project-title">TORRENT</div>
-                                            <div class="description">220kv M/C And D/C Monopoles</div>
-                                        </div>
-                                        <div class="voltage"></div><a href="/project-details.aspx?mpgid=5&pgidtrail=5&projectid=18"
-                                                                      id="ctl00_ContentPlaceHolder1_rptinnerright_ctl01_ank"
-                                                                      class="streched_link"></a>
-                                    </div>
+                                    }
+
+
                                 </div>
                             </div>
                         </div>
@@ -183,13 +143,16 @@
                 </div>
                 <div class="container">
                     <div class="view_all">
-                        <a href="/projects.aspx?mpgid=5&pgidtrail=5">
+                        <a href="/projects">
                             View All Projects
-                            <figure><img src="images/icon/right_icon.svg"></figure>
+                            <figure><img src="/images/icon/right_icon.svg"></figure>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+
+    </section>
+
+}
+

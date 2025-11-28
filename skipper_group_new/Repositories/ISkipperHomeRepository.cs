@@ -27,5 +27,6 @@ namespace skipper_group_new.Repositories
         Task<DataTable> GetNewsEvents();
         Task<DataTable> GetBannerList();
         Task<DataTable> GetAboutProduct();
+        Task<DataTable> GetProductCapabilities();
     }
 }

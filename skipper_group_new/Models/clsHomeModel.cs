@@ -12,6 +12,7 @@ namespace skipper_group_new.Models
         public string ImageUrl { get; set; } = "";
         public string eventsdate { get; set; } = "";
         public string productid { get; set; } = "";
+        public string Capabilities { get; set; } = "";
 
         public string? Name { get; set; }
         public string tagline { get; set; }

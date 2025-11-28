@@ -38,6 +38,7 @@ namespace skipper_group_new.Controllers
             clsHomeModel obj = new clsHomeModel();
             await LoadSeoDataAsync(1);
             await BindProjectsList();
+            await BindNewsList();
             await Task.Delay(1);
 
             Task<DataTable> x = this._homePageService.GetCMSData();
@@ -410,9 +411,20 @@ namespace skipper_group_new.Controllers
         {
             ResearchModel obj = new ResearchModel();
             var list = _homePageService.GetProjectsList();
-            var filterlist = list.Result.Select("status=1 and showonhome=1 and showonschool=1");
+            var filterlist = list.Result.Select("status=1 and showonhome=1 and showonschool=1").OrderBy(r => Convert.ToInt32(r["displayorder"]));
             var top3 = filterlist.Take(3).CopyToDataTable();
             ViewBag.ProjectsList = top3;
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> BindNewsList()
+        {   
+            var list = _homePageService.GetNewsEvents();
+            var filterlist = list.Result.Select("status=1").OrderByDescending(r => r["eventsdate"] == DBNull.Value
+                                ? DateTime.MinValue
+                                : Convert.ToDateTime(r["eventsdate"]));
+            var top5 = filterlist.Take(5).CopyToDataTable();
+            ViewBag.Newslist = top5;
             return View();
         }
 

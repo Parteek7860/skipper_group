@@ -1,7 +1,8 @@
 ﻿@model List<InvestorModel>
 @using skipper_group_new.Models
+@using skipper_group_new.Helpers
 @{
-    ViewData["Title"] = "Investor Detail";
+    ViewData["Title"] = "Investor";
     Layout = "~/Views/Shared/_cms.cshtml";
 }
 
@@ -26,25 +27,21 @@
                 <div class="accordian_sec">
                     <ul>
                         @foreach (var cat in Model)
-                        {
-                            var catSlug = cat.category.Replace(" ", "");
+                        {                          
 
                             if (cat.subcategory != null && cat.subcategory.Count > 0)
                             {
                                 <li>
                                     <h3>
                                         <a class="@(Context.Request.Path.Value.Contains($"/{cat.pcatid}/") ? "active-report" : "")"
-                                           href="/investor-relations/@catSlug/All/@cat.pcatid/0">@cat.category</a>
+                                           href="/investor-relations/@(Slughelper.ToSlug(cat.category))/@cat.pcatid">@cat.category</a>
                                     </h3>
                                     <ul class="subcat-list">
                                         @foreach (var sub in cat.subcategory)
                                         {
-                                            var cat1 = cat.category.Replace(" ", "");
-                                            var subSlug = sub.subcategory.Replace(" ", "");
-
                                             <li class="sub-item">
                                                 <a class="@(Context.Request.Path.Value.EndsWith($"/{sub.psubcatid}") ? "active-report" : "")"
-                                                   href="/investor-relations/@cat1/@subSlug/@cat.pcatid/@sub.psubcatid">
+                                                   href="/investor-relations/@(Slughelper.ToSlug(cat.category))/@(Slughelper.ToSlug(sub.subcategory))/@cat.pcatid/@sub.psubcatid">
                                                     @sub.subcategory
                                                 </a>
                                             </li>
@@ -57,7 +54,7 @@
                                 <li>
                                     <h3>
                                         <a class="@(Context.Request.Path.Value.Contains($"/{cat.pcatid}/") ? "active-report" : "")"
-                                           href="/investor-relations/@catSlug/All/@cat.pcatid/0">@cat.category</a>
+                                           href="/investor-relations/@(Slughelper.ToSlug(cat.category))/@cat.pcatid">@cat.category</a>
                                     </h3>
                                 </li>
                             }

@@ -4,6 +4,7 @@
 @{
 
     Layout = "~/Views/Shared/_Layout.cshtml";
+    DataTable dtnews = ViewBag.Newslist as DataTable;
 }
 
 <!---------header html start here--------->
@@ -176,7 +177,7 @@
                                                         </div>
                                                         <div class=voltage></div>
                                                         <a href="/project-details/@Convert.ToString(@data["researchtitle"]).ToLower().ToSlug()/@data["researchid"]"
-                                                        class=streched_link></a>
+                                                           class=streched_link></a>
                                                     </div>
                                                 }
 
@@ -208,84 +209,42 @@
 
     }
 
-    <section class=skipper_news>
-        <div class=full_container>
-            <div class=item>
-                <figure><img src=images/skipper_news.png alt="skipper news" class=img-fluid></figure>
-            </div>
-            <div class=item id=rptnewsevents_ctl00_panelimage>
-                <div class=home_news>
-                    <figure>
-                        <img src=uploads/smallimages/7krs-mee25.webp alt="skipper icon2" class=img-fluid>
-                    </figure>
-                    <div class="fade-container home_news_detail">
-                        <div class=h_date>07-Apr-2025</div>
-                        <h3>2nd Tower Testing Facility Launching in 2025</h3>
-                    </div><a href=/news-details/2nd-tower-testing-facility-launching-in-2025/7
-                             id=rptnewsevents_ctl00_ank class=streched_link></a>
+    @if (dtnews.Rows.Count > 0)
+    {
+        <section class=skipper_news>
+            <div class=full_container>
+                <div class=item>
+                    <figure><img src=/images/skipper_news.png alt="skipper news" class=img-fluid></figure>
                 </div>
+                @if (dtnews.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dtnews.Rows)
+                    {
+                        <div class=item>
+                            <div class=home_news>
+                                <figure>
+                                    <img src=/uploads/smallimages/@Convert.ToString(row["uploadevents"]) alt="@Convert.ToString(row["eventstitle"])" class=img-fluid>
+                                </figure>
+                                <div class="fade-container home_news_detail">
+                                    <div class=h_date>@Convert.ToDateTime(row["eventsdate"]).ToString("dd-MMM-yyyy")</div>
+                                    <h3>@Convert.ToString(row["eventstitle"])</h3>
+                                </div><a href=/news-details/@Convert.ToString(row["eventstitle"]).ToSlug()/@Convert.ToInt32(row["eventsid"]) class=streched_link></a>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
-            <div class=item id=rptnewsevents_ctl01_panelimage>
-                <div class=home_news>
+            <div class=view_all>
+                <a href="/whats-new">
+                    View All News & Updates
                     <figure>
-                        <img src=uploads/smallimages/8krs-New-Project.jpg alt="skipper icon2"
-                             class=img-fluid>
+                        <img src=/images/icon/right_icon.svg alt="nes icon">
                     </figure>
-                    <div class="fade-container home_news_detail">
-                        <div class=h_date>01-Mar-2025</div>
-                        <h3>Proud to Represent Skipper Limited at Middle East Energy Dubai 2025</h3>
-                    </div><a href=/news-details/proud-to-represent-skipper-limited-at-middle-east-energy-dubai-2025/8
-                             id=rptnewsevents_ctl01_ank class=streched_link></a>
-                </div>
+                </a>
             </div>
-            <div class=item id=rptnewsevents_ctl02_panelimage>
-                <div class=home_news>
-                    <figure>
-                        <img src=uploads/smallimages/9rks-news2img.webp alt="skipper icon2" class=img-fluid>
-                    </figure>
-                    <div class="fade-container home_news_detail">
-                        <div class=h_date>20-Jun-2025</div>
-                        <h3>When you work with a customer like HDEC</h3>
-                    </div><a href=/news-details/when-you-work-with-a-customer-like-hdec/9
-                             id=rptnewsevents_ctl02_ank class=streched_link></a>
-                </div>
-            </div>
-            <div class=item id=rptnewsevents_ctl03_panelimage>
-                <div class=home_news>
-                    <figure>
-                        <img src=uploads/smallimages/10krs-NewProject.webp alt="skipper icon2"
-                             class=img-fluid>
-                    </figure>
-                    <div class="fade-container home_news_detail">
-                        <div class=h_date>01-May-2024</div>
-                        <h3>400KV SC Padhge Ghatkopar Monopole Line</h3>
-                    </div><a href=/news-details/400kv-sc-padhge-ghatkopar-monopole-line/10
-                             id=rptnewsevents_ctl03_ank class=streched_link></a>
-                </div>
-            </div>
-            <div class=item id=rptnewsevents_ctl04_panelimage>
-                <div class=home_news>
-                    <figure>
-                        <img src=uploads/smallimages/11krs-outstandingq4.webp alt="skipper icon2"
-                             class=img-fluid>
-                    </figure>
-                    <div class="fade-container home_news_detail">
-                        <div class=h_date>01-May-2025</div>
-                        <h3>Skipper is Excited to Announce Outstanding Q4 Results for FY25!</h3>
-                    </div><a href=/news-details/skipper-is-excited-to-announce-outstanding-q4-results-for-fy25!/11
-                             id=rptnewsevents_ctl04_ank class=streched_link></a>
-                </div>
-            </div>
-        </div>
-        <div class=view_all>
-            <a href="/news.aspx?mpgid=12&pgidtrail=12">
-                View All News & Updates
-                <figure>
-                    <img src=images/icon/right_icon.svg alt="nes icon">
-                </figure>
-            </a>
-        </div>
-    </section>
+        </section>
+    }
+
 </div>
 
 

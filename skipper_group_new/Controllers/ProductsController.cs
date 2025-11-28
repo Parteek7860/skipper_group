@@ -3024,26 +3024,67 @@ namespace skipper_group_new.Controllers
             }
             return Json(new { success = true });
         }
-
-        [HttpDelete]
-        public async Task<IActionResult> DeleteTyreImage(int photoID)
+        [HttpGet]
+        [Route("backoffice/products/aboutproduct/{id}")]
+        public async Task<IActionResult> aboutproduct(int id)
         {
+
+            clsCategory objcls = new clsCategory();
             try
             {
-                if (photoID <= 0)
-                    return Json(new { success = false, message = "Invalid Photo ID" });
+                var routeId = HttpContext.GetRouteValue("id")?.ToString();
+                var menuList = _menuService.GetMenu();
 
-                var deletedProductId = await _products.DeleteTyreImage(photoID);
-                if (deletedProductId > 0)
-                    return Json(new { success = true, message = "Product tyre deleted successfully." });
-                else
-                    return Json(new { success = false, message = "Failed to delete product tyre." });
+                if (routeId != null)
+                {
+                    menuList = menuList
+            .Where(x => x.pareentcode == "1")
+            .ToList();
+                }
+                ViewBag.Menus = menuList;
+                ViewBag.CreateUpdate = "Save";
+
+                return View("~/Views/backoffice/products/aboutproduct.cshtml", objcls);
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "An error occurred while deleting: " + ex.Message });
+                // Log the exception (not shown here)
+                ViewBag.ErrorMessage = "An error occurred while loading the media section. Please try again later.";
+                return View("~/Views/backoffice/products/aboutproduct.cshtml");
             }
+            return View("~/Views/backoffice/products/aboutproduct.cshtml", objcls);
         }
+        [HttpGet]
+        [Route("backoffice/products/addcapabilities/{id}")]
+        public async Task<IActionResult> addcapabilities(int id)
+        {
+
+            clsCategory objcls = new clsCategory();
+            try
+            {
+                var routeId = HttpContext.GetRouteValue("id")?.ToString();
+                var menuList = _menuService.GetMenu();
+
+                if (routeId != null)
+                {
+                    menuList = menuList
+            .Where(x => x.pareentcode == "1")
+            .ToList();
+                }
+                ViewBag.Menus = menuList;
+                ViewBag.CreateUpdate = "Save";
+
+                return View("~/Views/backoffice/products/addcapabilities.cshtml", objcls);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (not shown here)
+                ViewBag.ErrorMessage = "An error occurred while loading the media section. Please try again later.";
+                return View("~/Views/backoffice/products/addcapabilities.cshtml");
+            }
+            return View("~/Views/backoffice/products/addcapabilities.cshtml", objcls);
+        }
+
 
     }
 }
