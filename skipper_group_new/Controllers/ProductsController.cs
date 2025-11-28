@@ -418,7 +418,7 @@ namespace skipper_group_new.Controllers
                         obj.ShortDetail = WebUtility.HtmlDecode(filteredRows[0]["shortdetail"].ToString());
                         obj.HomeDesc = WebUtility.HtmlDecode(filteredRows[0]["homedesc"].ToString());
                         obj.homedesc2 = WebUtility.HtmlDecode(filteredRows[0]["homedesc2"].ToString());
-                        
+
 
                         obj.Status = Convert.ToBoolean(Convert.ToInt32(filteredRows[0]["Status"]));
                         obj.DisplayOrder = Convert.ToInt32(filteredRows[0]["displayorder"]);
@@ -3041,19 +3041,51 @@ namespace skipper_group_new.Controllers
             .Where(x => x.pareentcode == "1")
             .ToList();
                 }
+
                 ViewBag.Menus = menuList;
-                ViewBag.CreateUpdate = "Save";
+
+                //Get Data
+                var x = await _products.GetAboutProduct();
+                if (x != null)
+                {
+                    var filterresult = x.AsEnumerable().Where(p => p.Field<int>("productid") == id).ToList();
+                    if (filterresult.Count > 0)
+                    {
+                        objcls.PcatId = Convert.ToInt16(filterresult[0]["mid"]);
+                        objcls.productid = Convert.ToString(filterresult[0]["productid"]);
+                        objcls.ShortDetail = WebUtility.HtmlDecode(Convert.ToString(filterresult[0]["details"]));
+                        ViewBag.CreateUpdate = "Update";
+                    }
+                    else
+                    {
+                        ViewBag.CreateUpdate = "Save";
+                    }
+                }
+                //Get Name from route id
+                var prodDtl = await _products.BindProductSolution();
+                var filteredProdDtl = prodDtl.AsEnumerable()
+                    .Where(p => p.Field<int>("productid") == id)
+                    .OrderByDescending(row => row.Field<int>("productid"))
+                    .CopyToDataTable();
+                if (filteredProdDtl != null && filteredProdDtl.Rows.Count > 0)
+                {
+                    DataRow[] activeProducts = filteredProdDtl.Select("Status = 1");
+                    objcls.shortname = Convert.ToString(activeProducts[0]["ProductName"]);
+
+                }
+
 
                 return View("~/Views/backoffice/products/aboutproduct.cshtml", objcls);
             }
             catch (Exception ex)
             {
-                // Log the exception (not shown here)
                 ViewBag.ErrorMessage = "An error occurred while loading the media section. Please try again later.";
                 return View("~/Views/backoffice/products/aboutproduct.cshtml");
             }
             return View("~/Views/backoffice/products/aboutproduct.cshtml", objcls);
         }
+
+
         [HttpGet]
         [Route("backoffice/products/addcapabilities/{id}")]
         public async Task<IActionResult> addcapabilities(int id)
@@ -3072,8 +3104,37 @@ namespace skipper_group_new.Controllers
             .ToList();
                 }
                 ViewBag.Menus = menuList;
-                ViewBag.CreateUpdate = "Save";
+                //Get Data
+                var x = await _products.GetProductCapabilities();
+                if (x != null)
+                {
+                    var filterresult = x.AsEnumerable().Where(p => p.Field<int>("productid") == id).ToList();
+                    if (filterresult.Count > 0)
+                    {
+                        objcls.PcatId = Convert.ToInt16(filterresult[0]["mid"]);
+                        objcls.productid = Convert.ToString(filterresult[0]["productid"]);
+                        objcls.ShortDetail = WebUtility.HtmlDecode(Convert.ToString(filterresult[0]["details"]));
+                        ViewBag.CreateUpdate = "Update";
+                    }
+                    else
+                    {
+                        ViewBag.CreateUpdate = "Save";
+                    }
+                }
+                //Get Name from route id
+                var prodDtl = await _products.BindProductSolution();
+                var filteredProdDtl = prodDtl.AsEnumerable()
+                    .Where(p => p.Field<int>("productid") == id)
+                    .OrderByDescending(row => row.Field<int>("productid"))
+                    .CopyToDataTable();
+                if (filteredProdDtl != null && filteredProdDtl.Rows.Count > 0)
+                {
+                    DataRow[] activeProducts = filteredProdDtl.Select("Status = 1");
+                    objcls.shortname = Convert.ToString(activeProducts[0]["ProductName"]);
 
+                }
+
+                
                 return View("~/Views/backoffice/products/addcapabilities.cshtml", objcls);
             }
             catch (Exception ex)
@@ -3085,7 +3146,77 @@ namespace skipper_group_new.Controllers
             return View("~/Views/backoffice/products/addcapabilities.cshtml", objcls);
         }
 
+        [HttpPost]
+        [Route("backoffice/products/aboutproduct/{id}")]
+        public async Task<IActionResult> aboutproduct(int id, clsCategory obj)
+        {
+            clsCategory objcls = new clsCategory();
+            if (!string.IsNullOrEmpty(obj.ShortDetail))
+            {
+                obj.PcatId = obj.PcatId;
+                objcls.productid = Convert.ToString(id);
+                objcls.ShortDetail = obj.ShortDetail;
+                objcls.Uname = HttpContext.Session.GetString("UserName");
+                if (objcls.productid != null && Convert.ToInt32(objcls.productid) > 0)
+                {
+                    objcls.Mode = 2;
+                }
+                else
+                {
+                    objcls.Mode = 1;
+                }
+                int x = await _products.AddAboutProducts(objcls);
+                if (x > 0)
+                {
+                    if (objcls.Mode == 1)
+                    {
+                        HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Save successfully.");
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Update successfully.");
+                    }
+                }
+            }
+            return RedirectToAction("aboutproduct", new { id = id });
 
+        }
+
+        [HttpPost]
+        [Route("backoffice/products/addcapabilities/{id}")]
+        public async Task<IActionResult> addcapabilities(int id, clsCategory obj)
+        {
+            clsCategory objcls = new clsCategory();
+            if (!string.IsNullOrEmpty(obj.ShortDetail))
+            {
+                objcls.PcatId = obj.PcatId;
+                objcls.productid = Convert.ToString(id);
+                objcls.ShortDetail = obj.ShortDetail;
+                objcls.Uname = HttpContext.Session.GetString("UserName");
+                if (objcls.productid != null && Convert.ToInt32(objcls.productid) > 0)
+                {
+                    objcls.Mode = 2;
+                }
+                else
+                {
+                    objcls.Mode = 1;
+                }
+                int x = await _products.AddProductsCapabilities(objcls);
+                if (x > 0)
+                {
+                    if (objcls.Mode == 1)
+                    {
+                        HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Save successfully.");
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Update successfully.");
+                    }
+                }
+            }
+            return RedirectToAction("addcapabilities", new { id = id });
+
+        }
     }
 }
 

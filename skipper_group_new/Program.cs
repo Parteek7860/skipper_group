@@ -152,16 +152,16 @@ app.UseRouting();
 app.UseSession();
 app.UseAuthorization();
 
-app.Use(async (context, next) =>
-{
-    var routeData = context.GetRouteData();
-    if (routeData.Values.ContainsKey("id"))
-    {
-        int id = Convert.ToInt32(routeData.Values["id"]);
-        context.Items["route_menu_id"] = id;
-    }
-    await next();
-});
+//app.Use(async (context, next) =>
+//{
+//    var routeData = context.GetRouteData();
+//    if (routeData.Values.ContainsKey("id"))
+//    {
+//        int id = Convert.ToInt32(routeData.Values["id"]);
+//        context.Items["route_menu_id"] = id;
+//    }
+//    await next();
+//});
 
 // -------------------------------------------------
 // 6️⃣ Endpoint Mapping

@@ -100,5 +100,11 @@ namespace skipper_group_new.Repositories
         Task<int> UploadMultipleTyreImage(UTyrePhoto m);
         Task<int> DeleteTyreImage(int photoid);
         Task<int> UpdateProductSize(MappingDetail mapping);
+
+        Task<DataTable> GetAboutProduct();
+        Task<DataTable> GetProductCapabilities();
+        Task<int> AddAboutProducts(clsCategory obj);
+
+        Task<int> AddProductsCapabilities(clsCategory obj);
     }
 }

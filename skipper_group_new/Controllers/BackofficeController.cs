@@ -73,11 +73,11 @@ namespace skipper_group_new.Controllers
         public async Task<IActionResult> dashboard(int id)
         {
             BindListofdashBoard();
-            int id2 = (int)HttpContext.Items["route_menu_id"];
-            if (Convert.ToInt32(id2) > 0)
-            {
-                parentcode = 1;
-            }
+            //int id2 = (int)HttpContext.Items["route_menu_id"];
+            //if (Convert.ToInt32(id2) > 0)
+            //{
+            //    parentcode = 1;
+            //}
             await BindMenuList();
             return View("/Views/Backoffice/DashBoard.cshtml");
         }

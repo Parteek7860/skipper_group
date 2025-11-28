@@ -137,6 +137,7 @@ namespace skipper_group_new.Controllers
                     {
                         var menuList = _menuService.GetMenu();
                         ViewBag.Menus = menuList;
+                        cat.Detail = WebUtility.HtmlDecode(cat.Detail);
                         return View("~/Views/backoffice/investor/category.cshtml", cat);
                     }
                     else

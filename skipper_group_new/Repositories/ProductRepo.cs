@@ -546,7 +546,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@PageMeta", obj.PageMeta);
                     cmd.Parameters.AddWithValue("@pagemetadesc", obj.PageMetaDesc);
                     cmd.Parameters.AddWithValue("@rewrite_url", obj.RewriteUrl);
-                  
+
                     cmd.Parameters.AddWithValue("@canonical", obj.Canonical);
                     cmd.Parameters.AddWithValue("@uname", obj.Uname);
                     cmd.Parameters.AddWithValue("@mode", obj.Mode);
@@ -1695,8 +1695,8 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@mode", obj.Mode);
 
 
-                     conn.OpenAsync();
-                    result =  cmd.ExecuteNonQuery();
+                    conn.OpenAsync();
+                    result = cmd.ExecuteNonQuery();
                 }
             }
 
@@ -1724,12 +1724,12 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@homedesc2", obj.homedesc2 ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@detail", obj.Detail ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@shortdetail", obj.ShortDetail ?? (object)DBNull.Value);
-                   // cmd.Parameters.AddWithValue("@uploadapdf", obj.UploadAPDF ?? (object)DBNull.Value);
+                    // cmd.Parameters.AddWithValue("@uploadapdf", obj.UploadAPDF ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@pagetitle", obj.PageTitle ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@pagemeta", obj.PageMeta ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@pagemetadesc", obj.PageMetaDesc ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@rewriteurl", obj.RewriteUrl ?? (object)DBNull.Value);
-                 //   cmd.Parameters.AddWithValue("@productid", obj.productid ?? (object)DBNull.Value);
+                    //   cmd.Parameters.AddWithValue("@productid", obj.productid ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@canonical", obj.Canonical ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@mode", obj.Mode);
 
@@ -1755,7 +1755,86 @@ namespace skipper_group_new.Repositories
                 return table;
             }
         }
+        public async Task<DataTable> GetAboutProduct()
+        {
+            DataTable menuList;
+            using (SqlConnection conn = new SqlConnection(this._connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("GetAboutProductSP", conn))
+                {
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        DataTable table = new DataTable();
+                        await conn.OpenAsync();
+                        da.Fill(table);
+                        menuList = table;
+                    }
+                }
+            }
+            return menuList;
+        }
+        public async Task<DataTable> GetProductCapabilities()
+        {
+            DataTable menuList;
+            using (SqlConnection conn = new SqlConnection(this._connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("GetProductCapabilitiesSP", conn))
+                {
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        DataTable table = new DataTable();
+                        await conn.OpenAsync();
+                        da.Fill(table);
+                        menuList = table;
+                    }
+                }
+            }
+            return menuList;
+        }
+        public async Task<int> AddAboutProducts(clsCategory obj)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
 
+                SqlCommand cmd = new SqlCommand("map_product_detailsSP", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@mid", obj.PcatId);
+                cmd.Parameters.AddWithValue("@deptid", "0");
+                cmd.Parameters.AddWithValue("@productid", obj.productid);
+                cmd.Parameters.AddWithValue("@details", obj.ShortDetail);
+                cmd.Parameters.AddWithValue("@displayorder", "0");
+                cmd.Parameters.AddWithValue("@uname", "user");
+                cmd.Parameters.AddWithValue("@mode", obj.Mode);
+                
+                conn.Open();
+                result = cmd.ExecuteNonQuery();
+            }
+            return result;
+        }
+        public async Task<int> AddProductsCapabilities(clsCategory obj)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+
+                SqlCommand cmd = new SqlCommand("map_product_details_capabilitiesSP", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@mid", obj.PcatId);
+                cmd.Parameters.AddWithValue("@deptid", "0");
+                cmd.Parameters.AddWithValue("@productid", obj.productid);
+                cmd.Parameters.AddWithValue("@details", obj.ShortDetail);
+                cmd.Parameters.AddWithValue("@displayorder", "0");
+                cmd.Parameters.AddWithValue("@uname", "user");
+                cmd.Parameters.AddWithValue("@mode", obj.Mode);
+                
+                conn.Open();
+                result = cmd.ExecuteNonQuery();
+            }
+            return result;
+        }
     }
-
 }

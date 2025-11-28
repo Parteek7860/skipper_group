@@ -188,13 +188,16 @@ else
                                     {
                                         foreach (var list in investorlist)
                                         {
+                                            var hrefinvestor = !string.IsNullOrEmpty(list.rewriteurl)
+                                            ? $"/{list.rewriteurl}"
+                                            : $"javascript:void()";
                                             <div class=tab-item>
                                                 <div class=accordion_hed>
                                                     <p>@list.Name</p>
                                                     <button class=toggle-btn>
                                                         +
                                                     </button>
-                                                    <a href="javascript:void(0)" class=streched_link></a>
+                                                    <a href="/investor-relations/@list.Name.ToSlug().ToLower()/@list.pageid" class=streched_link></a>
                                                 </div>
                                             </div>
                                         }

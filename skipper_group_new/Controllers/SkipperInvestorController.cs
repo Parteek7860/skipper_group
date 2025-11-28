@@ -15,19 +15,12 @@ namespace skipper_group_new.Controllers
         private readonly ISkipperInvestorPage _enterface;
         private readonly ISkipperHome _homePageService;
 
-        public SkipperInvestorController(ISkipperInvestorPage enterface, ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService)
-    : base(homePageService, menuService)
+        public SkipperInvestorController(ISkipperInvestorPage enterface, ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService):base(homePageService, menuService)
         {
             _homePageService = homePageService;
 
             _enterface = enterface;
         }
-        //public SkipperInvestorController(ISkipperInvestorPage enterface, clsMainMenuList menuService)
-        //{
-        //    _enterface = enterface;
-        //    _menuService = menuService;
-        //}
-
         [HttpGet]
         [Route("/investor-relations/financial-performance/annual-reports")]
         public async Task<IActionResult> SkipperInvestor()
@@ -64,10 +57,73 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpGet]
-        [Route("investor-relations/{category}/{subcategoty}/{pcatid}/{psubcatid}")]
-        public async Task<IActionResult> GetReports(int pcatid, int psubcatid)
+        [Route("investor-relations/{category}/{pcatid:int}")]
+        public async Task<IActionResult> GetCatReports(int pcatid)
         {
-            
+            var categoryData = new List<InvestorModel>();
+            var reportList = new List<ReportModel>();
+            var catTable = await _enterface.GetCategoryItem();
+            if (catTable != null)
+            {
+                foreach (DataRow cat in catTable.Rows)
+                {
+                    int catId = Convert.ToInt32(cat["pcatid"]);
+                    var subTable = await _enterface.GetSubCategoryItem(catId);
+                    var subList = subTable?.AsEnumerable()
+                        .Select(r => new InvSubCategoryModel
+                        {
+                            psubcatid = Convert.ToInt32(r["psubcatid"]),
+                            subcategory = r["subcategory"]?.ToString()?.Trim() ?? "",
+                            subcatrewriteurl = r["subcatrewriteurl"]?.ToString()?.Trim() ?? ""
+                        })
+                        .GroupBy(x => x.subcategory.ToLower().Trim())
+                        .Select(g => g.First())
+                        .OrderBy(x => x.subcategory)
+                        .ToList()
+                        ?? new List<InvSubCategoryModel>();
+                    categoryData.Add(new InvestorModel
+                    {
+                        pcatid = catId,
+                        category = cat["category"]?.ToString(),
+                        rewriteurl = cat["rewriteurl"]?.ToString(),
+                        subcategory = subList
+                    });
+                }
+            }
+
+            var detailTable = await _enterface.GetCategoryDetail(pcatid);
+            if (detailTable != null && detailTable.Rows.Count > 0)
+            {
+                var row = detailTable.Rows[0];
+
+                reportList.Add(new ReportModel
+                {
+                    pcatid = Convert.ToInt32(row["pcatid"]),
+                    psubcatid = 0,
+                    productid = 0,
+                    productname = null,
+                    yearcategory = "",
+                    prospectus = "",
+                    uploadaimage = "",
+                    purl = "",
+                    shortDetail = WebUtility.HtmlDecode(
+                        detailTable.Columns.Contains("detail")
+                            ? row["detail"]?.ToString() ?? ""
+                            : ""
+                    )
+                });
+            }
+
+            ViewBag.RightPartData = reportList;
+
+            return View("~/Views/InvestorDetail/investor.cshtml", categoryData);
+        }
+
+
+        [HttpGet]
+        [Route("investor-relations/{category}/{subcategoty}/{pcatid}/{psubcatid}")]
+        public async Task<IActionResult> GetSubCatReports(int pcatid, int psubcatid)
+        {
             var categoryData = new List<InvestorModel>();
             var reportList = new List<ReportModel>();
             var catTable = await _enterface.GetCategoryItem();
@@ -133,7 +189,7 @@ namespace skipper_group_new.Controllers
                         psubcatid = subCatId,
                         productid = Convert.ToInt32(r["productid"]),
                         title = subCategoryName,
-                        productname = r["productname"].ToString(),                       
+                        productname = r["productname"].ToString(),
                         yearcategory = r["yearcategory"].ToString(),
                         prospectus = r["prospectus"].ToString(),
                         uploadaimage = r["uploadaimage"].ToString(),
@@ -175,8 +231,6 @@ namespace skipper_group_new.Controllers
             for (int i = captcha.Count; i < length; i++) captcha.Add(allChars[rnd.Next(allChars.Length)]);
             return new string(captcha.OrderBy(x => rnd.Next()).ToArray());
         }
-
-
 
         [HttpPost]
         public async Task<IActionResult> SaveInvestorQuery([FromBody] InvestorQueryModel model)

@@ -119,6 +119,32 @@ namespace skipper_group_new.Controllers
                 _menuService.SeoList = new List<SeoModel> { seo };
             }
         }
+
+        protected async Task LoadTableSeoDataAsync(string tablename, string column_name, int pageId)
+        {
+            var dt = await _homePageService.GetDynamicTableSEO(tablename);
+            if (dt == null || dt.Rows.Count == 0)
+                return;
+
+            var row = dt.AsEnumerable()
+                .FirstOrDefault(r => r.Field<bool>("status") && r.Field<int>(column_name) == pageId);
+
+            if (row != null)
+            {
+                var seo = new SeoModel
+                {
+                    Title = row["pagetitle"]?.ToString() ?? "Metro Tyres",
+                    MetaDescription = row["pagemetadesc"]?.ToString() ?? "",
+                    MetaKeywords = row["pagemeta"]?.ToString() ?? "",
+                    Robots = row["no_indexfollow"]?.ToString() ?? "index,follow",
+                    CanonicalUrl = row["rewriteurl"]?.ToString() ?? ""
+                };
+
+                // Store in both ViewData and Service property (optional cache)
+                ViewData["PageSeo"] = seo;
+                _menuService.SeoList = new List<SeoModel> { seo };
+            }
+        }
         protected async Task<IActionResult> LoadInnerMenuAsync(int id)
         {
             if (id <= 0)
@@ -419,7 +445,7 @@ namespace skipper_group_new.Controllers
                  ParentId = sub["ParentId"].ToString(),
                  smalldesc = sub["smalldesc"].ToString(),
                  pageid = sub["pageid"].ToString(),
-                 
+
 
                  // SECOND LEVEL SUBMENUS
                  SubMenus2 = dt.AsEnumerable()

@@ -27,6 +27,7 @@ namespace skipper_group_new.Controllers
         [Route("/{productname}/{productid:int}")]
         public async Task<IActionResult> engineering(string productname, string productid)
         {
+            await LoadTableSeoDataAsync("product_master", "productid", Convert.ToInt32(productid));
             clsHomeModel obj = new clsHomeModel();
             await LoadMenu(productid);
 
@@ -100,10 +101,8 @@ namespace skipper_group_new.Controllers
 
         [HttpGet]
         public async Task<IActionResult> projlist(int id)
-        {
-
-            await LoadSeoDataAsync(id);
-            //await LoadCMSDataAsync(id);
+        {   
+            await LoadCMSDataAsync(id);
             clsHomeModel obj = new clsHomeModel();
             var x = await this._homePageService.GetCMSData();
             DataRow[] results = x.Select($"pagestatus=1 and pageid='{id.ToString()}'");

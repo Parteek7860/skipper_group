@@ -235,6 +235,7 @@ namespace skipper_group_new.Controllers
             else
             {
                 parentid = Convert.ToString(id);
+                await LoadCMSDataAsync(Convert.ToInt32(parentid));
             }
 
 
@@ -365,6 +366,7 @@ namespace skipper_group_new.Controllers
         [Route("project-details/{projectname}/{projectid}")]
         public async Task<IActionResult> projectdetail(string projectname, string projectid)
         {
+            await LoadTableSeoDataAsync("research", "researchid", Convert.ToInt32(projectid));
             clsProduct obj = new clsProduct();
             obj.id = Convert.ToInt16(projectid);
             if (string.IsNullOrEmpty(projectid) || !int.TryParse(projectid, out int projId))
@@ -430,9 +432,10 @@ namespace skipper_group_new.Controllers
 
         #endregion
         [HttpGet]
-        [Route("/{name}/{productname}/{productid:int}")]
+        [Route("/{name:regex(^(?!investor-relations$).*)}/{productname}/{productid:int}")]
         public async Task<IActionResult> productdetail(string productname, string productid)
         {
+            await LoadTableSeoDataAsync("productcategory", "pcatid", Convert.ToInt32(productid));
             clsProduct obj = new clsProduct();
             obj.id = Convert.ToInt16(productid);
             if (string.IsNullOrEmpty(productid) || !int.TryParse(productid, out int projId))

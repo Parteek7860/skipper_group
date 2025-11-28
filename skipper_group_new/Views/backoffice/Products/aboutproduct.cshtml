@@ -8,6 +8,11 @@
         <div class="col-lg-7 col-md-6 col-sm-12">
             <h2>
                 @ViewBag.Title
+                @if (Model.shortname != null)
+                {
+                    <span> - @Model.shortname </span>
+                }
+
                 <small class="text-muted">@Context.Session.GetString("ClientName")</small>
             </h2>
         </div>
@@ -33,6 +38,7 @@
                     </h2>
                     <div class="row clearfix">
                         @Html.HiddenFor(model => model.productid)
+                        @Html.HiddenFor(model => model.PcatId)
                     </div>
                     <div class="row clearfix">
                         <div class="col-sm-12">
@@ -44,11 +50,11 @@
                             </div>
                         </div>
                     </div>
-                   
+
                     <!-- Buttons -->
                     <div class="row mt-4">
                         <div class="col-sm-12">
-                            <button type="submit" class="btn btn-success btn-lg mx-2" value="Save" formmethod="post" formaction="@Url.Action("AddCategory", "Products")"> @ViewBag.CreateUpdate </button>
+                            <button type="submit" class="btn btn-success btn-lg mx-2" value="Save" formmethod="post" formaction="@Url.Action("aboutproduct", "Products")"> @ViewBag.CreateUpdate </button>
 
                         </div>
                     </div>

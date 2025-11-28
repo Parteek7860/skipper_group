@@ -425,5 +425,16 @@ namespace skipper_group_new.Service
         {
             return  _repository.AddProductCategory(category);
         }
+        public Task<DataTable> GetAboutProduct() => this._repository.GetAboutProduct();
+        public Task<DataTable> GetProductCapabilities() => this._repository.GetProductCapabilities();
+
+        public async Task<int> AddAboutProducts(clsCategory obj)
+        {
+            return await _repository.AddAboutProducts(obj);
+        }
+        public async Task<int> AddProductsCapabilities(clsCategory obj)
+        {
+            return await _repository.AddProductsCapabilities(obj);
+        }
     }
 }
