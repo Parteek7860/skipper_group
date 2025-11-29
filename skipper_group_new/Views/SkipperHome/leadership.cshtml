@@ -1,209 +1,49 @@
 ﻿@using System.Data;
-
+@using skipper_group_new.mainclass;
+@model skipper_group_new.Models.clsTeamType;
 @{
     Layout = "~/Views/Shared/_cms.cshtml";
+    DataTable dt = ViewBag.LeadershipList as DataTable;
 }
-<section class="leadership_dtls_one leader-list1">
-    <div class="container">
-        <div class="line-sec">
-            <div class="vrtcl-line">
-                <figure>
-                    <img src="../images/icon/vertical-line.svg" class="image2 reveal-image2"
-                         alt="vertical-line" />
-                </figure>
+@Html.Raw(Model.ShortDesc)
+@if (dt != null && dt.Rows.Count > 0)
+{
+    <section class="leadership_one">
+        <div class="container">
+            <div class="line-sec">
+                <div class="vrtcl-line">
+                    <figure>
+                        <img src="/images/icon/vertical-line.svg" class="image2 reveal-image2"
+                             alt="vertical-line">
+                    </figure>
+                </div>
             </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="leadr-dtls_grid">
-                    <div class="ledr-dtls_rgt">
-                        <div class="msg_txt">
-                            <img alt="" src="../images/icon/left_icon-top.svg"
-                                 class="top-img" />
-                            <p data-aos="fade-up" data-aos-delay="400">
-                                Skipper Limited was built on the vision
-                                and resilience of Shri Sadhuram Bansal, who overcame early hardships to create a
-                                thriving empire.
-                            </p>
-                            <p data-aos="fade-up" data-aos-delay="400">
-                                Born in Jhajjar, Haryana, he faced
-                                economic hardships that forced him to leave school and support his family. At
-                                the age of 15, with just Rs. 112, he moved to Calcutta (now Kolkata) in search
-                                of work.
-                            </p>
-                            <div class="read_icon aos-init aos-animate" data-aos="fade-up" data-aos-delay="550">
-                                <a href="/about-us/our-story/our-founder">
-                                    <img alt=""
-                                         src="../images/icon/plus-icon.svg" />
-                                </a>
-                            </div><img alt=""
-                                       src="../images/icon/left_icon-top.svg" class="bottom-img" />
-                        </div>
-                    </div>
-                    <div class="ledr-dtls_lft">
-                        <figure class="image2">
-                            <img src="../images/founder1.webp" alt="leadership-img"
-                                 class="img-fluid w-100" />
-                            <img src="../images/icon/subtraction-103.svg"
-                                 alt="subtraction-103" class="img-corner " />
-                        </figure>
-                        <div class="nme" data-aos="fade-up" data-aos-delay="600">
-                            <h6>Late Shri Sadhuram Bansal </h6>
-                            <div class="dir-desig">
-                                <p><strong>Founder</strong>Skipper Limited </p>
-                            </div>
-                        </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-11">
+                    <div class="leadr_grid">
+                        @if (dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                <div class="ledr_bx">
+                                    <figure class="image2">
+                                        <img src="/uploads/SmallImages/@Convert.ToString(row["uploadphoto"])" alt="@Convert.ToString(row["name"])" class="img-fluid w-100">
+                                        <figcaption>
+                                            <h6>@Convert.ToString(row["name"])l</h6>
+                                            <p>@Convert.ToString(row["designation"])</p>
+                                        </figcaption>
+                                        <img src="/images/icon/subtraction-103.svg" class="img-corner"
+                                             alt="svg-icon">
+                                    </figure>
+                                    <a href="/leadership-details/@Convert.ToString(row["name"]).ToLower().ToSlug()/@Convert.ToInt16(row["teamid"])" class="links"></a>
+                                </div>
+                            }
+                        }
+
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<section class="leadership_one">
-    <div class="container">
-        <div class="line-sec">
-            <div class="vrtcl-line">
-                <figure>
-                    <img src="../images/icon/vertical-line.svg" class="image2 reveal-image2"
-                         alt="vertical-line">
-                </figure>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-lg-11">
-                <div class="leadr_grid">
-                    <div class="ledr_bx">
-                        <figure class="image2">
-                            <img src="../uploads/SmallImages/12t_leadership-img.webp"
-                                 alt="leadership-img" class="img-fluid w-100">
-                            <figcaption>
-                                <h6>Mr. Sajan Kumar Bansal</h6>
-                                <p>Chairman & Managing Director</p>
-                            </figcaption>
-                            <img src="../images/icon/subtraction-103.svg" class="img-corner"
-                                 alt="svg-icon">
-                        </figure><a href="/leadershipdetails.aspx?mpgid=2&pgidtrail=19&teamid=12"
-                                    id="ctl00_ContentPlaceHolder1_rptleadership_ctl00_ank" class="links"></a>
-                    </div>
-                    <div class="ledr_bx">
-                        <figure class="image2">
-                            <img src="../uploads/SmallImages/8t_pramod.webp"
-                                 alt="leadership-img" class="img-fluid w-100">
-                            <figcaption>
-                                <h6>Mr. Pramod Kumar Shah</h6>
-                                <p>Independent Director </p>
-                            </figcaption>
-                            <img src="../images/icon/subtraction-103.svg" class="img-corner"
-                                 alt="svg-icon">
-                        </figure><a href="/leadershipdetails.aspx?mpgid=2&pgidtrail=19&teamid=8"
-                                    id="ctl00_ContentPlaceHolder1_rptleadership_ctl01_ank" class="links"></a>
-                    </div>
-                    <div class="ledr_bx">
-                        <figure class="image2">
-                            <img src="../uploads/SmallImages/9t_rajkumar-patodi.webp"
-                                 alt="leadership-img" class="img-fluid w-100">
-                            <figcaption>
-                                <h6>Mr. Raj Kumar Patodi</h6>
-                                <p>Independent Director </p>
-                            </figcaption>
-                            <img src="../images/icon/subtraction-103.svg" class="img-corner"
-                                 alt="svg-icon">
-                        </figure><a href="/leadershipdetails.aspx?mpgid=2&pgidtrail=19&teamid=9"
-                                    id="ctl00_ContentPlaceHolder1_rptleadership_ctl02_ank" class="links"></a>
-                    </div>
-                    <div class="ledr_bx">
-                        <figure class="image2">
-                            <img src="../uploads/SmallImages/7t_ashok-bhandari.webp"
-                                 alt="leadership-img" class="img-fluid w-100">
-                            <figcaption>
-                                <h6>Mr. Ashok Bhandari</h6>
-                                <p>Independent Director </p>
-                            </figcaption>
-                            <img src="../images/icon/subtraction-103.svg" class="img-corner"
-                                 alt="svg-icon">
-                        </figure><a href="/leadershipdetails.aspx?mpgid=2&pgidtrail=19&teamid=7"
-                                    id="ctl00_ContentPlaceHolder1_rptleadership_ctl03_ank" class="links"></a>
-                    </div>
-                    <div class="ledr_bx">
-                        <figure class="image2">
-                            <img src="../uploads/SmallImages/10t_deshraj-dogra.webp"
-                                 alt="leadership-img" class="img-fluid w-100">
-                            <figcaption>
-                                <h6>Mr. Desh Raj Dogra</h6>
-                                <p>Independent Director </p>
-                            </figcaption>
-                            <img src="../images/icon/subtraction-103.svg" class="img-corner"
-                                 alt="svg-icon">
-                        </figure><a href="/leadershipdetails.aspx?mpgid=2&pgidtrail=19&teamid=10"
-                                    id="ctl00_ContentPlaceHolder1_rptleadership_ctl04_ank" class="links"></a>
-                    </div>
-                    <div class="ledr_bx">
-                        <figure class="image2">
-                            <img src="../uploads/SmallImages/11t_6t_mamatabhini.webp"
-                                 alt="leadership-img" class="img-fluid w-100">
-                            <figcaption>
-                                <h6>Ms. Richa M. Goyal</h6>
-                                <p>Independent Director </p>
-                            </figcaption>
-                            <img src="../images/icon/subtraction-103.svg" class="img-corner"
-                                 alt="svg-icon">
-                        </figure><a href="/leadershipdetails.aspx?mpgid=2&pgidtrail=19&teamid=11"
-                                    id="ctl00_ContentPlaceHolder1_rptleadership_ctl05_ank" class="links"></a>
-                    </div>
-                    <div class="ledr_bx">
-                        <figure class="image2">
-                            <img src="../uploads/SmallImages/2t_saranbansal.webp"
-                                 alt="leadership-img" class="img-fluid w-100">
-                            <figcaption>
-                                <h6>Mr. Sharan Bansal</h6>
-                                <p>Executive Director</p>
-                            </figcaption>
-                            <img src="../images/icon/subtraction-103.svg" class="img-corner"
-                                 alt="svg-icon">
-                        </figure><a href="/leadershipdetails.aspx?mpgid=2&pgidtrail=19&teamid=2"
-                                    id="ctl00_ContentPlaceHolder1_rptleadership_ctl06_ank" class="links"></a>
-                    </div>
-                    <div class="ledr_bx">
-                        <figure class="image2">
-                            <img src="../uploads/SmallImages/4t_siddhathbansal.webp"
-                                 alt="leadership-img" class="img-fluid w-100">
-                            <figcaption>
-                                <h6>Mr. Siddharth Bansal</h6>
-                                <p>Executive Director</p>
-                            </figcaption>
-                            <img src="../images/icon/subtraction-103.svg" class="img-corner"
-                                 alt="svg-icon">
-                        </figure><a href="/leadershipdetails.aspx?mpgid=2&pgidtrail=19&teamid=4"
-                                    id="ctl00_ContentPlaceHolder1_rptleadership_ctl07_ank" class="links"></a>
-                    </div>
-                    <div class="ledr_bx">
-                        <figure class="image2">
-                            <img src="../uploads/SmallImages/3t_devashbansal.webp"
-                                 alt="leadership-img" class="img-fluid w-100">
-                            <figcaption>
-                                <h6>Mr. Devesh Bansal</h6>
-                                <p>Executive Director </p>
-                            </figcaption>
-                            <img src="../images/icon/subtraction-103.svg" class="img-corner"
-                                 alt="svg-icon">
-                        </figure><a href="/leadershipdetails.aspx?mpgid=2&pgidtrail=19&teamid=3"
-                                    id="ctl00_ContentPlaceHolder1_rptleadership_ctl08_ank" class="links"></a>
-                    </div>
-                    <div class="ledr_bx">
-                        <figure class="image2">
-                            <img src="../uploads/SmallImages/5t_yashjain.webp"
-                                 alt="leadership-img" class="img-fluid w-100">
-                            <figcaption>
-                                <h6>Mr. Yash Pall Jain</h6>
-                                <p>Executive Director</p>
-                            </figcaption>
-                            <img src="../images/icon/subtraction-103.svg" class="img-corner"
-                                 alt="svg-icon">
-                        </figure><a href="/leadershipdetails.aspx?mpgid=2&pgidtrail=19&teamid=5"
-                                    id="ctl00_ContentPlaceHolder1_rptleadership_ctl09_ank" class="links"></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
+}
+

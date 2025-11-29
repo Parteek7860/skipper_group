@@ -216,10 +216,49 @@ namespace skipper_group_new.Controllers
         {
             await LoadSeoDataAsync(id);
             await LoadCMSDataAsync(id);
-            clsHomeModel obj = new clsHomeModel();
+            clsTeamType obj = new clsTeamType();
+            var x = await _homePageService.GetLeadershipList();
+            var filterlist = x.AsEnumerable()
+                   .Where(r => r.Field<bool>("status") == true)
+                   .OrderBy(r => r.Field<int>("displayorder"))
+                   .CopyToDataTable();
+            ViewBag.LeadershipList = filterlist;
 
+            var x1 = await _homePageService.GetCMSData();
+            DataRow[] results = x1.Select($"pagestatus=1 and pageid='{id.ToString()}'");
+            if (results.Length > 0)
+            {
+                DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
+                obj.ShortDesc = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
+
+            }
 
             return View("leadership", obj);
+        }
+        [HttpGet]
+        [Route("leadership-details/{title}/{id:int}")]
+        public async Task<IActionResult> leadershipdetail(string title, int id)
+        {   
+            await LoadCMSDataAsync(19);
+            clsTeamType obj = new clsTeamType();
+            var x = await _homePageService.GetLeadershipList();
+            var filterlist = x.AsEnumerable()
+                   .Where(r => r.Field<int>("teamid") == id)
+                   .CopyToDataTable();
+            ViewBag.LeadershipList = filterlist;
+            if (filterlist.Rows.Count > 0)
+            {
+                obj.TTypeId = Convert.ToInt32(filterlist.Rows[0]["teamid"]);
+                obj.TType = Convert.ToString(filterlist.Rows[0]["name"]);
+                obj.Designation = Convert.ToString(filterlist.Rows[0]["designation"]);
+                obj.uplaodimage = Convert.ToString(filterlist.Rows[0]["uploadphoto"]);
+                obj.ShortDesc = WebUtility.HtmlDecode(Convert.ToString(filterlist.Rows[0]["shortdesc"]));
+                obj.Detaildesc = WebUtility.HtmlDecode(Convert.ToString(filterlist.Rows[0]["detaildesc"]));
+            }
+
+
+
+            return View("leadershipdetail", obj);
         }
 
         #region Career
@@ -421,7 +460,7 @@ namespace skipper_group_new.Controllers
         }
         [HttpGet]
         public async Task<IActionResult> BindNewsList()
-        {   
+        {
             var list = _homePageService.GetNewsEvents();
             var filterlist = list.Result.Select("status=1").OrderByDescending(r => r["eventsdate"] == DBNull.Value
                                 ? DateTime.MinValue
@@ -503,7 +542,7 @@ namespace skipper_group_new.Controllers
         public async Task<IActionResult> cms(string title, int id)
         {
             await LoadSeoDataAsync(id);
-          
+
             clsHomeModel obj = new clsHomeModel();
             await LoadCMSDataAsync(id);
             Task<DataTable> x = this._homePageService.GetCMSData();

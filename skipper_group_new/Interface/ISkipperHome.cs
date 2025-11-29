@@ -30,5 +30,6 @@ namespace skipper_group_new.Interface
         Task<DataTable> GetAboutProduct();
         Task<DataTable> GetProductCapabilities();
         Task<DataTable> GetDynamicTableSEO(string table_name);
+        Task<DataTable> GetLeadershipList();
     }
 }

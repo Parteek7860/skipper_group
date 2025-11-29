@@ -1,4 +1,6 @@
-﻿namespace skipper_group_new.Models
+﻿using DocumentFormat.OpenXml.Math;
+
+namespace skipper_group_new.Models
 {
     public class clsTeamType
     {
@@ -9,6 +11,9 @@
         public string ShortDesc { get; set; }
         public int CollageId { get; set; }
         public string UName { get; set; }
+        public string Designation { get; set; }
+        public string uplaodimage { get; set; }
+        public string Detaildesc { get; set; }
     }
 
     public class TeamTypeDtl

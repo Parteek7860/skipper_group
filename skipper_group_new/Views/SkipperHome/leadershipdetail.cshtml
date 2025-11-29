@@ -1,0 +1,42 @@
+﻿@model skipper_group_new.Models.clsTeamType;
+@{
+    Layout = "~/Views/Shared/_cms.cshtml";
+}
+@if (Model != null)
+{
+    <section class="leadership_dtls_one">
+        <div class="container">
+            <div class="line-sec">
+                <div class="vrtcl-line">
+                    <figure>
+                        <img src="/images/icon/vertical-line.svg" class="image2 reveal-image2"
+                             alt="vertical-line">
+                    </figure>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="leadr-dtls_grid">
+                        @Html.Raw(Model.ShortDesc)
+                        <div class="ledr-dtls_lft">
+                            <figure class="image2">
+                                <img src="/uploads/SmallImages/@Convert.ToString(Model.uplaodimage)"
+                                     alt="leadership-img" class="img-fluid w-100">
+                                <img src="/images/icon/subtraction-103.svg" alt="subtraction-103" class="img-corner ">
+                            </figure>
+                            <div class="nme" data-aos="fade-up" data-aos-delay="600">
+                                <h6>@Convert.ToString(Model.TType)</h6>
+                                <div class="dir-desig">
+                                    <p><strong>@Model.Designation - </strong>Skipper Limited </p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @Html.Raw(Model.Detaildesc)
+        </div>
+    </section>
+
+}
