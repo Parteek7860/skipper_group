@@ -26,6 +26,7 @@ namespace skipper_group_new.Models
         public string pagedesc { get; set; }
         public string pagedesc2 { get; set; }
         public string pagedesc3 { get; set; }
+        public string mobilemegamenu { get; set; }
         public string uploadbanner { get; set; }
         public int displayorder { get; set; }
         public string pagetitle { get; set; }

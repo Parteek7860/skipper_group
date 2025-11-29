@@ -10,6 +10,7 @@ namespace skipper_group_new.Models
         public string Password { get; set; }
 
         public string message { get; set; }
-       
+        public string _type { get; set; }
+
     }
 }

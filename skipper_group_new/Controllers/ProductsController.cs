@@ -1,10 +1,11 @@
 ﻿using DocumentFormat.OpenXml.InkML;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
 using skipper_group_new.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data;
 using System.Net;
 using System.Reflection;
@@ -3025,8 +3026,8 @@ namespace skipper_group_new.Controllers
             return Json(new { success = true });
         }
         [HttpGet]
-        [Route("backoffice/products/aboutproduct/{id}")]
-        public async Task<IActionResult> aboutproduct(int id)
+        [Route("backoffice/products/aboutproduct/{name}/{id}")]
+        public async Task<IActionResult> aboutproduct(string name, int id)
         {
 
             clsCategory objcls = new clsCategory();
@@ -3073,7 +3074,7 @@ namespace skipper_group_new.Controllers
                     objcls.shortname = Convert.ToString(activeProducts[0]["ProductName"]);
 
                 }
-
+                ViewBag._type = char.ToUpper(name[0]) + name.Substring(1).ToLower();
 
                 return View("~/Views/backoffice/products/aboutproduct.cshtml", objcls);
             }
@@ -3087,8 +3088,8 @@ namespace skipper_group_new.Controllers
 
 
         [HttpGet]
-        [Route("backoffice/products/addcapabilities/{id}")]
-        public async Task<IActionResult> addcapabilities(int id)
+        [Route("backoffice/products/addcapabilities/{name}/{id}")]
+        public async Task<IActionResult> addcapabilities(string name, int id)
         {
 
             clsCategory objcls = new clsCategory();
@@ -3133,8 +3134,8 @@ namespace skipper_group_new.Controllers
                     objcls.shortname = Convert.ToString(activeProducts[0]["ProductName"]);
 
                 }
+                ViewBag._type = char.ToUpper(name[0]) + name.Substring(1).ToLower();
 
-                
                 return View("~/Views/backoffice/products/addcapabilities.cshtml", objcls);
             }
             catch (Exception ex)
@@ -3147,7 +3148,7 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/products/aboutproduct/{id}")]
+        [Route("backoffice/products/aboutproduct/{name}/{id}")]
         public async Task<IActionResult> aboutproduct(int id, clsCategory obj)
         {
             clsCategory objcls = new clsCategory();
@@ -3183,7 +3184,7 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/products/addcapabilities/{id}")]
+        [Route("backoffice/products/addcapabilities/{name}/{id}")]
         public async Task<IActionResult> addcapabilities(int id, clsCategory obj)
         {
             clsCategory objcls = new clsCategory();

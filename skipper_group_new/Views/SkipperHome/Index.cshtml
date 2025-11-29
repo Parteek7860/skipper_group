@@ -44,52 +44,7 @@
         @Html.Raw(Model.pagedesc2)
     </div>
     @Html.Raw(Model.pagedesc3)
-    <section class=home_sustainbility>
-        <div class=home_sustain_panel>
-            <div class="image-container image_full">
-                <figure><img src=/images/home_sustainbility.jpg alt=Sustainbility class=img-fluid></figure>
-                <div class="icon_sustain mobile-display">
-                    <figure class=c-shape-reveal>
-                        <img src=images/icon/Subtraction-3.svg alt=icon
-                             class=img-fluid>
-                    </figure>
-                </div>
-            </div>
-            <div class=container>
-                <div class=sustain_text>
-                    <div class=mobile_view>
-                        <div class=top_icon>
-                            <img src=images/icon/Subtraction-2.svg alt=icon1
-                                 class="img-fluid image">
-                        </div>
-                        <div class=bottom_icon>
-                            <img src=images/icon/Subtraction-5.svg alt=icon2
-                                 class="img-fluid image">
-                        </div>
-                        <h2 data-aos=fade-up data-aos-delay=300>Sustainability</h2>
-                        <p data-aos=fade-up data-aos-delay=400>
-                            Skipper Limited focuses on sustainable
-                            infrastructure, emphasizing eco-friendly manufacturing and responsible resource
-                            management.
-                            <div class=read_icon data-aos=fade-up data-aos-delay=500>
-                                <a href="cpage.aspx?mpgid=6&pgidtrail=22">
-                                    <img src=images/icon/plus-icon.svg
-                                         alt=Sustainability class=img-fluid>
-                                </a>
-                            </div>
-                    </div>
-                    <div class=people_link_list data-aos=fade-up data-aos-delay=600>
-                        <a href="cpage.aspx?mpgid=6&pgidtrail=23">CSR Activities</a> <a href=pdf/sustainability-report.pdf target=_blank>Sustainability Report</a> <a href="cpage.aspx?mpgid=6&pgidtrail=24#esg">ESG Policy</a>
-                    </div>
-                </div>
-                <div class=icon_sustain>
-                    <figure class=c-shape-reveal>
-                        <img src=images/icon/Subtraction-3.svg alt="" class=img-fluid>
-                    </figure>
-                </div>
-            </div>
-        </div>
-    </section>
+    @Html.Raw(Model.megamenu)
     @if (ViewBag.ProjectsList != null)
     {
 

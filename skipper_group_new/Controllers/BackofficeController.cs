@@ -71,13 +71,23 @@ namespace skipper_group_new.Controllers
         [HttpGet]
         [Route("backoffice/dashboard/{id}")]
         public async Task<IActionResult> dashboard(int id)
+        {   
+            BindListofdashBoard();
+            await BindMenuList();
+            return View("/Views/Backoffice/DashBoard.cshtml");
+        }
+        [HttpGet]
+        [Route("backoffice/dashboard/{name}/{id}")]
+        public async Task<IActionResult> dashboard(string name, int id)
         {
+            
             BindListofdashBoard();
             //int id2 = (int)HttpContext.Items["route_menu_id"];
             //if (Convert.ToInt32(id2) > 0)
             //{
-            //    parentcode = 1;
+            parentcode = 1;
             //}
+            ViewBag._type = char.ToUpper(name[0]) + name.Substring(1).ToLower();
             await BindMenuList();
             return View("/Views/Backoffice/DashBoard.cshtml");
         }
@@ -102,7 +112,14 @@ namespace skipper_group_new.Controllers
 
                 menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
             }
-            var menus = new List<clsmainmenu>();
+            else
+            {
+                var rows = menuList.AsEnumerable()
+                                   .Where(r => r.Field<int>("moduleid") != 45);
+
+                menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
+            }
+                var menus = new List<clsmainmenu>();
             var menusform = new List<clsmainmenu>();
 
             if (menuList != null && menuList.Rows.Count > 0)
@@ -159,6 +176,7 @@ namespace skipper_group_new.Controllers
 
             content = _homePageService.GetEnquiryList();
             var enquiryTable = content?.Result;
+            ViewData["enquiry"] = content?.Result.Rows.Count ?? 0;
 
             var topEnquiries = enquiryTable?.AsEnumerable()
             .Select(row => new DashboardModel

@@ -338,6 +338,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@PageDescription", cls.pagedesc ?? "");
                     cmd.Parameters.AddWithValue("@controller", cls.controllername);
                     cmd.Parameters.AddWithValue("@action", cls.actionname);
+                    cmd.Parameters.AddWithValue("@mobilemegamenu", cls.mobilemegamenu);
                     cmd.Parameters.AddWithValue("@Uname", cls.uname ?? "System");
                     cmd.Parameters.AddWithValue("@Mode", cls.mode);
 

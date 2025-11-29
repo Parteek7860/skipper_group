@@ -6,7 +6,8 @@ namespace skipper_group_new.mainclass
 {
     public class clsMainMenuList
     {
-        private readonly IHomePage _homePageService;        
+        private readonly IHomePage _homePageService;
+        public int parentcode = 0;
         public clsMainMenuList(IHomePage homePageService)
         {
             _homePageService = homePageService;
@@ -15,6 +16,22 @@ namespace skipper_group_new.mainclass
         public List<clsmainmenu> GetMenu()
         {
             var menuList = _homePageService.GetMenuList().Result;
+
+            if (parentcode > 0)
+            {
+                var rows = menuList.AsEnumerable()
+                                   .Where(r => r.Field<int>("pareentcode") == parentcode);
+
+                menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
+            }
+            else
+            {
+                var rows = menuList.AsEnumerable()
+                                   .Where(r => r.Field<int>("moduleid") != 45);
+
+                menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
+            }
+
             var menus = new List<clsmainmenu>();
 
             if (menuList != null && menuList.Rows.Count > 0)

@@ -56,7 +56,7 @@ namespace skipper_group_new.Controllers
                     obj.SmallDescription = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["smalldesc"]));
                     obj.pagedesc2 = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription1"]));
                     obj.pagedesc3 = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription2"]));
-
+                    obj.megamenu = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["mobilemegamenu"]));
                     return View(obj);
                 }
 
@@ -186,6 +186,7 @@ namespace skipper_group_new.Controllers
         [Route("news-details/{title}/{eventsid}")]
         public async Task<IActionResult> newsdetail(string title, string eventsid)
         {
+            await LoadTableSeoDataAsync("events", "eventsid", Convert.ToInt32(eventsid));
             clsMediatype obj = new clsMediatype();
             await LoadCMSDataAsync(12);
             var x1 = await _homePageService.GetNewsEvents();
@@ -502,13 +503,7 @@ namespace skipper_group_new.Controllers
         public async Task<IActionResult> cms(string title, int id)
         {
             await LoadSeoDataAsync(id);
-            //string parentid = await GetParentID(id);
-            //if (parentid == "0")
-            //{
-            //    //   await LoadInnerMenuAsync(Convert.ToInt32(ViewBag.Currentid));
-            //    id = Convert.ToInt32(parentid);
-
-            //}
+          
             clsHomeModel obj = new clsHomeModel();
             await LoadCMSDataAsync(id);
             Task<DataTable> x = this._homePageService.GetCMSData();

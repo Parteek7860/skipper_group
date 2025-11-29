@@ -27,7 +27,7 @@ namespace skipper_group_new.Controllers
         [Route("/{productname}/{productid:int}")]
         public async Task<IActionResult> engineering(string productname, string productid)
         {
-            await LoadTableSeoDataAsync("product_master", "productid", Convert.ToInt32(productid));
+            
             clsHomeModel obj = new clsHomeModel();
             await LoadMenu(productid);
 

@@ -106,7 +106,7 @@
         <!-- User Info -->
         <div class="user-info">
             <div class="image">
-                <img src="~/images/user_logo.png" width="48" height="48" alt="User" />
+                <img src="~/backoffice/images/user_logo.png" width="48" height="48" alt="User" />
             </div>
             <div class="info-container">
                 <div class="name" data-toggle="dropdown">
@@ -166,15 +166,16 @@
                                 <ul class="ml-menu">
                                     @foreach (var form in menu1.Forms)
                                     {
-                                        @if (Context.Items["route_menu_id"] == null)
-                                        {
-                                            Context.Items["route_menu_id"] = 0;
-                                        }
-                                        int id2 = (int)Context.Items["route_menu_id"];
+                                        var type = Context.GetRouteValue("name")?.ToString();   // "micro"
+                                        var routeIdString = Context.GetRouteValue("id")?.ToString();  // "2"
+
+                                        int routeId = 0;
+                                        int.TryParse(routeIdString, out routeId);
+                                        
                                         <li>
-                                            @if (id2 > 0)
+                                            @if (routeId > 0 && type != null)
                                             {
-                                                <a href="@form.Url_name/@Convert.ToInt16(id2)">
+                                                <a href="@form.Url_name/@type/@Convert.ToInt16(routeId)">
                                                     <i class="your-default-icon"></i>
 
                                                     <span>@form.modulename</span>

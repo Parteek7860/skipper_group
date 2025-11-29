@@ -57,7 +57,7 @@ namespace skipper_group_new.Controllers
                 Text = row.Field<string>("linkname")
             }).ToList();
             }
-            
+
 
             List<SelectListItem> names = new List<SelectListItem>();
             names.Add(new SelectListItem { Text = "Header", Value = "Header" });
@@ -122,11 +122,27 @@ namespace skipper_group_new.Controllers
             obj.metadesc = cls.metadesc;
             obj.canonical = cls.canonical;
             obj.rewriteurl = cls.rewriteurl;
-            obj.controllername = cls.controllername;
-            obj.actionname = cls.actionname;
+            if (string.IsNullOrEmpty(cls.controllername))
+            {
+                obj.controllername = "SkipperHome";
+            }
+            else
+            {
+                obj.controllername = cls.controllername;
+            }
+            if (string.IsNullOrEmpty(cls.actionname))
+            {
+                obj.actionname = "cms";
+            }
+            else
+            {
+                obj.actionname = cls.actionname;
+            }
+            
             obj.displayorder = cls.displayorder;
             obj.pagedesc2 = cls.pagedesc2;
             obj.pagedesc3 = cls.pagedesc3;
+            obj.mobilemegamenu = cls.mobilemegamenu;
             if (file_Uploader != null && file_Uploader.Length > 0)
             {
                 var fileName = Path.GetFileName(file_Uploader.FileName); // captures name
@@ -276,6 +292,7 @@ namespace skipper_group_new.Controllers
                 obj.uploadbanner = dt.Rows[0]["uploadbanner"].ToString();
                 obj.pagedesc2 = WebUtility.HtmlDecode(dt.Rows[0]["pagedescription1"].ToString());
                 obj.pagedesc3 = WebUtility.HtmlDecode(dt.Rows[0]["pagedescription2"].ToString());
+                obj.mobilemegamenu = WebUtility.HtmlDecode(dt.Rows[0]["mobilemegamenu"].ToString());
 
                 foreach (SelectListItem item in obj.linkposition)
                 {
