@@ -183,7 +183,7 @@ namespace skipper_group_new.Controllers
             return View("news", obj);
         }
         [HttpGet]
-        [Route("news-details/{title}/{eventsid}")]
+        [Route("news-details/{title}/{eventsid:int}")]
         public async Task<IActionResult> newsdetail(string title, string eventsid)
         {
             await LoadTableSeoDataAsync("events", "eventsid", Convert.ToInt32(eventsid));
@@ -301,7 +301,7 @@ namespace skipper_group_new.Controllers
             return View("career", obj);
         }
         [HttpGet]
-        [Route("career-details/{title}/{jobid}")]
+        [Route("career-details/{title}/{jobid:int}")]
         public async Task<IActionResult> careerdetail(string title, string jobid)
         {
             PostJobModel obj = new PostJobModel();
@@ -330,7 +330,7 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpGet]
-        [Route("apply-now/{title}/{id}")]
+        [Route("apply-now/{title}/{id:int}")]
         public async Task<IActionResult> apply(string title, string id)
         {
             await LoadSeoDataAsync(81);
@@ -340,7 +340,7 @@ namespace skipper_group_new.Controllers
             return View("apply", obj);
         }
         [HttpPost]
-        [Route("apply-now/{title}/{id}")]
+        [Route("apply-now/{title}/{id:int}")]
         public async Task<IActionResult> apply(EnquiryModel cls, IFormFile file_uploader)
         {
             await LoadSeoDataAsync(81);
@@ -403,7 +403,7 @@ namespace skipper_group_new.Controllers
             return View("projectlist", obj);
         }
         [HttpGet]
-        [Route("project-details/{projectname}/{projectid}")]
+        [Route("project-details/{projectname}/{projectid:int}")]
         public async Task<IActionResult> projectdetail(string projectname, string projectid)
         {
             await LoadTableSeoDataAsync("research", "researchid", Convert.ToInt32(projectid));

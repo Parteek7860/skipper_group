@@ -19,16 +19,12 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"select typeid,typename from albumtype where status=1 order by displayorder ";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("GetAlbumTypeListSP", conn))
                 {
-
-                   await conn.OpenAsync();
-
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    await conn.OpenAsync();
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
-
                         dt.Load(reader);
                     } // reader is closed here automatically
                 } // cmd disposed here
@@ -42,13 +38,10 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"select a.* from album a  order by a.displayorder ";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("GetAlbumListSP", conn))
                 {
-
+                    cmd.CommandType = CommandType.StoredProcedure;
                     await conn.OpenAsync();
-
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
 
@@ -99,9 +92,10 @@ namespace skipper_group_new.Repositories
             int result = 0;
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"delete from album where albumid=@albumid ";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                
+                using (SqlCommand cmd = new SqlCommand("DeleteAlbumSP", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@albumid", id);
 
                     conn.Open();
@@ -117,11 +111,10 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                // string query = @"select a.*,t.typename from album a inner join albumtype t on t.typeid=a.typeid  where albumid=@albumid ";
-                string query = @"select a.* from album a  where albumid=@albumid ";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                
+                using (SqlCommand cmd = new SqlCommand("GetAlbumListByIDSP", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@albumid", id);
                     await conn.OpenAsync();
 
@@ -129,9 +122,9 @@ namespace skipper_group_new.Repositories
                     {
 
                         dt.Load(reader);
-                    } // reader is closed here automatically
-                } // cmd disposed here
-            } // conn closed here
+                    } 
+                }
+            } 
 
             return dt;
         }
@@ -143,16 +136,16 @@ namespace skipper_group_new.Repositories
             {
                 if (status == "True")
                 {
-                    query = @"update album set status=1 where albumid=@albumid ";
+                    query = "UpdateAlbumStatusTrueSP";
                 }
                 else
                 {
-                    query = @"update album set status=0 where albumid=@albumid ";
+                    query = "UpdateAlbumStatusfalseSP";
                 }
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@albumid", id);
-
                     conn.Open();
                     result = cmd.ExecuteNonQuery();
                 }
@@ -208,11 +201,9 @@ namespace skipper_group_new.Repositories
             DataTable dt = new DataTable();
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
-            {
-                //string query = @"select a.*,t.typename from album a inner join albumtype t on t.typeid=a.typeid where a.typeid=2 order by a.displayorder ";
-                string query = @"select a.* from album a order by a.displayorder ";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+            {   
+                //string query = @"select a.* from album a order by a.displayorder ";
+                using (SqlCommand cmd = new SqlCommand("GetAlbumTypeListByIDSP", conn))
                 {
 
                     await conn.OpenAsync();
@@ -221,9 +212,9 @@ namespace skipper_group_new.Repositories
                     {
 
                         dt.Load(reader);
-                    } // reader is closed here automatically
-                } // cmd disposed here
-            } // conn closed here
+                    } 
+                } 
+            } 
 
             return dt;
         }
@@ -234,20 +225,18 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"select v.* from vedio v  order by v.displayorder";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("BindVedioListSP", conn))
                 {
-
+                    cmd.CommandType = CommandType.StoredProcedure;
                     await conn.OpenAsync();
 
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
 
                         dt.Load(reader);
-                    } // reader is closed here automatically
-                } // cmd disposed here
-            } // conn closed here
+                    } 
+                } 
+            }
 
             return dt;
         }
@@ -257,16 +246,12 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"select 0 Pageid, 'Main Page' as linkname,50 as collageid union all select Pageid, case when Parentid<>0 then '>>'+pagename else pagename end as linkname,collageid from pagemaster";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("GetPageListSP", conn))
                 {
-
+                    cmd.CommandType = CommandType.StoredProcedure;
                     await conn.OpenAsync();
-
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
-
                         dt.Load(reader);
                     } // reader is closed here automatically
                 } // cmd disposed here
@@ -280,20 +265,17 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"select * from pagemaster";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("BindPageListSP", conn))
                 {
-
+                    cmd.CommandType = CommandType.StoredProcedure;
                     await conn.OpenAsync();
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-
                         dt.Load(reader);
-                    } // reader is closed here automatically
-                } // cmd disposed here
-            } // conn closed here
+                    } 
+                }
+            } 
 
             return dt;
         }
