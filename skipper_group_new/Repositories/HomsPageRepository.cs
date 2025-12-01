@@ -46,10 +46,9 @@ namespace skipper_group_new.Repositories
             DataTable dt = new DataTable();
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"select * from ModuleMaster where status=1  order by displayorder";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("GetMenuModuleListSP", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     await conn.OpenAsync();
 
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
@@ -67,10 +66,9 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"select * from FormMaster where status=1 and moduleid=@moduleid  order by displayorder";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("GetFormListSP", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@moduleid", moduleid);
                     await conn.OpenAsync();
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
@@ -135,10 +133,9 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"select * from homebannertype ";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("GetBannerTypeListSP", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     await conn.OpenAsync();
 
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
@@ -156,19 +153,18 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"select * from homebannertype where btypeid=@btypeid ";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("GetBannerTypeListByIDSP", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@btypeid", id);
                     await conn.OpenAsync();
 
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
                         dt.Load(reader);
-                    } // reader is closed here automatically
-                } // cmd disposed here
-            } // conn closed here
+                    }
+                }
+            }
 
             return dt;
         }
@@ -177,9 +173,9 @@ namespace skipper_group_new.Repositories
             int result = 0;
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"delete from homebannertype where btypeid=@btypeid ";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("DeleteBannerTypeSP", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@btypeid", id);
 
                     conn.Open();
@@ -217,10 +213,9 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"select * from homebanner ";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("GetBannerListSP", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     await conn.OpenAsync();
 
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
@@ -239,11 +234,9 @@ namespace skipper_group_new.Repositories
             string query = string.Empty;
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-
-                query = @"delete from homebanner where bid=@bid ";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("DeleteBannerSP", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@bid", id);
 
                     conn.Open();
@@ -259,20 +252,18 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"select * from homebanner where bid=@bid ";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("GetBannerListByIDSP", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@bid", id);
                     await conn.OpenAsync();
 
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
-
                         dt.Load(reader);
-                    } // reader is closed here automatically
-                } // cmd disposed here
-            } // conn closed here
+                    }
+                }
+            }
 
             return dt;
         }
@@ -327,9 +318,9 @@ namespace skipper_group_new.Repositories
             int result = 0;
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"delete from events where eventsid=@eventsid ";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("DeleteMediaSectionSP", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@eventsid", id);
 
                     conn.Open();
@@ -347,14 +338,15 @@ namespace skipper_group_new.Repositories
             {
                 if (status == "True")
                 {
-                    query = @"update events set status=0 where eventsid=@eventsid ";
+                    query = "UpdateEventsStatusTrueSP";
                 }
                 else
                 {
-                    query = @"update events set status=1 where eventsid=@eventsid ";
+                    query = "UpdateEventsStatusfalseSP";
                 }
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@eventsid", id);
 
                     conn.Open();
@@ -372,14 +364,15 @@ namespace skipper_group_new.Repositories
             {
                 if (status == "True")
                 {
-                    query = @"update events set showonhome=0 where eventsid=@eventsid ";
+                    query = "UpdateEventsShowonhometrueSP";
                 }
                 else
                 {
-                    query = @"update events set showonhome=1 where eventsid=@eventsid ";
+                    query = "UpdateEventsShowonhomefalseSP";
                 }
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@eventsid", id);
 
                     conn.Open();
@@ -418,9 +411,10 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"select * from enquiry ";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+
+                using (SqlCommand cmd = new SqlCommand("GetEnquirySP", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     await conn.OpenAsync();
 
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())

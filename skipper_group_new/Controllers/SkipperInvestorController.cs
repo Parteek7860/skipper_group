@@ -121,7 +121,7 @@ namespace skipper_group_new.Controllers
 
 
         [HttpGet]
-        [Route("investor-relations/{category}/{subcategoty}/{pcatid}/{psubcatid}")]
+        [Route("investor-relations/{category}/{subcategoty}/{pcatid:int}/{psubcatid:int}")]
         public async Task<IActionResult> GetSubCatReports(int pcatid, int psubcatid)
         {
             var categoryData = new List<InvestorModel>();

@@ -55,8 +55,6 @@ namespace skipper_group_new.Repositories
             parameters.Add("@lcid", research.LCID ?? 0);
             return parameters;
         }
-
-
         public async Task<DataTable> GetProduct()
         {
             DataTable dt = new DataTable();

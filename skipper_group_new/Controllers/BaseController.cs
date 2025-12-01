@@ -341,6 +341,7 @@ namespace skipper_group_new.Controllers
         private async Task<List<clsHomeModel>> GetInvestorList()
         {
             var dt = await _homePageService.GetInvestorList();
+            var dt1 = await _homePageService.GetInvestorSubCategoryList();
             if (dt == null || dt.Rows.Count == 0)
                 return (new List<clsHomeModel>());
 
@@ -352,16 +353,16 @@ namespace skipper_group_new.Controllers
                     Name = dr["category"].ToString(),
                     rewriteurl = dr["rewriteurl"].ToString(),
                     pageid = dr["pcatid"].ToString(),
-                    //SubMenus = dt.AsEnumerable()
-                    //    .Where(sub => sub["ParentId"].ToString() == dr["pageid"].ToString() && Convert.ToInt32(sub["pagestatus"]) == 1)
-                    //     .OrderBy(r => Convert.ToInt32(r["displayorder"]))
-                    //    .Select(sub => new SubhomeModel
-                    //    {
-                    //        linkname = sub["linkname"].ToString(),
-                    //        rewriteurl = sub["rewriteurl"].ToString(),
-                    //        ParentId = sub["ParentId"].ToString(),
-                    //        pageid = sub["pageid"].ToString()
-                    //    }).ToList()
+                    SubMenus = dt1.AsEnumerable()
+                        .Where(sub => sub["pcatid"].ToString() == dr["pcatid"].ToString() && Convert.ToInt32(sub["status"]) == 1)
+                         .OrderBy(r => Convert.ToInt32(r["displayorder"]))
+                        .Select(sub => new SubhomeModel
+                        {
+                            linkname = sub["category"].ToString(),
+                            rewriteurl = sub["rewriteurl"].ToString(),
+                            ParentId = sub["pcatid"].ToString(),
+                            pageid = sub["psubcatid"].ToString()
+                        }).Take(1).ToList()
                 }).ToList();
             return investormenu;
         }

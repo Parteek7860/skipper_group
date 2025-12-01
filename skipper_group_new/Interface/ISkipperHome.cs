@@ -22,6 +22,8 @@ namespace skipper_group_new.Interface
         int SaveContactEnquiry(EnquiryModel model);
 
         Task<DataTable> GetInvestorList();
+
+        Task<DataTable> GetInvestorSubCategoryList();
         Task<DataTable> GetProductList();
         Task<DataTable> GetProductCategoryList();
         Task<DataTable> GetProductSubCategoryList();

@@ -92,7 +92,7 @@ namespace skipper_group_new.Repositories
             int result = 0;
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                
+
                 using (SqlCommand cmd = new SqlCommand("DeleteAlbumSP", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -111,7 +111,7 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                
+
                 using (SqlCommand cmd = new SqlCommand("GetAlbumListByIDSP", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -122,9 +122,9 @@ namespace skipper_group_new.Repositories
                     {
 
                         dt.Load(reader);
-                    } 
+                    }
                 }
-            } 
+            }
 
             return dt;
         }
@@ -201,7 +201,7 @@ namespace skipper_group_new.Repositories
             DataTable dt = new DataTable();
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
-            {   
+            {
                 //string query = @"select a.* from album a order by a.displayorder ";
                 using (SqlCommand cmd = new SqlCommand("GetAlbumTypeListByIDSP", conn))
                 {
@@ -212,9 +212,9 @@ namespace skipper_group_new.Repositories
                     {
 
                         dt.Load(reader);
-                    } 
-                } 
-            } 
+                    }
+                }
+            }
 
             return dt;
         }
@@ -234,8 +234,8 @@ namespace skipper_group_new.Repositories
                     {
 
                         dt.Load(reader);
-                    } 
-                } 
+                    }
+                }
             }
 
             return dt;
@@ -273,9 +273,9 @@ namespace skipper_group_new.Repositories
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         dt.Load(reader);
-                    } 
+                    }
                 }
-            } 
+            }
 
             return dt;
         }
@@ -289,7 +289,7 @@ namespace skipper_group_new.Repositories
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@PageId", cls.Id); 
+                    cmd.Parameters.AddWithValue("@PageId", cls.Id);
                     cmd.Parameters.AddWithValue("@PageName", cls.pagename);
                     cmd.Parameters.AddWithValue("@linkposition", cls.pageposition);
                     cmd.Parameters.AddWithValue("@linkname", cls.linkname);
@@ -297,24 +297,24 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@PageMeta", cls.metakeywords);
                     cmd.Parameters.AddWithValue("@PageMetaDesc", cls.metadesc);
                     cmd.Parameters.AddWithValue("@megamenu", cls.megamenu);
-                    cmd.Parameters.AddWithValue("@PageStatus", true); 
+                    cmd.Parameters.AddWithValue("@PageStatus", true);
                     cmd.Parameters.AddWithValue("@parentid", cls.parentid);
                     cmd.Parameters.AddWithValue("@pageurl", cls.pageurl ?? "");
-                    cmd.Parameters.AddWithValue("@rewriteid", DBNull.Value); 
-                    cmd.Parameters.AddWithValue("@rewriteurl", cls.rewriteurl); 
+                    cmd.Parameters.AddWithValue("@rewriteid", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@rewriteurl", cls.rewriteurl);
                     cmd.Parameters.AddWithValue("@UploadBanner", cls.uploadbanner ?? "");
                     cmd.Parameters.AddWithValue("@displayorder", cls.displayorder);
-                    cmd.Parameters.AddWithValue("@quicklinks", false); 
+                    cmd.Parameters.AddWithValue("@quicklinks", false);
                     cmd.Parameters.AddWithValue("@smalldesc", cls.smalldesc);
-                    cmd.Parameters.AddWithValue("@restricted", false); 
+                    cmd.Parameters.AddWithValue("@restricted", false);
                     cmd.Parameters.AddWithValue("@target", DBNull.Value);
                     cmd.Parameters.AddWithValue("@tagline", cls.tagline1 ?? "");
                     cmd.Parameters.AddWithValue("@collageid", 0);
                     cmd.Parameters.AddWithValue("@canonical", cls.canonical ?? "");
                     cmd.Parameters.AddWithValue("@no_indexfollow", false);
-                    cmd.Parameters.AddWithValue("@other_schema", DBNull.Value); 
-                    cmd.Parameters.AddWithValue("@dynamicurlvalue", DBNull.Value); 
-                    cmd.Parameters.AddWithValue("@dynamicurlrewrte", DBNull.Value); 
+                    cmd.Parameters.AddWithValue("@other_schema", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@dynamicurlvalue", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@dynamicurlrewrte", DBNull.Value);
                     cmd.Parameters.AddWithValue("@PageDescription1", cls.pagedesc2);
                     cmd.Parameters.AddWithValue("@PageDescription2", cls.pagedesc3);
                     cmd.Parameters.AddWithValue("@PageDescription", cls.pagedesc ?? "");
@@ -338,20 +338,17 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"select * from pagemaster where pageid=@pageid";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("GetPageListByIDSP", conn))
                 {
-
+                    cmd.CommandType = CommandType.StoredProcedure;
                     await conn.OpenAsync();
                     cmd.Parameters.AddWithValue("@pageid", id);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-
                         dt.Load(reader);
-                    } // reader is closed here automatically
-                } // cmd disposed here
-            } // conn closed here
+                    }
+                }
+            }
 
             return dt;
         }
@@ -360,9 +357,9 @@ namespace skipper_group_new.Repositories
             int result = 0;
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"delete from pagemaster where pageid=@pageid ";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("DeleteRecordsSP", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@pageid", id);
 
                     conn.Open();
@@ -500,7 +497,7 @@ namespace skipper_group_new.Repositories
                 da.Fill(table);
                 return table;
             }
-        }        
+        }
         public int DeleteTvc(int id)
         {
             int result = 0;

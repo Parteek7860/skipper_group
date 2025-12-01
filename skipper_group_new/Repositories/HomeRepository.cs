@@ -19,9 +19,10 @@ namespace skipper_group_new.Repositories
             string pagedesc = string.Empty;
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = "select pageid,linkname,pagetitle,rewriteurl,pageurl,pagedescription from pagemaster where pagestatus=1 and pageid='" + id + "' order by  displayorder";
-                SqlCommand cmd = new SqlCommand(query, conn);
-
+                //string query = "select pageid,linkname,pagetitle,rewriteurl,pageurl,pagedescription from pagemaster where pagestatus=1 and pageid='" + id + "' order by  displayorder";
+                SqlCommand cmd = new SqlCommand("GetDescriptionSP", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@pageid", id);
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -39,9 +40,9 @@ namespace skipper_group_new.Repositories
             string pagedesc = string.Empty;
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = "select pageid,linkname,pagetitle,rewriteurl,pageurl,pagedescription,smalldesc from pagemaster where pagestatus=1 and pageid='" + id + "' order by  displayorder";
-                SqlCommand cmd = new SqlCommand(query, conn);
-
+                SqlCommand cmd = new SqlCommand("GetDescriptionSP", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@pageid", id);
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -59,13 +60,9 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = @"SELECT pageid, linkname, pagetitle, rewriteurl, pageurl, pagedescription,tagline 
-                         FROM pagemaster 
-                         WHERE pagestatus = 1 AND pageid = @pageid 
-                         ORDER BY displayorder";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand cmd = new SqlCommand("GetCMSDetailSP", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@pageid", id);
                     await conn.OpenAsync();
 
@@ -73,9 +70,9 @@ namespace skipper_group_new.Repositories
                     {
 
                         dt.Load(reader);
-                    } // reader is closed here automatically
-                } // cmd disposed here
-            } // conn closed here
+                    }
+                }
+            }
 
             return dt;
         }
@@ -85,9 +82,8 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = "select pageid,linkname,pagetitle,rewriteurl,pageurl, LEFT(pageurl, CHARINDEX('.aspx', pageurl) - 1) AS Url_name from pagemaster where pagestatus=1 and linkposition like '%Header%' order by  displayorder";
-                SqlCommand cmd = new SqlCommand(query, conn);
-
+                SqlCommand cmd = new SqlCommand("GetMainMenuSP", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 conn.Open();
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
@@ -112,9 +108,8 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = "select * from homebanner where status=1 order by displayorder";
-                SqlCommand cmd = new SqlCommand(query, conn);
-
+                SqlCommand cmd = new SqlCommand("GetHomeBannerSP", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 conn.Open();
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
@@ -137,7 +132,7 @@ namespace skipper_group_new.Repositories
             int result = 0;
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-              
+
                 SqlCommand cmd = new SqlCommand("enquirysp", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@fName", objML_contact.title);
@@ -161,9 +156,8 @@ namespace skipper_group_new.Repositories
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                string query = "select top 3 * from events where status=1 order by eventsdate desc,displayorder";
-                SqlCommand cmd = new SqlCommand(query, conn);
-
+                SqlCommand cmd = new SqlCommand("NewsEventsListSP", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 conn.Open();
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
@@ -189,7 +183,7 @@ namespace skipper_group_new.Repositories
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 string query = "select * from Productcate where status=1 ";
-                if(s==true)
+                if (s == true)
                 {
                     query += " and showonhome=1";
                 }
@@ -220,8 +214,8 @@ namespace skipper_group_new.Repositories
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 string query = "select productid,p.pcatid,productname,UploadAImage,p.shortdetail,homedesc from products p inner join productcate cate on cate.pcatid=p.pcatid where p.status=1 and cate.status=1 order by p.displayorder ";
-                
-                
+
+
                 SqlCommand cmd = new SqlCommand(query, conn);
 
                 conn.Open();
