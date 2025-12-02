@@ -45,6 +45,10 @@ namespace skipper_group_new.Models
 
         public string controllername { get; set; }
 
+        public int collageid { get; set; }
+        public string DisplayName { get; set; }
+
+
         public string actionname { get; set; }
     }
 }

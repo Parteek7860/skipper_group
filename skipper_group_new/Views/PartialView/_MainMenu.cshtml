@@ -160,11 +160,21 @@ else
                                                         <ul>
                                                             @foreach (var submenu2 in submenu.SubMenus2)
                                                             {
-                                                                var subHref1 = !string.IsNullOrEmpty(submenu2.rewriteurl)
+                                                                string actionLink = string.Empty;
+                                                                if (!string.IsNullOrEmpty(submenu2.uploadfile))
+                                                                {
+                                                                    actionLink = "target=_blank";
+                                                                }
+
+                                                                var subHref1 =
+                                                                !string.IsNullOrEmpty(submenu2.rewriteurl)
                                                                 ? $"/{submenu2.rewriteurl}"
-                                                                : $"/cms/{submenu2.linkname}/{submenu2.pageid}";
+                                                                : !string.IsNullOrEmpty(submenu2.uploadfile)
+                                                                ? $"/uploads/prospectus/{submenu2.uploadfile}"
+                                                                : $"/cms/{submenu2.linkname.ToSlug().ToLower()}/{submenu2.pageid}";
+
                                                                 <li>
-                                                                    <a href="@subHref1">@submenu2.linkname</a>
+                                                                    <a href="@subHref1" @actionLink>@submenu2.linkname</a>
                                                                 </li>
                                                             }
 

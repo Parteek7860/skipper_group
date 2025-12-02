@@ -127,7 +127,7 @@ namespace skipper_group_new.Controllers
                 return;
 
             var row = dt.AsEnumerable()
-                .FirstOrDefault(r => r.Field<bool>("status") && r.Field<int>(column_name) == pageId);
+                .FirstOrDefault(r =>(r.Field<bool?>("status") ?? false) && r.Field<int>(column_name) == pageId);
 
             if (row != null)
             {
@@ -459,6 +459,7 @@ namespace skipper_group_new.Controllers
                          rewriteurl = sub2["rewriteurl"].ToString(),
                          ParentId = sub2["ParentId"].ToString(),
                          smalldesc = sub2["smalldesc"].ToString(),
+                         uploadfile = sub2["uploadfile"].ToString(),
                          pageid = sub2["pageid"].ToString()
                      }).ToList()
              }).ToList()

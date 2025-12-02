@@ -186,7 +186,8 @@ app.UseEndpoints(endpoints =>
         pattern: "{*url}",
         defaults: new { controller = "SkipperHome", action = "DynamicRoute" });
 
-   
+    
+
 
 });
 

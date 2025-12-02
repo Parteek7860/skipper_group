@@ -33,8 +33,16 @@ namespace skipper_group_new.Controllers
             ViewBag.Menus = menuList;
 
             await BindStaticdata();
-            var bannerTypes = _homePageService.GetBannerTypeList();
-            ViewBag.BannerTypes = bannerTypes.Result;
+            var bannerTypes =await _homePageService.GetBannerTypeList();
+            DataRow[] rows = bannerTypes.Select("collageid = 0");
+
+            
+            DataTable filteredTable = rows.Length > 0
+                ? rows.CopyToDataTable()
+                : bannerTypes.Clone();   // returns empty table with same structure
+
+            ViewBag.BannerTypes = filteredTable;
+            
 
             ViewBag.SuccessCreate = "Save";
             ViewBag.Title = "Home Banner Type";

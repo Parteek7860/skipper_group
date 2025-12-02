@@ -3028,8 +3028,7 @@ namespace skipper_group_new.Controllers
         [HttpGet]
         [Route("backoffice/products/aboutproduct/{name}/{id}")]
         public async Task<IActionResult> aboutproduct(string name, int id)
-        {
-
+        {   
             clsCategory objcls = new clsCategory();
             try
             {

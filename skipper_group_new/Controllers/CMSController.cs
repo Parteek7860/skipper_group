@@ -40,7 +40,7 @@ namespace skipper_group_new.Controllers
             if (routeId != null)
             {
                 obj.selectparent = _backofficeService.GetPageList().Result.AsEnumerable()
-            .Where(row => row.Field<int>("collageid") != 0)
+            .Where(row => row.Field<string>("collageid") == routeId)
             .Select(row => new SelectListItem
             {
                 Value = row.Field<int>("pageid").ToString(),
@@ -49,12 +49,15 @@ namespace skipper_group_new.Controllers
             }
             else
             {
-                obj.selectparent = _backofficeService.GetPageList().Result.AsEnumerable()
-            .Where(row => row.Field<int>("collageid") == 0)
+                var content = _backofficeService.BindPageList().Result;
+                var pageList = BuildHierarchy(content, 0, 0);
+                obj.selectparent = pageList.AsEnumerable()
+             .Where(x => x.collageid == 0)
             .Select(row => new SelectListItem
             {
-                Value = row.Field<int>("pageid").ToString(),
-                Text = row.Field<string>("linkname")
+                Value = row.Id.ToString(),
+                Text = WebUtility.HtmlDecode(row.DisplayName).ToString()
+
             }).ToList();
             }
 
@@ -138,7 +141,7 @@ namespace skipper_group_new.Controllers
             {
                 obj.actionname = cls.actionname;
             }
-            
+
             obj.displayorder = cls.displayorder;
             obj.pagedesc2 = cls.pagedesc2;
             obj.pagedesc3 = cls.pagedesc3;
@@ -197,6 +200,9 @@ namespace skipper_group_new.Controllers
 
             foreach (var row in rows)
             {
+                string prefix = level == 0 ? "" : string.Concat(Enumerable.Repeat("&nbsp;&nbsp;&nbsp;", level)) + "› ";
+
+
                 var page = new clsCMS
                 {
                     Id = Convert.ToInt32(row["pageid"]),
@@ -205,7 +211,8 @@ namespace skipper_group_new.Controllers
                     pageposition = Convert.ToString(row["linkposition"]),
                     displayorder = Convert.ToInt32(row["displayorder"]),
                     PageStatus = Convert.ToBoolean(row["pagestatus"]),
-                    Level = level
+                    Level = level,
+                    DisplayName = prefix + " " + Convert.ToString(row["linkname"])
                 };
 
                 list.Add(page);

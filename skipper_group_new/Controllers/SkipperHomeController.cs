@@ -21,14 +21,16 @@ namespace skipper_group_new.Controllers
     {
         private readonly List<UrlValidationRule> _validationRules;
         private readonly ISkipperHome _homePageService;
+        private readonly IWebHostEnvironment _env;
 
-        public SkipperHomeController(ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService)
+        public SkipperHomeController(ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService, IWebHostEnvironment env)
      : base(homePageService, menuService)
         {
             _homePageService = homePageService;
 
             _validationRules = configuration.GetSection("UrlValidationRules:Rules")
              .Get<List<UrlValidationRule>>() ?? new();
+            _env = env;
         }
         [HttpGet]
         [Route("/")]
@@ -711,6 +713,29 @@ namespace skipper_group_new.Controllers
 
             return true;
         }
+
+        public IActionResult ViewPdf(string file)
+        {
+            if (string.IsNullOrEmpty(file))
+                return NotFound();
+
+            var root = Path.Combine(_env.WebRootPath, "uploads", "prospectus");
+            var filePath = Path.Combine(root, file);
+
+            if (!System.IO.File.Exists(filePath))
+                return NotFound();
+
+            var bytes = System.IO.File.ReadAllBytes(filePath);
+            return File(bytes, "application/pdf");
+        }
+        [HttpGet]
+        [Route("uploads/files/{file}")]
+        public IActionResult PdfViewer(string file)
+        {
+            return ViewPdf(file);
+        }
+
+
     }
 
 

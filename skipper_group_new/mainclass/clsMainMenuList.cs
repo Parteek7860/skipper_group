@@ -17,20 +17,20 @@ namespace skipper_group_new.mainclass
         {
             var menuList = _homePageService.GetMenuList().Result;
 
-            if (parentcode > 0)
-            {
-                var rows = menuList.AsEnumerable()
-                                   .Where(r => r.Field<int>("pareentcode") == parentcode);
+            //if (parentcode > 0)
+            //{
+            //    var rows = menuList.AsEnumerable()
+            //                       .Where(r => r.Field<int>("pareentcode") == parentcode);
 
-                menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
-            }
-            else
-            {
-                var rows = menuList.AsEnumerable()
-                                   .Where(r => r.Field<int>("moduleid") != 45);
+            //    menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
+            //}
+            //else
+            //{
+            //    var rows = menuList.AsEnumerable()
+            //                       .Where(r => r.Field<int>("moduleid") != 45);
 
-                menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
-            }
+            //    menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
+            //}
 
             var menus = new List<clsmainmenu>();
 
