@@ -23,24 +23,17 @@ namespace skipper_group_new.Controllers
             return View();
         }
         [HttpGet]
-        [Route("backoffice/cms/addpages/{id?}")]
-        public IActionResult addPages()
+        [Route("backoffice/cms/addpages/{name?}/{pageid?}")]
+        public IActionResult addPages(string name, int pageid)
         {
             var obj = new clsCMS();
-            var routeId = HttpContext.GetRouteValue("id")?.ToString();
-            var menuList = _menuService.GetMenu();
 
-            if (routeId != null)
-            {
-                menuList = menuList
-        .Where(x => x.pareentcode == "1")
-        .ToList();
-            }
+            var menuList = _menuService.GetMenu(pageid);
             ViewBag.Menus = menuList;
-            if (routeId != null)
+            if (pageid != null)
             {
                 obj.selectparent = _backofficeService.GetPageList().Result.AsEnumerable()
-            .Where(row => row.Field<string>("collageid") == routeId)
+            .Where(row => row.Field<int>("collageid") == pageid)
             .Select(row => new SelectListItem
             {
                 Value = row.Field<int>("pageid").ToString(),
@@ -183,12 +176,19 @@ namespace skipper_group_new.Controllers
             return View("~/Views/backoffice/cms/addpages.cshtml", obj);
         }
         [HttpGet]
-        [Route("backoffice/cms/viewpages/{id?}")]
-        public IActionResult viewpages()
+        [Route("backoffice/cms/viewpages/{name?}/{pageid?}")]
+        public IActionResult viewpages(string name, int pageid)
         {
             var obj = new clsCMS();
-            ViewBag.Menus = _menuService.GetMenu();
+            ViewBag.Menus = _menuService.GetMenu(pageid);
             var content = _backofficeService.BindPageList().Result;
+            if (Convert.ToInt16(pageid) > 0)
+            {
+                var rows = content.AsEnumerable()
+                      .Where(r => r.Field<int>("collageid") == pageid);
+
+                content = rows.Any() ? rows.CopyToDataTable() : content.Clone();
+            }
             var pageList = BuildHierarchy(content, 0, 0);
 
             return View("~/Views/backoffice/cms/viewpages.cshtml", pageList);
@@ -224,12 +224,14 @@ namespace skipper_group_new.Controllers
             return list;
         }
         [HttpGet]
-        [Route("backoffice/cms/editstatus/{id}")]
+        [Route("backoffice/cms/editstatus/{id:int}")]
         public IActionResult editstatus(int id)
         {
             HttpContext.Session.Remove("Message");
             var obj = new clsCMS();
             ViewBag.Menus = _menuService.GetMenu();
+
+            string pageid = HttpContext.Session.GetString("microid");
 
             var cms = _backofficeService.BindPageList();
 
@@ -248,7 +250,17 @@ namespace skipper_group_new.Controllers
                         "Message",
                         (HttpContext.Session.GetString("Message") ?? "") + "Status Update successfully."
                     );
-                    return RedirectToAction("viewpages", "CMS");
+
+                    if (pageid != null)
+                    {
+                        return RedirectToAction("viewpages", "CMS", new { name = "micro", pageid = pageid });
+                    }
+                    else
+                    {
+                        return RedirectToAction("viewpages", "CMS");
+                    }
+
+
                 }
             }
 

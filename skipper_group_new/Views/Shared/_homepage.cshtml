@@ -167,7 +167,7 @@
                                     @foreach (var form in menu1.Forms)
                                     {
                                         var type = Context.GetRouteValue("name")?.ToString();   // "micro"
-                                        var routeIdString = Context.GetRouteValue("id")?.ToString();  // "2"
+                                        var routeIdString = Context.GetRouteValue("pageid")?.ToString();  // "2"
 
                                         int routeId = 0;
                                         int.TryParse(routeIdString, out routeId);

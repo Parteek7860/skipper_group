@@ -1,7 +1,8 @@
-﻿using skipper_group_new.Interface;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
 using skipper_group_new.Models;
-using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Net;
 
@@ -77,16 +78,16 @@ namespace skipper_group_new.Controllers
             return View("/Views/Backoffice/DashBoard.cshtml");
         }
         [HttpGet]
-        [Route("backoffice/dashboard/{name}/{id}")]
-        public async Task<IActionResult> dashboard(string name, int id)
+        [Route("backoffice/dashboard/{name}/{pageid:int}")]
+        public async Task<IActionResult> dashboard(string name, string pageid)
         {
             
             BindListofdashBoard();
-            //int id2 = (int)HttpContext.Items["route_menu_id"];
-            //if (Convert.ToInt32(id2) > 0)
-            //{
+            HttpContext.Session.SetString("microid",pageid);
+            HttpContext.Session.SetString("micro", name);
+           
             parentcode = 1;
-            //}
+           
             ViewBag._type = char.ToUpper(name[0]) + name.Substring(1).ToLower();
             await BindMenuList();
             return View("/Views/Backoffice/DashBoard.cshtml");

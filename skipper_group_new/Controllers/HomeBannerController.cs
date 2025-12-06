@@ -33,16 +33,16 @@ namespace skipper_group_new.Controllers
             ViewBag.Menus = menuList;
 
             await BindStaticdata();
-            var bannerTypes =await _homePageService.GetBannerTypeList();
+            var bannerTypes = await _homePageService.GetBannerTypeList();
             DataRow[] rows = bannerTypes.Select("collageid = 0");
 
-            
+
             DataTable filteredTable = rows.Length > 0
                 ? rows.CopyToDataTable()
                 : bannerTypes.Clone();   // returns empty table with same structure
 
             ViewBag.BannerTypes = filteredTable;
-            
+
 
             ViewBag.SuccessCreate = "Save";
             ViewBag.Title = "Home Banner Type";
@@ -422,5 +422,96 @@ namespace skipper_group_new.Controllers
             return View("~/Views/Backoffice/homebanner/addhomebanner.cshtml", clsBanner);
 
         }
+
+        #region Micro Site Home Banner Module
+        [HttpGet]
+        [Route("backoffice/homebanner/addhomebannertype/micro/{pageid:int}")]
+        public async Task<IActionResult> addhomebannertype(string pageid)
+        {
+            var routeId = pageid;
+            var menuList = _menuService.GetMenu();
+            if (routeId != null)
+            {
+                menuList = menuList
+        .Where(x => x.pareentcode == "1")
+        .ToList();
+            }
+            ViewBag.Menus = menuList;
+
+            await BindStaticdata();
+            var bannerTypes = await _homePageService.GetBannerTypeList();
+            DataRow[] rows = bannerTypes.Select("collageid ='" + pageid + "'");
+
+
+            DataTable filteredTable = rows.Length > 0
+                ? rows.CopyToDataTable()
+                : bannerTypes.Clone();   // returns empty table with same structure
+
+            ViewBag.BannerTypes = filteredTable;
+
+
+            ViewBag.SuccessCreate = "Save";
+            ViewBag.Title = "Home Banner Type";
+            return View("~/Views/Backoffice/homebanner/addhomebannertype.cshtml", clsBannerType);
+        }
+
+        [HttpGet]
+        [Route("backoffice/homebanner/addhomebanner/micro/{pageid:int}")]
+        public async Task<IActionResult> addhomebanner(int pageid)
+        {
+
+            var routeId = pageid;
+            var menuList = _menuService.GetMenu();
+            if (routeId != null)
+            {
+                menuList = menuList
+        .Where(x => x.pareentcode == "1")
+        .ToList();
+            }
+            ViewBag.Menus = menuList;
+
+            await BindDevicedata();
+
+
+            ViewBag.CreateUpdate = "Save";
+            ViewBag.Title = "Home Banner";
+            return View("~/Views/Backoffice/homebanner/addhomebanner.cshtml", clsBanner);
+        }
+
+        [HttpGet]
+        [Route("backoffice/homebanner/ViewHomeBanner/micro/{pageid:int}")]
+        public async Task<IActionResult> ViewHomeBanner(int pageid)
+        {
+
+            var routeId = pageid;
+            var menuList = _menuService.GetMenu();
+            if (routeId != null)
+            {
+                menuList = menuList
+        .Where(x => x.pareentcode == "1")
+        .ToList();
+            }
+            ViewBag.Menus = menuList;
+
+            //Get list of banner types
+            var bannerTypes = _homePageService.GetBannerList();
+            var filterresult = bannerTypes.Result.Select($"collageid = '{pageid}'").OrderByDescending(r => r["bid"]);
+            DataTable dt;
+
+            if (filterresult.Any())
+            {
+                dt = filterresult.CopyToDataTable();
+            }
+            else
+            {
+                // Create an empty table with same structure
+                dt = bannerTypes.Result.Clone();
+            }
+
+            ViewBag.bannerlist = dt;
+
+            return View("~/Views/Backoffice/homebanner/ViewHomeBanner.cshtml", clsBanner);
+        }
+        #endregion
     }
 }

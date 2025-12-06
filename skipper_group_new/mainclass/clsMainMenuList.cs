@@ -13,24 +13,18 @@ namespace skipper_group_new.mainclass
             _homePageService = homePageService;
         }
 
-        public List<clsmainmenu> GetMenu()
+        public List<clsmainmenu> GetMenu(int? pageid = null)
         {
             var menuList = _homePageService.GetMenuList().Result;
 
-            //if (parentcode > 0)
-            //{
-            //    var rows = menuList.AsEnumerable()
-            //                       .Where(r => r.Field<int>("pareentcode") == parentcode);
+            if (pageid.HasValue && pageid != 0)
+            {
+                var rows = menuList.AsEnumerable()
+                                   .Where(r => r.Field<int>("pareentcode") == 1);
+                menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
+            }
 
-            //    menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
-            //}
-            //else
-            //{
-            //    var rows = menuList.AsEnumerable()
-            //                       .Where(r => r.Field<int>("moduleid") != 45);
 
-            //    menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
-            //}
 
             var menus = new List<clsmainmenu>();
 

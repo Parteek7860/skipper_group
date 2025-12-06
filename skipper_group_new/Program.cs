@@ -173,6 +173,11 @@ app.UseAuthorization();
 // -------------------------------------------------
 app.UseEndpoints(endpoints =>
 {
+
+    endpoints.MapControllerRoute(
+     name: "backoffice route",
+     pattern: "{controller=Backoffice}/{action=dashboard}/{name}/{pageid?}");
+
     endpoints.MapControllerRoute(
         name: "backoffice",
         pattern: "{controller=Backoffice}/{action=Signin}/{id?}");
@@ -180,6 +185,8 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllerRoute(
          name: "default",
          pattern: "{controller=SkipperHome}/{action=Index}/{id?}");
+
+    
 
     endpoints.MapControllerRoute(
         name: "dynamic",
