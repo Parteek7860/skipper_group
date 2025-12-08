@@ -20,7 +20,17 @@
         </div>
     </div>
 </div>
+@if (ViewBag._Type != null)
+{
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="/backoffice/products/viewproductsolution" class="btn btn-success"><i class="zmdi zmdi-home"></i> Back to Product & Solution</a></li>
 
+            </ul>
+        </div>
+    </div>
+}
 @using (Html.BeginForm("addpages", "CMS", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.ValidationSummary(true)
@@ -40,7 +50,8 @@
                                     @Html.HiddenFor(model => model.rewriteurl)
                                     @Html.HiddenFor(model => model.controllername)
                                     @Html.HiddenFor(model => model.actionname)
-                                    @Html.DropDownListFor(model => model.parentid, Model.selectparent, "", new { @class = "form-control", style = "border:1px solid #ccc; border-radius:4px;" })
+                                    @Html.HiddenFor(model => model.collageid)
+                                    @Html.DropDownListFor(model => model.parentid, Model.selectparent, "Main Page", new { @class = "form-control", style = "border:1px solid #ccc; border-radius:4px;" })
                                 </div>
                             </div>
                         </div>

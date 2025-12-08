@@ -1,8 +1,11 @@
 ﻿using DocumentFormat.OpenXml.InkML;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using skipper_group_new.mainclass;
 using skipper_group_new.Models;
 using skipper_group_new.Service;
-using Microsoft.AspNetCore.Mvc;
+using System.Data;
+using System.Web;
 
 namespace skipper_group_new.Controllers
 {
@@ -25,6 +28,25 @@ namespace skipper_group_new.Controllers
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
             var model = new PostJobModel();
+
+            var x = await _management.GetProductSolutionList();
+            var filteredRows = x.AsEnumerable()
+                .Where(row => row.Field<bool>("status") == true);
+
+            DataTable dt = filteredRows.CopyToDataTable();
+
+
+            var list = dt.AsEnumerable()
+                .Select(r => new SelectListItem
+                {
+                    Value = r["productid"].ToString(),
+                    Text = r["productname"].ToString()
+                }).ToList();
+
+
+
+            ViewBag.EmpTypeList = new SelectList(list, "Value", "Text");
+
             ViewBag.Button = "Save";
             return View("~/Views/backoffice/career/jobposting.cshtml", model);
         }
@@ -64,8 +86,17 @@ namespace skipper_group_new.Controllers
             m.Uname = HttpContext.Session.GetString("UserName");
             m.Mode = (m.Jobid > 0) ? 2 : 1;
             var resultJobId = await _management.AddEditJob(m);
-            TempData["SuccessMessage"] = m.Mode == 1 ? "Job posted successfully." : "Job updated successfully.";
-            return RedirectToAction("viewpostedjob", "Career");
+
+            if (m.Mode > 0)
+            {
+                HttpContext.Session.SetString("Message", "Job Update successfully.");
+                return RedirectToAction("viewpostedjob", "Career");
+            }
+            else
+            {
+                HttpContext.Session.SetString("Message", "Job Save successfully.");
+                return RedirectToAction("jobposting", "Career");
+            }
         }
 
         [HttpGet]
@@ -76,6 +107,29 @@ namespace skipper_group_new.Controllers
             ViewBag.Menus = menuList;
             ViewBag.Button = "Update";
             var result = await _management.GetJobPostById(jobID);
+
+            result.Skills = HttpUtility.HtmlDecode(result.Skills);
+            result.Qualification = HttpUtility.HtmlDecode(result.Qualification);
+            result.shortdesc = HttpUtility.HtmlDecode(result.shortdesc);
+
+            var x = await _management.GetProductSolutionList();
+            var filteredRows = x.AsEnumerable()
+                .Where(row => row.Field<bool>("status") == true);
+
+            DataTable dt = filteredRows.CopyToDataTable();
+
+
+            var list = dt.AsEnumerable()
+                .Select(r => new SelectListItem
+                {
+                    Value = r["productid"].ToString(),
+                    Text = r["productname"].ToString()
+                }).ToList();
+
+
+
+            ViewBag.EmpTypeList = new SelectList(list, "Value", "Text", result.EmpTypeId);
+
             return View("~/Views/backoffice/career/jobposting.cshtml", result);
         }
 
@@ -146,7 +200,8 @@ namespace skipper_group_new.Controllers
                 if (string.IsNullOrEmpty(applicant.AttachCV))
                 {
                     TempData["ErrorMessage"] = "Resume not uploaded.";
-                    return RedirectToAction("viewgeneral");                }
+                    return RedirectToAction("viewgeneral");
+                }
 
                 var cleanFileName = applicant.AttachCV.Replace("~/Uploads/Applications/", "").TrimStart('/', '\\');
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "Applications", cleanFileName);

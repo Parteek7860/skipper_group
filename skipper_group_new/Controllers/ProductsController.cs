@@ -3026,29 +3026,20 @@ namespace skipper_group_new.Controllers
             return Json(new { success = true });
         }
         [HttpGet]
-        [Route("backoffice/products/aboutproduct/{name}/{id}")]
-        public async Task<IActionResult> aboutproduct(string name, int id)
+        [Route("backoffice/products/aboutproduct/{name}/{pageid}")]
+        public async Task<IActionResult> aboutproduct(string name, int pageid)
         {   
             clsCategory objcls = new clsCategory();
             try
-            {
-                var routeId = HttpContext.GetRouteValue("id")?.ToString();
-                var menuList = _menuService.GetMenu();
-
-                if (routeId != null)
-                {
-                    menuList = menuList
-            .Where(x => x.pareentcode == "1")
-            .ToList();
-                }
-
+            {   
+                var menuList = _menuService.GetMenu(pageid);
                 ViewBag.Menus = menuList;
 
                 //Get Data
                 var x = await _products.GetAboutProduct();
                 if (x != null)
                 {
-                    var filterresult = x.AsEnumerable().Where(p => p.Field<int>("productid") == id).ToList();
+                    var filterresult = x.AsEnumerable().Where(p => p.Field<int>("productid") == pageid).ToList();
                     if (filterresult.Count > 0)
                     {
                         objcls.PcatId = Convert.ToInt16(filterresult[0]["mid"]);
@@ -3064,7 +3055,7 @@ namespace skipper_group_new.Controllers
                 //Get Name from route id
                 var prodDtl = await _products.BindProductSolution();
                 var filteredProdDtl = prodDtl.AsEnumerable()
-                    .Where(p => p.Field<int>("productid") == id)
+                    .Where(p => p.Field<int>("productid") == pageid)
                     .OrderByDescending(row => row.Field<int>("productid"))
                     .CopyToDataTable();
                 if (filteredProdDtl != null && filteredProdDtl.Rows.Count > 0)
@@ -3087,28 +3078,20 @@ namespace skipper_group_new.Controllers
 
 
         [HttpGet]
-        [Route("backoffice/products/addcapabilities/{name}/{id}")]
-        public async Task<IActionResult> addcapabilities(string name, int id)
+        [Route("backoffice/products/addcapabilities/{name}/{pageid}")]
+        public async Task<IActionResult> addcapabilities(string name, int pageid)
         {
 
             clsCategory objcls = new clsCategory();
             try
-            {
-                var routeId = HttpContext.GetRouteValue("id")?.ToString();
-                var menuList = _menuService.GetMenu();
-
-                if (routeId != null)
-                {
-                    menuList = menuList
-            .Where(x => x.pareentcode == "1")
-            .ToList();
-                }
+            {   
+                var menuList = _menuService.GetMenu(pageid);
                 ViewBag.Menus = menuList;
                 //Get Data
                 var x = await _products.GetProductCapabilities();
                 if (x != null)
                 {
-                    var filterresult = x.AsEnumerable().Where(p => p.Field<int>("productid") == id).ToList();
+                    var filterresult = x.AsEnumerable().Where(p => p.Field<int>("productid") == pageid).ToList();
                     if (filterresult.Count > 0)
                     {
                         objcls.PcatId = Convert.ToInt16(filterresult[0]["mid"]);
@@ -3124,7 +3107,7 @@ namespace skipper_group_new.Controllers
                 //Get Name from route id
                 var prodDtl = await _products.BindProductSolution();
                 var filteredProdDtl = prodDtl.AsEnumerable()
-                    .Where(p => p.Field<int>("productid") == id)
+                    .Where(p => p.Field<int>("productid") == pageid)
                     .OrderByDescending(row => row.Field<int>("productid"))
                     .CopyToDataTable();
                 if (filteredProdDtl != null && filteredProdDtl.Rows.Count > 0)

@@ -173,9 +173,9 @@
                                         int.TryParse(routeIdString, out routeId);
                                         
                                         <li>
-                                            @if (routeId > 0 && type != null)
+                                            @if (routeId > 0)
                                             {
-                                                <a href="@form.Url_name/@type/@Convert.ToInt16(routeId)">
+                                                <a href="@form.Url_name/micro/@Convert.ToInt16(routeId)">
                                                     <i class="your-default-icon"></i>
 
                                                     <span>@form.modulename</span>

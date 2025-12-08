@@ -31,6 +31,7 @@ namespace skipper_group_new.Repositories
 
         Task<int> AddEditJob(PostJobModel m);
         Task<List<PostJobModel>> GetJobList();
+        Task<DataTable> GetProductSolutionList();
         Task<PostJobModel> GetJobPostById(int jobID);
         Task<int> Delete(int jobID);
         Task<List<Applicationview>> GetApplicantsDetail();
@@ -390,7 +391,7 @@ namespace skipper_group_new.Repositories
             cmd.Parameters.AddWithValue("@shortdesc", job.shortdesc ?? "");
             cmd.Parameters.AddWithValue("@emailid", job.emailid ?? "");
             cmd.Parameters.AddWithValue("@rewriteurl", job.rewriteurl ?? "");
-            cmd.Parameters.AddWithValue("@noofvacancies", job.NoOfVacancies ?? "");
+          //  cmd.Parameters.AddWithValue("@noofvacancies", job.NoOfVacancies ?? "");
             cmd.Parameters.AddWithValue("@emptypeid", job.EmpTypeId ?? "");
             cmd.Parameters.AddWithValue("@Uname", job.Uname ?? "");
             cmd.Parameters.AddWithValue("@Mode", job.Mode ?? 0);
@@ -409,6 +410,26 @@ namespace skipper_group_new.Repositories
                 );
                 return result.ToList();
             }
+        }
+        public async Task<DataTable> GetProductSolutionList()
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("BindProductSolutionSP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    await conn.OpenAsync();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        dt.Load(reader);
+                    }
+                }
+            }
+
+            return dt;
         }
         public async Task<PostJobModel> GetJobPostById(int jobID)
         {

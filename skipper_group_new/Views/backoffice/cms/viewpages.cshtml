@@ -25,7 +25,17 @@
         </div>
     </div>
 </div>
+@if (ViewBag._Type != null)
+{
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="/backoffice/products/viewproductsolution" class="btn btn-success"><i class="zmdi zmdi-home"></i> Back to Product & Solution</a></li>
 
+            </ul>
+        </div>
+    </div>
+}
 @using (Html.BeginForm("viewpages", "CMS", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="row clearfix">
@@ -98,14 +108,33 @@
                                                             <img src="~/backoffice/images/@(item.PageStatus ? "active.png" : "wrong.png")" width="20" />
                                                         </a>
                                                     </td>
-                                                    <td>
-                                                        <a href="/backoffice/cms/edit/@item.Id">
+                                                    @{
+                                                        var pageid = Context.Session.GetString("microid");
+                                                    }
+                                                    @if (pageid != null)
+                                                    {
+                                                        <td>
+                                                        <a href="/backoffice/cms/edit/micro/@pageid/@item.Id">
                                                             <img src="~/backoffice/images/edit.png" width="20" />
                                                         </a>
-                                                        <a href="/backoffice/cms/delete/@item.Id">
+                                                        <a href="/backoffice/cms/delete/micro/@pageid/@item.Id">
                                                             <img src="~/backoffice/images/delete.png" width="20" />
                                                         </a>
                                                     </td>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            <a href="/backoffice/cms/edit/@item.Id">
+                                                                <img src="~/backoffice/images/edit.png" width="20" />
+                                                            </a>
+                                                            <a href="/backoffice/cms/delete/@item.Id">
+                                                                <img src="~/backoffice/images/delete.png" width="20" />
+                                                            </a>
+                                                        </td>
+                                                    }
+                                                    
                                                 </tr>
                                                 rowNumber++;
                                             }
@@ -115,7 +144,7 @@
 
 
 
-                                
+
                             </div>
                         }
                         else
@@ -125,7 +154,7 @@
                             </div>
                         }
 
-                        
+
 
                     </div>
                 </div>

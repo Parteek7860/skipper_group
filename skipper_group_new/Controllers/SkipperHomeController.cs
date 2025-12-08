@@ -76,6 +76,67 @@ namespace skipper_group_new.Controllers
             return View(obj);
         }
         [HttpGet]
+        public async Task<IActionResult> blog(int id)
+        {
+            clsHomeModel obj = new clsHomeModel();
+            await LoadSeoDataAsync(id);
+            await LoadCMSDataAsync(id);
+
+            var x = await _homePageService.GetBlogList();
+
+            var dt = x.AsEnumerable()
+            .Where(r => r.Field<bool>("status") == true)
+            .OrderByDescending(r => r.Field<DateTime>("blogdate"))  // latest first
+            .ToList();
+
+            // First 3 records
+            var top3 = dt.Take(3).ToList();
+            if (top3.Any())
+                ViewBag.RecentBlogList = top3.CopyToDataTable();
+            else
+                ViewBag.RecentBlogList = new DataTable(); // empty table
+
+            // Remaining records
+            var others = dt.Skip(3).ToList();
+            if (others.Any())
+                ViewBag.BlogList = others.CopyToDataTable();
+            else
+                ViewBag.BlogList = new DataTable();
+
+
+            return View("blog", obj);
+        }
+        [HttpGet]
+        [Route("details/{title}/{blogid:int}")]
+        public async Task<IActionResult> blogdetail(string title, int blogid)
+        {
+            await LoadTableSeoDataAsync("blogs", "blogid", blogid);
+            await LoadCMSDataAsync(13);
+            clsBlog obj = new clsBlog();
+
+
+            var x = await _homePageService.GetBlogList();
+            DataRow[] results = x.Select($"status=1 and blogid='{blogid.ToString()}'");
+            if (results.Length > 0)
+            {
+                DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
+                obj.BlogId = Convert.ToInt32(dt.Rows[0]["blogid"]);
+                obj.BlogTitle = Convert.ToString(dt.Rows[0]["blogtitle"]);
+                obj.CompanyName = Convert.ToString(dt.Rows[0]["companyname"]);
+                obj.BlogDate = Convert.ToDateTime(dt.Rows[0]["blogdate"]);
+
+                obj.LongDesc = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["longdesc"]));
+            }
+            var y = await _homePageService.GetBlogList();
+            var filterlist = y.AsEnumerable()
+                   .Where(r => r.Field<bool>("status") == true && r.Field<int>("blogid") != blogid)
+                   .OrderBy(r => r.Field<int>("displayorder"))
+                   .CopyToDataTable();
+            ViewBag.BlogList = filterlist;
+
+            return View("blogdetail", obj);
+        }
+        [HttpGet]
         public async Task<IActionResult> contactus(int id)
         {
             EnquiryModel obj = new EnquiryModel();
@@ -104,7 +165,6 @@ namespace skipper_group_new.Controllers
             return View("contactus", obj);
         }
         [HttpPost]
-
         public async Task<IActionResult> contactus(EnquiryModel cls, int id)
         {
             await LoadSeoDataAsync(10);
@@ -240,7 +300,7 @@ namespace skipper_group_new.Controllers
         [HttpGet]
         [Route("leadership-details/{title}/{id:int}")]
         public async Task<IActionResult> leadershipdetail(string title, int id)
-        {   
+        {
             await LoadCMSDataAsync(19);
             clsTeamType obj = new clsTeamType();
             var x = await _homePageService.GetLeadershipList();

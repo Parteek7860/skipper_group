@@ -23,6 +23,17 @@
         </div>
     </div>
 </div>
+@if (ViewBag._Type != null)
+{
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="/backoffice/products/viewproductsolution" class="btn btn-success"><i class="zmdi zmdi-home"></i> Back to Product & Solution</a></li>
+
+            </ul>
+        </div>
+    </div>
+}
 
 @using (Html.BeginForm("addhomebannertype", "HomeBanner", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -41,6 +52,7 @@
                                     <label> Banner Type</label>
                                     @Html.HiddenFor(model => model.btypeid)
                                     @Html.HiddenFor(model => model.status)
+                                    @Html.HiddenFor(model => model.collageid)
                                     @Html.DropDownListFor(model => model.btype, Model.bannertypeselect, "Select Banner", new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.btype, "", new { @class = "text-danger" })
                                 </div>
@@ -121,7 +133,7 @@
                         {
                             <div class="col-lg-12 my-lg-2 text-lg-center message-top2">
                                 Records not found
-                            </div> 
+                            </div>
                         }
 
                     </div>
@@ -130,7 +142,7 @@
         </div>
     </div>
 
-   
+
 
 
 }

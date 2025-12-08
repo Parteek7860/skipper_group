@@ -31,5 +31,6 @@ namespace skipper_group_new.Repositories
         Task<DataTable> GetProductCapabilities();
         Task<DataTable> GetDynamicTableSEO(string table_name);
         Task<DataTable> GetLeadershipList();
+        Task<DataTable> GetBlogList();
     }
 }

@@ -1,0 +1,93 @@
+﻿@model skipper_group_new.Models.clsBlog;
+@using skipper_group_new.mainclass;
+@using System.Data;
+@{
+    Layout = "~/Views/Shared/_cms.cshtml";
+    DataTable dataTable = ViewBag.BlogList as DataTable;
+}
+
+@if (Model != null && Model.BlogId > 0)
+{
+    <section class="blog-detail_one">
+        <div class="container">
+            <div class="blog_cover-Page">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="blog-detls">
+                            <div class="blg-dtls">
+                                <div class="date_sec">
+                                    <p data-aos="fade-up" data-aos-delay="200">@Convert.ToDateTime(Model.BlogDate).ToString("dd-MMM-yyyy") <span>Admin</span></p>
+                                    <h3 data-aos="fade-up" data-aos-delay="300">@Model.BlogTitle</h3>
+                                </div>
+                            </div>
+                            @Html.Raw(System.Net.WebUtility.HtmlDecode(Model.LongDesc))
+                        </div>
+                    </div>
+                </div>
+                <div class="vrtcl-line">
+                    <figure>
+                        <img src="/images/icon/vertical-line.svg" class="image2" alt="vertical-line">
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section>
+    @if (dataTable.Rows.Count > 0)
+    {
+        <section class="blog-detail_two">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 mx-auto">
+                        <div class="title_sec" data-aos="fade-up" data-aos-delay="200">
+                            <h3>Related News</h3>
+                        </div>
+                        <div class="relatedblog" data-aos="fade-up" data-aos-delay="300">
+                            <div class="swiper related-blog-slider">
+                                <div class="swiper-wrapper">
+                                    @foreach (DataRow item in dataTable.Rows)
+                                    {
+                                        <div class="swiper-slide">
+                                            <div class="blog_lft">
+                                                <figure>
+                                                    <img src="/uploads/blogs/@item["blogimage"]"
+                                                         alt="@item["blogtitle"]"
+                                                         class="img-fluid w-100" />
+
+                                                    <figcaption>
+                                                        <div class="date">
+                                                            <p data-aos="fade-up" data-aos-delay="200">
+                                                                @Convert.ToDateTime(item["blogdate"]).ToString("dd-MMM-yyyy")
+                                                                <span>Admin</span>
+                                                            </p>
+                                                        </div>
+
+                                                        <div class="blog-title">
+                                                            <h6>@item["blogtitle"]</h6>
+                                                        </div>
+
+                                                        <div class="img-icon">
+                                                            <img src="/images/icon/subtraction-103.svg"
+                                                                 alt="subtraction-103"
+                                                                 class="image2 reveal-image2">
+                                                        </div>
+                                                    </figcaption>
+
+                                                    <a href="/details/@Convert.ToString(item["blogtitle"]).ToLower().ToSlug()/@Convert.ToInt16(item["blogid"])"
+                                                       class="streched_link"></a>
+                                                </figure>
+                                            </div>
+                                        </div>
+                                    }
+
+
+                                </div>
+                            </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+
+}

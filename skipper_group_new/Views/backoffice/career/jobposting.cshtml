@@ -47,6 +47,20 @@
                         Fields with * are mandatory
                     </h2>
                     @Html.HiddenFor(model => model.Jobid)
+                    @Html.HiddenFor(model => model.Status)
+                    @Html.HiddenFor(model => model.rewriteurl)
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Division</label>
+                                    @Html.DropDownListFor(model => model.EmpTypeId,
+                                    (IEnumerable<SelectListItem>)ViewBag.EmpTypeList, "-- Select Division --", new { @class = "form-control", style = "border:1px solid #ccc; border-radius:4px;" })
+                                    @Html.ValidationMessageFor(m => m.EmpTypeId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row clearfix">
                         <div class="col-sm-6">
                             <div class="form-group">
@@ -117,26 +131,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Employee Type</label>
-                                    @Html.TextBoxFor(model => model.EmpTypeId, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.EmpTypeId, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Qualification</label>
-                                    @Html.TextBoxFor(model => model.Qualification, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.Qualification, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
+                     
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
@@ -147,278 +142,267 @@
                             </div>
                         </div>
                     </div>
+                   
                     <div class="row clearfix">
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Min Experience Year</label>
                                     @Html.DropDownListFor(model => model.Min_Expyear,
-                                             new SelectList(new[]
-                                             {
-                                new { Value = "", Text = "-- Select Year --" },
-                                new { Value = "0", Text = "0 Year" },
-                                new { Value = "1", Text = "1 Year" },
-                                new { Value = "2", Text = "2 Years" },
-                                new { Value = "3", Text = "3 Years" },
-                                new { Value = "4", Text = "4 Years" },
-                                new { Value = "5", Text = "5 Years" },
-                                new { Value = "6", Text = "6 Years" },
-                                new { Value = "7", Text = "7 Years" },
-                                new { Value = "8", Text = "8 Years" },
-                                new { Value = "9", Text = "9 Years" },
-                                new { Value = "10", Text = "10 Years" },
-                                new { Value = "11", Text = "11 Years" },
-                                new { Value = "12", Text = "12 Years" },
-                                new { Value = "13", Text = "13 Years" },
-                                new { Value = "14", Text = "14 Years" },
-                                new { Value = "15", Text = "15 Years" },
-                                new { Value = "16", Text = "16 Years" },
-                                new { Value = "17", Text = "17 Years" },
-                                new { Value = "18", Text = "18 Years" },
-                                new { Value = "19", Text = "19 Years" },
-                                new { Value = "20", Text = "20 Years" },
-                                new { Value = "21", Text = "21 Years" },
-                                new { Value = "22", Text = "22 Years" },
-                                new { Value = "23", Text = "23 Years" },
-                                new { Value = "24", Text = "24 Years" },
-                                new { Value = "25", Text = "25 Years" }
-                                }, "Value", "Text", Model?.Min_Expyear),
-                                             new { @class = "form-control" })
+                                    new SelectList(new[]
+                                    {
+                                                                new { Value = "", Text = "-- Select Year --" },
+                                                                new { Value = "0", Text = "0 Year" },
+                                                                new { Value = "1", Text = "1 Year" },
+                                                                new { Value = "2", Text = "2 Years" },
+                                                                new { Value = "3", Text = "3 Years" },
+                                                                new { Value = "4", Text = "4 Years" },
+                                                                new { Value = "5", Text = "5 Years" },
+                                                                new { Value = "6", Text = "6 Years" },
+                                                                new { Value = "7", Text = "7 Years" },
+                                                                new { Value = "8", Text = "8 Years" },
+                                                                new { Value = "9", Text = "9 Years" },
+                                                                new { Value = "10", Text = "10 Years" },
+                                                                new { Value = "11", Text = "11 Years" },
+                                                                new { Value = "12", Text = "12 Years" },
+                                                                new { Value = "13", Text = "13 Years" },
+                                                                new { Value = "14", Text = "14 Years" },
+                                                                new { Value = "15", Text = "15 Years" },
+                                                                new { Value = "16", Text = "16 Years" },
+                                                                new { Value = "17", Text = "17 Years" },
+                                                                new { Value = "18", Text = "18 Years" },
+                                                                new { Value = "19", Text = "19 Years" },
+                                                                new { Value = "20", Text = "20 Years" },
+                                                                new { Value = "21", Text = "21 Years" },
+                                                                new { Value = "22", Text = "22 Years" },
+                                                                new { Value = "23", Text = "23 Years" },
+                                                                new { Value = "24", Text = "24 Years" },
+                                                                new { Value = "25", Text = "25 Years" }
+                                                                }, "Value", "Text", Model?.Min_Expyear),
+                                                                new { @class = "form-control" })
 
-                                    @Html.ValidationMessageFor(m => m.Min_Expyear, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Min Experience Month</label>
-                                    @Html.DropDownListFor(model => model.Min_Expmonth,
-                                             new SelectList(new[]                                             {
-                                new { Value = "", Text = "-- Select Month --" },
-                                new { Value = "0", Text = "0 Month" },
-                                new { Value = "1", Text = "1 Month" },
-                                new { Value = "2", Text = "2 Months" },
-                                new { Value = "3", Text = "3 Months" },
-                                new { Value = "4", Text = "4 Months" },
-                                new { Value = "5", Text = "5 Months" },
-                                new { Value = "6", Text = "6 Months" },
-                                new { Value = "7", Text = "7 Months" },
-                                new { Value = "8", Text = "8 Months" },
-                                new { Value = "9", Text = "9 Months" },
-                                new { Value = "10", Text = "10 Months" },
-                                new { Value = "11", Text = "11 Months" }
-                                }, "Value", "Text", Model?.Min_Expmonth), new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.Min_Expmonth, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Max Experience Year</label>
-                                    @Html.DropDownListFor(model => model.Max_Expyear, new SelectList(new[]
-                                             {
-                                new { Value = "", Text = "-- Select Year --" },
-                                new { Value = "0", Text = "0 Year" },
-                                new { Value = "1", Text = "1 Year" },
-                                new { Value = "2", Text = "2 Years" },
-                                new { Value = "3", Text = "3 Years" },
-                                new { Value = "4", Text = "4 Years" },
-                                new { Value = "5", Text = "5 Years" },
-                                new { Value = "6", Text = "6 Years" },
-                                new { Value = "7", Text = "7 Years" },
-                                new { Value = "8", Text = "8 Years" },
-                                new { Value = "9", Text = "9 Years" },
-                                new { Value = "10", Text = "10 Years" },
-                                new { Value = "11", Text = "11 Years" },
-                                new { Value = "12", Text = "12 Years" },
-                                new { Value = "13", Text = "13 Years" },
-                                new { Value = "14", Text = "14 Years" },
-                                new { Value = "15", Text = "15 Years" },
-                                new { Value = "16", Text = "16 Years" },
-                                new { Value = "17", Text = "17 Years" },
-                                new { Value = "18", Text = "18 Years" },
-                                new { Value = "19", Text = "19 Years" },
-                                new { Value = "20", Text = "20 Years" },
-                                new { Value = "21", Text = "21 Years" },
-                                new { Value = "22", Text = "22 Years" },
-                                new { Value = "23", Text = "23 Years" },
-                                new { Value = "24", Text = "24 Years" },
-                                new { Value = "25", Text = "25 Years" }
-                                }, "Value", "Text", Model?.Max_Expyear), new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.Max_Expyear, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Max Experience Month</label>
-                                    @Html.DropDownListFor(model => model.Max_Expmonth, new SelectList(new[]
-                                             {
-                                new { Value = "", Text = "-- Select Month --" },
-                                new { Value = "0", Text = "0 Month" },
-                                new { Value = "1", Text = "1 Month" },
-                                new { Value = "2", Text = "2 Months" },
-                                new { Value = "3", Text = "3 Months" },
-                                new { Value = "4", Text = "4 Months" },
-                                new { Value = "5", Text = "5 Months" },
-                                new { Value = "6", Text = "6 Months" },
-                                new { Value = "7", Text = "7 Months" },
-                                new { Value = "8", Text = "8 Months" },
-                                new { Value = "9", Text = "9 Months" },
-                                new { Value = "10", Text = "10 Months" },
-                                new { Value = "11", Text = "11 Months" }
-                                }, "Value", "Text", Model?.Max_Expmonth), new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.Max_Expmonth, "", new { @class = "text-danger" })
-                                </div>
+                                @Html.ValidationMessageFor(m => m.Min_Expyear, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
 
-                    <div class="row clearfix">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Required skills</label>
-                                    @Html.TextBoxFor(model => model.Skills, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.Skills, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Short Description</label>
-                                    @Html.TextAreaFor(model => model.shortdesc, new { @class = "form-control editor1", @id = "editor1", @rows = "10" })
-                                    @Html.ValidationMessageFor(m => m.shortdesc, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Description</label>
-                                    @Html.TextAreaFor(model => model.JobDesc, new { @class = "form-control editor1", @id = "editor2", @rows = "10" })
-                                    @Html.ValidationMessageFor(m => m.JobDesc, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Job Opening Date</label>
-                                    @Html.TextBoxFor(model => model.JobOpening_date, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                                    @Html.ValidationMessageFor(m => m.JobOpening_date, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Job Closing Date</label>
-                                    @Html.TextBoxFor(model => model.JobClosing_date, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                                    @Html.ValidationMessageFor(m => m.JobClosing_date, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <p>@ViewBag.error</p>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Age year</label>
-                                    @Html.TextBoxFor(model => model.Ageyear, new { @class = "form-control" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Age month</label>
-                                    @Html.TextBoxFor(model => model.Agemonth, new { @class = "form-control" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Company</label>
-                                    @Html.TextBoxFor(model => model.company, new { @class = "form-control" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Location</label>
-                                    @Html.TextBoxFor(model => model.Location, new { @class = "form-control" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Display Order</label>
-                                    @Html.EditorFor(model => model.displayorder, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Rewrite URL</label>
-                                    @Html.EditorFor(model => model.rewriteurl, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Min Experience Month</label>
+                                @Html.DropDownListFor(model => model.Min_Expmonth,
+                                                                new SelectList(new[]                                             {
+                                                                new { Value = "", Text = "-- Select Month --" },
+                                                                new { Value = "0", Text = "0 Month" },
+                                                                new { Value = "1", Text = "1 Month" },
+                                                                new { Value = "2", Text = "2 Months" },
+                                                                new { Value = "3", Text = "3 Months" },
+                                                                new { Value = "4", Text = "4 Months" },
+                                                                new { Value = "5", Text = "5 Months" },
+                                                                new { Value = "6", Text = "6 Months" },
+                                                                new { Value = "7", Text = "7 Months" },
+                                                                new { Value = "8", Text = "8 Months" },
+                                                                new { Value = "9", Text = "9 Months" },
+                                                                new { Value = "10", Text = "10 Months" },
+                                                                new { Value = "11", Text = "11 Months" }
+                                                                }, "Value", "Text", Model?.Min_Expmonth), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Min_Expmonth, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
 
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Status</label>
-                                    @Html.TextBoxFor(model => model.Status, new { @class = "form-control" })
-                                </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Max Experience Year</label>
+                                @Html.DropDownListFor(model => model.Max_Expyear, new SelectList(new[]
+                                                                {
+                                        new { Value = "", Text = "-- Select Year --" },
+                                                                new { Value = "0", Text = "0 Year" },
+                                                                new { Value = "1", Text = "1 Year" },
+                                                                new { Value = "2", Text = "2 Years" },
+                                                                new { Value = "3", Text = "3 Years" },
+                                                                new { Value = "4", Text = "4 Years" },
+                                                                new { Value = "5", Text = "5 Years" },
+                                                                new { Value = "6", Text = "6 Years" },
+                                                                new { Value = "7", Text = "7 Years" },
+                                                                new { Value = "8", Text = "8 Years" },
+                                                                new { Value = "9", Text = "9 Years" },
+                                                                new { Value = "10", Text = "10 Years" },
+                                                                new { Value = "11", Text = "11 Years" },
+                                                                new { Value = "12", Text = "12 Years" },
+                                                                new { Value = "13", Text = "13 Years" },
+                                                                new { Value = "14", Text = "14 Years" },
+                                                                new { Value = "15", Text = "15 Years" },
+                                                                new { Value = "16", Text = "16 Years" },
+                                                                new { Value = "17", Text = "17 Years" },
+                                                                new { Value = "18", Text = "18 Years" },
+                                                                new { Value = "19", Text = "19 Years" },
+                                                                new { Value = "20", Text = "20 Years" },
+                                                                new { Value = "21", Text = "21 Years" },
+                                                                new { Value = "22", Text = "22 Years" },
+                                                                new { Value = "23", Text = "23 Years" },
+                                                                new { Value = "24", Text = "24 Years" },
+                                                                new { Value = "25", Text = "25 Years" }
+                                                                }, "Value", "Text", Model?.Max_Expyear), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Max_Expyear, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
-                    <div class="row clearfix">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <input type="submit" class="btn btn-success btn-lg mx-2" value="@ViewBag.Button" />
-                            <a href="~/Views/backoffice/career/viewpostedjob.cshtml" class="btn btn-secondary btn-lg mx-2">Cancel</a>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Max Experience Month</label>
+                                @Html.DropDownListFor(model => model.Max_Expmonth, new SelectList(new[]
+                                                                {
+                                        new { Value = "", Text = "-- Select Month --" },
+                                                                new { Value = "0", Text = "0 Month" },
+                                                                new { Value = "1", Text = "1 Month" },
+                                                                new { Value = "2", Text = "2 Months" },
+                                                                new { Value = "3", Text = "3 Months" },
+                                                                new { Value = "4", Text = "4 Months" },
+                                                                new { Value = "5", Text = "5 Months" },
+                                                                new { Value = "6", Text = "6 Months" },
+                                                                new { Value = "7", Text = "7 Months" },
+                                                                new { Value = "8", Text = "8 Months" },
+                                                                new { Value = "9", Text = "9 Months" },
+                                                                new { Value = "10", Text = "10 Months" },
+                                                                new { Value = "11", Text = "11 Months" }
+                                                                }, "Value", "Text", Model?.Max_Expmonth), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Max_Expmonth, "", new { @class = "text-danger" })
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Required Skill</label>
+                                @Html.TextAreaFor(model => model.Skills, new { @class = "form-control editor1", @id = "editor3", @rows = "10" })
+                                @Html.ValidationMessageFor(m => m.Skills, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Qualification</label>
+                                @Html.TextAreaFor(model => model.Qualification, new { @class = "form-control editor1", @id = "editor4", @rows = "10" })
+                                @Html.ValidationMessageFor(m => m.Qualification, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Short Description</label>
+                                @Html.TextAreaFor(model => model.shortdesc, new { @class = "form-control editor1", @id = "editor1", @rows = "10" })
+                                @Html.ValidationMessageFor(m => m.shortdesc, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Description</label>
+                                @Html.TextAreaFor(model => model.JobDesc, new { @class = "form-control editor1", @id = "editor2", @rows = "10" })
+                                @Html.ValidationMessageFor(m => m.JobDesc, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Job Opening Date</label>
+                                @Html.TextBoxFor(model => model.JobOpening_date, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                @Html.ValidationMessageFor(m => m.JobOpening_date, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Job Closing Date</label>
+                                @Html.TextBoxFor(model => model.JobClosing_date, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                @Html.ValidationMessageFor(m => m.JobClosing_date, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p>@ViewBag.error</p>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Age year</label>
+                                @Html.TextBoxFor(model => model.Ageyear, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Age month</label>
+                                @Html.TextBoxFor(model => model.Agemonth, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Company</label>
+                                @Html.TextBoxFor(model => model.company, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Location</label>
+                                @Html.TextBoxFor(model => model.Location, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Display Order</label>
+                                @Html.EditorFor(model => model.displayorder, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row clearfix">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <input type="submit" class="btn btn-success btn-lg mx-2" value="@ViewBag.Button" />
+                        <a href="~/Views/backoffice/career/viewpostedjob.cshtml" class="btn btn-secondary btn-lg mx-2">Cancel</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 }
-@{
-    var nonce = Context.Items["CSPNonce"]?.ToString();
-}
-<script nonce="@nonce" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script nonce="@nonce" src="~/ckeditor/ckeditor.js"></script>
-<script nonce="@nonce">
-    $(document).ready(function ()
-    {
-        $('.editor1').each(function () {
-            CKEDITOR.replace($(this).prop('id'));
-        });
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="~/ckeditor/ckeditor.js"></script>
+
+
+<script>
+    $('.editor1').each(function () {
+        CKEDITOR.replace($(this).prop('id'));
     });
 </script>

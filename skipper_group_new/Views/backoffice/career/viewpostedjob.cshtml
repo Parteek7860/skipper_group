@@ -35,40 +35,38 @@
 
                         @if (j != null && j.Any())
                         {
-                            <div class="row mb-3" style="justify-content: space-between; align-items: center;">
-                                <!-- From Date -->
-                                <div class="col-md-3" style="padding-right: 10px;">
+                             <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="searchTable()" />
+                            <div class="row" style="margin-top:20px;">
+                                
+                                <div class="col-md-4">
                                     <label for="fromDate" style="font-weight: bold;">From Date</label>
                                     <input type="date" id="fromDate" class="form-control" style="border-radius: 5px; border: 1px solid #ddd;" />
                                 </div>
-                                <!-- To Date -->
-                                <div class="col-md-3" style="padding-right: 10px;">
+                                
+                                <div class="col-md-4"">
                                     <label for="toDate" style="font-weight: bold;">To Date</label>
                                     <input type="date" id="toDate" class="form-control" style="border-radius: 5px; border: 1px solid #ddd;" />
                                 </div>
-                                <!-- Filter Button -->
-                                <div class="col-md-2 align-self-end" style="text-align: center;">
-                                    <button class="btn btn-primary" type="button" onclick="filterByDate()" style="width: 100%; padding: 10px; border-radius: 5px; font-weight: bold;">Filter</button>
-                                </div>
-                                <!-- Export Button -->
-                                @* <div class="col-md-2 align-self-end" style="text-align: center;">
-                                    <form method="post" asp-controller="Products" asp-action="ExportProductToExcel">
-                                        <button type="submit" class="btn btn-success" style="width: 100%; padding: 10px; border-radius: 5px; font-weight: bold;">Export to Excel</button>
-                                    </form>
-                                </div> *@
+                                
                             </div>
-
-                            <!-- Search Input -->
-                            <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="searchTable()" />
+                            <div class="row" style="margin-bottom: 20px;">
+                             <div class="col-md-2" style="padding-top:10px;">
+                                    <button class="btn btn-primary" type="button" onclick="filterByDate()"  style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important" >Search</button>
+                                </div>
+                          </div>
 
                             <!-- Product Table -->
                             <table class="table table-bordered" id="productTable">
                                 <thead class="table-header">
                                     <tr>
+                                        <th>Srno </th>
+                                        <th>Division </th>
+                                        <th>Job Code </th>
                                         <th>Job Title </th>
                                         <th>Category</th>
-                                        <th>Qualification</th>
-                                        <th>NoOfVacancies</th>
+                                        <th>Opening Date</th>
+                                        <th>Closing Date</th>
+                                        <th>Display Order </th>
                                         <th>Date</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -78,10 +76,28 @@
                                     @foreach (var i in j)
                                     {
                                         <tr>
+                                            <td>@i.srno</td>
+                                            <td>@i.productname</td>
+                                            <td>@i.JobCode</td>
                                             <td>@i.JobTitle</td>
                                             <td>@i.jobcategory</td>
-                                            <td>@i.Qualification</td>
-                                            <td>@i.NoOfVacancies</td>
+                                          
+                                            
+                                            <td>@Convert.ToDateTime(i.JobOpening_date).ToString("dd-MM-yyyy")</td>
+                                            <td>
+                                                @{
+                                                    DateTime d = Convert.ToDateTime(i.JobClosing_date);
+                                                    if (d == DateTime.MinValue || d.Year == 1900)
+                                                    {
+                                                        @("")  // show blank or "N/A"
+                                                    }
+                                                    else
+                                                    {
+                                                        @d.ToString("dd-MM-yyyy")
+                                                    }
+                                                }
+                                            </td>
+                                            <td>@i.displayorder</td>
                                             <td>@i.trDate</td>
                                             <td>
                                                 @if (i.Status == true)

@@ -27,6 +27,8 @@ namespace skipper_group_new.Service
 
         Task<int> AddEditJob(PostJobModel m);
         Task<List<PostJobModel>> GetJobList();
+
+        Task<DataTable> GetProductSolutionList();
         Task<PostJobModel> GetJobPostById(int jobID);
         Task<int> Delete(int jobID);
         Task<List<Applicationview>> GetApplicantsDetail();
@@ -135,6 +137,11 @@ namespace skipper_group_new.Service
         public async Task<List<PostJobModel>> GetJobList()
         {
             return await _repository.GetJobList();
+        }
+
+        public async Task<DataTable> GetProductSolutionList()
+        {
+            return await _repository.GetProductSolutionList();
         }
 
         public async Task<PostJobModel> GetJobPostById(int jobID)

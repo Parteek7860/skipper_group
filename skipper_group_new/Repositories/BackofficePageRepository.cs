@@ -309,7 +309,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@restricted", false);
                     cmd.Parameters.AddWithValue("@target", DBNull.Value);
                     cmd.Parameters.AddWithValue("@tagline", cls.tagline1 ?? "");
-                    cmd.Parameters.AddWithValue("@collageid", 0);
+                    cmd.Parameters.AddWithValue("@collageid", cls.collageid);
                     cmd.Parameters.AddWithValue("@canonical", cls.canonical ?? "");
                     cmd.Parameters.AddWithValue("@no_indexfollow", false);
                     cmd.Parameters.AddWithValue("@other_schema", DBNull.Value);

@@ -1,0 +1,94 @@
+﻿@model skipper_group_new.Models.clsHomeModel;
+@using skipper_group_new.mainclass;
+@using System.Data;
+@{
+    Layout = "~/Views/Shared/_cms.cshtml";
+    DataTable dt = ViewBag.BlogList as DataTable;
+    DataTable dtrelated = ViewBag.RecentBlogList as DataTable;
+}
+@if (dt.Rows.Count > 0)
+{
+    <section class="blog_one">
+        <div class="container">
+            <div class="blog-cntnr">
+                <div class="row">
+                    <div class="col-lg-10 mx-auto">
+                        <div class="blog-grid">
+
+                            <div class="blog_lft">
+                                @foreach (DataRow row in dt.Rows)
+                                {
+                                    <figure>
+                                        <img src="/uploads/blogs/@Convert.ToString(row["blogimage"])"
+                                             alt="@Convert.ToString(row["blogtitle"])"
+                                             data-aos="fade-up" data-aos-delay="200" class="img-fluid w-100">
+                                        <figcaption>
+                                            <div class="date" data-aos="fade-up" data-aos-delay="300">
+                                                <p>@Convert.ToDateTime(row["blogdate"]).ToString("dd-MMM-yyyy")<span>Admin</span></p>
+                                            </div>
+                                            <div class="blog-title" data-aos="fade-up" data-aos-delay="400">
+                                                <h6>
+                                                    @Convert.ToString(row["blogtitle"])
+                                                </h6>
+                                                <p>
+                                                    @Convert.ToString(row["companyname"])
+                                                </p>
+                                            </div>
+                                            <div class="img-icon">
+                                                <img src="/images/icon/subtraction-103.svg"
+                                                     alt="subtraction-103" class="image2">
+                                            </div>
+                                        </figcaption>
+                                        <div class="img-icon-big">
+                                            <img src="/images/icon/Subtraction112.svg"
+                                                 class="image2" alt="Subtraction-1">
+                                        </div>
+                                        <a href="/details/@Convert.ToString(row["blogtitle"]).ToLower().ToSlug()/@Convert.ToInt16(row["blogid"])"
+                                           class="streched_link"></a>
+                                    </figure>
+                                }
+                            </div>
+                            @if (dtrelated.Rows.Count > 0)
+                            {
+                                <div class="blog_rgt">
+                                    <h3 data-aos="fade-up" data-aos-delay="200">Archived Blogs</h3>
+                                    @foreach (DataRow row in dtrelated.Rows)
+                                    {
+                                        <div class="archived-blogs">
+                                            <figure>
+                                                <img src="/uploads/blogs/@Convert.ToString(row["blogimage"])"
+                                                     alt="@Convert.ToString(row["blogtitle"])" class="img-fluid w-100"
+                                                     data-aos="fade-up" data-aos-delay="200">
+                                                <figcaption>
+                                                    <div class="date" data-aos="fade-up" data-aos-delay="300">
+                                                        <p>@Convert.ToDateTime(row["blogdate"]).ToString("dd-MMM-yyyy") <span>Admin</span></p>
+                                                    </div>
+                                                    <div class="blog-title" data-aos="fade-up" data-aos-delay="400">
+                                                        <h6>@Convert.ToString(row["blogtitle"])</h6>
+                                                    </div>
+                                                    <div class="img-icon">
+                                                        <img src="/images/icon/subtraction-103.svg"
+                                                             alt="subtraction-103" class="image2">
+                                                    </div>
+                                                </figcaption>
+                                            </figure>
+                                            <a href="/details/@Convert.ToString(row["blogtitle"]).ToLower().ToSlug()/@Convert.ToInt16(row["blogid"])"
+                                               class="streched_link"></a>
+                                        </div>
+
+                                    }
+
+
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+                <div class="vrtcl-line">
+                    <figure><img src="/images/icon/vertical-line.svg" class="image2" alt="vertical-line"></figure>
+                </div>
+            </div>
+        </div>
+    </section>
+}

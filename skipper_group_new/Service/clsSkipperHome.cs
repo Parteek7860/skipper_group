@@ -40,6 +40,7 @@ namespace skipper_group_new.Service
         public Task<DataTable> GetProductCapabilities() => this._repository.GetProductCapabilities();
         public Task<DataTable> GetDynamicTableSEO(string table_name) => this._repository.GetDynamicTableSEO(table_name);
         public Task<DataTable> GetLeadershipList() => this._repository.GetLeadershipList();
+        public Task<DataTable> GetBlogList() => this._repository.GetBlogList();
     }
 
 }

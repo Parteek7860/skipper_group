@@ -512,13 +512,14 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@devicetype", obj.devicetype1);
                     cmd.Parameters.AddWithValue("@tagline1", obj.tagline1);
                     cmd.Parameters.AddWithValue("@displayorder", obj.displayorder);
-                    cmd.Parameters.AddWithValue("@url", obj.url);
+                    
                     cmd.Parameters.AddWithValue("@status", obj.status);
                     cmd.Parameters.AddWithValue("@bannerimage", obj.uploadbanner);
                     cmd.Parameters.AddWithValue("@blogo", "");
                     cmd.Parameters.AddWithValue("@startdate", obj.startdate);
                     cmd.Parameters.AddWithValue("@enddate", obj.enddate);
                     cmd.Parameters.AddWithValue("@collageid", obj.collageid);
+                    cmd.Parameters.AddWithValue("@url", obj.url ?? string.Empty);
                     cmd.Parameters.AddWithValue("@uname", obj.uname);
                     cmd.Parameters.AddWithValue("@tagline2", "");
                     cmd.Parameters.AddWithValue("@mode", obj.mode);

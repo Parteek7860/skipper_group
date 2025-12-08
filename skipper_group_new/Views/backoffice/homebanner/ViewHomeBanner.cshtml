@@ -22,7 +22,17 @@
         </div>
     </div>
 </div>
+@if (ViewBag._Type != null)
+{
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="/backoffice/products/viewproductsolution" class="btn btn-success"><i class="zmdi zmdi-home"></i> Back to Product & Solution</a></li>
 
+            </ul>
+        </div>
+    </div>
+}
 @* @using (Html.BeginForm("viewbanner", "HomeBanner", FormMethod.Post, new { enctype = "multipart/form-data" }))
 { *@
     <div class="row clearfix">

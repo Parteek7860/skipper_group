@@ -30,20 +30,22 @@ namespace skipper_group_new.Controllers
 
             var menuList = _menuService.GetMenu(pageid);
             ViewBag.Menus = menuList;
-            if (pageid != null)
+
+            if (pageid > 0)
             {
-                obj.selectparent = _backofficeService.GetPageList().Result.AsEnumerable()
-            .Where(row => row.Field<int>("collageid") == pageid)
+                var content = _backofficeService.GetPageList().Result;
+                var pageList = BuildHierarchy(content, 0, 0, pageid);
+                obj.selectparent = pageList.AsEnumerable()
             .Select(row => new SelectListItem
             {
-                Value = row.Field<int>("pageid").ToString(),
-                Text = row.Field<string>("linkname")
+                Value = row.Id.ToString(),
+                Text = WebUtility.HtmlDecode(row.DisplayName).ToString()
             }).ToList();
             }
             else
             {
                 var content = _backofficeService.BindPageList().Result;
-                var pageList = BuildHierarchy(content, 0, 0);
+                var pageList = BuildHierarchy(content, 0, 0, pageid);
                 obj.selectparent = pageList.AsEnumerable()
              .Where(x => x.collageid == 0)
             .Select(row => new SelectListItem
@@ -64,21 +66,52 @@ namespace skipper_group_new.Controllers
             obj.linkposition = names;
             ViewBag.CreateUpdate = "Save";
 
+            if (pageid > 0)
+            {
+                ViewBag._Type = "micro";
+            }
+
             return View("~/Views/backoffice/cms/addpages.cshtml", obj);
         }
         [HttpPost]
         [Route("backoffice/cms/addpages")]
-        public IActionResult addpages(clsCMS cls, IFormCollection frm, IFormFile file_Uploader)
+        [Route("backoffice/cms/addpages/{name}/{pageid:int}")]
+        public IActionResult addpages(clsCMS cls, IFormCollection frm, IFormFile file_Uploader, int? pageid)
         {
             var obj = new clsCMS();
-            ViewBag.Menus = _menuService.GetMenu();
+            ViewBag.Menus = _menuService.GetMenu(cls.collageid);
 
-            obj.selectparent = _backofficeService.GetPageList().Result.AsEnumerable()
-                .Select(row => new SelectListItem
-                {
-                    Value = row.Field<int>("pageid").ToString(),
-                    Text = row.Field<string>("linkname")
-                }).ToList();
+
+            if (cls.collageid != null)
+            {
+                obj.selectparent = _backofficeService.GetPageList().Result.AsEnumerable()
+            .Where(row => row.Field<int>("collageid") == pageid)
+            .Select(row => new SelectListItem
+            {
+                Value = row.Field<int>("pageid").ToString(),
+                Text = row.Field<string>("linkname")
+            }).ToList();
+            }
+            else
+            {
+                var content = _backofficeService.BindPageList().Result;
+                var pageList = BuildHierarchy(content, 0, 0, cls.collageid);
+                obj.selectparent = pageList.AsEnumerable()
+             .Where(x => x.collageid == 0)
+            .Select(row => new SelectListItem
+            {
+                Value = row.Id.ToString(),
+                Text = WebUtility.HtmlDecode(row.DisplayName).ToString()
+
+            }).ToList();
+            }
+
+            //obj.selectparent = _backofficeService.GetPageList().Result.AsEnumerable()
+            //    .Select(row => new SelectListItem
+            //    {
+            //        Value = row.Field<int>("pageid").ToString(),
+            //        Text = row.Field<string>("linkname")
+            //    }).ToList();
 
             List<SelectListItem> names = new List<SelectListItem>();
             names.Add(new SelectListItem { Text = "Header", Value = "Header" });
@@ -92,7 +125,15 @@ namespace skipper_group_new.Controllers
             if (string.IsNullOrEmpty(cls.linkname))
             {
                 ViewBag.Message = "Page Name is required.";
-                return View("~/Views/backoffice/cms/addpages.cshtml", obj);
+                if (cls.collageid != null)
+                {
+                    return RedirectToAction("addpages", "CMS", new { name = "micro", pageid = pageid });
+                }
+                else
+                {
+                    return View("~/Views/backoffice/cms/addpages.cshtml", obj);
+                }
+
             }
             if (cls.Id > 0)
             {
@@ -102,6 +143,7 @@ namespace skipper_group_new.Controllers
             else
             {
                 obj.mode = 1;
+                obj.PageStatus = true;
             }
             obj.pagename = cls.pagename;
             obj.linkname = cls.linkname;
@@ -155,18 +197,35 @@ namespace skipper_group_new.Controllers
             {
                 obj.uploadbanner = cls.uploadbanner;
             }
+            obj.collageid = cls.collageid;
             int x = _backofficeService.AddCMS(obj);
             if (x > 0)
             {
                 if (cls.Id > 0)
                 {
                     HttpContext.Session.SetString("Message", "Page Update successfully.");
-                    return RedirectToAction("viewpages", "cms");
+                    if (cls.collageid != null)
+                    {
+                        return RedirectToAction("viewpages", "CMS", new { name = "micro", pageid = obj.collageid });
+                    }
+                    else
+                    {
+                        return RedirectToAction("viewpages", "cms");
+                    }
+
                 }
                 else
                 {
                     HttpContext.Session.SetString("Message", "Page Save successfully.");
-                    return RedirectToAction("addpagesk", "Gallery");
+                    if (cls.collageid != null)
+                    {
+                        return RedirectToAction("addpages", "CMS", new { name = "micro", pageid = obj.collageid });
+                    }
+                    else
+                    {
+                        return RedirectToAction("addpages", "cms");
+                    }
+
                 }
             }
             else
@@ -189,14 +248,17 @@ namespace skipper_group_new.Controllers
 
                 content = rows.Any() ? rows.CopyToDataTable() : content.Clone();
             }
-            var pageList = BuildHierarchy(content, 0, 0);
-
+            var pageList = BuildHierarchy(content, 0, 0, pageid);
+            if (pageid > 0)
+            {
+                ViewBag._Type = "micro";
+            }
             return View("~/Views/backoffice/cms/viewpages.cshtml", pageList);
         }
-        private List<clsCMS> BuildHierarchy(DataTable table, int parentId, int level)
+        private List<clsCMS> BuildHierarchy(DataTable table, int parentId, int level, int collageid)
         {
             var list = new List<clsCMS>();
-            var rows = table.Select("ParentId=" + parentId, "displayorder ASC");
+            var rows = table.Select("parentid=" + parentId + " and collageid=" + collageid, "displayorder ASC");
 
             foreach (var row in rows)
             {
@@ -205,12 +267,12 @@ namespace skipper_group_new.Controllers
 
                 var page = new clsCMS
                 {
-                    Id = Convert.ToInt32(row["pageid"]),
-                    pagename = Convert.ToString(row["pagename"]),
-                    linkname = Convert.ToString(row["linkname"]),
-                    pageposition = Convert.ToString(row["linkposition"]),
+                    Id = Convert.ToInt32(row["Pageid"]),
+                    pagename = Convert.ToString(row["pagename"]) ?? string.Empty,
+                    linkname = Convert.ToString(row["linkname"]) ?? string.Empty,
+                    pageposition = Convert.ToString(row["linkposition"]) ?? string.Empty,
                     displayorder = Convert.ToInt32(row["displayorder"]),
-                    PageStatus = Convert.ToBoolean(row["pagestatus"]),
+                    PageStatus = row["pagestatus"] != DBNull.Value ? Convert.ToBoolean(row["pagestatus"]) : false,
                     Level = level,
                     DisplayName = prefix + " " + Convert.ToString(row["linkname"])
                 };
@@ -218,11 +280,12 @@ namespace skipper_group_new.Controllers
                 list.Add(page);
 
                 // Add child pages recursively
-                list.AddRange(BuildHierarchy(table, page.Id, level + 1));
+                list.AddRange(BuildHierarchy(table, page.Id, level + 1, collageid));
             }
 
             return list;
         }
+
         [HttpGet]
         [Route("backoffice/cms/editstatus/{id:int}")]
         public IActionResult editstatus(int id)
@@ -268,10 +331,14 @@ namespace skipper_group_new.Controllers
         }
         [HttpGet]
         [Route("backoffice/cms/edit/{id}")]
-        public IActionResult edit(int id)
+        [Route("backoffice/cms/edit/{name}/{pageid}/{id}")]
+        public IActionResult edit(int id, int? pageid)
         {
             var obj = new clsCMS();
-            ViewBag.Menus = _menuService.GetMenu();
+
+            ViewBag.Menus = _menuService.GetMenu(pageid);
+
+
             obj.selectparent = _backofficeService.GetPageList().Result.AsEnumerable()
                 .Select(row => new SelectListItem
                 {
@@ -312,6 +379,7 @@ namespace skipper_group_new.Controllers
                 obj.pagedesc2 = WebUtility.HtmlDecode(dt.Rows[0]["pagedescription1"].ToString());
                 obj.pagedesc3 = WebUtility.HtmlDecode(dt.Rows[0]["pagedescription2"].ToString());
                 obj.mobilemegamenu = WebUtility.HtmlDecode(dt.Rows[0]["mobilemegamenu"].ToString());
+                obj.collageid = Convert.ToInt32(dt.Rows[0]["collageid"].ToString());
 
                 foreach (SelectListItem item in obj.linkposition)
                 {

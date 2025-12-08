@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.AspNetCore.Mvc;
 using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
 using skipper_group_new.Models;
 using System.Data;
 using System.Net;
+using System.Xml.Linq;
 
 namespace skipper_group_new.Controllers
 {
@@ -49,10 +51,12 @@ namespace skipper_group_new.Controllers
             return View("~/Views/Backoffice/homebanner/addhomebannertype.cshtml", clsBannerType);
         }
         [HttpGet]
-        [Route("backoffice/homebanner/addhomebannertype/{id}")]
-        [HttpGet]
+        [Route("backoffice/homebanner/addhomebannertype/{id:int}")]
+
         public async Task<IActionResult> addhomebannertype(int id)
         {
+            //var pageid = HttpContext.Session.GetString("microid");
+
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
 
@@ -66,6 +70,7 @@ namespace skipper_group_new.Controllers
                 clsBannerType.btype = Convert.ToString(bannerTypes.Result.Rows[0]["btype"]);
                 clsBannerType.displayorder = Convert.ToString(bannerTypes.Result.Rows[0]["displayorder"]);
                 clsBannerType.status = Convert.ToString(bannerTypes.Result.Rows[0]["status"]);
+                clsBannerType.collageid = Convert.ToString(bannerTypes.Result.Rows[0]["collageid"]);
             }
             ViewBag.SuccessCreate = "Update";
             ViewBag.Title = "Home Banner Type";
@@ -106,7 +111,7 @@ namespace skipper_group_new.Controllers
 
 
                     objbannertype.mobilestatus = "1";
-                    objbannertype.collageid = "0";
+                    objbannertype.collageid = HttpContext.Session.GetString("microid");
                     int x = _homePageService.CreateBannerType(objbannertype);
                     if (x > 0)
                     {
@@ -118,7 +123,15 @@ namespace skipper_group_new.Controllers
                         {
                             HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Banner Type Added successfully.");
                         }
-                        return RedirectToAction("addhomebannertype", "HomeBanner");
+                        if (objbannertype.collageid != "0")
+                        {
+                            return RedirectToAction("addhomebannertype", "HomeBanner", new { name = "micro", pageid = objbannertype.collageid });
+
+                        }
+                        else
+                        {
+                            return RedirectToAction("addhomebannertype", "HomeBanner");
+                        }
                     }
 
                 }
@@ -130,7 +143,6 @@ namespace skipper_group_new.Controllers
             }
             catch (Exception ex)
             {
-                //ViewBag.ErrorMessage = "An error occurred while creating the banner type: " + ex.Message;
                 return View("~/Views/Backoffice/homebanner/addhomebannertype.cshtml", bannertype);
             }
             return View("~/Views/Backoffice/homebanner/addhomebannertype.cshtml", clsBannerType);
@@ -158,7 +170,8 @@ namespace skipper_group_new.Controllers
         }
         [HttpGet]
         [Route("backoffice/homebanner/UpdateStatus/{id}")]
-        public async Task<IActionResult> UpdateStatus(int id)
+        [Route("backoffice/homebanner/UpdateStatus/{name}/{pageid}/{id}")]
+        public async Task<IActionResult> UpdateStatus(int id, int? pageid)
         {
             try
             {
@@ -213,7 +226,8 @@ namespace skipper_group_new.Controllers
         }
         [HttpPost]
         [Route("backoffice/homebanner/addhomebanner")]
-        public async Task<IActionResult> addhomebanner(clsbanner obj, IFormFile file_Uploader)
+        [Route("backoffice/homebanner/addhomebanner/{name}/{pageid:int}")]
+        public async Task<IActionResult> addhomebanner(clsbanner obj, IFormFile file_Uploader, int pageid)
         {
 
             var menuList = _menuService.GetMenu();
@@ -229,7 +243,15 @@ namespace skipper_group_new.Controllers
                 objbanner.shortdesc = obj.shortdesc;
                 objbanner.displayorder = obj.displayorder;
                 objbanner.status = obj.status;
-                objbanner.collageid = obj.collageid;
+                if (string.IsNullOrEmpty(Convert.ToString(pageid)))
+                {
+                    objbanner.collageid = "0";
+                }
+                else
+                {
+                    objbanner.collageid = pageid.ToString();
+                }
+                
                 objbanner.uname = Convert.ToString(HttpContext.Session.GetString("UserName"));
                 if (obj.id > 0)
                 {
@@ -277,12 +299,30 @@ namespace skipper_group_new.Controllers
                         ViewBag.bannerlist = dt;
 
                         HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Update successfully.");
-                        return View("~/Views/backoffice/HomeBanner/viewhomebanner.cshtml", objbanner);
+
+
+                        if (pageid > 0)
+                        {
+                            return RedirectToAction("viewhomebanner", "HomeBanner", new { name = "micro", pageid = pageid });
+                        }
+                        else
+                        {
+                            return View("~/Views/backoffice/HomeBanner/viewhomebanner.cshtml", objbanner);
+                        }
+                        
                     }
                     else
                     {
                         HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Save successfully.");
-                        return View("~/Views/backoffice/HomeBanner/addhomebanner.cshtml", objbanner);
+                        if (pageid > 0)
+                        {
+                            return RedirectToAction("addhomebanner", "HomeBanner", new { name = "micro", pageid = pageid });
+                        }
+                        else
+                        {
+                            return View("~/Views/backoffice/HomeBanner/addhomebanner.cshtml", objbanner);
+                        }
+
                     }
 
                 }
@@ -349,7 +389,8 @@ namespace skipper_group_new.Controllers
         }
         [HttpGet]
         [Route("backoffice/homebanner/editBanner/{id}")]
-        public async Task<IActionResult> editBanner(int id)
+        [Route("backoffice/homebanner/editBanner/{name}/{pageid:int}/{id:int}")]
+        public async Task<IActionResult> editBanner(int id, int pageid)
         {
             try
             {
@@ -370,7 +411,7 @@ namespace skipper_group_new.Controllers
                     clsBanner.status = Convert.ToString(bannerlist.Result.Rows[0]["status"]);
                     clsBanner.devicetype1 = Convert.ToString(bannerlist.Result.Rows[0]["devicetype"]);
                     clsBanner.url = Convert.ToString(bannerlist.Result.Rows[0]["url"]);
-                    clsBanner.collageid = Convert.ToString(bannerlist.Result.Rows[0]["collageid"]);
+                    clsBanner.collageid = Convert.ToString(pageid);
                     clsBanner.tagline1 = WebUtility.HtmlDecode(Convert.ToString(bannerlist.Result.Rows[0]["tagline1"]));
                     clsBanner.startdate = Convert.ToString(bannerlist.Result.Rows[0]["bannerstartdate"]) != "" ? Convert.ToDateTime(bannerlist.Result.Rows[0]["bannerstartdate"]).ToString("yyyy-MM-dd") : "";
                     clsBanner.enddate = Convert.ToString(bannerlist.Result.Rows[0]["bannerenddate"]) != "" ? Convert.ToDateTime(bannerlist.Result.Rows[0]["bannerenddate"]).ToString("yyyy-MM-dd") : "";
@@ -425,17 +466,12 @@ namespace skipper_group_new.Controllers
 
         #region Micro Site Home Banner Module
         [HttpGet]
-        [Route("backoffice/homebanner/addhomebannertype/micro/{pageid:int}")]
-        public async Task<IActionResult> addhomebannertype(string pageid)
+        [Route("backoffice/homebanner/addhomebannertype/{name}/{pageid:int}")]
+        public async Task<IActionResult> addhomebannertype(string pageid, string name)
         {
             var routeId = pageid;
-            var menuList = _menuService.GetMenu();
-            if (routeId != null)
-            {
-                menuList = menuList
-        .Where(x => x.pareentcode == "1")
-        .ToList();
-            }
+            var menuList = _menuService.GetMenu(Convert.ToInt16(pageid));
+
             ViewBag.Menus = menuList;
 
             await BindStaticdata();
@@ -449,50 +485,40 @@ namespace skipper_group_new.Controllers
 
             ViewBag.BannerTypes = filteredTable;
 
-
+            ViewBag._type = char.ToUpper(name[0]) + name.Substring(1).ToLower();
             ViewBag.SuccessCreate = "Save";
             ViewBag.Title = "Home Banner Type";
             return View("~/Views/Backoffice/homebanner/addhomebannertype.cshtml", clsBannerType);
         }
 
         [HttpGet]
-        [Route("backoffice/homebanner/addhomebanner/micro/{pageid:int}")]
-        public async Task<IActionResult> addhomebanner(int pageid)
+        [Route("backoffice/homebanner/addhomebanner/{name}/{pageid:int}")]
+        public async Task<IActionResult> addhomebanner(int pageid, string name)
         {
 
             var routeId = pageid;
-            var menuList = _menuService.GetMenu();
-            if (routeId != null)
-            {
-                menuList = menuList
-        .Where(x => x.pareentcode == "1")
-        .ToList();
-            }
+            var menuList = _menuService.GetMenu(pageid);
+
             ViewBag.Menus = menuList;
 
             await BindDevicedata();
 
-
+            ViewBag._type = char.ToUpper(name[0]) + name.Substring(1).ToLower();
             ViewBag.CreateUpdate = "Save";
             ViewBag.Title = "Home Banner";
             return View("~/Views/Backoffice/homebanner/addhomebanner.cshtml", clsBanner);
         }
 
         [HttpGet]
-        [Route("backoffice/homebanner/ViewHomeBanner/micro/{pageid:int}")]
-        public async Task<IActionResult> ViewHomeBanner(int pageid)
+        [Route("backoffice/homebanner/ViewHomeBanner/{name}/{pageid:int}")]
+        public async Task<IActionResult> ViewHomeBanner(int pageid, string name)
         {
 
             var routeId = pageid;
-            var menuList = _menuService.GetMenu();
-            if (routeId != null)
-            {
-                menuList = menuList
-        .Where(x => x.pareentcode == "1")
-        .ToList();
-            }
-            ViewBag.Menus = menuList;
+            var menuList = _menuService.GetMenu(pageid);
 
+            ViewBag.Menus = menuList;
+            ViewBag._type = char.ToUpper(name[0]) + name.Substring(1).ToLower();
             //Get list of banner types
             var bannerTypes = _homePageService.GetBannerList();
             var filterresult = bannerTypes.Result.Select($"collageid = '{pageid}'").OrderByDescending(r => r["bid"]);
@@ -509,6 +535,10 @@ namespace skipper_group_new.Controllers
             }
 
             ViewBag.bannerlist = dt;
+            if (pageid > 0)
+            {
+                ViewBag._Type = "micro";
+            }
 
             return View("~/Views/Backoffice/homebanner/ViewHomeBanner.cshtml", clsBanner);
         }
