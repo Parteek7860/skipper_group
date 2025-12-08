@@ -52,12 +52,13 @@ namespace skipper_group_new.Controllers
         }
         [HttpGet]
         [Route("backoffice/homebanner/addhomebannertype/{id:int}")]
+        [Route("backoffice/homebanner/addhomebannertype/{name}/{pageid:int}/{id:int}")]
 
-        public async Task<IActionResult> addhomebannertype(int id)
+        public async Task<IActionResult> addhomebannertype(int id, int pageid)
         {
             //var pageid = HttpContext.Session.GetString("microid");
 
-            var menuList = _menuService.GetMenu();
+            var menuList = _menuService.GetMenu(pageid);
             ViewBag.Menus = menuList;
 
             await BindStaticdata();
@@ -78,8 +79,9 @@ namespace skipper_group_new.Controllers
             return View("~/Views/Backoffice/homebanner/addhomebannertype.cshtml", clsBannerType);
         }
         [HttpPost]
+        [Route("backoffice/homebanner/Save/{name}/{pageid:int}")]
         [Route("backoffice/homebanner/Save")]
-        public async Task<IActionResult> Save(clsBannerType bannertype)
+        public async Task<IActionResult> Save(clsBannerType bannertype,int pageid)
         {
             try
             {
@@ -111,7 +113,15 @@ namespace skipper_group_new.Controllers
 
 
                     objbannertype.mobilestatus = "1";
-                    objbannertype.collageid = HttpContext.Session.GetString("microid");
+                    if (Convert.ToInt32(pageid) > 0)
+                    {
+                        objbannertype.collageid = pageid.ToString();
+                    }
+                    else
+                    {
+                        objbannertype.collageid = "0";
+                    }
+                    
                     int x = _homePageService.CreateBannerType(objbannertype);
                     if (x > 0)
                     {
@@ -251,7 +261,7 @@ namespace skipper_group_new.Controllers
                 {
                     objbanner.collageid = pageid.ToString();
                 }
-                
+
                 objbanner.uname = Convert.ToString(HttpContext.Session.GetString("UserName"));
                 if (obj.id > 0)
                 {
@@ -309,7 +319,7 @@ namespace skipper_group_new.Controllers
                         {
                             return View("~/Views/backoffice/HomeBanner/viewhomebanner.cshtml", objbanner);
                         }
-                        
+
                     }
                     else
                     {
