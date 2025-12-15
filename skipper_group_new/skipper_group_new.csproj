@@ -4,6 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <!-- ✅ Keep views editable at runtime -->
+	  <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+	  <MvcRazorCompileOnBuild>false</MvcRazorCompileOnBuild>
+	  <PreserveCompilationContext>true</PreserveCompilationContext>
+
+	  <!-- ✅ Required so MSBuild doesn’t skip views -->
+	  <EnableDefaultContentItems>false</EnableDefaultContentItems>
+	  <CopyRefAssembliesToPublishDirectory>true</CopyRefAssembliesToPublishDirectory>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,5 +25,18 @@
   <ItemGroup>
     <Folder Include="Views\backoffice\download\" />
   </ItemGroup>
+	<ItemGroup>
 
+		<Content Include="Views\**\*.cshtml" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Always" />
+		<Content Include="Areas\**\Views\**\*.cshtml" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Always" />
+		<Content Include="Pages\**\*.cshtml" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Always" />
+		<Content Include="wwwroot\**\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+		<!--<Content Include="appsettings*.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />-->
+	</ItemGroup>
+	<Target Name="CopyViewsAfterPublish" AfterTargets="Publish">
+		<ItemGroup>
+			<_CustomViews Include="$(ProjectDir)Views\**\*.cshtml" />
+		</ItemGroup>
+		<Copy SourceFiles="@(_CustomViews)" DestinationFolder="$(PublishDir)Views\%(RecursiveDir)" />
+	</Target>
 </Project>

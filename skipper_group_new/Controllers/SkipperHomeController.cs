@@ -86,7 +86,7 @@ namespace skipper_group_new.Controllers
 
             var dt = x.AsEnumerable()
             .Where(r => r.Field<bool>("status") == true)
-            .OrderByDescending(r => r.Field<DateTime>("blogdate"))  // latest first
+            .OrderBy(r => r.Field<DateTime>("blogdate"))  // old first
             .ToList();
 
             // First 3 records
@@ -97,7 +97,7 @@ namespace skipper_group_new.Controllers
                 ViewBag.RecentBlogList = new DataTable(); // empty table
 
             // Remaining records
-            var others = dt.Skip(3).ToList();
+            var others = dt.Skip(3).OrderByDescending(r => r.Field<DateTime>("blogdate")).ToList();
             if (others.Any())
                 ViewBag.BlogList = others.CopyToDataTable();
             else
@@ -136,6 +136,7 @@ namespace skipper_group_new.Controllers
 
             return View("blogdetail", obj);
         }
+        #region  Contact Us
         [HttpGet]
         public async Task<IActionResult> contactus(int id)
         {
@@ -211,6 +212,9 @@ namespace skipper_group_new.Controllers
 
             return View("contactus", obj);
         }
+
+        #endregion
+
         #region News and Events
         [HttpGet]
         public async Task<IActionResult> news(int id)
@@ -272,8 +276,8 @@ namespace skipper_group_new.Controllers
         }
         #endregion
 
+        #region Leadership
         [HttpGet]
-
         public async Task<IActionResult> leadership(int id)
         {
             await LoadSeoDataAsync(id);
@@ -322,6 +326,8 @@ namespace skipper_group_new.Controllers
 
             return View("leadershipdetail", obj);
         }
+
+        #endregion
 
         #region Career
         [HttpGet]

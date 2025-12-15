@@ -370,8 +370,21 @@ namespace skipper_group_new.Controllers
 
             //Get list of banner types
             var bannerTypes = _homePageService.GetBannerList();
-            var filterresult = bannerTypes.Result.Select("collageid=0").OrderByDescending(r => r["bid"]);
-            DataTable dt = filterresult.CopyToDataTable();
+            var filterresult = bannerTypes.Result
+      .Select("collageid=0")
+      .OrderByDescending(r => r["bid"]);
+
+            DataTable dt = null;
+
+            if (filterresult.Any())
+            {
+                dt = filterresult.CopyToDataTable();
+            }
+            else
+            {
+                dt = bannerTypes.Result.Clone();
+            }
+
             ViewBag.bannerlist = dt;
 
             return View("~/Views/Backoffice/homebanner/ViewHomeBanner.cshtml", clsBanner);

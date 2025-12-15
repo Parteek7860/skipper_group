@@ -57,8 +57,8 @@
                     <table class="table table-bordered" id="categoryTable">
                         <thead class="table-header">
                             <tr>
+                                <th>Product Type</th>
                                 <th>Category Name</th>
-                               
                                 <th>Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -68,6 +68,7 @@
                             @foreach (DataRow c in cat.Rows)
                             {
                             <tr>
+                                    <td>@c["productid"]</td>
                                 <td>@c["Category"]</td>
                               
                                 <td>@Convert.ToDateTime(c["trdate"]).ToShortDateString()</td> 

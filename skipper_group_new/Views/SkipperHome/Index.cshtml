@@ -41,10 +41,60 @@
         <section class="animated-section home_eng">
             @Html.Raw(Model.cmscontent)
         </section>
-        @Html.Raw(Model.pagedesc2)
+        <section class="home_eng1">
+            <div class="container">
+                <div class="second-vertical-line-svg">
+                    <svg viewBox="0 0 1 200" preserveAspectRatio="none">
+                        <line x1="0.5" y1="0" x2="0.5" y2="200" />
+                    </svg>
+                </div>
+                <div class="second-dot"></div>
+                <div class="horizontal-line2"></div>
+
+                <div class="eng_gorup_img">
+                    <figure class="engineering-image">
+                        <div class="image-reveal-mask mobile-none">
+                            <img src="images/eng-pic.webp" class="img-fluid" alt="Engineering" />
+                        </div>
+                        <div class="image-reveal-mask mobile-display">
+                            <img src="images/eng-pic-mobile.webp" class="img-fluid" alt="Engineering" />
+                        </div>
+                    </figure>
+
+                    <div class="engineering-bg"></div>
+                    <div class="text_eng">
+                        <div class="eng_text1">
+                            <figure>
+                                <img src="images/icon/Subtraction-1.svg" class="img-fluid" alt="skipper image" />
+                            </figure>
+                            <div class="eng_pic1">
+                                <h3>Engineering</h3>
+                                <p>
+                                    One of World's largest  <br />integrated Transmission Tower  and <br />Pole manufacturing companies
+                                </p>
+                                <div class="read_icon">
+                                    <a href="/engineering.aspx?mpgid=37&pgidtrail=37&productid=1"><img src="images/icon/plus-icon.svg" alt="skipper image" /></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="eng_text2">
+                            <h4>375K</h4>
+                            <p>MTPA engineering <br /> production capacity</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="home_infra animated-section1">
+            @Html.Raw(Model.pagedesc2)
+        </section>
     </div>
-    @Html.Raw(Model.pagedesc3)
-    @Html.Raw(Model.megamenu)
+    <section class="home_people">
+        @Html.Raw(System.Net.WebUtility.HtmlDecode(Model.pagedesc3))
+    </section>
+    <section class="home_sustainbility">
+        @Html.Raw(Model.megamenu)
+    </section>
     @if (ViewBag.ProjectsList != null)
     {
 

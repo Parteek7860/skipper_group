@@ -120,7 +120,7 @@ namespace skipper_group_new.Controllers
             names.Add(new SelectListItem { Text = "Sub-Footer", Value = "Sub-Footer" });
             names.Add(new SelectListItem { Text = "MobileFooter", Value = "MobileFooter" });
             obj.linkposition = names;
-            ViewBag.CreateUpdate = "Save";
+            ViewBag.UpdateStatus = "Save";
 
             if (string.IsNullOrEmpty(cls.linkname))
             {
