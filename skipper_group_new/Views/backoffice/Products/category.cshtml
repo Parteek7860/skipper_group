@@ -43,6 +43,15 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
+                                    <label>Product type *</label>
+                                    @Html.DropDownListFor(model => model.producttype, ViewBag.producttype as SelectList, "Select Product type", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.producttype, "", new { @class = "text-danger v-span" })
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
                                     <label>Category Name *</label>
                                     @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>

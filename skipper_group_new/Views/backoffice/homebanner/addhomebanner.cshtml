@@ -50,6 +50,7 @@
                                     <label> Device Type</label>
                                     @Html.HiddenFor(model => model.id)
                                     @Html.HiddenFor(model => model.status)
+                                    @Html.HiddenFor(model => model.collageid)
                                     @Html.DropDownListFor(model => model.devicetype1, Model.devicetype, "Select Type", new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.devicetype, "", new { @class = "text-danger v-span" })
 

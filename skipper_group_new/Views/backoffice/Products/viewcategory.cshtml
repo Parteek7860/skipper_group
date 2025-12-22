@@ -68,7 +68,7 @@
                             @foreach (DataRow c in cat.Rows)
                             {
                             <tr>
-                                    <td>@c["productid"]</td>
+                                    <td>@c["productname"]</td>
                                 <td>@c["Category"]</td>
                               
                                 <td>@Convert.ToDateTime(c["trdate"]).ToShortDateString()</td> 

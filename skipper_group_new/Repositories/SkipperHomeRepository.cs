@@ -83,7 +83,7 @@ namespace skipper_group_new.Repositories
             DataTable seoFriendlyUrls;
             using (SqlConnection conn = new SqlConnection(this._connectionString))
             {
-                using (SqlCommand cmd = new SqlCommand("BindPageMasterSP", conn))
+                using (SqlCommand cmd = new SqlCommand("BindSEOPageMasterSP", conn))
                 {
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
@@ -285,6 +285,25 @@ namespace skipper_group_new.Repositories
             }
             return menuList;
         }
+        public async Task<DataTable> GetCategoryList()
+        {
+            DataTable menuList;
+            using (SqlConnection conn = new SqlConnection(this._connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("BindCategoryListSP", conn))
+                {
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        DataTable table = new DataTable();
+                        await conn.OpenAsync();
+                        da.Fill(table);
+                        menuList = table;
+                    }
+                }
+            }
+            return menuList;
+        }
         public async Task<DataTable> GetProductSubCategoryList()
         {
             DataTable menuList;
@@ -437,6 +456,44 @@ namespace skipper_group_new.Repositories
                 }
             }
             return menuList;
+        }
+        public async Task<DataTable> GetProductSolutionList()
+        {
+            DataTable menuList;
+            using (SqlConnection conn = new SqlConnection(this._connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("BindProductSolutionSP", conn))
+                {
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        DataTable table = new DataTable();
+                        await conn.OpenAsync();
+                        da.Fill(table);
+                        menuList = table;
+                    }
+                }
+            }
+            return menuList;
+        }
+        public async Task<DataTable> GetSeoFriendlyStaticRedirectionUrls()
+        {
+            DataTable seoFriendlyUrls;
+            using (SqlConnection conn = new SqlConnection(this._connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("GetSeoFriendlyStaticRedirectionUrlsSP", conn))
+                {
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        DataTable table = new DataTable();
+                        await conn.OpenAsync();
+                        da.Fill(table);
+                        seoFriendlyUrls = table;
+                    }
+                }
+            }
+            return seoFriendlyUrls;
         }
     }
 }

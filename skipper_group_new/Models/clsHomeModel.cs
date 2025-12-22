@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System.Security.Cryptography.X509Certificates;
 
 namespace skipper_group_new.Models
 {
@@ -13,6 +14,8 @@ namespace skipper_group_new.Models
         public string eventsdate { get; set; } = "";
         public string productid { get; set; } = "";
         public string Capabilities { get; set; } = "";
+
+        public List<clsHomeModel> projectlist { get; set; }
 
         public string? Name { get; set; }
         public string tagline { get; set; }

@@ -6,7 +6,7 @@ namespace skipper_group_new.Models
     {
         public int PcatId { get; set; }
 
-       
+       public string producttype { get; set; }
         public string Category { get; set; }
 
         public string shortname { get; set; }

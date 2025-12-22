@@ -10,6 +10,7 @@ using System.Data;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -61,7 +62,6 @@ namespace skipper_group_new.Controllers
                     obj.megamenu = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["mobilemegamenu"]));
                     return View(obj);
                 }
-
             }
 
             return View(obj);
@@ -234,7 +234,7 @@ namespace skipper_group_new.Controllers
             var next3 = filterlist.Skip(2).Take(2).ToList();
 
             // --- Balance records ---
-            var balance = filterlist.Skip(4).ToList();
+            var balance = filterlist.ToList();
 
             // Convert to DataTable only if needed
             DataTable dtTop2 = top2.Any() ? top2.CopyToDataTable() : x.Clone();
@@ -357,15 +357,28 @@ namespace skipper_group_new.Controllers
 
 
             }
-            var x = await _homePageService.GetCarrer();
-            var filterlist = x.AsEnumerable()
-                   .Where(r => r.Field<DateTime>("jobclosing_date") >= DateTime.Now)
-                   .OrderBy(r => r.Field<int>("displayorder"))
-                   .CopyToDataTable();
+            //var x = await _homePageService.GetCarrer();
+            //var filterlist = x.AsEnumerable()
+            //       .Where(r => r.Field<DateTime>("jobclosing_date") >= DateTime.Now)
+            //       .OrderBy(r => r.Field<int>("displayorder"))
+            //       .CopyToDataTable();
 
 
 
-            ViewBag.CurrentOpenings = filterlist;
+            //ViewBag.CurrentOpenings = filterlist;
+            var x = await _homePageService.GetProductSolutionList();
+            var filteredRows = x.AsEnumerable().Where(r => r.Field<bool?>("status") == true);
+
+            DataTable ndt = filteredRows.Any() ? filteredRows.CopyToDataTable() : x.Clone();
+
+            Dictionary<int, string> jobTitles = ndt.AsEnumerable().Where(r => r.Field<int?>("productid") != null).ToDictionary(r => r.Field<int>("productid"), r => r.Field<string>("productname"));
+
+            ViewBag.Jobtitle = jobTitles;
+            int firstProductId = jobTitles.Keys.First();
+            var allJobs = await _homePageService.GetCarrer();
+            var filteredOpenings = allJobs.AsEnumerable().Where(r => r.Field<DateTime?>("JobClosing_date") >= DateTime.Now && r.Field<int?>("emptypeid") == firstProductId).OrderBy(r => r.Field<int?>("displayorder") ?? int.MaxValue);
+
+            ViewBag.CurrentOpenings = filteredOpenings.Any() ? filteredOpenings.CopyToDataTable() : allJobs.Clone();
             return View("career", obj);
         }
         [HttpGet]
@@ -465,8 +478,22 @@ namespace skipper_group_new.Controllers
         {
             await LoadSeoDataAsync(id);
             await LoadCMSDataAsync(id);
+
             GetProjectList();
+
             clsHomeModel obj = new clsHomeModel();
+
+            return View("projectlist", obj);
+        }
+        [HttpPost]
+        public async Task<IActionResult> projectlist(clsHomeModel cls)
+        {
+            //await LoadSeoDataAsync(5);
+            //await LoadCMSDataAsync(5);
+
+            clsHomeModel obj = new clsHomeModel();
+
+
 
             return View("projectlist", obj);
         }
@@ -509,6 +536,15 @@ namespace skipper_group_new.Controllers
 
         public IActionResult GetProjectList()
         {
+            var x = _homePageService.GetCategoryList();
+            ViewBag.ProjectTypes = x.Result.Select("status=1").OrderBy(r => Convert.ToInt32(r["displayorder"])).Select(r => new clsHomeModel
+            {
+                id = Convert.ToString(r["pcatid"]),
+                Name = Convert.ToString(r["category"])
+            })
+    .ToList();
+
+
             var list = _homePageService.GetProjectsList();
             var filterlist = list.Result.Select("status=1").OrderBy(r => Convert.ToInt32(r["displayorder"]));
             ViewBag.ProjectsList = filterlist.CopyToDataTable();
@@ -516,13 +552,48 @@ namespace skipper_group_new.Controllers
 
 
         }
+        [HttpPost]
+        public IActionResult GetGridByProject(clsHomeModel model)
+        {
+            var data =  _homePageService.GetProjectsList();
+            var list = data.Result.AsEnumerable()
+         .Where(r =>
+             Convert.ToInt32(r["status"]) == 1 &&
+             Convert.ToInt32(r["pcatid"]) == model.Id)
+         .OrderBy(r => Convert.ToInt32(r["displayorder"]))
+         .CopyToDataTable();
+
+            // ViewBag works fine with PartialView
+            ViewBag.ProjectsList = list;
+            return PartialView("_ProjectGridPartial", data);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetGridByProject1(int? id)
+        {
+            var data = await _homePageService.GetProjectsList();
+
+            var list = data.AsEnumerable()
+        .Where(r =>
+            Convert.ToInt32(r["status"]) == 1 &&
+            Convert.ToInt32(r["pcatid"]) == id)
+        .OrderBy(r => Convert.ToInt32(r["displayorder"])).CopyToDataTable();
+
+            ViewBag.ProjectsList = list;
+            return View();
+
+        }
+
+
+
         [HttpGet]
         public async Task<IActionResult> BindProjectsList()
         {
             ResearchModel obj = new ResearchModel();
             var list = _homePageService.GetProjectsList();
-            var filterlist = list.Result.Select("status=1 and showonhome=1 and showonschool=1").OrderBy(r => Convert.ToInt32(r["displayorder"]));
-            var top3 = filterlist.Take(3).CopyToDataTable();
+            var filterlist = list.Result.Select("status=1 and showonhome=1").OrderBy(r => Convert.ToInt32(r["displayorder"]));
+            var top3 = filterlist.Take(5).CopyToDataTable();
             ViewBag.ProjectsList = top3;
             return View();
         }
@@ -530,10 +601,10 @@ namespace skipper_group_new.Controllers
         public async Task<IActionResult> BindNewsList()
         {
             var list = _homePageService.GetNewsEvents();
-            var filterlist = list.Result.Select("status=1").OrderByDescending(r => r["eventsdate"] == DBNull.Value
+            var filterlist = list.Result.Select("status=1 and showonhome=1").OrderByDescending(r => r["eventsdate"] == DBNull.Value
                                 ? DateTime.MinValue
                                 : Convert.ToDateTime(r["eventsdate"]));
-            var top5 = filterlist.Take(5).CopyToDataTable();
+            var top5 = filterlist.Take(7).CopyToDataTable();
             ViewBag.Newslist = top5;
             return View();
         }
@@ -664,6 +735,40 @@ namespace skipper_group_new.Controllers
 
             url = url.Trim('/').ToLower();
 
+            string requestPath = "/" + url;
+
+            // 🔴 STEP 1: SEO STATIC REDIRECT (301/302)
+            DataTable redirectDt = await _homePageService.GetSeoFriendlyStaticRedirectionUrls();
+
+            string normalizedPath = requestPath
+        .TrimEnd('/')
+        .ToLower();
+
+
+            DataRow redirectRow = redirectDt.AsEnumerable()
+        .Where(r =>
+            r.Field<bool>("Status") &&
+            r.Field<string>("Old_Url")
+                .TrimEnd('/')
+                .ToLower() == normalizedPath)
+        .OrderByDescending(r => r.Field<int>("Redirect_Type")) // 301 first
+        .FirstOrDefault();
+
+            if (redirectRow != null)
+            {
+                string newUrl = redirectRow.Field<string>("New_Url");
+                int redirectType = redirectRow.Field<int>("Redirect_Type");
+
+                if (newUrl != normalizedPath)
+                {
+
+
+                    return redirectType == 301
+                        ? RedirectPermanent(newUrl)
+                        : Redirect(newUrl);
+                }
+            }
+
             // ✅ Remove query strings (e.g. ?v=2.1)
             url = url.Split('?')[0];
 
@@ -698,8 +803,10 @@ namespace skipper_group_new.Controllers
                 return RedirectToAction("Handle", "Error", new { code = 400 });
             }
             // 🛑 Prevent recursive calls
-            //if (url.StartsWith("SkipperHome/dynamicroute", StringComparison.OrdinalIgnoreCase))
-            //    return RedirectToAction("Index", "SkipperHome");
+            //if (url.StartsWith("MetroHome/dynamicroute", StringComparison.OrdinalIgnoreCase))
+            //    return RedirectToAction("Index", "MetroHome");
+
+
 
             var dt = await _homePageService.GetSeoFriendlyUrls();
             if (dt == null || dt.Rows.Count == 0)
@@ -709,7 +816,7 @@ namespace skipper_group_new.Controllers
                 .FirstOrDefault(r => Convert.ToString(r["rewriteurl"]).Split('#')[0].Trim('/').ToLower() == url);
 
             if (matchedRow == null)
-                //return RedirectToAction("Index", "SkipperHome");
+                //return RedirectToAction("Index", "MetroHome");
                 return RedirectToAction("Handle", "Error", new { statusCode = 400 });
 
             string controller = Convert.ToString(matchedRow["controller"])?.Trim() ?? "SkipperHome";
@@ -751,6 +858,12 @@ namespace skipper_group_new.Controllers
                         return actionResult;
                 }
             }
+
+
+
+
+
+
 
             // Fallback to CMS
             return await cms(url, id);

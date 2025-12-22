@@ -98,21 +98,31 @@ else
                     {
                         parentclass = "ps_d";
                     }
+
+                   
+
                     var subHref = !string.IsNullOrEmpty(menu.rewriteurl)
                     ? $"/{menu.rewriteurl}"
                     : $"/cms/{menu.linkname}/{menu.pageid}";
+
+                    var currentPath = Context.Request.Path.Value.ToLower();
+
+                    bool isActive =
+                    currentPath == subHref;
+
                     <li class="menu-item menudrop-item @parentclass">
 
-                        <a href="@((menu.SubMenus != null && menu.SubMenus.Count > 0) || menu.pageid == "7" ? "javascript:void(0)" : subHref)">@menu.Name
+                        <a class="@(isActive ? "active" : "")" href="@((menu.SubMenus != null && menu.SubMenus.Count > 0) || menu.pageid == "7" ? "javascript:void(0)" : subHref)">
+                            @menu.Name
                             @if (menu.pageid == "7")
                             {
-                                <svg id="mainmenu1_rptmainmenu_ctl04_svgicon" xmlns="http://www.w3.org/2000/svg" width="15.008" height="8.918" viewBox="0 0 15.008 8.918">
+                                @* <svg id="mainmenu1_rptmainmenu_ctl04_svgicon" xmlns="http://www.w3.org/2000/svg" width="15.008" height="8.918" viewBox="0 0 15.008 8.918">
                                     <path id="Path_1" data-name="Path 1" d="M1555.5-19.993l6.8,6.8,6.8-6.8" transform="translate(-1554.797 20.7)" fill="none" stroke="" stroke-width="2"></path>
-                                </svg>
+                                </svg> *@
                             }
 
                         </a>
-                       
+
 
                         @*  <a href="@(
                            (menu.SubMenus != null && menu.SubMenus.Count > 0 && subHref.StartsWith("/cms"))

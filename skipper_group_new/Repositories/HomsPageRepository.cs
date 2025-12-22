@@ -510,7 +510,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@btypeid", obj.bannertype);
                     cmd.Parameters.AddWithValue("@title", obj.name);
                     cmd.Parameters.AddWithValue("@devicetype", obj.devicetype1);
-                    cmd.Parameters.AddWithValue("@tagline1", obj.tagline1);
+                   // cmd.Parameters.AddWithValue("@tagline1", obj.tagline1);
                     cmd.Parameters.AddWithValue("@displayorder", obj.displayorder);
                     
                     cmd.Parameters.AddWithValue("@status", obj.status);
@@ -523,6 +523,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@uname", obj.uname);
                     cmd.Parameters.AddWithValue("@tagline2", "");
                     cmd.Parameters.AddWithValue("@mode", obj.mode);
+                    cmd.Parameters.AddWithValue("@tagline1", obj.shortdesc);
                     conn.Open();
                     result = cmd.ExecuteNonQuery();
                 }

@@ -38,7 +38,7 @@
                     <div class="row clearfix">                       
                         @Html.HiddenFor(model => model.ResearchId)
                         @Html.HiddenFor(model => model.Mode)
-                        <div class="col-sm-6">
+                       @*  <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
                                     <label> Project type<span style="color:red">*</span></label>
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             @Html.ValidationMessageFor(m => m.NTypeId, "", new { @class = "text-danger v-span" })
-                        </div>
+                        </div> *@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">

@@ -115,43 +115,15 @@
                                         @{
                                             var dt = ViewBag.ProjectsList as DataTable;
                                         }
-                                        @if (dt != null && dt.Rows.Count > 0)
-                                        {
-                                            @for (int i = 1; i <= dt.Rows.Count - 2; i++)
-                                            {
-                                                DataRow data = dt.Rows[i];
-                                                <div class=left-slide id=rptinnerleft_ctl00_panelleft>
-                                                    <div class=corner-accent>
-                                                        <figure>
-                                                            <img src=/uploads/SmallImages/@data["uploadevents"]
-                                                                 alt="skipper image" class=img-fluid>
-                                                        </figure>
-                                                    </div>
-                                                    <div class=text-content>
-                                                        <div class=bottom_left_icon>
-                                                            <img src=/images/icon/Subtraction-6.svg
-                                                                 alt="skipper image" class=img-fluid>
-                                                        </div>
-                                                        <div class=project-title>
-                                                            @data["researchtitle"]
-                                                        </div>
-                                                        <div class=description>Transgrid</div>
-                                                    </div>
-                                                    <div class=voltage></div><a href="/project-details/@Convert.ToString(@data["researchtitle"]).ToLower().ToSlug()/@data["researchid"]"
-                                                                                class=streched_link></a>
-                                                </div>
-                                            }
 
-                                        }
 
                                         <div class=right-container id=panelright>
 
 
                                             @if (dt != null && dt.Rows.Count > 1)
                                             {
-                                                @for (int i = 1; i <= dt.Rows.Count - 1; i++)
-                                                {
-                                                    DataRow data = dt.Rows[i];
+                                                @foreach (DataRow data in dt.Rows)
+                                                {   
                                                     <div class=right-top>
                                                         <div class=corner-accent>
                                                             <figure>
@@ -231,12 +203,16 @@
                                     <img src=/uploads/smallimages/@Convert.ToString(row["uploadevents"]) alt="@Convert.ToString(row["eventstitle"])" class=img-fluid>
                                 </figure>
                                 <div class="fade-container home_news_detail">
-                                    <div class=h_date>@Convert.ToDateTime(row["eventsdate"]).ToString("dd-MMM-yyyy")</div>
-                                    <h3>@Convert.ToString(row["eventstitle"])</h3>
-                                </div><a href=/news-details/@Convert.ToString(row["eventstitle"]).ToSlug()/@Convert.ToInt32(row["eventsid"]) class=streched_link></a>
-                            </div>
+                                    <div class="h_date">
+                                        @(row["eventsdate"] == DBNull.Value
+                                                                    ? ""
+                                                                    : Convert.ToDateTime(row["eventsdate"]).ToString("dd-MMM-yyyy"))
                         </div>
-                    }
+                        <h3>@Convert.ToString(row["eventstitle"])</h3>
+                    </div><a href=/news-details/@Convert.ToString(row["eventstitle"]).ToSlug()/@Convert.ToInt32(row["eventsid"]) class=streched_link></a>
+                </div>
+            </div>
+                        }
                 }
             </div>
             <div class=view_all>

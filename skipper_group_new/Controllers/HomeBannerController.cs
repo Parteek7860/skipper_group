@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
+﻿using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Mvc;
 using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
@@ -81,7 +82,7 @@ namespace skipper_group_new.Controllers
         [HttpPost]
         [Route("backoffice/homebanner/Save/{name}/{pageid:int}")]
         [Route("backoffice/homebanner/Save")]
-        public async Task<IActionResult> Save(clsBannerType bannertype,int pageid)
+        public async Task<IActionResult> Save(clsBannerType bannertype, int pageid)
         {
             try
             {
@@ -121,7 +122,7 @@ namespace skipper_group_new.Controllers
                     {
                         objbannertype.collageid = "0";
                     }
-                    
+
                     int x = _homePageService.CreateBannerType(objbannertype);
                     if (x > 0)
                     {
@@ -223,8 +224,8 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/homebanner/addhomebanner")]
         public async Task<IActionResult> addhomebanner()
         {
-
-            var menuList = _menuService.GetMenu();
+            var pageid1 = HttpContext.Request.RouteValues["pageid"]?.ToString();
+            var menuList = _menuService.GetMenu(Convert.ToInt16(pageid1));
             ViewBag.Menus = menuList;
 
             await BindDevicedata();
@@ -239,8 +240,8 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/homebanner/addhomebanner/{name}/{pageid:int}")]
         public async Task<IActionResult> addhomebanner(clsbanner obj, IFormFile file_Uploader, int pageid)
         {
-
-            var menuList = _menuService.GetMenu();
+            var pageid1 = HttpContext.Request.RouteValues["pageid"]?.ToString();
+            var menuList = _menuService.GetMenu(Convert.ToInt16(pageid1));
             ViewBag.Menus = menuList;
 
             await BindDevicedata();
@@ -255,11 +256,11 @@ namespace skipper_group_new.Controllers
                 objbanner.status = obj.status;
                 if (string.IsNullOrEmpty(Convert.ToString(pageid)))
                 {
-                    objbanner.collageid = "0";
+                    objbanner.collageid = pageid1;
                 }
                 else
                 {
-                    objbanner.collageid = pageid.ToString();
+                    objbanner.collageid = obj.collageid;
                 }
 
                 objbanner.uname = Convert.ToString(HttpContext.Session.GetString("UserName"));
@@ -267,7 +268,7 @@ namespace skipper_group_new.Controllers
                 {
                     objbanner.mode = "2";
                     objbanner.id = obj.id;
-                    objbanner.collageid = "0";
+                    //objbanner.collageid = "0";
                 }
                 else
                 {
@@ -311,7 +312,7 @@ namespace skipper_group_new.Controllers
                         HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Update successfully.");
 
 
-                        if (pageid > 0)
+                        if (Convert.ToInt32(obj.collageid) > 0)
                         {
                             return RedirectToAction("viewhomebanner", "HomeBanner", new { name = "micro", pageid = pageid });
                         }
@@ -362,10 +363,11 @@ namespace skipper_group_new.Controllers
         // View Home banner
         [HttpGet]
         [Route("backoffice/homebanner/ViewHomeBanner")]
-        public async Task<IActionResult> ViewHomeBanner()
+        [Route("backoffice/homebanner/ViewHomeBanner/micro/{pageid?}")]
+        public async Task<IActionResult> ViewHomeBanner(int? pageid)
         {
 
-            var menuList = _menuService.GetMenu();
+            var menuList = _menuService.GetMenu(pageid);
             ViewBag.Menus = menuList;
 
             //Get list of banner types
@@ -418,7 +420,7 @@ namespace skipper_group_new.Controllers
             try
             {
                 await BindDevicedata();
-                var menuList = _menuService.GetMenu();
+                var menuList = _menuService.GetMenu(pageid);
                 ViewBag.Menus = menuList;
 
                 var bannerlist = _homePageService.GetBannerListByID(id);
@@ -489,7 +491,7 @@ namespace skipper_group_new.Controllers
 
         #region Micro Site Home Banner Module
         [HttpGet]
-        [Route("backoffice/homebanner/addhomebannertype/{name}/{pageid:int}")]
+        [Route("backoffice/homebanner/addhomebannertype/micro/{pageid:int}")]
         public async Task<IActionResult> addhomebannertype(string pageid, string name)
         {
             var routeId = pageid;
@@ -508,14 +510,14 @@ namespace skipper_group_new.Controllers
 
             ViewBag.BannerTypes = filteredTable;
 
-            ViewBag._type = char.ToUpper(name[0]) + name.Substring(1).ToLower();
+            ViewBag._type = "micro";
             ViewBag.SuccessCreate = "Save";
             ViewBag.Title = "Home Banner Type";
             return View("~/Views/Backoffice/homebanner/addhomebannertype.cshtml", clsBannerType);
         }
 
         [HttpGet]
-        [Route("backoffice/homebanner/addhomebanner/{name}/{pageid:int}")]
+        [Route("backoffice/homebanner/addhomebanner/micro/{pageid:int}")]
         public async Task<IActionResult> addhomebanner(int pageid, string name)
         {
 
@@ -526,14 +528,14 @@ namespace skipper_group_new.Controllers
 
             await BindDevicedata();
 
-            ViewBag._type = char.ToUpper(name[0]) + name.Substring(1).ToLower();
+            ViewBag._type = "micro";
             ViewBag.CreateUpdate = "Save";
             ViewBag.Title = "Home Banner";
             return View("~/Views/Backoffice/homebanner/addhomebanner.cshtml", clsBanner);
         }
 
         [HttpGet]
-        [Route("backoffice/homebanner/ViewHomeBanner/{name}/{pageid:int}")]
+        [Route("backoffice/homebanner/ViewHomeBanner/micro/{pageid:int}")]
         public async Task<IActionResult> ViewHomeBanner(int pageid, string name)
         {
 
@@ -541,7 +543,7 @@ namespace skipper_group_new.Controllers
             var menuList = _menuService.GetMenu(pageid);
 
             ViewBag.Menus = menuList;
-            ViewBag._type = char.ToUpper(name[0]) + name.Substring(1).ToLower();
+            ViewBag._type = "micro";
             //Get list of banner types
             var bannerTypes = _homePageService.GetBannerList();
             var filterresult = bannerTypes.Result.Select($"collageid = '{pageid}'").OrderByDescending(r => r["bid"]);

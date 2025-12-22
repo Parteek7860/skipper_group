@@ -17,6 +17,7 @@ namespace skipper_group_new.Interface
         Task<DataTable> GetCMSData();
 
         Task<DataTable> GetSeoFriendlyUrls();
+        Task<DataTable> GetSeoFriendlyStaticRedirectionUrls();
         Task<DataTable> GetCarrer();
         int SaveEnquiryDetails(EnquiryModel model);
         int SaveContactEnquiry(EnquiryModel model);
@@ -26,6 +27,7 @@ namespace skipper_group_new.Interface
         Task<DataTable> GetInvestorSubCategoryList();
         Task<DataTable> GetProductList();
         Task<DataTable> GetProductCategoryList();
+        Task<DataTable> GetCategoryList();
         Task<DataTable> GetProductSubCategoryList();
         Task<DataTable> GetNewsEvents();
         Task<DataTable> GetBannerList();
@@ -34,5 +36,6 @@ namespace skipper_group_new.Interface
         Task<DataTable> GetDynamicTableSEO(string table_name);
         Task<DataTable> GetLeadershipList();
         Task<DataTable> GetBlogList();
+        Task<DataTable> GetProductSolutionList();
     }
 }

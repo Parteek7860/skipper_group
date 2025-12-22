@@ -273,6 +273,31 @@ namespace skipper_group_new.Controllers
             clsCategory obj = new clsCategory();
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
+
+            var catd = await _products.BindProductSolution();
+            var filterresult = catd.AsEnumerable()
+                .Where(row => row.Field<bool>("Status") == true)
+                .CopyToDataTable();
+            if (filterresult != null && filterresult.Rows.Count > 0)
+            {
+
+                var categoryList = filterresult.AsEnumerable()
+
+                    .Select(row => new SelectListItem
+                    {
+                        Value = row["productid"].ToString(), 
+                        Text = row["productname"].ToString()  
+                    })
+                    .ToList();
+
+
+                ViewBag.producttype = new SelectList(categoryList, "Value", "Text");
+            }
+            else
+            {
+                ViewBag.producttype = new SelectList(Enumerable.Empty<SelectListItem>());
+            }
+
             ViewBag.UpdateStatus = "Save";
             return View("~/Views/backoffice/Products/category.cshtml", obj);
         }
@@ -295,6 +320,7 @@ namespace skipper_group_new.Controllers
             try
             {
                 clsCategory obj = new clsCategory();
+                obj.producttype = c.producttype;
                 if (UploadAPDFFile != null && UploadAPDFFile.Length > 0)
                 {
                     var uploadFileName = Path.GetFileName(UploadAPDFFile.FileName);
@@ -432,6 +458,28 @@ namespace skipper_group_new.Controllers
                         obj.HomeImage = filteredRows[0]["homeimage"].ToString();
                         obj.UploadAPDF = filteredRows[0]["uploadapdf"].ToString();
                         obj.Canonical = filteredRows[0]["canonical"].ToString();
+                        obj.producttype = filteredRows[0]["productid"].ToString();
+
+                        var catd = await _products.BindProductSolution();
+                        if (catd != null && catd.Rows.Count > 0)
+                        {
+
+                            var categoryList = catd.AsEnumerable()
+                                .Select(row => new SelectListItem
+                                {
+                                    Value = row["productid"].ToString(),  
+                                    Text = row["productname"].ToString()  
+                                })
+                                .ToList();
+
+                            // Bind to ViewBag for dropdown
+                            ViewBag.producttype = new SelectList(categoryList, "Value", "Text", obj.producttype);
+                        }
+                        else
+                        {
+                            ViewBag.producttype = new SelectList(Enumerable.Empty<SelectListItem>());
+                        }
+
                         ViewBag.UpdateStatus = "Update";
                         return View("~/Views/backoffice/Products/category.cshtml", obj);
                     }

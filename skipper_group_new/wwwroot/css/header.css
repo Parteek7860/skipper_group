@@ -359,6 +359,7 @@ img.img-fluid.after-sticky {
 
 .mega_dropdown01 .mega_dropmenu:nth-child(1) {
     gap: 3.4rem;
+    grid-template-columns: 30% 67% auto;
 }
 
 .mega_overFigure {
@@ -747,6 +748,9 @@ img.img-fluid.after-sticky {
     .mega_dropdown {
         width: calc(100% - 14.5%);
     }
+    .mega_dropdown01 .mega_dropmenu:nth-child(1) {
+    grid-template-columns: 35% 63% auto;
+}
 }
 
 @media(max-width:1700px) {

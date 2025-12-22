@@ -23,6 +23,7 @@ namespace skipper_group_new.Service
         public Task<DataTable> GetCMSData() => this._repository.GetCMSData();
 
         public Task<DataTable> GetSeoFriendlyUrls() => this._repository.GetSeoFriendlyUrls();
+        public Task<DataTable> GetSeoFriendlyStaticRedirectionUrls() => this._repository.GetSeoFriendlyStaticRedirectionUrls();
 
         public Task<DataTable> GetProjectsList() => this._repository.GetProjectsList();
         public Task<DataTable> GetCarrer() => this._repository.GetCarrer();
@@ -32,6 +33,9 @@ namespace skipper_group_new.Service
         public Task<DataTable> GetInvestorSubCategoryList() => this._repository.GetInvestorSubCategoryList();
         public Task<DataTable> GetProductList() => this._repository.GetProductList();
         public Task<DataTable> GetProductCategoryList() => this._repository.GetProductCategoryList();
+
+        public Task<DataTable> GetCategoryList() => this._repository.GetCategoryList();
+
         public Task<DataTable> GetProductSubCategoryList() => this._repository.GetProductSubCategoryList();
 
         public Task<DataTable> GetNewsEvents() => this._repository.GetNewsEvents();
@@ -41,6 +45,8 @@ namespace skipper_group_new.Service
         public Task<DataTable> GetDynamicTableSEO(string table_name) => this._repository.GetDynamicTableSEO(table_name);
         public Task<DataTable> GetLeadershipList() => this._repository.GetLeadershipList();
         public Task<DataTable> GetBlogList() => this._repository.GetBlogList();
+
+        public Task<DataTable> GetProductSolutionList() => this._repository.GetProductSolutionList();
     }
 
 }

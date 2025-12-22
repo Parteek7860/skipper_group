@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_homepage.cshtml";
 
     var bannerlist = ViewBag.bannerlist as System.Data.DataTable;
+
+    var pageid = Context.Request.RouteValues["pageid"]?.ToString();
 }
 <div class="block-header">
     <div class="row">
@@ -35,118 +37,130 @@
 }
 @* @using (Html.BeginForm("viewbanner", "HomeBanner", FormMethod.Post, new { enctype = "multipart/form-data" }))
 { *@
-    <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <h5 class="text-lg-center">Search</h5>
-            <div class="card">
-                <div class="body">
-                    <h2 class="card-inside-title">
-                        Fields with * are mandatory
-                    </h2>
-                    <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="searchTable()" />
-                    <div class="row" style="margin-top:20px;">
-                        <!-- From Date -->
-                        <div class="col-lg-4">
-                            <label for="fromDate" style="font-weight: bold;">From Date</label>
-                            <input type="date" id="fromDate" class="form-control" style="border-radius: 5px; border: 1px solid #ddd;" />
-                        </div>
-                        <!-- To Date -->
-                        <div class="col-lg-4">
-                            <label for="toDate" style="font-weight: bold;">To Date</label>
-                            <input type="date" id="toDate" class="form-control" style="border-radius: 5px; border: 1px solid #ddd;" />
-                        </div>
-                        <!-- Filter Button -->
-                        <!-- Export Button -->
-                        @*  <div class="col-md-2 align-self-end" style="text-align: center;">
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <h5 class="text-lg-center">Search</h5>
+        <div class="card">
+            <div class="body">
+                <h2 class="card-inside-title">
+                    Fields with * are mandatory
+                </h2>
+                <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="searchTable()" />
+                <div class="row" style="margin-top:20px;">
+                    <!-- From Date -->
+                    <div class="col-lg-4">
+                        <label for="fromDate" style="font-weight: bold;">From Date</label>
+                        <input type="date" id="fromDate" class="form-control" style="border-radius: 5px; border: 1px solid #ddd;" />
+                    </div>
+                    <!-- To Date -->
+                    <div class="col-lg-4">
+                        <label for="toDate" style="font-weight: bold;">To Date</label>
+                        <input type="date" id="toDate" class="form-control" style="border-radius: 5px; border: 1px solid #ddd;" />
+                    </div>
+                    <!-- Filter Button -->
+                    <!-- Export Button -->
+                    @*  <div class="col-md-2 align-self-end" style="text-align: center;">
                                         <form method="post" asp-controller="Products" asp-action="ExportProductToExcel">
                                             <button type="submit" class="btn btn-success" style="width: 100%; padding: 10px; border-radius: 5px; font-weight: bold;">Export to Excel</button>
                                         </form>
                                     </div> *@
 
+                </div>
+                <div class="row" style="margin-bottom: 20px;">
+                    <div class="col-lg-2" style="padding-top:10px;">
+                        <button class="btn btn-primary" type="button" onclick="filterByDate()" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Search</button>
                     </div>
-                    <div class="row" style="margin-bottom: 20px;">
-                        <div class="col-lg-2" style="padding-top:10px;">
-                            <button class="btn btn-primary" type="button" onclick="filterByDate()" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Search</button>
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        @if (bannerlist.Rows.Count > 0)
-                        {
-                            <div class="col-sm-12">
-                                <table class="table table-bordered table-responsive-lg" id="productTable">
-                                    <thead class="table-header">
+                </div>
+                <div class="row clearfix">
+                    @if (bannerlist.Rows.Count > 0)
+                    {
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-responsive-lg" id="productTable">
+                                <thead class="table-header">
+                                    <tr>
+                                        @* <th>Project Name</th> *@
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th>Banner</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (DataRow row in bannerlist.Rows)
+                                    {
                                         <tr>
-                                            @* <th>Project Name</th> *@
-                                            <th>Name</th>
-                                            <th>Status</th>
-                                            <th>Banner</th>
-                                            <th>Date</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (DataRow row in bannerlist.Rows)
-                                        {
-                                            <tr>
-                                                @* <td>@(Convert.ToString(row["productname"]))</td> *@
-                                                <td>@(Convert.ToString(row["title"]))</td>
-                                                @if ((Convert.ToBoolean(row["status"]) == true))
+                                            @* <td>@(Convert.ToString(row["productname"]))</td> *@
+                                            <td>@(Convert.ToString(row["title"]))</td>
+                                            @if ((Convert.ToBoolean(row["status"]) == true))
+                                            {
+                                                <td>
+                                                    @Html.HiddenFor(model => model.doctype)
+                                                    <form method="post" action="/Backoffice/HomeBanner/statusbanner/@(Convert.ToString(row["bid"]))" style="display: inline;">
+                                                        <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
+                                                            <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    @Html.HiddenFor(model => model.doctype)
+                                                    <form method="post" action="/Backoffice/HomeBanner/statusbanner/@(Convert.ToString(row["bid"]))" style="display: inline;">
+                                                        <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
+                                                            <img src="~/Backoffice/images/wrong.png" width="25" alt="In-Active" />
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            }
+                                            <td>
+                                                <img src="/uploads/banner/@(Convert.ToString(row["bannerimage"]))" width="50" />
+                                            </td>
+                                            <th scope="row">@(Convert.ToString(row["trdate"]))</th>
+                                            <td>
+                                                <input type="hidden" value="@(Convert.ToString(row["bid"]))" />
+
+                                                @if (pageid != null)
                                                 {
-                                                    <td>
-                                                        @Html.HiddenFor(model => model.doctype)
-                                                        <form method="post" action="/Backoffice/HomeBanner/statusbanner/@(Convert.ToString(row["bid"]))" style="display: inline;">
-                                                            <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
-                                                                <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
-                                                            </button>
-                                                        </form>
-                                                    </td>
+                                                    <a id="1" data-value="@(Convert.ToString(row["bid"]))"
+                                                       href="/backoffice/homebanner/editBanner/micro/@pageid/@(Convert.ToString(row["bid"]))" class="btnEdit">
+                                                        <img src="~/backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
+                                                    </a>
                                                 }
                                                 else
                                                 {
-                                                    <td>
-                                                        @Html.HiddenFor(model => model.doctype)
-                                                        <form method="post" action="/Backoffice/HomeBanner/statusbanner/@(Convert.ToString(row["bid"]))" style="display: inline;">
-                                                            <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
-                                                                <img src="~/Backoffice/images/wrong.png" width="25" alt="In-Active" />
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                }
-                                                <td>
-                                                    <img src="/uploads/banner/@(Convert.ToString(row["bannerimage"]))" width="50" />
-                                                </td>
-                                                <th scope="row">@(Convert.ToString(row["trdate"]))</th>
-                                                <td>
-                                                    <input type="hidden" value="@(Convert.ToString(row["bid"]))" />
-
                                                     <a id="1" data-value="@(Convert.ToString(row["bid"]))"
                                                        href="/backoffice/homebanner/editBanner/@(Convert.ToString(row["bid"]))" class="btnEdit">
                                                         <img src="~/backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
                                                     </a>
-                                                    <a data-value="@(Convert.ToString(row["bid"]))"
-                                                       data-href="/backoffice/homebanner/DeleteBanner/@(Convert.ToString(row["bid"]))" class="btndelete">
-                                                        <img src="~/backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                                }
 
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-lg-12 my-lg-2 text-lg-center message-top2">
-                                Records not found
-                            </div>
-                        }
-                    </div>
+
+                                                <a data-value="@(Convert.ToString(row["bid"]))"
+                                                   data-href="/backoffice/homebanner/DeleteBanner/@(Convert.ToString(row["bid"]))" class="btndelete">
+                                                    <img src="~/backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-lg-12 my-lg-2 text-lg-center message-top2">
+                            Records not found
+                        </div>
+                    }
                 </div>
             </div>
-
         </div>
+
     </div>
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const deleteButtons = document.querySelectorAll('.btndelete');

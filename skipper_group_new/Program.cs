@@ -16,8 +16,8 @@ using Microsoft.Extensions.FileProviders;
 var builder = WebApplication.CreateBuilder(args);
 
 
-
-builder.Services.AddControllersWithViews();  // ✅ Add this line
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+//builder.Services.AddControllersWithViews();  // ✅ Add this line
 builder.Services.AddRazorPages();
 
 
@@ -89,6 +89,21 @@ app.Use(async (context, next) =>
 // 3️⃣ Standard Middleware Order
 // -------------------------------------------------
 app.UseHttpsRedirection();
+app.Use(async (context, next) =>
+{
+    var path = context.Request.Path.Value;
+
+    if (!string.IsNullOrEmpty(path) && path.Any(char.IsUpper))
+    {
+        context.Response.Redirect(
+            path.ToLowerInvariant() + context.Request.QueryString,
+            permanent: true
+        );
+        return;
+    }
+
+    await next();
+});
 app.UseStaticFiles();
 
 

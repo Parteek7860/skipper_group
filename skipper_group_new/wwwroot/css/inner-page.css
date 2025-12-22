@@ -107,7 +107,9 @@
 .recog_bx img {
     border-radius: 15px;
 }
-
+.enrgy_box .epc-advanimg img{
+    border-radius: 2rem;
+}
 .tooltip {
     position: absolute;
     background: rgba(0, 0, 0, 0.85);
@@ -1767,6 +1769,7 @@ font-size: var(--font-21);
 .life_one {
     background-color: var(--coloreb);
     padding-top: 4.2rem;
+    padding-bottom: 5rem;
 }
 
 .life_one .line-sec {
@@ -1841,7 +1844,7 @@ font-size: var(--font-21);
 }
 
 .life_two {
-    padding-block: 0rem 15rem;
+    padding-block: 8rem 15rem;
 }
 
 .life_two .empl_bg {
@@ -9926,16 +9929,33 @@ section.rd_panel4 .bottom_left_icon {
 .privacy-sec p {
     margin-bottom: 2rem;
 }
-
+.product_panel1.solar-png{
+    margin-top: -14rem;
+}
+.ingbdrspace figure img{
+    border-radius: 2rem;
+}
+.ingbdrspace p{
+    margin-top: 2rem;
+    font-weight: 700;
+    color:#004A70;
+}
+.epc-advanimg img{
+    border-radius: 2rem;
+}
 @media (max-width:600px) {
     .privacy-sec {
         padding-block: 4rem;
     }
 
 }
+@media (max-width:1600px) {
 
-
-
+.product_panel1.solar-png .mt-top {
+    margin-top: 12rem;
+    width: 159%;
+}
+}
 @media (min-width: 1001px) {
     .product_sec.polymer .product_sec_slider {
         margin-top: -26rem;
@@ -11388,7 +11408,14 @@ section.new_milestone {
     padding-top: 12rem;
     margin-top: 0;
 }
+.skipper_miltone1.miletone24.miles2024 .right_milestone .right2{
+        right: -50rem;
+top: 0rem;
 
+}
+.skipper_miltone1.miletone24.miles2024  .right_milestone .right1 .top_milestone:last-child{
+left:62rem;
+}
 .skipper_miltone1.miles9 .left_milestone .top_milestone {
     margin-bottom: 2rem;
     width: 316px;
@@ -12631,7 +12658,14 @@ section.new_milestone {
         left: 0;
 
     }
-
+.skipper_miltone1.miletone24.miles2024 .right_milestone .right2 {
+    right: 0;
+    top: 0rem;
+    justify-content: left;
+}
+.skipper_miltone1.miletone24.miles2024 .right_milestone .right1 .top_milestone:last-child {
+    left: 0;
+}
     .skipper_miltone1.miletone24 .right_milestone .right2 .bottom_milestone {
         width: fit-content;
         margin-left: 0;
@@ -13515,8 +13549,38 @@ section.rd_panel4 .nabl-cont p strong {
     z-index: 999;
     top: 20px;
 }
-
-
+.note-text{
+    margin-top: 4rem;
+}
+.note-text p{
+    font-weight:600;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+.note-text p span{
+    color:red;
+}
+.bsnl-sec.sustainbility_block4.transimission-2 {
+    padding-block:8rem;
+}
+.bsnl-sec p strong{
+    margin-block: 2rem;
+    display: block;
+    font-size: var(--font-21);
+    font-weight: 700;
+}
+.bsnl-sec .bsnl-text h3{
+    font-size: var(--font-24);
+    color: #004A70;
+    font-weight: 600;
+    margin-bottom: 3rem;
+    line-height: 38px;
+    margin-top: 4rem;
+}
+.telecom_comprehense {
+    padding-top: 6rem;
+    padding-bottom: 0;
+}
 /* footer search result css starts here */
 .search_result > ul {
     margin: 0;
