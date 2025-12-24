@@ -71,27 +71,32 @@
                             </div>
                         </div>
                     </div>
-                    <div class="eng_header">
-                        @if (dt != null && dt.Rows.Count > 0)
-                        {
-                            <ul class="main_list">
-                                @foreach (DataRow row in dt.Rows)
-                                {
-                                    string classactive = "";
-                                    var routeId = Convert.ToInt32(ViewBag.CurrentProductId);
+                    @if (Convert.ToInt32(Model.collageid) != 3)
+                    {
 
-                                    if (Convert.ToInt32(row["productid"]) == routeId)
+                        <div class="eng_header">
+                            @if (dt != null && dt.Rows.Count > 0)
+                            {
+                                <ul class="main_list">
+                                    @foreach (DataRow row in dt.Rows)
                                     {
-                                        classactive = "active";
-                                    }
+                                        string classactive = "";
+                                        var routeId = Convert.ToInt32(ViewBag.CurrentProductId);
 
-                                    <li class="@classactive">
-                                        <a href="/@Convert.ToString(row["productname"]).ToSlug()/@Convert.ToInt32(row["productid"])">@Convert.ToString(row["productname"]) </a>
-                                    </li>
-                                }
-                            </ul>
-                        }
-                    </div>
+                                        if (Convert.ToInt32(row["productid"]) == routeId)
+                                        {
+                                            classactive = "active";
+                                        }
+
+                                        <li class="@classactive">
+                                            <a href="/@Convert.ToString(row["productname"]).ToSlug()/@Convert.ToInt32(row["productid"])">@Convert.ToString(row["productname"]) </a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+
+                        </div>
+                    }
                 </section>
             }
             else
@@ -105,27 +110,31 @@
                     <div class="vrtcl-line">
                         <figure><img src="/images/icon/engineer-vertical-line.svg" class="image2" alt="vertical-line" /></figure>
                     </div>
-                    <div class="eng_header">
-                        @if (dt != null && dt.Rows.Count > 0)
-                        {
-                            <ul class="main_list">
-                                @foreach (DataRow row in dt.Rows)
-                                {
-                                    string classactive = "";
-                                    var routeId = Convert.ToInt32(ViewBag.CurrentProductId);
-
-                                    if (Convert.ToInt32(row["productid"]) == routeId)
+                    @if (Convert.ToInt32(Model.collageid) != 3)
+                    {
+                        <div class="eng_header">
+                            @if (dt != null && dt.Rows.Count > 0)
+                            {
+                                <ul class="main_list">
+                                    @foreach (DataRow row in dt.Rows)
                                     {
-                                        classactive = "active";
-                                    }
+                                        string classactive = "";
+                                        var routeId = Convert.ToInt32(ViewBag.CurrentProductId);
 
-                                    <li class="@classactive">
-                                        <a href="/@Convert.ToString(row["productname"]).ToSlug()/@Convert.ToInt32(row["productid"])">@Convert.ToString(row["productname"]) </a>
-                                    </li>
-                                }
-                            </ul>
-                        }
-                    </div>
+                                        if (Convert.ToInt32(row["productid"]) == routeId)
+                                        {
+                                            classactive = "active";
+                                        }
+
+                                        <li class="@classactive">
+                                            <a href="/@Convert.ToString(row["productname"]).ToSlug()/@Convert.ToInt32(row["productid"])">@Convert.ToString(row["productname"]) </a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </div>
+                    }
+
                 </section>
             }
 
@@ -137,7 +146,7 @@
 
 
 
-    @RenderBody();
+    @RenderBody()
     @await Html.PartialAsync("~/Views/Shared/_footer.cshtml")
 
 

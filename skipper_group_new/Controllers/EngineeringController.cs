@@ -88,9 +88,13 @@ namespace skipper_group_new.Controllers
                 }
                 else
                 {
+                    var sub = await _homePageService.GetProductSubCategoryList();
+                    DataRow[] pcatdata = sub.Select($"status=1");
+                    ViewBag.ProductSubCatList = pcatdata.CopyToDataTable();
+
                     obj.id = productid;
                 }
-
+                obj.collageid = productid;
                 return View("engineering", obj);
             }
 

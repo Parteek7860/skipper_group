@@ -162,25 +162,35 @@ jQuery(document).ready(function () {
   
     // Accordion for top-level <h3><a>
     $("#accordian > ul > li > h3 > a").on("click", function (e) {
-      var parentLi = $(this).closest("li");
-      var hasSubmenu = parentLi.children("ul").length > 0;
-  
-      if (hasSubmenu) {
+    var parentLi = $(this).closest("li");
+
+    // 🔹 Skip items without dropdown
+    if (parentLi.hasClass("no_drop_menu")) {
+        return; // allow normal link click
+    }
+
+    var submenu = parentLi.children("ul.submenu");
+
+    // 🔹 Only prevent default if submenu has items
+    if (submenu.length && submenu.children("li").length) {
         e.preventDefault();
-  
+
         if (parentLi.hasClass("active")) {
-          parentLi.removeClass("active").children("ul").slideUp(300);
+            parentLi.removeClass("active");
+            submenu.slideUp(300);
         } else {
-          // Close only top-level items, not nested ones
-          $("#accordian > ul > li.active")
-            .removeClass("active")
-            .children("ul")
-            .slideUp(300);
-  
-          parentLi.addClass("active").children("ul").slideDown(300);
+            // Close only top-level active menus
+            $("#accordian > ul > li.active")
+                .removeClass("active")
+                .children("ul.submenu")
+                .slideUp(300);
+
+            parentLi.addClass("active");
+            submenu.slideDown(300);
         }
-      }
-    });
+    }
+});
+
   
     // Toggle nested submenu on clicking .arrow links
     $("#accordian .arrow").on("click", function (e) {

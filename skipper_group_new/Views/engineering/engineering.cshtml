@@ -4,12 +4,17 @@
 
 @{
     Layout = "~/Views/Shared/_engineering.cshtml";
-    DataTable dt = null, dt1 = null, dt2 = null;
+    DataTable dt = null, dt1 = null, dt2 = null, dtsub = null;
     if (Model.id != "3")
     {
-         dt = ViewBag.ProductCatList as DataTable;
-         dt1 = ViewBag.FeaturedProjList1 as DataTable;
-         dt2 = ViewBag.FeaturedProjList2 as DataTable;
+        dt = ViewBag.ProductCatList as DataTable;
+
+        dt1 = ViewBag.FeaturedProjList1 as DataTable;
+        dt2 = ViewBag.FeaturedProjList2 as DataTable;
+    }
+    else
+    {
+        dtsub = ViewBag.ProductSubCatList as DataTable;
     }
 
 }
@@ -21,7 +26,7 @@
         <div class="container">
             <div class="product_sec_slider">
                 <div class="title">
-                    <h3 data-aos="fade-up" data-aos-delay="300">Services </h3>
+                    <h3 data-aos="fade-up" data-aos-delay="300">Products </h3>
                 </div>
                 <div class="product-slider swiper-container-horizontal">
                     <div class="swiper-wrapper">
@@ -33,9 +38,57 @@
                                 <div class="swiper-slide">
                                     <div class="slide_bx">
                                         <figure>
-                                            <a href="@href">
+                                            <a href="/@href/@row1["pcatid"]">
                                                 <img class="img-fluid w-100"
-                                                     src="/uploads/ProductsImage/@row1["banner"]"
+                                                     src="/uploads/ProductsImage/@row1["homeimage"]"
+                                                     border="0" />
+                                            </a>
+                                            <figcaption>
+                                                <p>@row1["category"]</p>
+                                            </figcaption>
+                                            <img src="/images/icon/subtraction-11.svg" alt="subtraction-11"
+                                                 class="icon-top">
+                                        </figure>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-div">
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+
+@if (dtsub != null)
+{
+    <section class="product_sec eng-prod">
+        <div class="container">
+            <div class="product_sec_slider">
+                <div class="title">
+                    <h3 data-aos="fade-up" data-aos-delay="300">Service </h3>
+                </div>
+                <div class="product-slider swiper-container-horizontal">
+                    <div class="swiper-wrapper">
+                        @if (dtsub.Rows.Count > 0)
+                        {
+                            foreach (DataRow row1 in dtsub.Rows)
+                            {
+                                var href = string.IsNullOrEmpty(row1["rewriteurl"].ToString()) ? "javascript:void(0);" : row1["rewriteurl"].ToString();
+                                var imgdata = string.IsNullOrEmpty(row1["homeimage"].ToString()) ? "/images/pro-img.webp" : "/uploads/ProductsImage/" + row1["homeimage"].ToString();
+
+                                <div class="swiper-slide">
+                                    <div class="slide_bx">
+                                        <figure>
+                                            <a href="/@href/@row1["psubcatid"]">
+                                                <img class="img-fluid w-100"
+                                                     src="@imgdata"
                                                      border="0" />
                                             </a>
                                             <figcaption>
@@ -90,7 +143,7 @@
                                             </div>
                                             <div class="text-content">
                                                 <div class="bottom_left_icon">
-                                                    <img src="images/icon/Subtraction-6.svg"
+                                                    <img src="/images/icon/Subtraction-6.svg"
                                                          class="img-fluid">
                                                 </div>
                                                 <div class="project-title">@Convert.ToString(dt1.Rows[0]["researchtitle"])</div>
@@ -115,7 +168,7 @@
                                                     </div>
                                                     <div class="text-content">
                                                         <div class="bottom_left_icon">
-                                                            <img src="images/icon/Subtraction-6.svg" class="img-fluid">
+                                                            <img src="/images/icon/Subtraction-6.svg" class="img-fluid">
                                                         </div>
                                                         <div class="project-title">@Convert.ToString(row2["researchtitle"])</div>
                                                         <div class="description">

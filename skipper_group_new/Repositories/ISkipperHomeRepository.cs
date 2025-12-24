@@ -19,6 +19,7 @@ namespace skipper_group_new.Repositories
 
         Task<DataTable> GetSeoFriendlyStaticRedirectionUrls();
         Task<DataTable> GetProjectsList();
+        Task<DataTable> GetMapGalleryProjectList();
         Task<DataTable> GetCarrer();
         int SaveEnquiryDetails(EnquiryModel model);
         int SaveContactEnquiry(EnquiryModel model);

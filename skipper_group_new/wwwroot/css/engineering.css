@@ -294,6 +294,7 @@
     display: grid;
     align-items: center;
     justify-items: center;
+    position: relative;
 }
 
 .video_sec figure>* {
@@ -303,7 +304,13 @@
 .video_sec figure figcaption {
     max-width: 100rem;
     text-align: center;
-    position: relative;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    align-content: center;
 }
 
 .video_sec figure figcaption h6 {

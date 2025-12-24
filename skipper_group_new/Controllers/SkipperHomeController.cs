@@ -144,7 +144,7 @@ namespace skipper_group_new.Controllers
             await LoadSeoDataAsync(id);
             await LoadCMSDataAsync(id);
             obj.capacha = CaptchaHelper.GenerateCaptcha();
-
+            obj.CaptchaCode = obj.capacha;
             Task<DataTable> x = this._homePageService.GetCMSData();
             if (x != null)
             {
@@ -166,6 +166,8 @@ namespace skipper_group_new.Controllers
             return View("contactus", obj);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("contact-us")]
         public async Task<IActionResult> contactus(EnquiryModel cls, int id)
         {
             await LoadSeoDataAsync(10);
@@ -188,11 +190,12 @@ namespace skipper_group_new.Controllers
 
             }
 
-            if (cls.CaptchaInput != cls.capacha)
+            if (cls.CaptchaInput != cls.CaptchaCode)
             {
                 ModelState.AddModelError("CaptchaInput", "Invalid Captcha. Please try again.");
                 //obj = cls;
                 obj.capacha = CaptchaHelper.GenerateCaptcha();
+                obj.CaptchaCode = obj.capacha;
                 return View("contactus", obj);
             }
 
@@ -204,6 +207,8 @@ namespace skipper_group_new.Controllers
             obj.country = cls.country;
             obj.company = cls.company;
             obj.FMessage = cls.FMessage;
+            obj.corp_grup = cls.corp_grup;
+            obj.OrganizationName = cls.OrganizationName;
             var x = _homePageService.SaveContactEnquiry(obj);
             if (x > 0)
             {
@@ -320,6 +325,7 @@ namespace skipper_group_new.Controllers
                 obj.uplaodimage = Convert.ToString(filterlist.Rows[0]["uploadphoto"]);
                 obj.ShortDesc = WebUtility.HtmlDecode(Convert.ToString(filterlist.Rows[0]["shortdesc"]));
                 obj.Detaildesc = WebUtility.HtmlDecode(Convert.ToString(filterlist.Rows[0]["detaildesc"]));
+                obj.experience = WebUtility.HtmlDecode(Convert.ToString(filterlist.Rows[0]["experience"]));
             }
 
 
@@ -376,10 +382,30 @@ namespace skipper_group_new.Controllers
             ViewBag.Jobtitle = jobTitles;
             int firstProductId = jobTitles.Keys.First();
             var allJobs = await _homePageService.GetCarrer();
-            var filteredOpenings = allJobs.AsEnumerable().Where(r => r.Field<DateTime?>("JobClosing_date") >= DateTime.Now && r.Field<int?>("emptypeid") == firstProductId).OrderBy(r => r.Field<int?>("displayorder") ?? int.MaxValue);
+            var filteredOpenings = allJobs.AsEnumerable().Where(r => r.Field<DateTime?>("JobClosing_date") >= DateTime.Now).OrderBy(r => r.Field<int?>("displayorder") ?? int.MaxValue);
 
             ViewBag.CurrentOpenings = filteredOpenings.Any() ? filteredOpenings.CopyToDataTable() : allJobs.Clone();
             return View("career", obj);
+        }
+        [HttpGet]
+        [Route("career/filter")]
+        public async Task<IActionResult> Filter(int emptypeid)
+        {
+            var allJobs = await _homePageService.GetCarrer();
+
+            var filtered = allJobs.AsEnumerable()
+                .Where(r =>
+                    r.Field<DateTime?>("jobclosing_date") != null &&
+                    r.Field<DateTime>("jobclosing_date") >= DateTime.Now &&
+                    (
+                        emptypeid == 0 ||
+                        r.Field<int?>("emptypeid") == emptypeid
+                    )
+                )
+                .OrderBy(r => r.Field<int?>("displayorder") ?? int.MaxValue);
+
+            DataTable dt = filtered.Any() ? filtered.CopyToDataTable() : allJobs.Clone();
+            return PartialView("~/Views/PartialView/_CareerJobsPartial.cshtml", dt);
         }
         [HttpGet]
         [Route("career-details/{title}/{jobid:int}")]
@@ -418,6 +444,16 @@ namespace skipper_group_new.Controllers
             await LoadCMSDataAsync(81);
             EnquiryModel obj = new EnquiryModel();
             obj.capacha = CaptchaHelper.GenerateCaptcha();
+            obj.CaptchaCode = obj.capacha;
+
+            var x = await _homePageService.GetCarrer();
+            var filterresults = x.AsDataView().ToTable().Select($"status=1 and jobid='{id.ToString()}'");
+            if (filterresults.Length > 0)
+            {
+                DataTable dt = ((IEnumerable<DataRow>)filterresults).CopyToDataTable<DataRow>();
+                obj.jobname = Convert.ToString(dt.Rows[0]["jobtitle"]);
+            }
+
             return View("apply", obj);
         }
         [HttpPost]
@@ -428,11 +464,12 @@ namespace skipper_group_new.Controllers
             await LoadCMSDataAsync(81);
             EnquiryModel obj = new EnquiryModel();
 
-            if (cls.CaptchaInput != cls.capacha)
+            if (cls.CaptchaInput != cls.CaptchaCode)
             {
                 ModelState.AddModelError("CaptchaInput", "Invalid Captcha. Please try again.");
                 obj = cls;
                 obj.capacha = CaptchaHelper.GenerateCaptcha();
+                obj.CaptchaCode = obj.capacha;
                 return View("apply", obj);
             }
             obj.Eid = Convert.ToInt32(HttpContext.Request.RouteValues["id"]?.ToString());
@@ -447,7 +484,7 @@ namespace skipper_group_new.Controllers
             obj.country = cls.country;
             obj.zipcode = cls.zipcode;
             obj.FMessage = cls.FMessage;
-
+            obj.jobname = cls.jobname;
 
             if (file_uploader != null && file_uploader.Length > 0)
             {
@@ -552,38 +589,35 @@ namespace skipper_group_new.Controllers
 
 
         }
-        [HttpPost]
-        public IActionResult GetGridByProject(clsHomeModel model)
-        {
-            var data =  _homePageService.GetProjectsList();
-            var list = data.Result.AsEnumerable()
-         .Where(r =>
-             Convert.ToInt32(r["status"]) == 1 &&
-             Convert.ToInt32(r["pcatid"]) == model.Id)
-         .OrderBy(r => Convert.ToInt32(r["displayorder"]))
-         .CopyToDataTable();
-
-            // ViewBag works fine with PartialView
-            ViewBag.ProjectsList = list;
-            return PartialView("_ProjectGridPartial", data);
-        }
-
 
         [HttpGet]
-        public async Task<IActionResult> GetGridByProject1(int? id)
+        [Route("SkipperHome/GetGridByProject/{id:int}")]
+        public async Task<IActionResult> GetGridByProject(int id)
         {
+            IEnumerable<DataRow> filteredRows;
             var data = await _homePageService.GetProjectsList();
+            if (id == 0)
+            {
+                filteredRows = data.AsEnumerable()
+                .Where(r => r.Field<bool>("status") == true);
 
-            var list = data.AsEnumerable()
-        .Where(r =>
-            Convert.ToInt32(r["status"]) == 1 &&
-            Convert.ToInt32(r["pcatid"]) == id)
-        .OrderBy(r => Convert.ToInt32(r["displayorder"])).CopyToDataTable();
+            }
+            else
+            {
+                filteredRows = data.AsEnumerable()
+             .Where(r => r.Field<bool>("status") == true &&
+                         r.Field<string>("catid") == Convert.ToString(id));
+            }
 
-            ViewBag.ProjectsList = list;
-            return View();
 
+            DataTable list = filteredRows.Any()
+                ? filteredRows.CopyToDataTable()
+                : data.Clone();
+
+            return PartialView("~/Views/PartialView/_ProjectGridPartial.cshtml", list);
         }
+
+
 
 
 
@@ -639,6 +673,14 @@ namespace skipper_group_new.Controllers
                     obj.LongDesc2 = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["homedesc2"]));
 
                 }
+                // gallery list
+                var y = await this._homePageService.GetMapGalleryProjectList();
+                DataRow[] galleryresults = y.Select($"productid='{productid.ToString()}'");
+                if (galleryresults.Length > 0)
+                {
+                    DataTable gdt = ((IEnumerable<DataRow>)galleryresults).CopyToDataTable<DataRow>();
+                    ViewBag.GalleryList = gdt;
+                }
                 return View("productdetail", obj);
             }
         }
@@ -671,6 +713,15 @@ namespace skipper_group_new.Controllers
                     obj.LongDesc2 = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["homedesc2"]));
 
                 }
+                // gallery list
+                var y = await this._homePageService.GetMapGalleryProjectList();
+                DataRow[] galleryresults = y.Select($"productid='{productid.ToString()}'");
+                if (galleryresults.Length > 0)
+                {
+                    DataTable gdt = ((IEnumerable<DataRow>)galleryresults).CopyToDataTable<DataRow>();
+                    ViewBag.GalleryList = gdt;
+                }
+
                 return View("productdetail", obj);
             }
         }

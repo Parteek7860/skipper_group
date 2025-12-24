@@ -12,6 +12,8 @@ namespace skipper_group_new.Models
         public int CollageId { get; set; }
         public string UName { get; set; }
         public string Designation { get; set; }
+
+        public string experience { get; set; }
         public string uplaodimage { get; set; }
         public string Detaildesc { get; set; }
     }

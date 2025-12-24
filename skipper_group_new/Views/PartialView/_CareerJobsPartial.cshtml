@@ -1,0 +1,57 @@
+﻿@using System.Data
+@using skipper_group_new.mainclass;
+@model DataTable
+
+@if (Model != null && Model.Rows.Count > 0)
+{
+    <div class="row">
+        @foreach (DataRow row in Model.Rows)
+        {
+            <div class="col-lg-4">
+                <div class="job-posting">
+                    <h2>@row["jobtitle"]</h2>
+
+                    <div class="company-info">
+                        <p>
+                            <strong>Name of the Company :</strong>
+                            <span>@row["company"]</span>
+                        </p>
+                        <p>
+                            <strong>Name of Department:</strong>
+                            <span>@row["department"]</span>
+                        </p>
+                        <p>
+                            <strong>Posted On:</strong>
+                            <span>@Convert.ToDateTime(row["jobopening_date"]).ToString("dd MM yyyy")</span>
+                        </p>
+                        <p>
+                            <strong>End Date:</strong>
+                            <span>@Convert.ToDateTime(row["jobclosing_date"]).ToString("dd MM yyyy")</span>
+                        </p>
+                        <p>
+                            <strong>Location:</strong>
+                            <span>@row["location"]</span>
+                        </p>
+                    </div>
+
+                    <div class="required-experience">
+                        <p>
+                            <strong>Required Experience:</strong>
+                            <span>@row["min_expyear"] - @row["max_expyear"] years</span>
+                        </p>
+                    </div>
+
+                    @Html.Raw(System.Net.WebUtility.HtmlDecode(row["skills"]?.ToString()))
+
+                    <div class="button-container">
+                        <a href="#">Share</a>
+                        <a href="/career-details/@Convert.ToString(row["jobtitle"]).ToSlug().ToLower()/@row["jobid"]">
+                            Apply
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+

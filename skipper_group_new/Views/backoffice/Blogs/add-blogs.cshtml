@@ -46,14 +46,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Display Order</label>
-                                    @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control", type = "number" })
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="row clearfix">
@@ -101,7 +93,16 @@
                         </div>
                     </div>
 
-                  
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Display Order</label>
+                                    @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control", type = "number" })
+                                </div>
+                            </div>
+                        </div>
+                  </div>
 
                     <h5>SEO Section</h5>
                     <div class="row clearfix">
@@ -156,7 +157,7 @@
 
                     <div class="row clearfix">
                         <div class="col-lg-6 col-md-6 col-sm-6">
-                            <button type="submit" class="btn btn-success btn-lg mx-2" value="Save">@ViewBag.CreateUpdate</button>
+                            <button type="submit" class="btn btn-success btn-lg mx-2" formaction="@Url.Action("AddBlog", "Blogs")" formmethod="post" value="Save">@ViewBag.CreateUpdate</button>
                             <a href="/Blogs/view-blogs" class="btn btn-secondary btn-lg mx-2">Cancel</a>
                         </div>
                     </div>

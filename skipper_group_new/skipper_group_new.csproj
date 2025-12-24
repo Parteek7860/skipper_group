@@ -34,6 +34,10 @@
 		<Content Include="wwwroot\**\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
 		<!--<Content Include="appsettings*.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />-->
 	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="Views\SkipperHome\career.cshtml_old" />
+	  <Content Include="Views\SkipperHome\projectlist.cshtml_old" />
+	</ItemGroup>
 	<Target Name="CopyViewsAfterPublish" AfterTargets="Publish">
 		<ItemGroup>
 			<_CustomViews Include="$(ProjectDir)Views\**\*.cshtml" />

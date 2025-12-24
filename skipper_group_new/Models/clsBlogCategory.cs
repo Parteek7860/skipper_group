@@ -7,6 +7,7 @@
         public bool Status { get; set; }  
         public int DisplayOrder { get; set; } 
         public string Uname { get; set; }   
+        public string mode { get; set; }
     }
 
     public class Blogcatdtl

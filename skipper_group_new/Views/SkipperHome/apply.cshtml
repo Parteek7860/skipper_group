@@ -66,6 +66,11 @@
                                     @Html.ValidationMessageFor(m => m.EmailId, "", new { @class = "text-danger v-span" })
 
                                 </div>
+                                <div class="input_bx" data-aos="fade-up" data-aos-delay="700">
+                                    @Html.EditorFor(model => model.jobname, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    
+
+                                </div>
 
                                 <div class="input_bx" data-aos="fade-up" data-aos-delay="800">
                                     <input type="file" name="file_Uploader" />
@@ -79,7 +84,7 @@
                                     <div class="d-flex align-items-center">
                                         <div style="background:#f1f1f1; padding:10px 20px; font-weight:bold; letter-spacing:4px; font-size:18px; border-radius:6px;">
                                             @Model.capacha
-                                            @Html.HiddenFor(model => model.capacha)
+                                            @Html.HiddenFor(model => model.CaptchaCode)
                                         </div>
                                         @{
                                             string jobid = Context.Request.GetDisplayUrl();

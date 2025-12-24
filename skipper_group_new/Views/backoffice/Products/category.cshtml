@@ -24,8 +24,9 @@
 
 
 
-@using (Html.BeginForm("category", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("addcategory", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
+    @Html.AntiForgeryToken()
     // @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.ValidationSummary(true)
     <div class="row clearfix">
@@ -183,7 +184,10 @@
                     <!-- Buttons -->
                     <div class="row mt-4">
                         <div class="col-sm-12">
-                            <button type="submit" class="btn btn-success btn-lg mx-2" value="Save" formmethod="post" formaction="@Url.Action("AddCategory", "Products")"> @ViewBag.UpdateStatus </button>
+                            <form asp-action="category" asp-controller="Products" method="post">
+                                <button type="submit" class="btn btn-success btn-lg mx-2" value="Save"> @ViewBag.UpdateStatus </button>
+                            </form>
+                         
                            
                         </div>
                     </div>
@@ -193,6 +197,7 @@
     </div>
 
 }
+
 @{
     var nonce = Context.Items["CSPNonce"]?.ToString();
 }

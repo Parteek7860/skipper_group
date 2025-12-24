@@ -18,7 +18,7 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpGet]
-        [Route("backoffice/Blogs/add-blogs")]
+        [Route("backoffice/Blogs/addblogs")]
         public async Task<IActionResult> addblogs()
         {
             try
@@ -62,12 +62,12 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/Blogs/AddBlog")]
-        public async Task<IActionResult> AddBlog(clsBlog blg, IFormFile BlogImageFile, IFormFile LargeImageFile)
+        [Route("backoffice/blogs/addblog")]
+        public async Task<IActionResult> addblog(clsBlog blg, IFormFile BlogImageFile, IFormFile LargeImageFile)
         {
             try
             {
-                if (blg != null && blg.BlogId != 0 && blg.Mode != 0)
+                if (blg != null && blg.BlogId != 0)
                 {
                     if (BlogImageFile != null && BlogImageFile.Length > 0)
                     {
@@ -239,8 +239,8 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/Blogs/ChangeBlogStatus/{id}")]
-        public async Task<IActionResult> ChangeBlogStatus(int id)
+        [Route("backoffice/blogs/blogstatus/{id}")]
+        public async Task<IActionResult> blogstatus(int id)
         {
             try
             {
@@ -249,8 +249,8 @@ namespace skipper_group_new.Controllers
                     var chngstatus = await _blog.ChangeBlogStatus(id);
                     if (chngstatus > 0)
                     {
-                        ViewBag.SuccessCreate = "Status changed successfully.";
-                        TempData["Title"] = "Product";
+                        HttpContext.Session.SetString("Message", "Status changed successfully.");
+
                     }
                     else
                     {
@@ -281,6 +281,8 @@ namespace skipper_group_new.Controllers
                 var blogDtl = await _blog.GetBlogCatTblData();
                 ViewBag.BlogCatDtl = blogDtl;
 
+                ViewBag.CreateUpdate = "Save";
+
                 if (TempData["SuccessCreate"] != null)
                     ViewBag.SuccessCreate = TempData["SuccessCreate"];
                 if (TempData["ErrorMessage"] != null)
@@ -295,14 +297,25 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/Blogs/AddBlogCat")]
-        public async Task<IActionResult> AddBlogCat(clsBlogCategory blg)
+        [ValidateAntiForgeryToken]
+        [Route("backoffice/Blogs/addblogcat")]
+        public async Task<IActionResult> addblogcat(clsBlogCategory blg)
         {
             try
             {
                 if (blg != null)
                 {
                     blg.Uname = HttpContext.Session.GetString("UserName");
+
+                    if (blg.BcatId > 0)
+                    {
+                        blg.mode = "2";
+                    }
+                    else
+                    {
+                        blg.mode = "1";
+                        blg.Status = true;
+                    }
                     int result = await _blog.AddBlogCat(blg);
                     if (result > 0)
                     {
@@ -350,6 +363,7 @@ namespace skipper_group_new.Controllers
                         var menuList = _menuService.GetMenu();
                         ViewBag.Menus = menuList;
 
+                        ViewBag.CreateUpdate = "Update";
                         return View("~/Views/backoffice/Blogs/addblogcat.cshtml", blg);
                     }
                     else
@@ -432,9 +446,9 @@ namespace skipper_group_new.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("backoffice/Blogs/ChangeBlogCatStatus/{id}")]
-        public async Task<IActionResult> ChangeBlogCatStatus(int id)
+        [HttpGet]
+        [Route("backoffice/Blogs/changeblogCatstatus/{id}")]
+        public async Task<IActionResult> changeblogCatstatus(int id)
         {
             try
             {

@@ -3,6 +3,7 @@
 
 @{
     Layout = "~/Views/Shared/_cms.cshtml";
+    DataTable dtprojectlist = ViewBag.GalleryList as DataTable;
 }
 @if (Model != null)
 {
@@ -34,7 +35,7 @@
                             @Html.Raw(Model.ProductTitle)
                         </h6>
                     </div>
-                   
+
 
                 </div>
             </div>
@@ -44,5 +45,33 @@
     @Html.Raw(Model.ProductDetail.ToString())
     @Html.Raw(Model.LongDesc.ToString())
     @Html.Raw(Model.LongDesc2.ToString())
+
+    @if (dtprojectlist != null)
+    {
+        <section class="prodct_six">
+            <div class="container">
+                <h2>Gallery</h2>
+
+                <section class="gallery-section">
+                    <div class="gallery-grid">
+                        @if (dtprojectlist.Rows.Count > 0)
+                        {
+                            foreach (DataRow row1 in dtprojectlist.Rows)
+                            {
+                                <div class="gallery-card">
+                                    <div class="gallery_img_bg">
+                                        <img src="/uploads/LargeImages/@Convert.ToString(row1["uploadaimage"])" alt="@Convert.ToString(row1["albumtitle"])">
+                                    </div>
+                                    <p>@Convert.ToString(row1["albumtitle"])</p>
+                                </div>
+                            }
+                        }
+                    </div>
+                </section>
+            </div>
+        </section>
+    }
+
+
 }
 

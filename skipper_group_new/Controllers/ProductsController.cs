@@ -314,8 +314,9 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/Products/AddCategory")]
-        public async Task<IActionResult> AddCategory(clsCategory c, IFormFile UploadAPDFFile, IFormFile BannerImgFile, IFormFile HomeImageFile)
+        [ValidateAntiForgeryToken]
+        [Route("backoffice/products/addcategory")]
+        public async Task<IActionResult> addcategory(clsCategory c, IFormFile UploadAPDFFile, IFormFile BannerImgFile, IFormFile HomeImageFile)
         {
             try
             {
@@ -562,7 +563,7 @@ namespace skipper_group_new.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("backoffice/Products/ChangeCatStatus/{id}")]
         public async Task<IActionResult> ChangeCatStatus(int id)
         {
@@ -614,6 +615,7 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/Products/subcategory")]
         public async Task<IActionResult> subcategory()
         {
+            SubCategory obj = new SubCategory();
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
             var catd = await _products.BindProductCategory();
@@ -640,7 +642,7 @@ namespace skipper_group_new.Controllers
                 ViewBag.Category = new SelectList(Enumerable.Empty<SelectListItem>());
             }
             ViewBag.CreateUpdate = "Update";
-            return View("~/Views/backoffice/Products/subcategory.cshtml");
+            return View("~/Views/backoffice/Products/subcategory.cshtml",obj);
         }
 
         [HttpGet]
@@ -655,8 +657,8 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/Products/AddSubCategory")]
-        public async Task<IActionResult> AddSubCategory(SubCategory c, IFormFile UploadAIFile, IFormFile BannerImgFile)
+        [Route("backoffice/products/addsubcategory")]
+        public async Task<IActionResult> addsubcategory(SubCategory c, IFormFile UploadAIFile, IFormFile BannerImgFile)
         {
             try
             {
@@ -891,7 +893,7 @@ namespace skipper_group_new.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("backoffice/Products/ChangeSubCatStatus/{id}")]
         public async Task<IActionResult> ChangeSubCatStatus(int id)
         {
@@ -906,7 +908,7 @@ namespace skipper_group_new.Controllers
                     if (filterresults.Count > 0)
                     {
                         clsProduct obj = new clsProduct();
-                        obj.Status = Convert.ToString(Convert.ToInt32(filterresults[0]["Status"])) == "1" ? "False" : "True"; // Toggle status
+                        obj.Status = Convert.ToString(Convert.ToInt32(filterresults[0]["Status"])) == "1" ? "True" : "False"; // Toggle status
                         var chngstatus = _products.SubCategoryUpdateStatus(obj.Status, id);
                         if (chngstatus > 0)
                         {

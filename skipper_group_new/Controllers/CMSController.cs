@@ -274,7 +274,8 @@ namespace skipper_group_new.Controllers
                     displayorder = Convert.ToInt32(row["displayorder"]),
                     PageStatus = row["pagestatus"] != DBNull.Value ? Convert.ToBoolean(row["pagestatus"]) : false,
                     Level = level,
-                    DisplayName = prefix + " " + Convert.ToString(row["linkname"])
+                    DisplayName = prefix + " " + Convert.ToString(row["linkname"]),
+                    rewriteurl = Convert.ToString(row["rewriteurl"])
                 };
 
                 list.Add(page);

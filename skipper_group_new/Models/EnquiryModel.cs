@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.IO.Packaging;
 using System.Reflection.Metadata;
 
 namespace skipper_group_new.Models
@@ -8,6 +9,7 @@ namespace skipper_group_new.Models
     {
         public int Eid { get; set; }
         public string OrganizationName { get; set; }
+        public string corp_grup { get; set; }
         public string FName { get; set; }
         public string lastname { get; set; }
         [Required(ErrorMessage = "Email is required")]
@@ -35,6 +37,7 @@ namespace skipper_group_new.Models
         public string CaptchaInput { get; set; }
         public string CaptchaCode { get; set; }
         public string uploadfile { get; set; }
+        public string jobname { get; set; }
 
     }
 

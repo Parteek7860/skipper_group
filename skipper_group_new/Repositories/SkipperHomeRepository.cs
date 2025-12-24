@@ -136,6 +136,25 @@ namespace skipper_group_new.Repositories
             }
             return menuList;
         }
+        public async Task<DataTable> GetMapGalleryProjectList()
+        {
+            DataTable menuList;
+            using (SqlConnection conn = new SqlConnection(this._connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("GetMapGalleryProjectListSP", conn))
+                {
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        DataTable table = new DataTable();
+                        await conn.OpenAsync();
+                        da.Fill(table);
+                        menuList = table;
+                    }
+                }
+            }
+            return menuList;
+        }
         public async Task<DataTable> GetCarrer()
         {
             DataTable menuList;
@@ -172,7 +191,7 @@ namespace skipper_group_new.Repositories
                 cmd.Parameters.AddWithValue("@App_Address", objML_contact.address);
                 cmd.Parameters.AddWithValue("@MaritalStatus", objML_contact.zipcode);
                 cmd.Parameters.AddWithValue("@state", objML_contact.state);
-
+                cmd.Parameters.AddWithValue("@jobtitle", objML_contact.jobname);
                 cmd.Parameters.AddWithValue("@uname", "user");
                 cmd.Parameters.AddWithValue("@mode", 1);
                 cmd.Parameters.Add("@App_id", SqlDbType.Int, 0, "@App_id").Direction = ParameterDirection.Output;
@@ -199,6 +218,8 @@ namespace skipper_group_new.Repositories
                 cmd.Parameters.AddWithValue("@City", objML_contact.country);
                 cmd.Parameters.AddWithValue("@Address", objML_contact.address);
                 cmd.Parameters.AddWithValue("@fmessage", objML_contact.country);
+                cmd.Parameters.AddWithValue("@division", objML_contact.OrganizationName);
+                cmd.Parameters.AddWithValue("@corporate_group", objML_contact.corp_grup);
 
                 cmd.Parameters.AddWithValue("@uname", "user");
                 cmd.Parameters.AddWithValue("@mode", 1);

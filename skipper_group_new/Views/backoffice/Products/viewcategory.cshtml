@@ -80,7 +80,7 @@
 
                                     @if (isActive)
                                     {
-                                        <form method="post" action="/Backoffice/Products/ChangeCatStatus/@id" style="display:inline;">
+                                        <form method="get" action="/Backoffice/Products/ChangeCatStatus/@id" style="display:inline;">
                                             <button type="submit" class="btnstatus border-0 bg-transparent" onclick="return confirm('You want to change the status to inactive?');">
                                                 <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
                                             </button>
@@ -88,7 +88,7 @@
                                     }
                                     else
                                     {
-                                        <form method="post" action="/Backoffice/Products/ChangeCatStatus/@id" style="display:inline;">
+                                        <form method="get" action="/Backoffice/Products/ChangeCatStatus/@id" style="display:inline;">
                                             <button type="submit" class="btnstatus border-0 bg-transparent" onclick="return confirm('You want to change the status to active?');">
                                                 <img src="~/Backoffice/images/wrong.png" width="25" alt="Inactive" />
                                             </button>

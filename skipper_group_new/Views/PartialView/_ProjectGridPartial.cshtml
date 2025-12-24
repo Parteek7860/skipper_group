@@ -1,0 +1,33 @@
+﻿@using System.Data
+@using skipper_group_new.mainclass
+@model DataTable
+
+@if (Model != null && Model.Rows.Count > 0)
+{
+    <div class="feture_grid">
+        @foreach (DataRow row in Model.Rows)
+        {
+            <div class="ledr_bx">
+                <figure class="image2 reveal-image2">
+                    <img src="/uploads/SmallImages/@row["uploadevents"]"
+                         alt="leadership-img" class="img-fluid w-100">
+
+                    <div class="direc-img">
+                        <img src="/images/icon/subtraction-103.svg"
+                             alt="subtraction-103" class="image2 reveal-image2">
+                    </div>
+                </figure>
+                <figcaption>
+                    <h6>@row["researchtitle"]</h6>
+                    <p>Project Authority: Transgrid</p>
+                </figcaption>
+                <a href="/project-details/@Convert.ToString(row["researchtitle"]).ToLower().ToSlug()/@row["researchid"]"
+                   class="links"></a>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No projects found.</p>
+}

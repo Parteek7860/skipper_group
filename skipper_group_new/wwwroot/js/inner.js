@@ -664,10 +664,26 @@ if (width >= 1001) {
 
 
 var swiper = new Swiper(".related-news", {
+   slidesPerView: 2,
+    spaceBetween: 10,
   pagination: {
     el: ".swiper-pagination",
     clickable: true,
   },
+  // Responsive breakpoints
+  breakpoints: {
+    1024: {
+      slidesPerView: 2,
+      spaceBetween: 30
+    },
+
+    // when window width is >= 320px
+    767: {
+      slidesPerView: 1,
+      spaceBetween: 10
+    },
+
+  }
 });
 
 

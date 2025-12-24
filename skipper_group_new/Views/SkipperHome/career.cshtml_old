@@ -1,0 +1,74 @@
+﻿@using System.Data;
+@model skipper_group_new.Models.clsHomeModel;
+@using skipper_group_new.mainclass;
+@{
+    Layout = "~/Views/Shared/_cms.cshtml";
+    DataTable dt = ViewBag.CurrentOpenings as DataTable;
+}
+@Html.Raw(Model.SmallDescription)
+@Html.Raw(Model.Description)
+<section class="life_nine" id="current-opening">
+    @if (dt.Rows.Count > 0)
+    {
+
+        <div class="container">
+            <div class="curnt_opng_tilte">
+                <h3>Current Openings</h3>
+                <div class="custom-select">
+                    <select name="ctl00$ContentPlaceHolder1$ddldivision"
+                            id="ctl00_ContentPlaceHolder1_ddldivision" class="form-select">
+                        <option selected="selected" value="0">Select Division</option>
+                        <option value="1">Engineering</option>
+                        <option value="2">Infrastructure</option>
+                        <option value="3">Polymer</option>
+                        <option value="100">Group Corporate</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (DataRow row in dt.Rows)
+                {
+                    <div class="col-lg-4">
+                        <div class="job-posting">
+                            <h2>@row["jobtitle"]</h2>
+                            <div class="company-info">
+                                <p><strong>Name of the Company :</strong><span>@row["company"]</span></p>
+                                <p><strong>Name of Division: </strong><span>Engineering</span></p>
+                                <p><strong>Posted On:</strong><span>  @Convert.ToDateTime(@row["jobopening_date"]).ToString("dd MM yyyy")</span></p>
+                                <p><strong>End Date:</strong><span>@Convert.ToDateTime(@row["jobclosing_date"]).ToString("dd MM yyyy")</span></p>
+                                <p><strong>Location:</strong><span>@row["location"]</span></p>
+                            </div>
+                            <div class="required-experience">
+                                <p><strong>Required Experience:</strong><span>@row["min_expyear"] - @row["max_expyear"] years</span></p>
+                            </div>
+                            @Html.Raw(System.Net.WebUtility.HtmlDecode(row["skills"]?.ToString()))
+
+
+                            <div class="button-container">
+                                <a href="#">Share</a>
+                                <a href="/career-details/@Convert.ToString(@row["jobtitle"]).ToSlug().ToLower()/@row["jobid"]">Apply</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div class="apply-text">
+                <blockquote>
+                    Not finding what you're looking for? <span>
+                        Drop your CV to us and we will reach out
+                        to you.
+                    </span>
+                </blockquote>
+
+                <a href="/applynow.aspx?mpgid=81&pgidtrail=81"
+                   class="custom-btn aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                    Reach
+                    out to us
+                </a>
+            </div>
+        </div>
+
+    }
+</section>
+

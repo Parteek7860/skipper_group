@@ -141,7 +141,7 @@ app.Use(async (context, next) =>
         "connect-src 'self' ws: wss: https://cdn.ckeditor.com https://cdnjs.cloudflare.com;",
 
         // ✅ Allow iframes from CKEditor (for previews, embeds, etc.)
-        "frame-src 'self' https://cdn.ckeditor.com;",
+        "frame-src 'self' https://cdn.ckeditor.com https://*;",
 
         // ✅ Secure form submissions
         "form-action 'self';",

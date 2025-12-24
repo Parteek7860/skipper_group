@@ -14,8 +14,9 @@
                 <div class=contact_grid>
 
                     @Html.Raw(@Model.desc)
-                    @using (Html.BeginForm("contactus", "SkipperHome", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("contactus", "skipperHome", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
+                        @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
                         <div class=contact_rght>
                             <div class=inquiry-form-wrapper>
@@ -45,8 +46,26 @@
                                 <div class=input_bx data-aos=fade-up data-aos-delay=800>
                                     @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control", placeholder = "Address" } })
                                 </div>
+                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="900">
+                                    <select name="OrganizationName" class="form-select">
+                                        <option selected="selected" value="0">All Divisions</option>
+                                        <option value="1">Engineering</option>
+                                        <option value="2">Infrastructure</option>
+                                        <option value="3">Polymer</option>
 
+                                    </select>
+                                </div>
+                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="900">
+                                    <select name="corp_grup" class="form-select">
+                                        <option value="0">Corporate Group</option>
+                                        <option value="IT">IT</option>
+                                        <option value="HR">HR</option>
+                                        <option value="Finance">Finance</option>
+                                        <option value="Admin">Admin</option>
+                                        <option value="Corporate Communication">Corporate Communication</option>
 
+                                    </select>
+                                </div>
                                 <div class=input_bx data-aos=fade-up data-aos-delay=900>
                                     @Html.EditorFor(model => model.FMessage, new { htmlAttributes = new { @class = "form-control", placeholder = "Message" } })
                                 </div>
@@ -55,7 +74,7 @@
                                         <div class="d-flex align-items-center">
                                             <div style="background:#f1f1f1; padding:10px 20px; font-weight:bold; letter-spacing:4px; font-size:18px; border-radius:6px;">
                                                 @Model.capacha
-                                                @Html.HiddenFor(model => model.capacha)
+                                                @Html.HiddenFor(model => model.CaptchaCode)
                                             </div>
 
 
@@ -66,7 +85,7 @@
 
                                     </figure>
                                 </div>
-                                <input type="submit" data-aos="fade-up" data-aos-delay="900" Text="Submit" class="btn btn-success" formmethod="post" action="@Url.Action("contactus", "SkipperHome")" value="Submit" />
+                                <input type="submit" data-aos="fade-up" data-aos-delay="900" Text="Submit" class="btn btn-success" formmethod="post" action="@Url.Action("contactus", "skipperHome")" value="Submit" />
 
 
                             </div>

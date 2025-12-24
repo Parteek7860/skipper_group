@@ -10,6 +10,8 @@ namespace skipper_group_new.Interface
 
         Task<DataTable> GetProjectsList();
 
+        Task<DataTable> GetMapGalleryProjectList();
+
         Task<DataTable> GetSubMenuList();
 
         Task<DataTable> GetHamburgerMenuList();

@@ -4,6 +4,10 @@
 @{
     Layout = "~/Views/Shared/_cms.cshtml";
 }
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+
 <section class="featured_projects">
     <div class="container">
         <div class="line-sec">
@@ -25,63 +29,34 @@
                     <div class="col-lg-4 col-xl-3 col-md-5 project-filter-container project-filter-containernew text-md-end">
                         <span>Select Type of Project</span>
                     </div>
+
                     <div class="col-lg-2 col-md-3 project-filter-container project-filter-containernew">
                         <div class="select_icon">
                             <img src="/images/angle-down.webp" alt="icon">
                         </div>
-
-
-                        <form asp-action="GetGridByProject" asp-controller="SkipperHome" method="post" id="projectForm">
-                            <select class="form-select project-filter" name="Id" id="projectid"
-                                    class="form-select"
-                                    asp-items="@(new SelectList((IEnumerable<clsHomeModel>)ViewBag.ProjectTypes, "id", "Name", Model.Id))">
-                                <option value="">Select</option>
+                        <form id="projectForm">
+                            @Html.AntiForgeryToken()
+                            <select class="form-select project-filter"
+                                    name="id"
+                                    id="projectId">
+                                <option value="0">Select</option>
+                                @foreach (var project in (IEnumerable<clsHomeModel>)ViewBag.ProjectTypes)
+                                {
+                                    <option value="@project.id">@project.Name</option>
+                                }
                             </select>
                         </form>
 
-
                     </div>
                 </div>
-                @if (ViewBag.ProjectsList != null)
-                {
-                    var dt = ViewBag.ProjectsList as DataTable;
-                    if (dt.Rows.Count > 0)
-                    {
-                        <div class="feture_grid">
-                            @foreach (DataRow row in dt.Rows)
-                            {
-                                <div class="ledr_bx">
-                                    <figure class="image2 reveal-image2">
-                                        <img src="/uploads/SmallImages/@row["uploadevents"]" alt="leadership-img" class="img-fluid w-100">
-
-                                        <div class="direc-img">
-                                            <img src="/images/icon/subtraction-103.svg" alt="subtraction-103" class="image2 reveal-image2">
-                                        </div>
-                                    </figure>
-                                    <figcaption>
-                                        <h6>
-                                            @row["researchtitle"]
-                                        </h6>
-                                        <p>Project Authority: Transgrid</p>
-
-                                    </figcaption>
-                                    <a href="/project-details/@Convert.ToString(@row["researchtitle"]).ToLower().ToSlug()/@row["researchid"]" class="links"></a>
-                                </div>
-                            }
-
-
-
-
-
-                        </div>
-                    }
-                }
-                <div class="note-text">
-                    <p><span>*</span>Some Images Are Used For Representation Purposes Only.</p>
+                <div id="projectGridContainer">
+                    @Html.Partial("~/Views/PartialView/_ProjectGridPartial.cshtml", ViewBag.ProjectsList as DataTable)
                 </div>
-
             </div>
         </div>
+    </div>
 </section>
-<script src="@Url.Content("~/js/project-list.js")"></script>
-
+<script>
+    const getGridUrl = '@Url.Action("GetGridByProject", "SkipperHome")';
+</script>
+<script src="~/js/project-list.js"></script>
