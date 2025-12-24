@@ -1,67 +1,77 @@
 ﻿@model skipper_group_new.Models.ChangePasswordModel
 @{
-    Layout = null;
-    ViewData["Title"] = "Change Password";
+    Layout = "~/Views/Shared/_homepage.cshtml";
+    ViewBag.Title = "Change Password";
 }
-
-<html>
-<head>
-    <title>Change Password</title>
-    <link rel="stylesheet" href="/backoffice/plugins/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/backoffice/css/main.css">
-    <link rel="stylesheet" href="/backoffice/css/authentication.css">
-</head>
-<body class="theme-orange">
-
-    <div class="authentication">
-        <div class="card">
-            <div class="body">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="header slideDown" style="background-color:#488db8">
-                            <div class="logo"><img src="~/images/site-logo-light.svg" alt="" width="200px" /></div>
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @ViewBag.Title
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> CMS</a></li>
+                <li class="breadcrumb-item active">Add Pages</li>
+            </ul>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm("ChangePassword", "Backoffice", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="body">
+                    <h2 class="card-inside-title">
+                        Fields with * are mandatory
+                    </h2>
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Current Password</label>
+                                    @Html.EditorFor(model => model.CurrentPassword, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.CurrentPassword, "", new { @class = "text-danger v-span" })
+                            
                         </div>
                     </div>
-
-                    <h5 class="title">Change Password</h5>
-
-                    @using (Html.BeginForm("ChangeUserPassword", "Backoffice", FormMethod.Post))
-                    {
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                @Html.PasswordFor(m => m.CurrentPassword, new { @class = "form-control", required = "required" })
-                                <label class="form-label">Current Password</label>
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> New Password</label>
+                                    @Html.EditorFor(model => model.NewPassword, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
                             </div>
+                            @Html.ValidationMessageFor(m => m.NewPassword, "", new { @class = "text-danger v-span" })
                         </div>
-
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control", required = "required" })
-                                <label class="form-label">New Password</label>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Confirm Password</label>
+                                    @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
                             </div>
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger v-span" })
                         </div>
-
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", required = "required" })
-                                <label class="form-label">Confirm New Password</label>
-                            </div>
+                    </div>
+                    
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <button type="submit" class="btn btn-raised btn-success waves-effect" name="action" formaction="@Url.Action("changePassword", "backoffice")" formmethod="post"> @ViewBag.CreateUpdate </button>
                         </div>
-
-                        <input type="submit" class="btn btn-primary btn-block" value="Change Password" />
-                    }
-
-                    @if (ViewBag.Message != null)
-                    {
-                        <div class="alert alert-info mt-3">@ViewBag.Message</div>
-                    }
-
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="/backoffice/bundles/libscripts.bundle.js"></script>
-    <script src="/backoffice/bundles/vendorscripts.bundle.js"></script>
-</body>
-</html>
+}
+

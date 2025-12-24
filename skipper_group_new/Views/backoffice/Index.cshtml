@@ -24,6 +24,7 @@
 
     @using (Html.BeginForm("Signin", "Backoffice", FormMethod.Post))
     {
+        @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
         <div class="authentication">
             <div class="card">

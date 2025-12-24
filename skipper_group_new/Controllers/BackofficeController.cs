@@ -33,6 +33,7 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("backoffice/dashboard")]
         public async Task<IActionResult> dashboard(clsLogin objlogin)
         {
@@ -47,8 +48,8 @@ namespace skipper_group_new.Controllers
                 HttpContext.Session.SetString("UserName", objlogin.UserName);
                 HttpContext.Session.SetString("UserId", detail.Rows[0]["UserId"].ToString());
                 HttpContext.Session.SetString("ClientName", "Skipper Group");
-                BindMenuList();
-                BindListofdashBoard();
+                await BindMenuList();
+                await BindListofdashBoard();
                 return View("/Views/Backoffice/DashBoard.cshtml");
             }
             else
@@ -72,7 +73,7 @@ namespace skipper_group_new.Controllers
         [HttpGet]
         [Route("backoffice/dashboard/{id}")]
         public async Task<IActionResult> dashboard(int id)
-        {   
+        {
             BindListofdashBoard();
             await BindMenuList();
             return View("/Views/Backoffice/DashBoard.cshtml");
@@ -81,13 +82,13 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/dashboard/{name}/{pageid:int}")]
         public async Task<IActionResult> dashboard(string name, string pageid)
         {
-            
+
             BindListofdashBoard();
-            HttpContext.Session.SetString("microid",pageid);
+            HttpContext.Session.SetString("microid", pageid);
             HttpContext.Session.SetString("micro", name);
-           
+
             parentcode = 1;
-           
+
             ViewBag._type = char.ToUpper(name[0]) + name.Substring(1).ToLower();
             await BindMenuList();
             return View("/Views/Backoffice/DashBoard.cshtml");
@@ -120,7 +121,7 @@ namespace skipper_group_new.Controllers
 
                 menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
             }
-                var menus = new List<clsmainmenu>();
+            var menus = new List<clsmainmenu>();
             var menusform = new List<clsmainmenu>();
 
             if (menuList != null && menuList.Rows.Count > 0)
@@ -164,20 +165,20 @@ namespace skipper_group_new.Controllers
             return View();
         }
 
-        public IActionResult BindListofdashBoard()
+        public async Task<IActionResult> BindListofdashBoard()
         {
-            var content = _homePageService.GetEventList();
-            ViewData["media"] = content.Result.Rows.Count;
+            var content = await _homePageService.GetEventList();
+            ViewData["media"] = content.Rows.Count;
 
-            content = _homePageService.GetBannerList();
-            ViewData["banner"] = content.Result.Rows.Count;
+            content = await _homePageService.GetBannerList();
+            ViewData["banner"] = content.Rows.Count;
 
-            content = _homePageService.GetPageList();
-            ViewData["totalpages"] = content?.Result.Rows.Count ?? 0;
+            content = await _homePageService.GetPageList();
+            ViewData["totalpages"] = content?.Rows.Count ?? 0;
 
-            content = _homePageService.GetEnquiryList();
-            var enquiryTable = content?.Result;
-            ViewData["enquiry"] = content?.Result.Rows.Count ?? 0;
+            content = await _homePageService.GetEnquiryList();
+            var enquiryTable = content;
+            ViewData["enquiry"] = content?.Rows.Count ?? 0;
 
             var topEnquiries = enquiryTable?.AsEnumerable()
             .Select(row => new DashboardModel
@@ -201,25 +202,37 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/users/changepass")]
         public IActionResult ChangePassword()
         {
+            ViewBag.Menus = _menuService.GetMenu();
+            ViewBag.CreateUpdate = "Save";
             return View("/Views/backoffice/users/changepass.cshtml");
         }
 
         [HttpPost]
-        [Route("backoffice/users/ChangeUserPassword")]
-        public async Task<IActionResult> ChangeUserPassword(ChangePasswordModel model)
+        [ValidateAntiForgeryToken]
+        [Route("backoffice/users/changepass")]
+        public async Task<IActionResult> changepassword(ChangePasswordModel model)
         {
+            ViewBag.Menus = _menuService.GetMenu();
             var userId = HttpContext.Session.GetString("UserId");
-
+            ViewBag.CreateUpdate = "Save";
             if (string.IsNullOrEmpty(userId))
             {
                 TempData["Message"] = "Session expired or invalid user.";
                 return RedirectToAction("Index", "Backoffice");
             }
+            if (Convert.ToString(model.NewPassword) != Convert.ToString(model.ConfirmPassword))
+            {
+                return View("/Views/backoffice/users/changepass.cshtml", model);
+            }
 
             model.UserId = userId;
             var result = await _homePageService.ChangeUserPasswordAsync(model);
-            TempData["Message"] = result == 1 ? "Password changed successfully." : "Failed to change password.";
-            return RedirectToAction("Index", "Backoffice");
+            if (result > 0)
+            {
+                HttpContext.Session.SetString("Message", "Password changed successfully.");
+                return View("/Views/backoffice/users/changepass.cshtml");
+            }
+            return View("/Views/backoffice/users/changepass.cshtml");
         }
         [HttpGet]
         [Route("backoffice/testimonials/addtestimonials")]
@@ -229,6 +242,7 @@ namespace skipper_group_new.Controllers
             return View("/Views/backoffice/testimonials/addtestimonials.cshtml");
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("backoffice/testimonials/addtestimonials")]
         public IActionResult addtestimonials(clsTestimonial obj, IFormFile file_Uploader)
         {

@@ -36,8 +36,9 @@
 }
 
 
-@using (Html.BeginForm("AddEditJobPost", "Career", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("jobposting", "Career", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -56,101 +57,101 @@
                                     <label>Division</label>
                                     @Html.DropDownListFor(model => model.EmpTypeId,
                                     (IEnumerable<SelectListItem>)ViewBag.EmpTypeList, "-- Select Division --", new { @class = "form-control", style = "border:1px solid #ccc; border-radius:4px;" })
-                                    @Html.ValidationMessageFor(m => m.EmpTypeId, "", new { @class = "text-danger" })
-                                </div>
+                                @Html.ValidationMessageFor(m => m.EmpTypeId, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Job Title</label>
-                                    @Html.TextBoxFor(model => model.JobTitle, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Job Category</label>
-                                    @Html.TextBoxFor(model => model.jobcategory, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.jobcategory, "", new { @class = "text-danger" })
-                                </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Job Title</label>
+                                @Html.TextBoxFor(model => model.JobTitle, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Department</label>
-                                    @Html.TextBoxFor(model => model.department, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.department, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Designation</label>
-                                    @Html.TextBoxFor(model => model.designation, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.designation, "", new { @class = "text-danger" })
-                                </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Job Category</label>
+                                @Html.TextBoxFor(model => model.jobcategory, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.jobcategory, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Job Code</label>
-                                    @Html.TextBoxFor(model => model.JobCode, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.JobCode, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>No. Of Vacancies</label>
-                                    @Html.TextBoxFor(model => model.NoOfVacancies, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.NoOfVacancies, "", new { @class = "text-danger" })
-                                </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Department</label>
+                                @Html.TextBoxFor(model => model.department, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.department, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Email Id</label>
-                                    @Html.TextBoxFor(model => model.emailid, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.emailid, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                     
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Salary</label>
-                                    @Html.TextBoxFor(model => model.salary, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.salary, "", new { @class = "text-danger" })
-                                </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Designation</label>
+                                @Html.TextBoxFor(model => model.designation, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.designation, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
-                   
-                    <div class="row clearfix">
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Min Experience Year</label>
-                                    @Html.DropDownListFor(model => model.Min_Expyear,
-                                    new SelectList(new[]
-                                    {
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Job Code</label>
+                                @Html.TextBoxFor(model => model.JobCode, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.JobCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>No. Of Vacancies</label>
+                                @Html.TextBoxFor(model => model.NoOfVacancies, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.NoOfVacancies, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Email Id</label>
+                                @Html.TextBoxFor(model => model.emailid, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.emailid, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Salary</label>
+                                @Html.TextBoxFor(model => model.salary, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.salary, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Min Experience Year</label>
+                                @Html.DropDownListFor(model => model.Min_Expyear,
+                                                                new SelectList(new[]
+                                                                {
                                                                 new { Value = "", Text = "-- Select Year --" },
                                                                 new { Value = "0", Text = "0 Year" },
                                                                 new { Value = "1", Text = "1 Year" },
@@ -387,7 +388,7 @@
 
                 <div class="row clearfix">
                     <div class="col-lg-6 col-md-6 col-sm-6">
-                        <input type="submit" class="btn btn-success btn-lg mx-2" value="@ViewBag.Button" />
+                        <input type="submit" class="btn btn-success btn-lg mx-2" value="@ViewBag.Button" formmethod="post" formaction="@Url.Action("jobposting", "career")" />
                         <a href="~/Views/backoffice/career/viewpostedjob.cshtml" class="btn btn-secondary btn-lg mx-2">Cancel</a>
                     </div>
                 </div>

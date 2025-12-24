@@ -24,6 +24,7 @@ namespace skipper_group_new.Repositories
         Task<Dictionary<int, string>> GetTeamDropdown();
         Task<Dictionary<int, string>> GetSubTeamDropdown();
         Task<int> ChangeStatus(int id);
+        int JobChangeStatus(string status, int id);
         Task<int> ChangeManStatus(int id);
 
         Task<List<EnquiryModel>> GetEnquiry();
@@ -36,7 +37,7 @@ namespace skipper_group_new.Repositories
         Task<int> Delete(int jobID);
         Task<List<Applicationview>> GetApplicantsDetail();
 
-      
+
         Task<int> DeleteStore(int storeID);
         Task<int> ChangeDelerStatus(int storeId);
         Task<List<clsReview>> GetReviewData();
@@ -391,7 +392,7 @@ namespace skipper_group_new.Repositories
             cmd.Parameters.AddWithValue("@shortdesc", job.shortdesc ?? "");
             cmd.Parameters.AddWithValue("@emailid", job.emailid ?? "");
             cmd.Parameters.AddWithValue("@rewriteurl", job.rewriteurl ?? "");
-          //  cmd.Parameters.AddWithValue("@noofvacancies", job.NoOfVacancies ?? "");
+            //  cmd.Parameters.AddWithValue("@noofvacancies", job.NoOfVacancies ?? "");
             cmd.Parameters.AddWithValue("@emptypeid", job.EmpTypeId ?? "");
             cmd.Parameters.AddWithValue("@Uname", job.Uname ?? "");
             cmd.Parameters.AddWithValue("@Mode", job.Mode ?? 0);
@@ -485,7 +486,7 @@ namespace skipper_group_new.Repositories
                 return result.ToList();
             }
         }
-       
+
 
 
         public async Task<int> DeleteStore(int storeID)
@@ -650,6 +651,27 @@ namespace skipper_group_new.Repositories
                 return result;
             }
         }
+        public int JobChangeStatus(string status, int id)
+        {
+            int result = 0;
+            string query = "UpdatecareerStatusSP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
 
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.Parameters.AddWithValue("@status", status == "True" ? 0 : 1);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
     }
 }

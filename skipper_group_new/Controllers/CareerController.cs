@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
 using skipper_group_new.Models;
 using skipper_group_new.Service;
@@ -74,11 +75,31 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("/backoffice/career/AddEditJobPost")]
-        public async Task<IActionResult> AddEditJobPost(PostJobModel m)
+        [ValidateAntiForgeryToken]
+        [Route("/backoffice/career/jobposting")]
+        public async Task<IActionResult> jobposting(PostJobModel m)
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
+
+            var x = await _management.GetProductSolutionList();
+            var filteredRows = x.AsEnumerable()
+                .Where(row => row.Field<bool>("status") == true);
+
+            DataTable dt = filteredRows.CopyToDataTable();
+
+
+            var list = dt.AsEnumerable()
+                .Select(r => new SelectListItem
+                {
+                    Value = r["productid"].ToString(),
+                    Text = r["productname"].ToString()
+                }).ToList();
+
+
+
+            ViewBag.EmpTypeList = new SelectList(list, "Value", "Text");
+
             if (m.JobOpening_date == DateTime.MinValue || m.JobClosing_date == DateTime.MinValue)
             {
                 return View("~/Views/backoffice/career/jobposting.cshtml");
@@ -86,17 +107,20 @@ namespace skipper_group_new.Controllers
             m.Uname = HttpContext.Session.GetString("UserName");
             m.Mode = (m.Jobid > 0) ? 2 : 1;
             var resultJobId = await _management.AddEditJob(m);
-
-            if (m.Mode > 0)
+            if (resultJobId > 0)
             {
-                HttpContext.Session.SetString("Message", "Job Update successfully.");
-                return RedirectToAction("viewpostedjob", "Career");
+                if (m.Mode > 0)
+                {
+                    HttpContext.Session.SetString("Message", "Job Update successfully.");
+                    return RedirectToAction("viewpostedjob", "Career");
+                }
+                else
+                {
+                    HttpContext.Session.SetString("Message", "Job Save successfully.");
+                    return RedirectToAction("jobposting", "Career");
+                }
             }
-            else
-            {
-                HttpContext.Session.SetString("Message", "Job Save successfully.");
-                return RedirectToAction("jobposting", "Career");
-            }
+            return View("~/Views/backoffice/career/jobposting.cshtml", m);
         }
 
         [HttpGet]
@@ -224,6 +248,41 @@ namespace skipper_group_new.Controllers
                 return RedirectToAction("viewgeneral");
             }
         }
+
+        [HttpGet]
+        [Route("backoffice/career/editstatus/{id:int}")]
+        public async Task<IActionResult> editstatus(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
+                    var x = _management.GetJobList();
+                    var filtetedRows = x.Result.AsEnumerable()
+                        .Where(row => row.Jobid == id);
+                    if (filtetedRows.Any())
+                    {
+                        var dt = filtetedRows.First();
+                        string status = dt.Status == true ? "True" : "False";
+                        var chngstatus =  _management.JobChangeStatus(status, id);
+                        if (chngstatus > 0)
+                        {
+                            HttpContext.Session.SetString("Message", "Status Update successfully.");
+                            return RedirectToAction("viewpostedjob", "career");
+                        }
+                       
+                    }
+
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            return RedirectToAction("viewpostedjobs", "career");
+        }
+
 
     }
 }

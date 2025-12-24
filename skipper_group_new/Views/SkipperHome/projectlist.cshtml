@@ -3,6 +3,7 @@
 @model skipper_group_new.Models.clsHomeModel;
 @{
     Layout = "~/Views/Shared/_cms.cshtml";
+    DataTable dt = ViewBag.ProductList as DataTable;
 }
 @{
     var nonce = Context.Items["CSPNonce"]?.ToString();

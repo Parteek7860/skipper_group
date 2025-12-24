@@ -92,26 +92,26 @@
                                         <tr>
                                             @* <td>@(Convert.ToString(row["productname"]))</td> *@
                                             <td>@(Convert.ToString(row["title"]))</td>
+
                                             @if ((Convert.ToBoolean(row["status"]) == true))
                                             {
                                                 <td>
                                                     @Html.HiddenFor(model => model.doctype)
-                                                    <form method="post" action="/Backoffice/HomeBanner/statusbanner/@(Convert.ToString(row["bid"]))" style="display: inline;">
-                                                        <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
-                                                            <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
-                                                        </button>
-                                                    </form>
+                                                    <a asp-controller="HomeBanner" asp-action="statusbanner" asp-route-id="@(Convert.ToString(row["bid"]))" onclick="return confirm('You want to change the status?');" style="border:none;background:none">
+                                                        <img src="/backoffice/images/active.png" width="25" />
+                                                    </a>
+
                                                 </td>
                                             }
                                             else
                                             {
                                                 <td>
                                                     @Html.HiddenFor(model => model.doctype)
-                                                    <form method="post" action="/Backoffice/HomeBanner/statusbanner/@(Convert.ToString(row["bid"]))" style="display: inline;">
-                                                        <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
-                                                            <img src="~/Backoffice/images/wrong.png" width="25" alt="In-Active" />
-                                                        </button>
-                                                    </form>
+
+                                                    <a asp-controller="HomeBanner" asp-action="statusbanner" asp-route-id="@(Convert.ToString(row["bid"]))" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
+                                                        <img src="~/Backoffice/images/wrong.png" width="25" alt="In-Active" />
+                                                    </a>
+
                                                 </td>
                                             }
                                             <td>

@@ -20,6 +20,8 @@ namespace skipper_group_new.Service
         Task<Dictionary<int, string>> GetTeamDropdown();
         Task<Dictionary<int, string>> GetSubTeamDropdown();
         Task<int> ChangeStatus(int id);
+
+        int JobChangeStatus(string status, int id);
         Task<int> ChangeManStatus(int id);
 
         Task<List<EnquiryModel>> GetEnquiry();
@@ -33,7 +35,7 @@ namespace skipper_group_new.Service
         Task<int> Delete(int jobID);
         Task<List<Applicationview>> GetApplicantsDetail();
 
-        
+
         Task<int> DeleteStore(int storeID);
         Task<int> ChangeDelerStatus(int storeId);
 
@@ -41,21 +43,21 @@ namespace skipper_group_new.Service
         int UpdateReviewStatus(string status, int id);
         int AddReview(clsReview obj);
         Task<int> SaveApplication(JobApplicationModel model);
-        
+
 
         Task<Application> GetApplicantsDetailByID(int App_id);
 
-        
+
     }
     public class ManagementService : IManagement
     {
         private readonly IManagementRepo _repository;
-        
+
 
         public ManagementService(IManagementRepo repository)
         {
             _repository = repository;
-          
+
         }
 
         public Task<List<TeamTypeDtl>> GetTeamTblData()
@@ -113,6 +115,10 @@ namespace skipper_group_new.Service
         {
             return _repository.ChangeStatus(id);
         }
+        public int JobChangeStatus(string s, int id)
+        {
+            return _repository.JobChangeStatus(s, id);
+        }
 
         public Task<int> ChangeManStatus(int id)
         {
@@ -157,7 +163,7 @@ namespace skipper_group_new.Service
             return await _repository.GetApplicantsDetail();
         }
 
-      
+
 
         public async Task<int> DeleteStore(int storeID)
         {
@@ -190,12 +196,12 @@ namespace skipper_group_new.Service
             return await _repository.SaveApplication(model);
         }
 
-    
+
         public async Task<Application> GetApplicantsDetailByID(int App_id)
         {
             return await _repository.GetApplicantsDetailByID(App_id);
         }
 
-      
+
     }
 }

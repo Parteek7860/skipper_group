@@ -435,7 +435,7 @@ namespace skipper_group_new.Repositories
             if (!isCorrect)
                 return 0;
 
-            string hashedPassword = CryptoUtils.HashPassword(model.NewPassword);
+            string hashedPassword = enc.AES_Encrypt(model.NewPassword, "@9899848281");
 
             using (var conn = new SqlConnection(_connectionString))
             {
@@ -450,14 +450,19 @@ namespace skipper_group_new.Repositories
         {
             using (var conn = new SqlConnection(_connectionString))
             {
+                bool isok = false;
                 string query = "SELECT UserPassword FROM bousermaster WHERE UserId = @UserId";
                 await conn.OpenAsync();
                 string storedHashedPassword = await conn.ExecuteScalarAsync<string>(query, new { UserId = userId });
 
                 if (string.IsNullOrWhiteSpace(storedHashedPassword))
                     return false;
-
-                return CryptoUtils.VerifyPassword(currentPassword, storedHashedPassword);
+                string currentpass = enc.AES_Encrypt(currentPassword, "@9899848281");
+                if (storedHashedPassword == currentpass)
+                {
+                    isok = true;
+                }
+                return isok;
             }
         }
         public int CreateMedia(clsMediatype obj)

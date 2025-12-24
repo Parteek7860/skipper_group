@@ -95,12 +95,32 @@ namespace skipper_group_new.Controllers
                     obj.id = productid;
                 }
                 obj.collageid = productid;
+
+               
                 return View("engineering", obj);
             }
 
 
 
             return View(obj);
+        }
+        public IActionResult GetProjectList()
+        {
+            var x = _homePageService.GetCategoryList();
+            ViewBag.ProjectTypes = x.Result.Select("status=1").OrderBy(r => Convert.ToInt32(r["displayorder"])).Select(r => new clsHomeModel
+            {
+                id = Convert.ToString(r["pcatid"]),
+                Name = Convert.ToString(r["category"])
+            })
+    .ToList();
+
+
+            var list = _homePageService.GetProjectsList();
+            var filterlist = list.Result.Select("status=1").OrderBy(r => Convert.ToInt32(r["displayorder"]));
+            ViewBag.ProjectsList = filterlist.CopyToDataTable();
+            return View();
+
+
         }
 
         [HttpGet]
@@ -125,6 +145,8 @@ namespace skipper_group_new.Controllers
             var x1 = await _homePageService.GetProjectsList();
             DataRow[] data = x1.Select($"status=1 and ntypeid={obj.id}");
             ViewBag.ProjList = data.CopyToDataTable();
+
+            GetProjectList();
 
             return View("/Views/engineering/projlist.cshtml", obj);
         }

@@ -453,7 +453,7 @@ namespace skipper_group_new.Controllers
 
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("Backoffice/HomeBanner/statusbanner/{id}")]
         public async Task<IActionResult> statusbanner(int id)
         {
