@@ -40,19 +40,34 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/team/AddTeamType")]
-        public async Task<IActionResult> AddTeamType(clsTeamType blg)
+        [ValidateAntiForgeryToken]
+        [Route("backoffice/team/teamtype")]
+        public async Task<IActionResult> teamtype(clsTeamType blg)
         {
             try
             {
+                var menuList = _menuService.GetMenu();
+                ViewBag.Menus = menuList;
+                var teamDtl = await _ser.GetTeamTblData();
+                ViewBag.TeamTypeDtl = teamDtl;
+                ViewBag.Button = "Save";
                 if (blg != null)
                 {
                     blg.CollageId = 0; //default value
+                    if (string.IsNullOrEmpty(blg.TType))
+                    {
+                        return View("/Views/backoffice/team/teamtype.cshtml", blg);
+                    }
+                    if (blg.TTypeId == 0)
+                    {
+                        blg.Status = true;
+                    }
                     blg.UName = HttpContext.Session.GetString("UserName") ?? "Admin";
                     int result = await _ser.AddTeamType(blg);
                     if (result > 0)
                     {
-                        TempData["SuccessMessage"] = blg.TTypeId > 0 ? "Team updated successfully." : "Team added successfully.";
+                        HttpContext.Session.SetString("Message", blg.TTypeId > 0 ? "Team updated successfully." : "Team added successfully.");
+
                         return RedirectToAction("teamtype", "Management");
                     }
                     else
@@ -169,7 +184,7 @@ namespace skipper_group_new.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("backoffice/team/ChangeStatus/{id}")]
         public async Task<IActionResult> ChangeStatus(int id)
         {
@@ -180,13 +195,10 @@ namespace skipper_group_new.Controllers
                     var chngstatus = await _ser.ChangeStatus(id);
                     if (chngstatus > 0)
                     {
-                        TempData["SuccessMessage"] = "Status changed successfully.";
-                        TempData["Title"] = "Product";
+                        HttpContext.Session.SetString("Message", "Status changed successfully");
+
                     }
-                    else
-                    {
-                        TempData["ErrorMessage"] = "Failed to change the product status.";
-                    }
+
                 }
                 else
                 {
@@ -203,7 +215,7 @@ namespace skipper_group_new.Controllers
 
         #region ManagementAndLeadership
         [HttpGet]
-        [Route("backoffice/team/our-team")]
+        [Route("backoffice/team/ourteam")]
         public async Task<IActionResult> ourteam()
         {
             try
@@ -236,12 +248,12 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/team/AddTeam")]
-        public async Task<IActionResult> AddTeam(Management m, IFormFile UploadImageFile, IFormFile UploadImageFile1)
+        [Route("backoffice/team/ourteam")]
+        public async Task<IActionResult> ourteam(Management m, IFormFile UploadImageFile, IFormFile UploadImageFile1)
         {
             try
             {
-                if (m != null)
+                if (!string.IsNullOrEmpty(m.Name) && Convert.ToInt16(m.TTypeId) > 0)
                 {
                     if (UploadImageFile != null && UploadImageFile.Length > 0)
                     {
@@ -276,6 +288,7 @@ namespace skipper_group_new.Controllers
                         m.UploadPhoto1 = m.UploadPhoto1;
                     }
                     m.Teamid = m.Teamid;
+                  
                     m.UName = HttpContext.Session.GetString("UserName") ?? "Admin";
                     int result = await _ser.AddTeam(m);
                     if (result > 0)
@@ -285,13 +298,16 @@ namespace skipper_group_new.Controllers
                     }
                     else
                     {
-                        HttpContext.Session.SetString("Message", "Failed to save the team.");
+
                         return RedirectToAction("viewteam", "Management");
                     }
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Invalid team data.";
+                    var team = await _ser.GetTeamDropdown();
+                    var subteam = await _ser.GetSubTeamDropdown();
+                    ViewBag.TeamType = new SelectList(team, "Key", "Value");
+                    ViewBag.SubTeamType = new SelectList(subteam, "Key", "Value");
                     return View("~/Views/backoffice/team/our-team.cshtml", m);
                 }
             }
@@ -402,9 +418,9 @@ namespace skipper_group_new.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("backoffice/team/ChangeManStatus/{id}")]
-        public async Task<IActionResult> ChangeManStatus(int id)
+        [HttpGet]
+        [Route("backoffice/team/changemanstatus/{id}")]
+        public async Task<IActionResult> changemanstatus(int id)
         {
             try
             {

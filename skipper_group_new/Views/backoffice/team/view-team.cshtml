@@ -75,19 +75,16 @@
                                     <td>
                                         @if (subtype.Status == true)
                                         {
-                                            <form method="post" action="/backoffice/team/ChangeManStatus/@subtype.Teamid" style="display: inline;">
-                                                <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
+                                            <a asp-controller="management" asp-action="changemanstatus" asp-route-id="@subtype.Teamid" onclick="return confirm('You want to change the status?');" style="border:none;background:none">
                                                     <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
-                                                </button>
-                                            </form>
+                                             </a>
                                         }
                                         else
-                                        {
-                                            <form method="post" action="/backoffice/team/ChangeManStatus/@subtype.Teamid" style="display: inline;">
-                                                <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to active?');">
+                                        {   
+                                              <a asp-controller="management" asp-action="changemanstatus" asp-route-id="@subtype.Teamid" onclick="return confirm('You want to change the status to active?');">
                                                     <img src="~/Backoffice/images/wrong.png" width="25" alt="Inactive" />
-                                                </button>
-                                            </form>
+                                                </a>
+                                            
                                         }
                                     </td>
                                     <td>

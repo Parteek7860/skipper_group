@@ -90,7 +90,6 @@
                                     @foreach (DataRow row in bannerlist.Rows)
                                     {
                                         <tr>
-                                            @* <td>@(Convert.ToString(row["productname"]))</td> *@
                                             <td>@(Convert.ToString(row["title"]))</td>
 
                                             @if ((Convert.ToBoolean(row["status"]) == true))

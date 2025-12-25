@@ -25,7 +25,7 @@ namespace skipper_group_new.Controllers
         }
         [HttpGet]
         [Route("backoffice/gallery/addalbum")]
-        public async Task<IActionResult> AddAlbum()
+        public async Task<IActionResult> addalbum()
         {
 
             var objAlbumType = new clsGallery();
@@ -55,7 +55,7 @@ namespace skipper_group_new.Controllers
         }
         [HttpPost]
         [Route("backoffice/gallery/addalbum")]
-        public async Task<IActionResult> addAlbum(clsGallery objgallery, IFormFile file_Uploader)
+        public async Task<IActionResult> addalbum(clsGallery objgallery, IFormFile file_Uploader)
         {
             HttpContext.Session.Remove("Message");
             var objAlbumType = new clsGallery();
@@ -80,7 +80,7 @@ namespace skipper_group_new.Controllers
             ModelState.Remove("URL");
             ModelState.Remove("displayorder");
 
-            if (ModelState.IsValid)
+            if (!string.IsNullOrEmpty(objgallery.title) && Convert.ToInt16(objgallery.albumtype) > 0)
             {
                 try
                 {
@@ -124,14 +124,13 @@ namespace skipper_group_new.Controllers
                         if (objgallery.id == 0)
                         {
                             HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Album Added successfully.");
+                            return RedirectToAction("addAlbum", "gallery");
                         }
                         else
                         {
                             HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Album Updated successfully.");
+                            return RedirectToAction("viewalbum", "Gallery");
                         }
-
-                        TempData["Title"] = "Gallery Album";
-                        return RedirectToAction("AddAlbum", "Gallery");
                     }
                     else
                     {
@@ -146,7 +145,7 @@ namespace skipper_group_new.Controllers
             else
             {
                 HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Please fill in all required fields.");
-                return RedirectToAction("AddAlbum", "Gallery");
+                return RedirectToAction("addalbum", "gallery");
             }
 
             ViewBag.CreateUpdate = "Save";
@@ -423,17 +422,17 @@ namespace skipper_group_new.Controllers
             var objAlbumType = new clsGallery();
             ViewBag.Menus = _menuService.GetMenu();
 
-            
+
             var x = await _backofficeService.BindVedioList();
             var bannerTypes = x.AsEnumerable().Where(r => r.Field<int>("vedioid") == id).CopyToDataTable();
             if (bannerTypes != null && bannerTypes.Rows.Count > 0)
             {
                 objAlbumType.id = Convert.ToInt32(bannerTypes.Rows[0]["vedioid"]);
-                objAlbumType.title = Convert.ToString(bannerTypes.Rows[0]["vediotitle"]);                
+                objAlbumType.title = Convert.ToString(bannerTypes.Rows[0]["vediotitle"]);
                 objAlbumType.displayorder = Convert.ToString(bannerTypes.Rows[0]["displayorder"]);
                 objAlbumType.URL = Convert.ToString(bannerTypes.Rows[0]["uploadvedio"]);
-                objAlbumType.bannerimage =  Convert.ToString(bannerTypes.Rows[0]["thumbnailimage"]);
-                objAlbumType.uploadbanner = Convert.ToString(bannerTypes.Rows[0]["thumbnailimage"]);              
+                objAlbumType.bannerimage = Convert.ToString(bannerTypes.Rows[0]["thumbnailimage"]);
+                objAlbumType.uploadbanner = Convert.ToString(bannerTypes.Rows[0]["thumbnailimage"]);
                 objAlbumType.status = Convert.ToBoolean(bannerTypes.Rows[0]["status"]) ? true : false;
                 objAlbumType.mode = "2"; // Set mode to update
                 objAlbumType.uname = HttpContext.Session.GetString("UserName");

@@ -372,7 +372,8 @@ namespace skipper_group_new.Controllers
             return View("~/Views/backoffice/media/media_section.cshtml", objMediatype);
         }
         [HttpPost]
-        [Route("backoffice/Media/media_section")]
+        [ValidateAntiForgeryToken]
+        [Route("backoffice/media/media_section")]
         public async Task<IActionResult> media_section(clsMediatype obj, IFormFile file_Uploader, IFormFile file_Uploader2)
         {
             HttpContext.Session.Remove("Message");
@@ -469,7 +470,7 @@ namespace skipper_group_new.Controllers
                     {
                         objMedia.selectmediatype = new List<SelectListItem>();
                     }
-                    ViewBag.CreateUpdate = "Update";
+                    ViewBag.CreateUpdate = "Save";
 
                     var menuList = _menuService.GetMenu();
                     ViewBag.Menus = menuList;

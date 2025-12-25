@@ -28,8 +28,9 @@
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="card">
             <div class="body">
-                @using (Html.BeginForm("AddTeamType", "Management", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("teamtype", "Management", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
+                    @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.HiddenFor(model => model.TTypeId)
 
@@ -112,20 +113,17 @@
                                     <td>@item.TrDate</td>
                                     <td>
                                         @if (item.Status == true)
-                                        {
-                                            <form method="post" action="/backoffice/team/Changestatus/@item.TTypeId" style="display: inline;">
-                                                <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
-                                                    <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
-                                                </button>
-                                            </form>
+                                        {           
+                                                    <a asp-controller="management" asp-action="Changestatus" asp-route-id="@item.TTypeId" onclick="return confirm('You want to change the status?');" style="border:none;background:none">
+                                                          <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
+                                                    </a>
+                                               
                                         }
                                         else
                                         {
-                                            <form method="post" action="/backoffice/team/Changestatus/@item.TTypeId" style="display: inline;">
-                                                <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to active?');">
+                                             <a asp-controller="management" asp-action="Changestatus" asp-route-id="@item.TTypeId" onclick="return confirm('You want to change the status to active?');" style="border:none;background:none">
                                                     <img src="~/Backoffice/images/wrong.png" width="25" alt="Inactive" />
-                                                </button>
-                                            </form>
+                                            </a>
                                         }
                                     </td>
                                     <td>
