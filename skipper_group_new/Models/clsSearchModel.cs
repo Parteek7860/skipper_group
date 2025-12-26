@@ -2,10 +2,13 @@
 {
     public class clsSearchModel
     {
-        public int pageID { get; set; }
-        public string pageName { get; set; }
-        public string rewriteUrl { get; set; }
-        public string rewriteID { get; set; }
+        public int PageId { get; set; }
+        public string Title { get; set; }        
+        public string ShortDesc { get; set; }    
+        public string LongDesc { get; set; }     
+        public string PageUrl { get; set; }
+        public string RewriteUrl { get; set; }
+        public int RewriteID { get; set; }
 
     }
 }

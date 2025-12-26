@@ -48,6 +48,29 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div> -->
                     <div class="modal-body">
+                        <form method="get" action="/search" class="search">
+                            <div class="universal-search justify-content-center" role="search">
+
+                                <input name="q"
+                                       type="text"
+                                       class="form-control border-0"
+                                       placeholder="Search..."
+                                       required />
+
+                                <button type="submit" class="border-0 btn">
+                                    <figure>
+                                        <img src="/images/icon/search-icon.svg"
+                                             alt="search"
+                                             width="40"
+                                             height="40">
+                                    </figure>
+                                </button>
+
+                            </div>
+                        </form>
+                    </div>
+
+                    @* <div class="modal-body">
                         <div id="footer1_search1_Panel1" class="search" onkeypress="javascript:return WebForm_FireDefaultButton(event, 'footer1_search1_LinkButton1')">
 
                             <div class="universal-search justify-content-center" role="search">
@@ -64,7 +87,7 @@
 
                         </div>
 
-                    </div>
+                    </div> *@
 
                 </div>
             </div>
