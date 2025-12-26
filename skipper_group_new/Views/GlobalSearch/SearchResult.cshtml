@@ -1,0 +1,34 @@
+﻿@using System.Data
+@using skipper_group_new.mainclass;
+@model List<skipper_group_new.Models.clsSearchModel>
+@{
+    Layout = "~/Views/Shared/_cms.cshtml";
+}
+
+
+<section class="featured_projects">
+    <div class="container">
+        <div class="line-sec">
+            <h2>Search Results for "@ViewBag.Query"</h2>
+        </div>
+        <div>
+            @if (Model == null || !Model.Any())
+            {
+                <p>No results found.</p>
+            }
+            else
+            {
+                <ul class="search-result-list">
+                    @foreach (var item in Model)
+                    {
+                        <li>
+                            <a href="@(string.IsNullOrEmpty(item.rewriteUrl)? item.pageName.Replace(" ", "-").ToLower() : "/" + item.rewriteUrl)">
+                               <strong>@item.pageName</strong>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+</section>

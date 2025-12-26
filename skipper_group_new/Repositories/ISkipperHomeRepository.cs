@@ -38,5 +38,6 @@ namespace skipper_group_new.Repositories
         Task<DataTable> GetBlogList();
 
         Task<DataTable> GetProductSolutionList();
+        Task<List<clsSearchModel>> GetsearchList(string q);
     }
 }

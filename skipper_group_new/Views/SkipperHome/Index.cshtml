@@ -193,27 +193,27 @@
                 <div class=item>
                     <figure><img src=/images/skipper_news.png alt="skipper news" class=img-fluid></figure>
                 </div>
-                @if (dtnews.Rows.Count > 0)
-                {
-                    foreach (DataRow row in dtnews.Rows)
+                    @if (dtnews.Rows.Count > 0)
                     {
-                        <div class=item>
-                            <div class=home_news>
-                                <figure>
-                                    <img src=/uploads/smallimages/@Convert.ToString(row["uploadevents"]) alt="@Convert.ToString(row["eventstitle"])" class=img-fluid>
-                                </figure>
-                                <div class="fade-container home_news_detail">
-                                    <div class="h_date">
-                                        @(row["eventsdate"] == DBNull.Value
-                                                                    ? ""
-                                                                    : Convert.ToDateTime(row["eventsdate"]).ToString("dd-MMM-yyyy"))
-                        </div>
-                        <h3>@Convert.ToString(row["eventstitle"])</h3>
-                    </div><a href=/news-details/@Convert.ToString(row["eventstitle"]).ToSlug()/@Convert.ToInt32(row["eventsid"]) class=streched_link></a>
+                            foreach (DataRow row in dtnews.Rows)
+                            {
+                                <div class=item>
+                                    <div class=home_news>
+                                        <figure>
+                                            <img src=/uploads/smallimages/@Convert.ToString(row["uploadevents"]) alt="@Convert.ToString(row["eventstitle"])" class=img-fluid>
+                                        </figure>
+                                        <div class="fade-container home_news_detail">
+                                                        <div class="h_date">
+                                                            @(row["eventsdate"] == DBNull.Value
+                                                                                        ? ""
+                                                                                        : Convert.ToDateTime(row["eventsdate"]).ToString("dd-MMM-yyyy"))
+                                            </div>
+                                            <h3>@Convert.ToString(row["eventstitle"])</h3>
+                                        </div><a href=/news-details/@Convert.ToString(row["eventstitle"]).ToSlug()/@Convert.ToInt32(row["eventsid"]) class=streched_link></a>
+                    </div>
                 </div>
-            </div>
-                        }
-                }
+                            }
+                    }
             </div>
             <div class=view_all>
                 <a href="/whats-new">
@@ -225,7 +225,17 @@
             </div>
         </section>
     }
-
+    <div id="searchOverlay" class="search-overlay">
+        <span class="search-close">&times;</span>
+        <form id="globalSearchForm" method="get" action="/search">
+            <div class="search-box">
+                <input type="text" name="q" placeholder="Search..." required />
+                <button class="search-btn" type="submit">
+                    <img src="/images/search_icon_head.svg" alt="">
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 

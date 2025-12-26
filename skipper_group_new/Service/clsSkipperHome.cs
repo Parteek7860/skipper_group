@@ -49,6 +49,7 @@ namespace skipper_group_new.Service
         public Task<DataTable> GetBlogList() => this._repository.GetBlogList();
 
         public Task<DataTable> GetProductSolutionList() => this._repository.GetProductSolutionList();
+        public Task<List<clsSearchModel>> GetsearchList(string q) => this._repository.GetsearchList(q);
     }
 
 }

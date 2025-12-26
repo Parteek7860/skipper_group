@@ -30,7 +30,7 @@
                 : $"/cms/{Convert.ToString(row1["linkname"]).ToSlug()}/{Convert.ToInt32(row1["pageid"])}/{Convert.ToInt32(row1["collageid"])}";
                 <li>
                     <a href="@href">@Convert.ToString(row1["linkname"])</a>
-                </li>
+                </li>               
             }
             <li class="ps_d"><a href="javascript:void(0)">Enquiry Now</a></li>
             <li class="ps_d blu_clr">
@@ -38,7 +38,7 @@
                     Skipper Group <img src="images/icon/arrow-right.webp"
                                        alt="">
                 </a>
-            </li>
+            </li>           
             <div class="top-humburger">
                 <div class="c-hamburger c-hamburger--htx">
                     <a href="javascript:void(0)">
@@ -375,13 +375,18 @@ else
 
                         }
 
-
+                    
 
                     </li>
+                    
                 }
-            }
-
-
+                <li>
+                    <a class="header-search" href="javascript:void(0)">
+                        <img src="/images/search_icon_head.svg" alt="">
+                    </a>
+                </li>
+            }   
+            
             <div class=top-humburger>
                 <div class="c-hamburger c-hamburger--htx"><a href=javascript:void(0)></a></div>
                 <nav class="open sub-menu">
@@ -391,8 +396,7 @@ else
                             <ul class=list-unstyled>
                                 @foreach (var ham in leftHam)
                                 {
-                                    var subHref = !string.IsNullOrEmpty(ham.rewriteurl)
-                                    ? $"/{ham.rewriteurl}"
+                                    var subHref = !string.IsNullOrEmpty(ham.rewriteurl) ? $"/{ham.rewriteurl}"
                                     : $"/cms/{ham.Name.Replace(" ", "-").ToLower()}/{ham.pageid}";
                                     <li class="@(ham.SubMenus.Count == 0 ? "no_drop_menu" : null)">
                                         <h3>
@@ -425,6 +429,8 @@ else
         </ul>
     </nav>
 }
+
+
 
 
 

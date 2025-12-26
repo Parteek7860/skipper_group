@@ -516,5 +516,43 @@ namespace skipper_group_new.Repositories
             }
             return seoFriendlyUrls;
         }
+       
+        public async Task<List<clsSearchModel>> GetsearchList(string q)
+        {
+            var items = new List<clsSearchModel>();
+
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                await conn.OpenAsync();
+
+                using (SqlCommand cmd = new SqlCommand("GlobalSearchSP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@Query", SqlDbType.NVarChar, 200).Value = q;
+
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            items.Add(new clsSearchModel
+                            {
+                                pageID = reader.GetInt32(reader.GetOrdinal("pageID")),
+                                pageName = reader["pageName"].ToString(),
+                                rewriteUrl = reader["rewriteUrl"] == DBNull.Value
+                                                ? null
+                                                : reader["rewriteUrl"].ToString(),
+                                rewriteID = reader["rewriteID"] == DBNull.Value
+                                                ? null
+                                                : reader["rewriteID"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+
+            return items;
+        }
+
     }
 }
