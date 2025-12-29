@@ -122,7 +122,6 @@ namespace skipper_group_new.Controllers
                     {
                         objbannertype.collageid = "0";
                     }
-
                     int x = _homePageService.CreateBannerType(objbannertype);
                     if (x > 0)
                     {

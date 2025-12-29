@@ -907,7 +907,7 @@ section.home_infra.animated-section1 {
 
 .infra-content-wrapper {
     position: relative;
-    z-index: 99;
+    z-index: 9;
     max-width: 1334px;
 }
 

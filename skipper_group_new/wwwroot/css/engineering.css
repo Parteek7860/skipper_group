@@ -677,7 +677,7 @@ section.featured_project .swiper-button-next {
 .project_slider .view_all {
     position: absolute;
     right: 0;
-    bottom: -6rem;
+    bottom: 12rem;
     z-index: 9;
 }
 
@@ -810,6 +810,9 @@ section.Social_Responsibility.infraabt-1 figure {
 }
 
 @media(max-width:1399px) {
+    .project_slider .view_all {
+    bottom: 3rem;
+    }
     .swiper-div .swiper-button-prev, .swiper-div .swiper-button-next {
     width: 3.5rem !important;
     height: 3.5rem !important;
@@ -985,7 +988,8 @@ section.Social_Responsibility.infraabt-1 figure {
 
     .engineering figure,
     .engineering figure img {
-        height: 100%;
+       height: 100%;
+        object-fit: cover;
     }
 
     .engineering .shrt-title h1 span {

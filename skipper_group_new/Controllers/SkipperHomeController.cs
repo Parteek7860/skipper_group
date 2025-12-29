@@ -42,6 +42,7 @@ namespace skipper_group_new.Controllers
             await LoadSeoDataAsync(1);
             await BindProjectsList();
             await BindNewsList();
+            await BindHomeBanner();
             await Task.Delay(1);
 
             Task<DataTable> x = this._homePageService.GetCMSData();
@@ -135,6 +136,40 @@ namespace skipper_group_new.Controllers
             ViewBag.BlogList = filterlist;
 
             return View("blogdetail", obj);
+        }
+        [HttpGet]
+        public async Task<IActionResult> investor(int id)
+        {
+            clsHomeModel obj = new clsHomeModel();
+            await LoadSeoDataAsync(id);
+            await LoadCMSDataAsync(id);
+
+            var y = await _homePageService.GetInvestorList();
+            ViewBag.InvestorList = y.Select("status=1").CopyToDataTable();
+
+         
+
+            Task<DataTable> x = this._homePageService.GetCMSData();
+            if (x != null)
+            {
+                DataRow[] results = x.Result.Select($"pagestatus=1 and pageid='{id.ToString()}'");
+                if (results.Length == 0)
+                {
+                    return (IActionResult)this.RedirectToAction("Index", "SkipperHome");
+                }
+                else
+                {
+                    DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
+                    obj.cmscontent = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
+                    obj.SmallDescription = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["smalldesc"]));
+                    return View("inestor", obj);
+                }
+
+              
+
+            }
+
+            return View("inestor", obj);
         }
         #region  Contact Us
         [HttpGet]
@@ -640,6 +675,16 @@ namespace skipper_group_new.Controllers
                                 : Convert.ToDateTime(r["eventsdate"]));
             var top5 = filterlist.Take(7).CopyToDataTable();
             ViewBag.Newslist = top5;
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> BindHomeBanner()
+        {
+            var list = _homePageService.GetBannerList();
+            var filterlist = list.Result.Select("status=1 and collageid=0");
+            var top5 = filterlist.CopyToDataTable();
+            ViewBag.BannerList = top5;
             return View();
         }
 

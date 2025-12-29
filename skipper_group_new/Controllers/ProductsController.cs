@@ -3180,17 +3180,17 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/products/aboutproduct/{name}/{id}")]
+        [Route("backoffice/products/aboutproduct/micro/{id}")]
         public async Task<IActionResult> aboutproduct(int id, clsCategory obj)
         {
             clsCategory objcls = new clsCategory();
             if (!string.IsNullOrEmpty(obj.ShortDetail))
             {
-                obj.PcatId = obj.PcatId;
+                objcls.PcatId = obj.PcatId;
                 objcls.productid = Convert.ToString(id);
                 objcls.ShortDetail = obj.ShortDetail;
                 objcls.Uname = HttpContext.Session.GetString("UserName");
-                if (objcls.productid != null && Convert.ToInt32(objcls.productid) > 0)
+                if (objcls.PcatId != null && Convert.ToInt32(objcls.PcatId) > 0)
                 {
                     objcls.Mode = 2;
                 }
@@ -3216,7 +3216,7 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/products/addcapabilities/{name}/{id}")]
+        [Route("backoffice/products/addcapabilities/micro/{id}")]
         public async Task<IActionResult> addcapabilities(int id, clsCategory obj)
         {
             clsCategory objcls = new clsCategory();

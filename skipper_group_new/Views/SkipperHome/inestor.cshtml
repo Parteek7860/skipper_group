@@ -1,0 +1,68 @@
+﻿@model skipper_group_new.Models.clsHomeModel;
+@using skipper_group_new.mainclass;
+@inject skipper_group_new.Service.MenuDataService MenuService
+@using System.Data;
+
+@{
+    var investorlist = MenuService.InvestorList;
+    Layout = "~/Views/Shared/_cms.cshtml";
+    
+}
+@Html.Raw(Model.SmallDescription)
+
+@if (investorlist != null)
+{
+    <section class="investor_three">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tabs-container">
+                        <div class="tab-column">
+                            @if (investorlist != null)
+                            {
+                                foreach (var list in investorlist)
+                                {
+                                    foreach (var row in list.SubMenus)
+                                    {
+                                        var hrefinvestor = !string.IsNullOrEmpty(list.rewriteurl)
+                                        ? $"/{list.rewriteurl}"
+                                        : $"javascript:void()";
+                                        <div class=tab-item>
+                                            <div class=accordion_hed>
+                                                <p>@list.Name</p>
+                                                <button class=toggle-btn>
+                                                    +
+                                                </button>
+                                                <a href="/investor-relations/@list.Name.ToSlug().ToLower()/@row.linkname.ToSlug().ToLower()/@Convert.ToInt16(list.pageid)/@Convert.ToInt16(row.pageid)" class=streched_link></a>
+                                            </div>
+                                        </div>
+                                    }
+                                    if (list.SubMenus.Count <= 0)
+                                    {
+                                        var hrefinvestor = !string.IsNullOrEmpty(list.rewriteurl)
+                                        ? $"/{list.rewriteurl}"
+                                        : $"javascript:void()";
+                                        <div class=tab-item>
+                                            <div class=accordion_hed>
+                                                <p>@list.Name</p>
+                                                <button class=toggle-btn>
+                                                    +
+                                                </button>
+                                                <a href="/investor-relations/@list.Name.ToSlug().ToLower()/@Convert.ToInt16(list.pageid)" class=streched_link></a>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+
+                            }
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+

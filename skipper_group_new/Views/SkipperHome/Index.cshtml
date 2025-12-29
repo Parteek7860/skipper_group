@@ -5,6 +5,7 @@
 
     Layout = "~/Views/Shared/_Layout.cshtml";
     DataTable dtnews = ViewBag.Newslist as DataTable;
+    DataTable dt1 = ViewBag.BannerList as DataTable;
 }
 
 <!---------header html start here--------->
@@ -20,21 +21,42 @@
     @await Html.PartialAsync("~/Views/PartialView/_MainMenu.cshtml")
 </header>
 
-
-<section class=home_banner>
-    <div class=video>
-        <div class=video-wrapper>
-            <div class=video-container>
-                <div id=homebanner1_rptbanner_ctl00_panel2>
-                    <video autoplay height=700 id=video loop muted
-                           width=100%>
-                        <source src=video/banner_video.mp4 type=video/mp4>
-                    </video><span class="mute-toggle muted"></span>
+@if(dt1.Rows.Count>0)
+{
+    @* <section class=home_banner>
+        <div class=video>
+            <div class=video-wrapper>
+                <div class=video-container>
+                    <div id=homebanner1_rptbanner_ctl00_panel2>
+                        <video autoplay height=700 id=video loop muted
+                               width=100%>
+                            <source src="video/banner_video.mp4" type=video/mp4>
+                        </video><span class="mute-toggle muted"></span>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </section> *@
+
+    <section class="home_banner">
+    <div class="video">
+        <div class="video-wrapper">
+            <div class="video-container">
+                <video autoplay height=700 id=video loop muted
+                               width=100%>
+                    <source src="@Html.Raw(dt1.Rows[0]["url"].ToString())" type="video/mp4">
+
+                </video>
+                <span class="mute-toggle muted"></span>
             </div>
         </div>
     </div>
 </section>
+
+
+
+}
+
 @Html.Raw(Model.SmallDescription)
 <div class=wrapper>
     <div class=eng-wrapper>

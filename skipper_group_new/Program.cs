@@ -126,7 +126,7 @@ app.Use(async (context, next) =>
     var csp = string.Join(" ",
         "default-src 'self';",
 
-     $"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.ckeditor.com https://cdnjs.cloudflare.com https://code.jquery.com https://cdn.jsdelivr.net https://cke4.ckeditor.com; ",   
+     $"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.ckeditor.com https://cdnjs.cloudflare.com https://code.jquery.com https://cdn.jsdelivr.net https://cke4.ckeditor.com; ",
 
         // ✅ Allow inline styles + external fonts & icons
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;",
@@ -139,7 +139,8 @@ app.Use(async (context, next) =>
 
         // ✅ Allow AJAX and WebSocket connections (for Live Reload / SignalR / CKEditor preview)
         "connect-src 'self' ws: wss: https://cdn.ckeditor.com https://cdnjs.cloudflare.com;",
-
+    // ✅ THIS LINE FIXES VIDEO
+    "media-src 'self' https: data: blob:;",
         // ✅ Allow iframes from CKEditor (for previews, embeds, etc.)
         "frame-src 'self' https://cdn.ckeditor.com https://*;",
 
@@ -162,7 +163,7 @@ app.Use(async (context, next) =>
 
 app.UseRouting();
 
-    
+
 
 app.UseSession();
 app.UseAuthorization();
@@ -201,14 +202,14 @@ app.UseEndpoints(endpoints =>
          name: "default",
          pattern: "{controller=SkipperHome}/{action=Index}/{id?}");
 
-    
+
 
     endpoints.MapControllerRoute(
         name: "dynamic",
         pattern: "{*url}",
         defaults: new { controller = "SkipperHome", action = "DynamicRoute" });
 
-    
+
 
 
 });

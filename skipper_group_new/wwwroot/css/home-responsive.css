@@ -27,8 +27,12 @@ video, .video video{
     }
 
 }
-
-
+@media (max-width:1099px) {
+.full_container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+}
 
 @media (max-width:999px) {
      
@@ -108,8 +112,15 @@ video, .video video{
     }
 }
 @media (max-width:767px) {
+    .full_container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+}
 .second-vertical-line2{
     display: none;
+}
+.right-container {
+    grid-template-columns: repeat(1, 1fr);
 }
 }
 @media (max-width:360px) {

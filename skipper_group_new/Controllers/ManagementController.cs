@@ -298,7 +298,6 @@ namespace skipper_group_new.Controllers
                     }
                     else
                     {
-
                         return RedirectToAction("viewteam", "Management");
                     }
                 }

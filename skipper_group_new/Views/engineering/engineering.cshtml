@@ -26,7 +26,15 @@
         <div class="container">
             <div class="product_sec_slider">
                 <div class="title">
-                    <h3 data-aos="fade-up" data-aos-delay="300">Products </h3>
+                    @if(Model.collageid=="1")
+                    {
+                        <h3 data-aos="fade-up" data-aos-delay="300">Products </h3>
+                    }
+                    else
+                    {
+                        <h3 data-aos="fade-up" data-aos-delay="300">Services </h3>
+                    }
+
                 </div>
                 <div class="product-slider swiper-container-horizontal">
                     <div class="swiper-wrapper">
@@ -68,7 +76,7 @@
 
 @if (dtsub != null)
 {
-    <section class="product_sec eng-prod">
+    <section class="product_sec eng-prod product_sec polymer">
         <div class="container">
             <div class="product_sec_slider">
                 <div class="title">
