@@ -1,34 +1,112 @@
 ﻿@using System.Data
 @using skipper_group_new.mainclass;
 @model List<skipper_group_new.Models.clsSearchModel>
+
 @{
     Layout = "~/Views/Shared/_cms.cshtml";
 }
 
-
 <section class="featured_projects">
     <div class="container">
-        <div class="line-sec">
-            <h2>Search Results for "@ViewBag.Query"</h2>
-        </div>
-        <div>
-            @if (Model == null || !Model.Any())
+        <div class="search_result pdb-10">
+
+            <div class="innerPageTitle">
+                <h2>
+                    @if (Model == null || !Model.Any())
+                    {
+                        <text>No results found for "@ViewBag.Query"</text>
+                    }
+                    else
+                    {
+                        <text>There are @Model.Count results for "@ViewBag.Query"</text>
+                    }
+                </h2>
+            </div>
+
+            @if (Model != null && Model.Any())
             {
-                <p>No results found.</p>
-            }
-            else
-            {
-                <ul class="search-result-list">
+                <div class="search-card-wrapper">
                     @foreach (var item in Model)
                     {
-                        <li>
-                            <a href="@(string.IsNullOrEmpty(item.rewriteUrl)? item.pageName.Replace(" ", "-").ToLower() : "/" + item.rewriteUrl)">
-                               <strong>@item.pageName</strong>
-                            </a>
-                        </li>
+                        var finalUrl = !string.IsNullOrEmpty(item.RewriteUrl)
+                            ? item.RewriteUrl
+                            : item.PageUrl;
+
+                        <div class="search-card">
+                            <div class="search-card-content">
+                                <h3>@item.Title</h3>
+
+                                <a class="search-link" href="/@finalUrl">
+                                    /@finalUrl
+                                </a>
+                            </div>
+
+                            <div class="search-card-action">
+                                <a href="/@finalUrl" aria-label="Go to page">
+                                    →
+                                </a>
+                            </div>
+                        </div>
                     }
-                </ul>
+                </div>
             }
+
         </div>
     </div>
 </section>
+
+
+<style>
+    .search-card-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 20px;
+    }
+
+    .search-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #ffffff;
+        padding: 20px 24px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .search-card-content h3 {
+        margin: 0 0 6px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #000;
+    }
+
+    .search-link {
+        font-size: 14px;
+        color: #1e73be;
+        text-decoration: none;
+    }
+
+        .search-link:hover {
+            text-decoration: underline;
+        }
+
+    .search-card-action a {
+        display: inline-flex;
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        font-size: 18px;
+        color: #000;
+        text-decoration: none;
+    }
+
+        .search-card-action a:hover {
+            background: #f5f5f5;
+        }
+
+</style>

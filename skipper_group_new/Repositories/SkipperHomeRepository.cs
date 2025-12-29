@@ -516,7 +516,7 @@ namespace skipper_group_new.Repositories
             }
             return seoFriendlyUrls;
         }
-       
+
         public async Task<List<clsSearchModel>> GetsearchList(string q)
         {
             var items = new List<clsSearchModel>();
@@ -528,7 +528,6 @@ namespace skipper_group_new.Repositories
                 using (SqlCommand cmd = new SqlCommand("GlobalSearchSP", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-
                     cmd.Parameters.Add("@Query", SqlDbType.NVarChar, 200).Value = q;
 
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
@@ -537,14 +536,31 @@ namespace skipper_group_new.Repositories
                         {
                             items.Add(new clsSearchModel
                             {
-                                pageID = reader.GetInt32(reader.GetOrdinal("pageID")),
-                                pageName = reader["pageName"].ToString(),
-                                rewriteUrl = reader["rewriteUrl"] == DBNull.Value
-                                                ? null
-                                                : reader["rewriteUrl"].ToString(),
-                                rewriteID = reader["rewriteID"] == DBNull.Value
-                                                ? null
-                                                : reader["rewriteID"].ToString()
+                                PageId = reader["PageId"] != DBNull.Value
+                                    ? Convert.ToInt32(reader["PageId"])
+                                    : 0,
+
+                                Title = reader["Title"]?.ToString(),
+
+                                ShortDesc = reader["ShortDesc"] != DBNull.Value
+                                    ? reader["ShortDesc"].ToString()
+                                    : null,
+
+                                LongDesc = reader["LongDesc"] != DBNull.Value
+                                    ? reader["LongDesc"].ToString()
+                                    : null,
+
+                                PageUrl = reader["PageUrl"] != DBNull.Value
+                                    ? reader["PageUrl"].ToString()
+                                    : null,
+
+                                RewriteUrl = reader["RewriteUrl"] != DBNull.Value
+                                    ? reader["RewriteUrl"].ToString()
+                                    : null,
+
+                                RewriteID = reader["RewriteID"] != DBNull.Value
+                                    ? Convert.ToInt32(reader["RewriteID"])
+                                    : 0
                             });
                         }
                     }
