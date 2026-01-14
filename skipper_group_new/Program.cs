@@ -1,15 +1,17 @@
 ﻿
-using skipper_group_new.Interface;
-using skipper_group_new.Interface;
-using skipper_group_new.mainclass;
-using skipper_group_new.Repositories;
-using skipper_group_new.Repositories;
-using skipper_group_new.Service;
-using skipper_group_new.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.FileProviders;
+using skipper_group_new.Interface;
+using skipper_group_new.Interface;
+using skipper_group_new.mainclass;
+using skipper_group_new.Models;
+using skipper_group_new.Repositories;
+using skipper_group_new.Repositories;
+using skipper_group_new.Service;
+using skipper_group_new.Service;
+using university.Repositories;
 
 
 
@@ -56,6 +58,21 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+
+var crypto = new Enc_Decyption();
+
+var encrypted = builder.Configuration.GetConnectionString("DefaultConnection");
+var decrypted = crypto.AES_Decrypt(encrypted, crypto.encrptdecrpt);
+
+decrypted = decrypted.Replace(@"\\", @"\");
+
+
+
+
+// register provider
+builder.Services.AddSingleton<IDbConnectionProvider>(
+    new DbConnectionProvider(decrypted));
 
 
 var app = builder.Build();

@@ -2,12 +2,13 @@
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using DocumentFormat.OpenXml.Spreadsheet;
-using skipper_group_new.Models;
 using Microsoft.Extensions.Configuration;
+using skipper_group_new.Models;
 using System.Data;
 using System.Data.SqlClient;
 using System.Net;
 using System.Threading.Tasks;
+using university.Repositories;
 
 namespace skipper_group_new.Repositories
 {
@@ -15,9 +16,10 @@ namespace skipper_group_new.Repositories
     {
         private readonly string _connectionString;
 
-        public SkipperHomeRepository(IConfiguration configuration)
+        Enc_Decyption enc = new Enc_Decyption();
+        public SkipperHomeRepository(IDbConnectionProvider provider)
         {
-            this._connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = provider.ConnectionString;
         }
         public async Task<DataTable> GetMenuList()
         {

@@ -253,7 +253,7 @@ namespace skipper_group_new.Controllers
                 objbanner.shortdesc = obj.shortdesc;
                 objbanner.displayorder = obj.displayorder;
                 objbanner.status = obj.status;
-                if (string.IsNullOrEmpty(Convert.ToString(pageid)))
+                if (!string.IsNullOrEmpty(Convert.ToString(pageid1)))
                 {
                     objbanner.collageid = pageid1;
                 }

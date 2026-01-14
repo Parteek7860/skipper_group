@@ -64,7 +64,7 @@ namespace skipper_group_new.Controllers
             names.Add(new SelectListItem { Text = "Sub-Footer", Value = "Sub-Footer" });
             names.Add(new SelectListItem { Text = "MobileFooter", Value = "MobileFooter" });
             obj.linkposition = names;
-            ViewBag.CreateUpdate = "Save";
+            ViewBag.UpdateStatus = "Save";
 
             if (pageid > 0)
             {
@@ -125,7 +125,7 @@ namespace skipper_group_new.Controllers
             if (string.IsNullOrEmpty(cls.linkname))
             {
                 ViewBag.Message = "Page Name is required.";
-                if (cls.collageid != null)
+                if (cls.collageid > 0)
                 {
                     return RedirectToAction("addpages", "CMS", new { name = "micro", pageid = pageid });
                 }
@@ -204,7 +204,7 @@ namespace skipper_group_new.Controllers
                 if (cls.Id > 0)
                 {
                     HttpContext.Session.SetString("Message", "Page Update successfully.");
-                    if (cls.collageid != null)
+                    if (cls.collageid > 0)
                     {
                         return RedirectToAction("viewpages", "CMS", new { name = "micro", pageid = obj.collageid });
                     }
@@ -217,7 +217,7 @@ namespace skipper_group_new.Controllers
                 else
                 {
                     HttpContext.Session.SetString("Message", "Page Save successfully.");
-                    if (cls.collageid != null)
+                    if (cls.collageid > 0)
                     {
                         return RedirectToAction("addpages", "CMS", new { name = "micro", pageid = obj.collageid });
                     }

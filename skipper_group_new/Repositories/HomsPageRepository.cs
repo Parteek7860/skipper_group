@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using skipper_group_new.Models;
 using System.Data;
 using System.Data.SqlClient;
+using university.Repositories;
 
 namespace skipper_group_new.Repositories
 {
@@ -11,9 +12,9 @@ namespace skipper_group_new.Repositories
         private readonly string _connectionString;
         Enc_Decyption enc = new Enc_Decyption();
 
-        public HomsPageRepository(IConfiguration configuration)
+        public HomsPageRepository(IDbConnectionProvider provider)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = provider.ConnectionString;
         }
 
         public async Task<DataTable> GetSignInDetails(string UserName, string Password)
@@ -480,7 +481,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@shortdesc", obj.shortdetail ?? string.Empty);
                     cmd.Parameters.AddWithValue("@EventsDesc", obj.detail ?? string.Empty);
                     cmd.Parameters.AddWithValue("@UploadEvents", obj.uploadbanner);
-                    cmd.Parameters.AddWithValue("@largeimage", obj.uploadlargeimage);
+                    cmd.Parameters.AddWithValue("@largeimage", obj.Largeimage);
                     cmd.Parameters.AddWithValue("@youtube_url", obj.url ?? string.Empty);
                     cmd.Parameters.AddWithValue("@showonhome", obj.showonhome);
                     cmd.Parameters.AddWithValue("@eventsdate", obj.eventsdate);
@@ -529,6 +530,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@tagline2", "");
                     cmd.Parameters.AddWithValue("@mode", obj.mode);
                     cmd.Parameters.AddWithValue("@tagline1", obj.shortdesc);
+                    
                     conn.Open();
                     result = cmd.ExecuteNonQuery();
                 }

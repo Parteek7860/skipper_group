@@ -87,10 +87,20 @@
                                         {
                                             classactive = "active";
                                         }
+                                        @if(Convert.ToInt16(row["productid"])==3)
+                                        {
+                                            <li class="@classactive">
+                                                <a href="https://skipperpipes.in/" target="_blank">@Convert.ToString(row["productname"]) </a>
+                                            </li>
 
-                                        <li class="@classactive">
+                                        }
+                                        else
+                                        {
+                                              <li class="@classactive">
                                             <a href="/@Convert.ToString(row["productname"]).ToSlug()/@Convert.ToInt32(row["productid"])">@Convert.ToString(row["productname"]) </a>
                                         </li>
+                                        }
+                                      
                                     }
                                 </ul>
                             }
@@ -126,9 +136,19 @@
                                             classactive = "active";
                                         }
 
-                                        <li class="@classactive">
+                                     @if(Convert.ToInt16(row["productid"])==3)
+                                        {
+                                            <li class="@classactive">
+                                                <a href="https://skipperpipes.in/" target="_blank">@Convert.ToString(row["productname"]) </a>
+                                            </li>
+
+                                        }
+                                        else
+                                        {
+                                              <li class="@classactive">
                                             <a href="/@Convert.ToString(row["productname"]).ToSlug()/@Convert.ToInt32(row["productid"])">@Convert.ToString(row["productname"]) </a>
                                         </li>
+                                        }
                                     }
                                 </ul>
                             }

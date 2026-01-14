@@ -25,7 +25,7 @@
     </div>
 </div>
 
-@using (Html.BeginForm("addproject", "Projet", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("addproject", "project", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="row clearfix">
@@ -250,7 +250,7 @@
 
                     <div class="row clearfix">
                         <div class="col-lg-6 col-md-6 col-sm-6">
-                            <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" name="action" formaction="@Url.Action("AddProject", "Projet")" formmethod="post"> @ViewBag.CreateUpdate </button>
+                            <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" formaction="@Url.Action("addproject", "project")" formmethod="post"> @ViewBag.CreateUpdate </button>
                             @if (Model.ResearchId == 0)
                             {
                                 <a href="/backoffice/project/addproject"
@@ -268,8 +268,8 @@
         </div>
     </div>
     <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-    <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+    @* <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script> *@
+    @* <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script> *@
     <script src="~/ckeditor/ckeditor.js"></script>
     <script>
         $('.editor1').each(function () {

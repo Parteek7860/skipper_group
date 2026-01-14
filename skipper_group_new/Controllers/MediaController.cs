@@ -388,14 +388,14 @@ namespace skipper_group_new.Controllers
                     objMedia.tagline = obj.tagline;
                     objMedia.shortdetail = obj.shortdetail ?? string.Empty;
                     objMedia.detail = obj.detail ?? string.Empty;
-                    objMedia.displayorder = obj.displayorder;
+                    objMedia.displayorder = obj.displayorder ?? "0";
                     objMedia.url = obj.url;
                     objMedia.pagetitle = obj.pagetitle ?? string.Empty;
                     objMedia.metakeywords = obj.metakeywords ?? string.Empty;
                     objMedia.metadesc = obj.metadesc ?? string.Empty;
                     objMedia.canonical = obj.canonical ?? string.Empty;
                     objMedia.status = obj.status;
-                    objMedia.uname = HttpContext.Session.GetString("UserName");
+                    objMedia.uname = HttpContext.Session.GetString("UserName") ?? "sadmin";
                     objMedia.colorcode = obj.colorcode ?? string.Empty;
                     if (file_Uploader != null && file_Uploader.Length > 0)
                     {
@@ -427,7 +427,7 @@ namespace skipper_group_new.Controllers
                     }
                     else
                     {
-                        objMedia.uploadlargeimage = obj.uploadlargeimage ?? string.Empty;
+                        objMedia.Largeimage = obj.Largeimage ?? string.Empty;
                     }
                     objMedia.id = obj.id;
                     if (obj.id == 0)

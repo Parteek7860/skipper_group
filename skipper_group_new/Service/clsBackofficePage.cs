@@ -139,5 +139,21 @@ namespace skipper_group_new.Service
         {
             return await _repository.changestatus(id);
         }
+        public Task<DataTable> GetRedirectionList()
+        {
+            return _repository.GetRedirectionList();
+        }
+        public int AddRedirection(clsRedirection obj)
+        {
+            return _repository.AddRedirection(obj);
+        }
+        public int DeleteRedirectionRecords(int obj)
+        {
+            return _repository.DeleteRedirectionRecords(obj);
+        }
+        public int UpdateRedirectionStatus(string status, int id)
+        {
+            return _repository.UpdateRedirectionStatus(status, id);
+        }
     }
 }

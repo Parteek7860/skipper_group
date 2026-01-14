@@ -2,16 +2,18 @@
 using skipper_group_new.Models;
 using System.Data;
 using System.Data.SqlClient;
+using university.Repositories;
 
 namespace skipper_group_new.Repositories
 {
     public class InvestorRepository : IInvestorRepository
     {
         private readonly string _connectionString;
+        Enc_Decyption enc = new Enc_Decyption();
 
-        public InvestorRepository(IConfiguration configuration)
+        public InvestorRepository(IDbConnectionProvider provider)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = provider.ConnectionString;
         }
         public async Task<List<CategoryDtl>> GetCatDtl()
         {

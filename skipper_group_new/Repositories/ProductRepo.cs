@@ -1,18 +1,20 @@
-﻿using skipper_group_new.Models;
-using System.Data.SqlClient;
-using System.Data;
-using Dapper;
+﻿using Dapper;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using skipper_group_new.Models;
+using System.Data;
+using System.Data.SqlClient;
+using university.Repositories;
 
 namespace skipper_group_new.Repositories
 {
     public class ProductRepo : IProductRepository
     {
         private readonly string _connectionString;
+        Enc_Decyption enc = new Enc_Decyption();
 
-        public ProductRepo(IConfiguration configuration)
+        public ProductRepo(IDbConnectionProvider provider)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = provider.ConnectionString;
         }
         public async Task<DataTable> BindProductCategory()
         {

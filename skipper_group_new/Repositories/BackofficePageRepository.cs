@@ -1,16 +1,17 @@
 ﻿using skipper_group_new.Models;
 using System.Data;
 using System.Data.SqlClient;
+using university.Repositories;
 
 namespace skipper_group_new.Repositories
 {
     public class BackofficePageRepository : IBackofficePageRepository
     {
         private readonly string _connectionString;
-
-        public BackofficePageRepository(IConfiguration configuration)
+        Enc_Decyption enc = new Enc_Decyption();
+        public BackofficePageRepository(IDbConnectionProvider provider)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = provider.ConnectionString;
         }
 
         public async Task<DataTable> GetAlbumTypeList()
@@ -699,6 +700,88 @@ namespace skipper_group_new.Repositories
                 await cmd.ExecuteNonQueryAsync();
                 result = (photoIdParam.Value != DBNull.Value) ? 1 : 0;
             }
+            return result;
+        }
+        public async Task<DataTable> GetRedirectionList()
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("BindRedirectionListSP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    await conn.OpenAsync();
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    {
+
+                        dt.Load(reader);
+                    } // reader is closed here automatically
+                } // cmd disposed here
+            } // conn closed here
+
+            return dt;
+        }
+        public int DeleteRedirectionRecords(int id)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("deleteRedirectionSP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+        public int UpdateRedirectionStatus(string status, int id)
+        {
+            int result = 0;
+            string query = "UpStatusRedirectionSP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.Parameters.AddWithValue("@status", status == "True" ? 0 : 1);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+        public int AddRedirection(clsRedirection cls)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("redirectionSP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // cmd.Parameters.AddWithValue("@id", cls.Id);
+                    cmd.Parameters.AddWithValue("@oldurl", cls.OldUrl);
+                    cmd.Parameters.AddWithValue("@newurl", cls.NewUrl);
+                    cmd.Parameters.AddWithValue("@redirect_type", cls.redirect_type);
+                    cmd.Parameters.AddWithValue("@status", cls.status);
+
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
             return result;
         }
     }

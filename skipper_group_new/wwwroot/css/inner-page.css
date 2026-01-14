@@ -759,7 +759,7 @@
 }
 
 .whats_new_one .whts_new_text h4, .whats_new_one .whts_new_text h4>a {
-    font-size: var(--font-36);
+    font-size: var(--font-30);
     color: #fff;
     font-weight: 200;
     margin-bottom: 0;
@@ -821,7 +821,7 @@
 
 .whats_new_two .whtsnew_btm_grid {
     display: grid;
-    grid-template-columns: repeat(1, 65.5% auto);
+    grid-template-columns:100%;
     gap: 4.8rem;
 }
 
@@ -1199,14 +1199,20 @@ font-size: var(--font-21);
     margin-bottom: 3rem;
     font-weight: 300;
 }
-
+.whats_new_two-details .whtsnew_btm_grid .whts_right .evnt-nme p span.rs-icon{
+    position: relative;
+}
+.whats_new_two-details .whtsnew_btm_grid .whts_right .evnt-nme p span.rs-icon::after{
+        content: "\20B9";
+}
 .whats_new_two.whats_new_two_details .whtsnew_btm_grid {
     position: relative;
 }
 
 .whats_new_two_details .swiper-pagination {
-    bottom: -48px;
-    right: 45%;
+        bottom: -48px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .whats_new_two_details .swiper-pagination-bullet {
@@ -9856,6 +9862,7 @@ section.rd_panel4 .bottom_left_icon {
 }
 
 @media (max-width:600px) {
+
     .node p {
         font-size: 20px;
         margin-bottom: 2rem;
@@ -9943,11 +9950,53 @@ section.rd_panel4 .bottom_left_icon {
 .epc-advanimg img{
     border-radius: 2rem;
 }
+.sustainbility_block4.transimission-2.apart-sec{
+    background: #f2f2f2;
+    padding-block: 6rem 7rem;
+}
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace{
+    position: relative;
+}
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone {
+      position: absolute;
+    left: 0;
+    top: 39%;
+    margin-left: 0;
+    width: 30rem;
+    padding: 2rem;
+    text-align: left;
+    margin-bottom: 0;
+}
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone p{
+    font-weight:300;
+    color: var(--color33);
+    margin: 1rem 0;
+    padding-left: 0.4rem;
+}
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone .svg_icon1 {
+    width: 9px;
+    margin-left: -0rem;
+}
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone.box_radius .svg_icon1:nth-child(3) {
+    margin-left: auto;
+    margin-right: 0rem;
+}
+.keychain-solar{margin-block: 4rem 8rem;}
 @media (max-width:600px) {
     .privacy-sec {
         padding-block: 4rem;
     }
-
+.keychain-solar{margin-block:0rem 4rem;}
+.polymer_panel4.video_sec figure figcaption{
+    padding: 0;
+}
+ .polymer_panel4.video_sec figure figcaption .ply-btn {
+        padding-top: 0;
+        position: absolute;
+        top: 48%;
+        left: 46%;
+        transform: translate(-50%, -50%);
+}
 }
 @media (max-width:1600px) {
 
@@ -10072,6 +10121,9 @@ section.sustainbility_block10 figure img,
     .milestone-line {
         left: 17.9rem;
     }
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone {
+    width: 26rem;
+}
 }
 
 @media (max-width:1599px) {
@@ -10084,18 +10136,33 @@ section.sustainbility_block10 figure img,
     .milestone-line {
         left: 17.3rem;
     }
+    .sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone {
+    top: 29%;
+    width: 22rem;
+}
 }
 
 @media (max-width:1199px) {
     .milestone-line {
         left: 15.1rem;
     }
-
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone {
+    top: 27%;
+        width: 21rem;
+}
     .node {
         width: 45rem;
     }
 }
-
+@media (max-width:991px) {
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone {
+    top: unset;
+    width: 100%;
+    margin-top: 2rem;
+    padding: 1.5rem 2rem;
+    position: relative;
+}
+}
 @media (max-width:600px) {
     .node_block11.mf7 .box_rig .box.light img {
         width: 100%;
@@ -11167,7 +11234,9 @@ section.new_milestone {
     bottom: 1rem;
     right: 0;
 }
-
+.skipper_miltone1.miletone20 .left_milestone .top_milestone {
+margin-bottom: 5rem;
+}
 .skipper_miltone1.miletone20 .right_milestone .pic2-2015 figure img {
     width: 92%;
 }
@@ -12677,7 +12746,9 @@ left:62rem;
 }
 
 @media screen and (max-width:767px) {
-
+    .skipper_miltone1.miletone20 .left_milestone .top_milestone {
+    margin-bottom: 0rem;
+}
     .miletone81 .left_milestone {
         display: block;
     }
@@ -13600,6 +13671,29 @@ section.rd_panel4 .nabl-cont p strong {
 .search_result .card a{
     color: #004a70;
 }
+
+/* footer search result css ends here */
+.about_panel_four.transimission-1.fasterner-text{
+    padding-block: 0rem 13rem;
+}
+.fasterner-text h2{
+    padding-inline: 0 !important;
+    margin-bottom: 3rem;
+}
+
+.about_panel_four.transimission-1.fasterner-text .pro_telcom_group{
+    margin-top: 6rem;
+    grid-template-columns: repeat(2,1fr);
+}
+.about_panel_four.transimission-1.fasterner-text .pro_telcom_group .telcom_list{
+padding: 5rem;
+}
+.about_panel_four.transimission-1.fasterner-text .pro_telcom_group .telcom_list strong{
+    display: block;
+    margin-bottom: 2.5rem;
+}
+
+
 @media(max-width:991px){
     .search_result {
         padding: 6rem 0;
@@ -13607,10 +13701,26 @@ section.rd_panel4 .nabl-cont p strong {
     .search_result .innerPageTitle {
         margin: 0 0 2rem;
     }
+    .about_panel_four.transimission-1.fasterner-text .pro_telcom_group .telcom_list {
+    padding: 3rem;
+}
+.about_panel_four.transimission-1.fasterner-text .pro_telcom_group .telcom_list strong {
+    margin-bottom: 1.5rem;
+}
+.about_panel_four.transimission-1.fasterner-text{
+    padding-block: 0rem 7rem;
+}
 }
 @media(max-width:767px){
     .search_result {
         padding: 4rem 0;
     }
+    .about_panel_four.transimission-1.fasterner-text .pro_telcom_group {
+    margin-top: 4rem;
+    grid-template-columns: repeat(1, 1fr);
 }
-/* footer search result css ends here */
+.about_panel_four.transimission-1.fasterner-text{
+    padding-block: 0rem 5rem;
+}
+}
+

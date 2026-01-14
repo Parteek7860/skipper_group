@@ -11,8 +11,26 @@ video, .video video{
     height: auto;
 }
 }
-
-
+@media (max-width:1699px) {
+section.skipper_news .item figure img {
+    height: 35rem;
+}
+}
+@media (max-width: 1499px) {
+    section.skipper_news .item figure img {
+        height: 30rem;
+    }
+    .home_news_detail {
+    padding-inline: 2.8rem;
+    padding-block: 2.8rem;
+    }
+   
+}
+@media (max-width: 1199px) {
+.full_container {
+    gap: 2rem;
+}
+}
 @media (min-width:1000px) and (max-width:1099px) {
     .we_are_list p {
         line-height: inherit;

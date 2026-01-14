@@ -1,6 +1,7 @@
 ﻿using skipper_group_new.Models;
 using System.Data;
 using System.Data.SqlClient;
+using university.Repositories;
 
 namespace skipper_group_new.Repositories
 {
@@ -8,10 +9,10 @@ namespace skipper_group_new.Repositories
     {
         // RAKESH CHAUHAN - 19/11/2025
         private readonly string _connectionString;
-
-        public SkipperInvestorRepository(IConfiguration configuration)
+        Enc_Decyption enc = new Enc_Decyption();
+        public SkipperInvestorRepository(IDbConnectionProvider provider)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = provider.ConnectionString;
         }
 
         public async Task<DataTable> GetCategoryItem()

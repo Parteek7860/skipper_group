@@ -30,7 +30,7 @@
                 : $"/cms/{Convert.ToString(row1["linkname"]).ToSlug()}/{Convert.ToInt32(row1["pageid"])}/{Convert.ToInt32(row1["collageid"])}";
                 <li>
                     <a href="@href">@Convert.ToString(row1["linkname"])</a>
-                </li>               
+                </li>
             }
             <li class="ps_d"><a href="javascript:void(0)">Enquiry Now</a></li>
             <li class="ps_d blu_clr">
@@ -38,7 +38,7 @@
                     Skipper Group <img src="images/icon/arrow-right.webp"
                                        alt="">
                 </a>
-            </li>           
+            </li>
             <div class="top-humburger">
                 <div class="c-hamburger c-hamburger--htx">
                     <a href="javascript:void(0)">
@@ -99,7 +99,7 @@ else
                         parentclass = "ps_d";
                     }
 
-                   
+
 
                     var subHref = !string.IsNullOrEmpty(menu.rewriteurl)
                     ? $"/{menu.rewriteurl}"
@@ -283,13 +283,19 @@ else
                                         {
                                             foreach (var product in productlist)
                                             {
+                                                string targetname = string.Empty;
                                                 string activeClass = i == 1 ? "active" : "";
                                                 var subHref1 = !string.IsNullOrEmpty(product.rewriteurl)
                                                 ? $"/{product.rewriteurl}/{product.pageid}"
                                                 : $"/cms/{product.linkname}/{product.pageid}";
+                                                if (product.pageid == "3")
+                                                {
+                                                    subHref1 = $"https://skipperpipes.in/";
+                                                    targetname = "Target=_blank";
+                                                }
 
                                                 <li class="dropmenu @activeClass" data-target=".drop_menu_@i">
-                                                    <a href="@subHref1">@product.Name</a>
+                                                    <a href="@subHref1" @targetname>@product.Name</a>
                                                 </li>
                                                 i++;
                                             }
@@ -312,7 +318,7 @@ else
                                                 </div>
                                                 @if (product.pageid == "3")
                                                 {
-                                                    <div class="polymer_link">
+                                                    @* <div class="polymer_link">
                                                         @if (product.SubMenus != null)
                                                         {
                                                             foreach (var submenu in product.SubMenus)
@@ -337,7 +343,8 @@ else
                                                                 </div>
                                                             }
                                                         }
-                                                    </div>
+          
+                                                    </div> *@
                                                 }
                                                 else
                                                 {
@@ -375,14 +382,14 @@ else
 
                         }
 
-                    
+
 
                     </li>
-                    
+
                 }
-              
-            }   
-            
+
+            }
+
             <div class=top-humburger>
                 <div class="c-hamburger c-hamburger--htx"><a href=javascript:void(0)></a></div>
                 <nav class="open sub-menu">

@@ -4,6 +4,7 @@ using skipper_group_new.Models;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
+using university.Repositories;
 
 namespace skipper_group_new.Repositories
 {
@@ -11,10 +12,11 @@ namespace skipper_group_new.Repositories
     public class BackofficeProjectRepository : IBackofficeProjectRepository
     {
         private readonly string _connectionString;
+        Enc_Decyption enc = new Enc_Decyption();
 
-        public BackofficeProjectRepository(IConfiguration configuration)
+        public BackofficeProjectRepository(IDbConnectionProvider provider)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = provider.ConnectionString;
         }
         private DynamicParameters MapToResearchParameters(ResearchModel research)
         {

@@ -12,7 +12,7 @@
 
     figure.out_img {
         width: 409px;
-        right: -13rem;
+        right: -15rem;
     }
 
     .left-card {
@@ -40,7 +40,28 @@
         grid-template-columns: 41% 48%;
     }
 }
+@media (max-width: 1799px) {
+    .left-card::after{
 
+    }
+.swiper-slide:nth-child(4) .left-card::after {
+  width: 56rem;
+        top: 39.4%;
+        left: -40rem;
+}
+.left-card::after {
+           width: 25rem;
+        top: 26%;
+        left: -14rem;
+        height: 8px;
+
+}
+.swiper-slide:nth-child(3) .left-card::after {
+    top: 35.1%;
+            width: 34rem;
+        left: -12rem;
+}
+}
 @media (max-width: 1699px) {
     .gallery-grid {
         display: grid;
@@ -54,6 +75,22 @@
 }
 
 @media (max-width: 1599px) {
+    .left-card::after {
+            top: 12.5%;
+        left: -12rem;
+        width: 18rem;
+        height: 7.605px;
+    }
+    .swiper-slide:nth-child(4) .left-card::after {
+            width: 48rem;
+        top: 25.2%;
+        left: -47rem;
+}
+.swiper-slide:nth-child(3) .left-card::after {
+    top: 22.5%;
+    width: 18rem;
+    left: -13rem;
+}
     section.sustainbility_block6 {
         padding-block: 0 12rem;
     }
@@ -109,8 +146,29 @@
         padding-block: 5rem 8rem;
     }
 }
-
+@media (max-width: 1499px) {
+    .left-card::after {
+        top: 12.5%;
+        left: -3rem;
+        width: 17rem;
+        height: 7.605px;
+    }
+    .swiper-slide:nth-child(3) .left-card::after {
+        top: 22.5%;
+        width: 14rem;
+        left: -3rem;
+    }
+        .swiper-slide:nth-child(4) .left-card::after {
+        width: 49rem;
+        top: 25.2%;
+        left: -37rem;
+    }
+}
 @media (max-width: 1399px) {
+    .swiper-slide:nth-child(3) .left-card::after {
+   
+        left: 4rem;
+    }
     .Carbon_Footprint_Reduction {
         padding-block: 7rem 10rem;
         padding-inline: 15rem;

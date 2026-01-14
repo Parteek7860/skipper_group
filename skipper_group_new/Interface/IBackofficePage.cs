@@ -41,5 +41,11 @@ namespace skipper_group_new.Interface
 
         Task<int> DeletePhotoGallary(int id);
         Task<int> changestatus(int id);
+
+        Task<DataTable> GetRedirectionList();
+
+        int AddRedirection(clsRedirection obj);
+        int DeleteRedirectionRecords(int id);
+        int UpdateRedirectionStatus(string status, int id);
     }
 }
