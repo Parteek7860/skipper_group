@@ -1068,6 +1068,7 @@
 /* whats new page css end here */
 
 /* whats news details page css start here */
+
 .whats_new_two_details {
     padding-block: 10rem;
     background-color: #fff;
@@ -1254,7 +1255,11 @@ font-size: var(--font-21);
 .whats_new_two-details .video_sec {
     margin-top: 5rem;
 }
-
+.whats_new_two-details .video_sec .grid-3{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:3rem;
+}
 /* whats news details page css end here */
 
 /* blog page css start */
@@ -2981,6 +2986,10 @@ font-size: var(--font-21);
 }
 
 @media (max-width: 767px) {
+    .whats_new_two-details .video_sec .grid-3{
+    grid-template-columns: repeat(2,1fr);
+    gap:3rem;
+}
     .life_eight .recognition_grid .recog_bx figcaption {
         padding-top: 2rem;
     }
@@ -3169,7 +3178,10 @@ font-size: var(--font-21);
 }
 
 @media screen and (max-width:475px) {
-
+ .whats_new_two-details .video_sec .grid-3{
+    grid-template-columns: repeat(1,1fr);
+    gap:3rem;
+}
     .life_nine .job-info {
         display: block;
         margin-bottom: 2rem;
@@ -3524,6 +3536,40 @@ font-size: var(--font-21);
     max-width: 4.9rem;
 }
 
+/* csr  */
+.csrsec1{
+    padding: 10rem 0 7rem;
+}
+
+.csrsec1 .Employee_safety h2 {
+    margin-bottom: 4rem;
+}
+section.Social_Responsibility4.csrsec3 {
+    background: #fff;
+}
+section.Social_Responsibility4.csrsec3 figure img{
+    border-radius: 2rem;
+}
+.grid-2.csr2image{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap:3rem;
+    padding-block: 6rem 0;
+}
+.grid-2.csr2image figure img{
+    border-radius: 2rem;
+}
+.grid-2.csr2image figure figcaption{
+    font-size: 20px;
+    padding-top: 3rem;
+    color: var(--color33);
+    font-weight: 500;
+    text-align: center;
+}
+.haryalitext2{
+    padding-top: 5rem;
+}
+
 /* SUSTAINABILITY Governance & Compliance end */
 
 /* Leadership page css start */
@@ -3838,6 +3884,9 @@ font-size: var(--font-21);
 }
 
 @media screen and (max-width:1299px) {
+    .about_panel_four.transimission-1.fasterner-text.csrsec2  .pro_telcom_group{
+    grid-template-columns: repeat(2,1fr) !important;
+}
     .leadership_dtls_one .leadr-dtls_grid .ledr-dtls_rgt .msg_txt p {
         font-size: var(--font-18);
         line-height: 3rem;
@@ -3918,6 +3967,16 @@ font-size: var(--font-21);
 }
 
 @media screen and (max-width:767px) {
+      .about_panel_four.transimission-1.fasterner-text.csrsec2  .pro_telcom_group{
+    grid-template-columns: repeat(1,1fr) !important;
+}
+.csrsec1 {
+    padding: 4rem 0;
+}
+    .grid-2.csr2image {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    }
     .ledr_grid_lft {
         margin-left: 0rem;
     }
