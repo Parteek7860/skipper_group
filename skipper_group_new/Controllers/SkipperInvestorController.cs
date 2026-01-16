@@ -60,6 +60,7 @@ namespace skipper_group_new.Controllers
         [Route("investor-relations/{category}/{pcatid:int}")]
         public async Task<IActionResult> GetCatReports(int pcatid)
         {
+            await LoadTableSeoDataAsync("productsubcate", "psubcatid", Convert.ToInt32(pcatid));
             var categoryData = new List<InvestorModel>();
             var reportList = new List<ReportModel>();
             var catTable = await _enterface.GetCategoryItem();
@@ -124,6 +125,7 @@ namespace skipper_group_new.Controllers
         [Route("investor-relations/{category}/{subcategoty}/{pcatid:int}/{psubcatid:int}")]
         public async Task<IActionResult> GetSubCatReports(int pcatid, int psubcatid)
         {
+            await LoadTableSeoDataAsync("productsubcate", "psubcatid", Convert.ToInt32(psubcatid));
             var categoryData = new List<InvestorModel>();
             var reportList = new List<ReportModel>();
             var catTable = await _enterface.GetCategoryItem();
@@ -177,9 +179,12 @@ namespace skipper_group_new.Controllers
                 }
             }
             var dt = await _enterface.GetReports(pcatid, psubcatid);
+            
             if (dt != null && dt.Rows.Count > 0)
             {
-                foreach (DataRow r in dt.Rows)
+                var rows = dt.AsEnumerable()
+                 .OrderBy(r => r.Field<int?>("displayorder") ?? int.MaxValue);
+                foreach (DataRow r in rows)
                 {
                     int subCatId = Convert.ToInt32(r["psubcatid"]);
                     string subCategoryName = categoryData.SelectMany(c => c.subcategory).Where(s => s.psubcatid == subCatId).Select(s => s.subcategory).FirstOrDefault() ?? "";

@@ -47,8 +47,8 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/investor/AddCategory")]
-        public async Task<IActionResult> AddCategory(clsCategory c, IFormFile UploadAPDFFile, IFormFile BannerImgFile, IFormFile HomeImageFile)
+        [Route("backoffice/investor/addcategory")]
+        public async Task<IActionResult> addcategory(clsCategory c, IFormFile UploadAPDFFile, IFormFile BannerImgFile, IFormFile HomeImageFile)
         {
             try
             {
@@ -130,15 +130,26 @@ namespace skipper_group_new.Controllers
         {
             try
             {
+                var menuList = _menuService.GetMenu();
+                ViewBag.Menus = menuList;
+                clsCategory obj = new clsCategory();
+                
                 if (id > 0)
                 {
                     var cat = await _Investor.EditCategory(id);
                     if (cat != null)
                     {
-                        var menuList = _menuService.GetMenu();
-                        ViewBag.Menus = menuList;
-                        cat.Detail = WebUtility.HtmlDecode(cat.Detail);
-                        return View("~/Views/backoffice/investor/category.cshtml", cat);
+                        obj.Category = cat.Category;
+                        obj.Status= cat.Status;
+                        obj.Detail = WebUtility.HtmlDecode(cat.Detail);
+                        obj.PcatId = cat.PcatId;
+                        obj.ShortDetail = WebUtility.HtmlDecode(cat.ShortDetail);
+                        obj.DisplayOrder = cat.DisplayOrder;
+                        obj.Banner = cat.Banner;
+                        obj.UploadAPDF = cat.UploadAPDF;
+
+                        
+                        return View("~/Views/backoffice/investor/category.cshtml", obj);
                     }
                     else
                     {
@@ -280,8 +291,8 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/investor/AddSubCategory")]
-        public async Task<IActionResult> AddSubCategory(SubCategory c, IFormFile UploadAIFile, IFormFile BannerImgFile)
+        [Route("backoffice/investor/addsubcategory")]
+        public async Task<IActionResult> addsubcategory(SubCategory c, IFormFile UploadAIFile, IFormFile BannerImgFile)
         {
             try
             {

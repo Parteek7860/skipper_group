@@ -345,6 +345,7 @@ namespace skipper_group_new.Controllers
         [Route("leadership-details/{title}/{id:int}")]
         public async Task<IActionResult> leadershipdetail(string title, int id)
         {
+            await LoadTableSeoDataAsync("ourteam", "teamid", Convert.ToInt32(id));
             await LoadCMSDataAsync(19);
             clsTeamType obj = new clsTeamType();
             var x = await _homePageService.GetLeadershipList();
@@ -703,7 +704,8 @@ namespace skipper_group_new.Controllers
             else
             {
                 var x = await this._homePageService.GetProductCategoryList();
-                DataRow[] results = x.Select($"status=1 and pcatid='{productid.ToString()}'");
+                DataRow[] results = x.Select($"status=1 and pcatid='{productid.ToString()}'", "displayorder asc");
+
                 if (results.Length > 0)
 
                 {
@@ -734,6 +736,7 @@ namespace skipper_group_new.Controllers
         [Route("water/{productname}/{productid:int}")]
         public async Task<IActionResult> productdetail(string productid)
         {
+            await LoadTableSeoDataAsync("productsubcategory", "psubcatid", Convert.ToInt32(productid));
             clsProduct obj = new clsProduct();
             obj.id = Convert.ToInt16(productid);
             if (string.IsNullOrEmpty(productid) || !int.TryParse(productid, out int projId))

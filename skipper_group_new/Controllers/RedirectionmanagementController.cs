@@ -27,6 +27,11 @@ namespace skipper_group_new.Controllers
             ViewBag.Menus = menuList;
 
             var redirectionList = await _homePageService.GetRedirectionList();
+            if(redirectionList.Rows.Count == 0)
+            {
+                ViewBag.RedirectionList = redirectionList.Clone();
+                return View("/Views/backoffice/redirectionmanagement/redirection.cshtml");
+            }
             var orderedRows = redirectionList.AsEnumerable()
                                  .OrderByDescending(r => r.Field<int>("id"));
             ViewBag.RedirectionList = orderedRows.CopyToDataTable();

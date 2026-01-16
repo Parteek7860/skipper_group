@@ -87,7 +87,7 @@
             }
             else
             {
-                @Html.Raw(first.shortDetail)
+                @Html.Raw(System.Net.WebUtility.HtmlDecode(first.shortDetail))
             }
         }
     </div> 

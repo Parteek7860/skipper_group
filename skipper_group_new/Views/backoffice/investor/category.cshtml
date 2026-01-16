@@ -24,7 +24,7 @@
 
 
 
-@using (Html.BeginForm("AddCategory", "investor", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("addcategory", "investor", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="row clearfix">
@@ -188,8 +188,8 @@
                     </div>
                     <!-- Buttons -->
                     <div class="row mt-4">
-                        <div class="col-sm-12 text-center">
-                            <input type="submit" class="btn btn-success btn-lg mx-2" value="Save" />
+                        <div class="col-sm-12">
+                            <input type="submit" class="btn btn-success btn-lg mx-2" value="Save" asp-action="addcategory" asp-controller="Investor" formmethod="post" />
                             <a href="/backoffice/investor/category" class="btn btn-secondary btn-lg mx-2">Cancel</a>
                         </div>
                     </div>

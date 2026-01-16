@@ -1,12 +1,13 @@
 ﻿
 using DocumentFormat.OpenXml.Bibliography;
-using skipper_group_new.Interface;
-using skipper_group_new.Models;
-using skipper_group_new.Service;
+using DocumentFormat.OpenXml.Office2016.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.CSharp.RuntimeBinder;
+using skipper_group_new.Interface;
+using skipper_group_new.Models;
+using skipper_group_new.Service;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -78,7 +79,7 @@ namespace skipper_group_new.Controllers
             {
                 var seo = new clsHomeModel
                 {
-                    Name = row["linkname"]?.ToString() ?? "Metro Tyres",
+                    Name = row["linkname"]?.ToString() ?? "",
                     uploadimage = row["uploadbanner"]?.ToString() ?? "",
                     SmallDescription = row["smalldesc"]?.ToString() ?? "",
                     cmscontent = row["pagedescription"]?.ToString() ?? "",
@@ -107,11 +108,11 @@ namespace skipper_group_new.Controllers
             {
                 var seo = new SeoModel
                 {
-                    Title = row["pagetitle"]?.ToString() ?? "Metro Tyres",
+                    Title = row["pagetitle"]?.ToString() ?? "",
                     MetaDescription = row["pagemetadesc"]?.ToString() ?? "",
                     MetaKeywords = row["pagemeta"]?.ToString() ?? "",
                     Robots = row["no_indexfollow"]?.ToString() ?? "index,follow",
-                    CanonicalUrl = row["rewriteurl"]?.ToString() ?? ""
+                  //  CanonicalUrl = row["rewriteurl"]?.ToString() ?? ""
                 };
 
                 // Store in both ViewData and Service property (optional cache)
@@ -127,17 +128,18 @@ namespace skipper_group_new.Controllers
                 return;
 
             var row = dt.AsEnumerable()
-                .FirstOrDefault(r =>(r.Field<bool?>("status") ?? false) && r.Field<int>(column_name) == pageId);
+                .FirstOrDefault(r => (r.Field<bool?>("status") ?? false) && r.Field<int>(column_name) == pageId);
 
             if (row != null)
             {
                 var seo = new SeoModel
                 {
-                    Title = row["pagetitle"]?.ToString() ?? "Metro Tyres",
+                    Title = row["pagetitle"]?.ToString() ?? "",
                     MetaDescription = row["pagemetadesc"]?.ToString() ?? "",
                     MetaKeywords = row["pagemeta"]?.ToString() ?? "",
                     Robots = row["no_indexfollow"]?.ToString() ?? "index,follow",
-                    CanonicalUrl = row["rewriteurl"]?.ToString() ?? ""
+                    // CanonicalUrl = row["rewriteurl"]?.ToString() ?? ""
+                    
                 };
 
                 // Store in both ViewData and Service property (optional cache)
@@ -257,7 +259,7 @@ namespace skipper_group_new.Controllers
             {
                 PageSeo = new SeoModel
                 {
-                    Title = row["pagetitle"]?.ToString() ?? "Metro Tyres",
+                    Title = row["pagetitle"]?.ToString() ?? "",
                     MetaDescription = row["pagemetadesc"]?.ToString() ?? "",
                     MetaKeywords = row["pagemeta"]?.ToString() ?? "",
                     Robots = row["no_indexfollow"]?.ToString() ?? "index,follow",
@@ -269,9 +271,9 @@ namespace skipper_group_new.Controllers
                 // 🔹 Default fallback SEO (if nothing matches)
                 PageSeo = new SeoModel
                 {
-                    Title = "Metro Tyres",
-                    MetaDescription = "Best quality tyres in India by Metro Tyres.",
-                    MetaKeywords = "tyres, metro tyres, india",
+                    Title = "",
+                    MetaDescription = "Best quality tyres in India by .",
+                    MetaKeywords = "tyres, , india",
                     Robots = "index,follow",
                     CanonicalUrl = $"{request.Scheme}://{request.Host}{request.Path}"
                 };

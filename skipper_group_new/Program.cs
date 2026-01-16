@@ -72,7 +72,7 @@ decrypted = decrypted.Replace(@"\\", @"\");
 
 // register provider
 builder.Services.AddSingleton<IDbConnectionProvider>(
-    new DbConnectionProvider(decrypted));
+    new DbConnectionProvider(encrypted));
 
 
 var app = builder.Build();
@@ -80,12 +80,12 @@ var app = builder.Build();
 // -------------------------------------------------
 // 2️⃣ Developer Exception Page
 // -------------------------------------------------
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/SkipperHome/Error");
-    app.UseStatusCodePagesWithReExecute("/Error/Handle/{0}");
-    app.UseHsts();
-}
+//if (!app.Environment.IsDevelopment())
+//{
+//    app.UseExceptionHandler("/SkipperHome/Error");
+//    app.UseStatusCodePagesWithReExecute("/Error/Handle/{0}");
+//    app.UseHsts();
+//}
 
 // Catch malformed requests
 app.Use(async (context, next) =>
