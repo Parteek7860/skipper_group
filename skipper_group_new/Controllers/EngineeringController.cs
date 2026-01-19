@@ -14,14 +14,16 @@ namespace skipper_group_new.Controllers
     {
         private readonly List<UrlValidationRule> _validationRules;
         private readonly ISkipperHome _homePageService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public EngineeringController(ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService)
-     : base(homePageService, menuService)
+        public EngineeringController(ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService, IHttpContextAccessor httpContextAccessor)
+     : base(homePageService, menuService, httpContextAccessor)
         {
             _homePageService = homePageService;
 
             _validationRules = configuration.GetSection("UrlValidationRules:Rules")
              .Get<List<UrlValidationRule>>() ?? new();
+            _httpContextAccessor = httpContextAccessor;
         }
         [HttpGet]
         [Route("/{productname}/{productid:int}")]

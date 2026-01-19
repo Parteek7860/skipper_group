@@ -2273,7 +2273,7 @@
     }
 
     .inner_banner .container {
-        top: 12rem;
+        top: 27rem;
     }
 
     .data_sutain p br {
@@ -3019,6 +3019,11 @@
 }
 
 @media(max-width:991px) {
+    .inner_banner .shrt-title h6 , .inner_banner .bread_btm h5{
+    text-shadow: 3px 3px 6px #0c0c0c;
+}
+
+
     body .about_panel_eight h3 {
         margin-bottom: 3rem;
     }
@@ -3128,6 +3133,9 @@
         margin-bottom: 1rem;
         line-height: 30px;
     }
+   .rd_panel3 p br{
+    display: block;
+   }
 }
 
 @media(max-width:575px) {

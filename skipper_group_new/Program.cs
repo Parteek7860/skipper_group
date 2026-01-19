@@ -22,7 +22,7 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 //builder.Services.AddControllersWithViews();  // ✅ Add this line
 builder.Services.AddRazorPages();
 
-
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IHome, clsHome>();
 builder.Services.AddScoped<IHomeRepository, HomeRepository>();
@@ -75,6 +75,9 @@ builder.Services.AddSingleton<IDbConnectionProvider>(
     new DbConnectionProvider(encrypted));
 
 
+
+
+
 var app = builder.Build();
 
 // -------------------------------------------------
@@ -98,6 +101,24 @@ app.Use(async (context, next) =>
     {
         context.Response.Redirect("/Error/Handle/400");
     }
+});
+
+app.Use(async (context, next) =>
+{
+    var host = context.Request.Host;
+
+    if (!host.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
+    {
+        var newHost = new HostString("www." + host.Host, host.Port ?? 443);
+
+        var newUrl = $"{context.Request.Scheme}://{newHost}{context.Request.Path}{context.Request.QueryString}";
+
+        context.Response.StatusCode = StatusCodes.Status301MovedPermanently;
+        context.Response.Headers.Location = newUrl;
+        return;
+    }
+
+    await next();
 });
 
 
@@ -143,7 +164,7 @@ app.Use(async (context, next) =>
     var csp = string.Join(" ",
         "default-src 'self';",
 
-     $"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.ckeditor.com https://cdnjs.cloudflare.com https://code.jquery.com https://cdn.jsdelivr.net https://cke4.ckeditor.com; ",
+     $"script-src 'self' 'unsafe-inline' 'unsafe-eval ws: wss: ' https://www.googletagmanager.com https://www.google-analytics.com https://www.google-analytics.com https://region1.google-analytics.com https://cdn.ckeditor.com https://cdnjs.cloudflare.com https://code.jquery.com https://cdn.jsdelivr.net https://cke4.ckeditor.com; ",
 
         // ✅ Allow inline styles + external fonts & icons
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;",

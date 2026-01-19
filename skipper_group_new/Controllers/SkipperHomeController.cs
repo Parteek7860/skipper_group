@@ -23,15 +23,17 @@ namespace skipper_group_new.Controllers
         private readonly List<UrlValidationRule> _validationRules;
         private readonly ISkipperHome _homePageService;
         private readonly IWebHostEnvironment _env;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SkipperHomeController(ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService, IWebHostEnvironment env)
-     : base(homePageService, menuService)
+        public SkipperHomeController(ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService, IWebHostEnvironment env, IHttpContextAccessor httpContextAccessor)
+     : base(homePageService, menuService, httpContextAccessor)
         {
             _homePageService = homePageService;
 
             _validationRules = configuration.GetSection("UrlValidationRules:Rules")
              .Get<List<UrlValidationRule>>() ?? new();
             _env = env;
+            _httpContextAccessor = httpContextAccessor;
         }
         [HttpGet]
         [Route("/")]

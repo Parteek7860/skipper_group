@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
 using skipper_group_new.Models;
@@ -14,18 +15,20 @@ namespace skipper_group_new.Controllers
         private readonly clsMainMenuList _menuService;
         private readonly ISkipperInvestorPage _enterface;
         private readonly ISkipperHome _homePageService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SkipperInvestorController(ISkipperInvestorPage enterface, ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService):base(homePageService, menuService)
+        public SkipperInvestorController(ISkipperInvestorPage enterface, ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService, IHttpContextAccessor httpContextAccessor) : base(homePageService, menuService, httpContextAccessor)
         {
             _homePageService = homePageService;
-
+            _httpContextAccessor = httpContextAccessor;
             _enterface = enterface;
+            _httpContextAccessor = httpContextAccessor;
         }
         [HttpGet]
         [Route("/investor-relations/financial-performance/annual-reports")]
         public async Task<IActionResult> SkipperInvestor()
         {
-            
+
             var categoryData = new List<InvestorModel>();
             var catTable = await _enterface.GetCategoryItem();
 
@@ -179,7 +182,7 @@ namespace skipper_group_new.Controllers
                 }
             }
             var dt = await _enterface.GetReports(pcatid, psubcatid);
-            
+
             if (dt != null && dt.Rows.Count > 0)
             {
                 var rows = dt.AsEnumerable()
@@ -219,13 +222,13 @@ namespace skipper_group_new.Controllers
 
         private string GenerateCaptcha()
         {
-            string upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";    
-            string lower = "abcdefghijkmnopqrstuvwxyz";  
-            string numbers = "23456789";  
+            string upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+            string lower = "abcdefghijkmnopqrstuvwxyz";
+            string numbers = "23456789";
             string special = "!@#$%^&*?";
             string allChars = upper + lower + numbers + special;
             Random rnd = new Random();
-            int length = rnd.Next(5, 9); 
+            int length = rnd.Next(5, 9);
             List<char> captcha = new List<char>
             {
                 upper[rnd.Next(upper.Length)],
@@ -239,7 +242,7 @@ namespace skipper_group_new.Controllers
 
         [HttpPost]
         public async Task<IActionResult> SaveInvestorQuery([FromBody] InvestorQueryModel model)
-        {            
+        {
             string sessionCaptcha = HttpContext.Session.GetString("Captcha");
             if (string.IsNullOrEmpty(sessionCaptcha) || model.CaptchaCode != sessionCaptcha)
                 return Json(new { status = false, message = "Invalid Captcha!" });

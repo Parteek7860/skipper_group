@@ -504,9 +504,18 @@
     }
 
     .infra_box p {
-        width: 60%;
+        width: 70%;
     }
-
+.infra_box{
+            padding-inline: 3rem;
+            height: 110%;
+}
+    .home_infra .row {
+        --bs-gutter-x: 2rem;
+    }
+    .infra_num {
+        margin-top: 2rem;
+    }
     .second-vertical-line-svg {
         top: 2rem;
         right: 0rem;
@@ -856,9 +865,14 @@
     }
 
     .infra_box figure {
-        width: 215px;
+        width: 167px;
     }
-
+    .infra_box figure {
+        margin-top: -31rem;
+    }
+        .infra_box {
+        padding-block: 5rem 9rem;
+    }
     .infra_num h4 {
         font-size: 4rem;
     }

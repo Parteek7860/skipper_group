@@ -26,12 +26,14 @@ namespace skipper_group_new.Controllers
 
         private readonly ISkipperHome _homePageService;
         protected readonly MenuDataService _menuService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public SeoModel PageSeo { get; private set; } = new SeoModel();
 
-        public BaseController(ISkipperHome homePageService, MenuDataService menuService)
+        public BaseController(ISkipperHome homePageService, MenuDataService menuService, IHttpContextAccessor httpContextAccessor)
         {
             _homePageService = homePageService;
             _menuService = menuService;
+            _httpContextAccessor = httpContextAccessor;
         }
         public List<clsHomeModel> TopMenuList => _menuService.TopMenuList;
         public List<clsHomeModel> MainMenuList => _menuService.MainMenuList;
@@ -106,13 +108,18 @@ namespace skipper_group_new.Controllers
 
             if (row != null)
             {
+                var context = _httpContextAccessor.HttpContext;
+
+                var canonicalUrl = context != null
+                    ? $"{context.Request.Scheme}://{context.Request.Host}{context.Request.Path}"
+                    : "";
                 var seo = new SeoModel
                 {
                     Title = row["pagetitle"]?.ToString() ?? "",
                     MetaDescription = row["pagemetadesc"]?.ToString() ?? "",
                     MetaKeywords = row["pagemeta"]?.ToString() ?? "",
                     Robots = row["no_indexfollow"]?.ToString() ?? "index,follow",
-                  //  CanonicalUrl = row["rewriteurl"]?.ToString() ?? ""
+                    CanonicalUrl = canonicalUrl,
                 };
 
                 // Store in both ViewData and Service property (optional cache)

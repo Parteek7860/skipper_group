@@ -320,7 +320,7 @@
 
 @media (max-width: 992px) {
     .inner_banner .container {
-        top: 16rem;
+        top: 32rem;
     }
 
     .inner_banner .without-bread_btm.shrt-title {
@@ -331,7 +331,7 @@
 
 @media (max-width: 768px) {
     .inner_banner .container {
-        top: 14rem;
+        top: 23rem;
     }
 
     .inner_banner .without-bread_btm.shrt-title {
@@ -2220,7 +2220,7 @@ font-size: var(--font-21);
 
 .life_six .recog_grid .recog-rght .recg_bx {
     padding-right: 3rem;
-    padding-top: 3rem;
+    padding-top: 8rem;
     position: relative;
 }
 
@@ -2232,10 +2232,10 @@ font-size: var(--font-21);
 }
 
 .life_six .recog_grid .recog-lft h4 {
-    font-size: var(--font-24);
+    font-size: var(--font-36);
     font-weight: 500;
     color: var(--color00);
-    margin-bottom: 1rem;
+    margin-bottom: 3rem;
 }
 
 .life_six .recog_grid .recog-lft h5 {
@@ -3735,9 +3735,11 @@ section.Social_Responsibility4.csrsec3 figure img{
     margin-bottom: 2rem;
     line-height: var(--line-height-30);
 }
-
-.leadership_dtls_one .leadr-dtls_grid .ledr-dtls_rgt .msg_txt p {
+.leader-list1.leadership_dtls_one .leadr-dtls_grid .ledr-dtls_rgt .msg_txt p {
     font-size: var(--font-24);
+}
+.leadership_dtls_one .leadr-dtls_grid .ledr-dtls_rgt .msg_txt p {
+    font-size: var(--font-18);
     line-height: 1.6;
     margin-bottom: 2rem;
 }
@@ -3820,7 +3822,7 @@ section.Social_Responsibility4.csrsec3 figure img{
 }
 
 .ledr_grid_lft p {
-    font-size: var(--font-24);
+    font-size: var(--font-18);
     line-height: 3.6rem;
 }
 
@@ -3841,8 +3843,15 @@ section.Social_Responsibility4.csrsec3 figure img{
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
-
+.leadership_dtls_one .leadr-dtls_grid .ledr-dtls_rgt .read_icon a{
+        position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    align-content: center;
+}
 .leader-list1.leadership_dtls_one .leadr-dtls_grid .ledr-dtls_rgt {
     padding-left: 6rem;
     margin-right: 14.5rem;
@@ -7275,7 +7284,9 @@ section.sustainbility_block10 {
     background: #EBEBEB;
     padding-block: 2rem 25rem;
 }
-
+section.sustainbility_block10 .container{
+    position: relative;
+}
 .col_text9 {
     background: #336E8C 0% 0% no-repeat padding-box;
     border-radius: 30px;
@@ -7284,6 +7295,7 @@ section.sustainbility_block10 {
     padding-block: 5rem;
     width: 100em;
     position: relative;
+    z-index: 1;
 }
 
 .col_text9 p {
@@ -10009,6 +10021,7 @@ section.rd_panel4 .bottom_left_icon {
 .epc-advanimg img{
     border-radius: 2rem;
 }
+
 .sustainbility_block4.transimission-2.apart-sec{
     background: #f2f2f2;
     padding-block: 6rem 7rem;
@@ -10039,6 +10052,10 @@ section.rd_panel4 .bottom_left_icon {
 .sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone.box_radius .svg_icon1:nth-child(3) {
     margin-left: auto;
     margin-right: 0rem;
+}
+.sustainbility_block5{
+    max-width: 1920px;
+    margin: auto;
 }
 .keychain-solar{margin-block: 4rem 8rem;}
 @media (max-width:600px) {
@@ -11756,6 +11773,7 @@ left:62rem;
 
 
 @media only screen and (max-width:1599px) {
+ 
     .skipper_miltone1.miletone19.miles11 .top_milestone {
         width: 309px;
         margin-left: 77rem;
@@ -11785,7 +11803,12 @@ left:62rem;
         bottom: 18rem;
     }
 }
-
+@media only screen and (max-width:1499px) {
+ .life_two img.gptw{
+width: 8rem;
+    right: 0;
+    }
+}
 @media only screen and (max-width:1399px) {
     .skipper_miltone1.miletone24 .left_milestone .top_milestone {
         width: 234px;
@@ -12805,6 +12828,10 @@ left:62rem;
 }
 
 @media screen and (max-width:767px) {
+        .life_two img.gptw {
+        width: 6rem;
+        right: 0;
+    }
     .skipper_miltone1.miletone20 .left_milestone .top_milestone {
     margin-bottom: 0rem;
 }
@@ -13588,8 +13615,12 @@ img.gptw {
     z-index: 1;
     border-radius: 0;
 }
+.life_six  img.gptw{
+width: 9rem;
+}
 .life_five .womn_grid .womn_lft img.gptw {
-    left: 4rem;
+       left: 0rem;
+    width: 9rem;
 }
 .life_six .bgcolor .womn_lft img.gptw {
      right: 8rem;
@@ -13752,8 +13783,20 @@ padding: 5rem;
     margin-bottom: 2.5rem;
 }
 
-
+.contact_one .contact_grid .contact_lft .ofc-loctn p>span.cin-add {
+    display: inline;
+}
+@media(max-width:1399px){
+.life_five .womn_grid .womn_lft img.gptw {
+    left: 0rem;
+    width: 6rem;
+}
+}
 @media(max-width:991px){
+    .life_six img.gptw {
+    width: 6rem;
+    right: -3rem;
+}
     .search_result {
         padding: 6rem 0;
     }
@@ -13769,8 +13812,16 @@ padding: 5rem;
 .about_panel_four.transimission-1.fasterner-text{
     padding-block: 0rem 7rem;
 }
+  .contact_one .contact_grid .contact_lft .ofc-loctn p>span.cin-add{
+        display:block;
+        margin-top: 1rem;
+    }
 }
 @media(max-width:767px){
+        .life_six img.gptw {
+        width: 6rem;
+        right: 0;
+    }
     .search_result {
         padding: 4rem 0;
     }
@@ -13781,5 +13832,17 @@ padding: 5rem;
 .about_panel_four.transimission-1.fasterner-text{
     padding-block: 0rem 5rem;
 }
+}
+@media(max-width:567px){
+        .life_six img.gptw {
+        width: 4rem;
+        right: 0;
+    }
+    .life_two img.gptw{
+        display: none;
+    }
+        .life_five .womn_grid .womn_lft img.gptw {
+        width: 4rem;
+    }
 }
 
