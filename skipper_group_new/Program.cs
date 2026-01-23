@@ -89,6 +89,16 @@ var app = builder.Build();
 //    app.UseStatusCodePagesWithReExecute("/Error/Handle/{0}");
 //    app.UseHsts();
 //}
+app.MapGet("/robots.txt", async context =>
+{
+    context.Response.ContentType = "text/plain";
+
+    await context.Response.WriteAsync(
+@"User-Agent: *
+Disallow:
+Sitemap: https://www.skipperlimited.com/sitemap.xml"
+    );
+});
 
 // Catch malformed requests
 app.Use(async (context, next) =>

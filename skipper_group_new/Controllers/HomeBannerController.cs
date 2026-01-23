@@ -239,7 +239,7 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/homebanner/addhomebanner/{name}/{pageid:int}")]
         public async Task<IActionResult> addhomebanner(clsbanner obj, IFormFile file_Uploader, int pageid)
         {
-            var pageid1 = HttpContext.Request.RouteValues["pageid"]?.ToString();
+            var pageid1 = Convert.ToString(pageid);
             var menuList = _menuService.GetMenu(Convert.ToInt16(pageid1));
             ViewBag.Menus = menuList;
 
@@ -301,13 +301,12 @@ namespace skipper_group_new.Controllers
 
                 if (x > 0)
                 {
+                    var bannerTypes = _homePageService.GetBannerList();
+                    var filterresult = bannerTypes.Result.Select("collageid=0").OrderByDescending(r => r["bid"]);
+                    DataTable dt = filterresult.CopyToDataTable();
+                    ViewBag.bannerlist = dt;
                     if (obj.id > 0)
                     {
-                        var bannerTypes = _homePageService.GetBannerList();
-                        var filterresult = bannerTypes.Result.Select("collageid=0").OrderByDescending(r => r["bid"]);
-                        DataTable dt = filterresult.CopyToDataTable();
-                        ViewBag.bannerlist = dt;
-
                         HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Update successfully.");
 
 
@@ -330,7 +329,7 @@ namespace skipper_group_new.Controllers
                         }
                         else
                         {
-                            return View("~/Views/backoffice/HomeBanner/addhomebanner.cshtml", objbanner);
+                            return View("~/Views/backoffice/HomeBanner/viewhomebanner.cshtml", objbanner);
                         }
 
                     }

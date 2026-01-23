@@ -684,8 +684,18 @@ namespace skipper_group_new.Controllers
         [HttpGet]
         public async Task<IActionResult> BindHomeBanner()
         {
-            var list = _homePageService.GetBannerList();
-            var filterlist = list.Result.Select("status=1 and collageid=0");
+            var list =  _homePageService.GetBannerList();
+            var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
+            bool isMobile = userAgent.Contains("Android") ||
+                            userAgent.Contains("iPhone") ||
+                            userAgent.Contains("Mobile");
+
+            DataRow[] filterlist = list.Result.Select(
+                isMobile
+                    ? "status=1 AND (collageid = 0 OR collageid IS not NULL) AND devicetype='Mobile'"
+                    : "status=1 and (collageid = 0 OR collageid IS not NULL) AND devicetype='Desktop'"
+            );
+            
             var top5 = filterlist.CopyToDataTable();
             ViewBag.BannerList = top5;
             return View();

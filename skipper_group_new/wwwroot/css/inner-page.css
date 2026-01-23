@@ -8982,7 +8982,7 @@ section.Social_Responsibility10 .col-md-2 figure {
 .award-sec .award_grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 9rem 8.7rem;
+    gap: 7rem 6.7rem;
 }
 
 .award-sec .award_grid .logo_bx {
@@ -12824,7 +12824,7 @@ width: 8rem;
         position: relative;
     }
 
-
+.invest_detls_one { margin-top: -31rem; }
 }
 
 @media screen and (max-width:767px) {
@@ -12832,6 +12832,7 @@ width: 8rem;
         width: 6rem;
         right: 0;
     }
+    
     .skipper_miltone1.miletone20 .left_milestone .top_milestone {
     margin-bottom: 0rem;
 }
@@ -13160,7 +13161,7 @@ width: 8rem;
     .skipper_miltone1.miletone81 .right_milestone .bottom_milestone {
         width: 100%;
     }
-
+.cont-sec .Catalogues_box { grid-template-columns: repeat(1, 1fr); gap: 3rem; }
 }
 
 /* milestone css end  */
@@ -13786,6 +13787,24 @@ padding: 5rem;
 .contact_one .contact_grid .contact_lft .ofc-loctn p>span.cin-add {
     display: inline;
 }
+.award-faq .accordion-button{
+       font-size: var(--font-21);
+    color: var(--colorfff);
+    background-color: var(--color00);
+    padding: 1.5rem 2rem;
+    margin-top: 6rem;
+    border-radius: 0.5rem;
+}
+ .award-faq .accordion-button::after {
+        content: '+';
+        font-size: 18px;
+        position: absolute;
+        right: 2rem;
+        color: rgb(255, 255, 255);
+    }
+    .award-faq  .award_grid{
+    padding-top: 6rem;
+    }
 @media(max-width:1399px){
 .life_five .womn_grid .womn_lft img.gptw {
     left: 0rem;
@@ -13816,6 +13835,9 @@ padding: 5rem;
         display:block;
         margin-top: 1rem;
     }
+    .award-faq .accordion-button::after{
+        filter: unset;
+    }
 }
 @media(max-width:767px){
         .life_six img.gptw {
@@ -13832,6 +13854,12 @@ padding: 5rem;
 .about_panel_four.transimission-1.fasterner-text{
     padding-block: 0rem 5rem;
 }
+.award-sec .award_grid .logo_bx figcaption {
+    padding-inline: 0;
+}
+    .award-sec .award_grid .logo_bx {
+        padding: 2rem;
+    }
 }
 @media(max-width:567px){
         .life_six img.gptw {

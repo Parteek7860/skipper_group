@@ -18,6 +18,63 @@
     }
 
 }
+<style>
+
+    .globe-dropdown {
+        position: relative;
+        display: inline-block;
+        margin-left: 0;
+    }
+
+    .globe-icon img {
+        width: 28px;
+        cursor: pointer;
+    }
+
+    .globe-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 5rem;
+        background: #fff;
+        min-width: 251px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        list-style: none;
+        padding: 3rem 0;
+        margin: 0;
+        z-index: 999;
+        width: 100%;
+    }
+
+        .globe-menu li a {
+            display: block;
+            padding: 0px 1rem;
+            color: #333;
+            text-decoration: none;
+            margin-top: 0;
+            font-size: var(--font-21);
+        }
+
+            .globe-menu li a:hover {
+                background: #f2f2f2;
+            }
+
+    /* Show dropdown on hover */
+    .globe-dropdown:hover .globe-menu {
+        display: block;
+    }
+
+
+    .globe-menu li:not(:last-child) {
+        margin-bottom: 2rem;
+    }
+
+    .globe-menu li:hover a {
+        color: var(--color00);
+        background-color: transparent;
+    }
+
+</style>
 @if (mainmenuFiltered.Count > 0)
 {
     @if (dtmenu != null)
@@ -114,7 +171,7 @@ else
 
                         <a class="@(isActive ? "active" : "")" href="@((menu.SubMenus != null && menu.SubMenus.Count > 0) || menu.pageid == "7" ? "javascript:void(0)" : subHref)">
                             @menu.Name
-                           
+
                         </a>
 
                         @if (menu.pageid == "2" || menu.pageid == "6")
@@ -378,6 +435,18 @@ else
                 }
 
             }
+
+            <li class="globe-dropdown">
+                <a class="globe-icon">
+                    <img src="/images/globe-icon.png" alt="Globe">
+                </a>
+
+                <ul class="globe-menu">
+                    <li><a href="https://us.skipperlimited.com/" target="_blank">Skipper North America </a></li>
+                    <li><a href="https://skippermetzer.com/" target="_blank">Skipper Metzer</a></li>
+                </ul>
+            </li>
+
 
             <div class=top-humburger>
                 <div class="c-hamburger c-hamburger--htx"><a href=javascript:void(0)></a></div>

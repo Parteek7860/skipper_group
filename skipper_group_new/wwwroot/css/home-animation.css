@@ -474,7 +474,11 @@
     }
 
 }
-
+@media (max-width:1799px) {
+section.home_banner {
+    margin-top: 9rem;
+}
+}
 @media (max-width:1759px) {
     .tower-right {
         text-align: center;
