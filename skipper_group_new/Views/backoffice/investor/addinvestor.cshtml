@@ -24,9 +24,7 @@
 
 
 
-@using (Html.BeginForm("addinvestor", "investor", FormMethod.Post, new { enctype = "multipart/form-data" }))
-
-
+@using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.ValidationSummary(true)
     <div class="row clearfix">
@@ -177,7 +175,7 @@
                                 @Html.HiddenFor(model => model.uploadfile)
                                 @if (!string.IsNullOrEmpty(Model.uploadfile))
                                     {
-                                        <a href="/uploads/prospectus/@Model.uploadfile" download>
+                                        <a href="/investor/downloadfile/@Model.uploadfile" download>
                                             Download file
                                         </a>
                                     }
