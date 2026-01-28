@@ -64,6 +64,11 @@ namespace skipper_group_new.Service
             return _repository.DeleteCategory(id);
         }
 
+        public int DeleteMobileBannerRecords(int id)
+        {
+            return _repository.DeleteMobileBannerRecords(id);
+        }
+
         public Task<int> ChangeCatStatus(int id)
         {
             return _repository.ChangeCatStatus(id);

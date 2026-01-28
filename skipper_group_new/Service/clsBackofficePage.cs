@@ -72,6 +72,10 @@ namespace skipper_group_new.Service
         {
             return _repository.DeleteRecords(obj);
         }
+        public int DeleteMobileBannerRecords(int obj)
+        {
+            return _repository.DeleteMobileBannerRecords(obj);
+        }
 
         public int CMSUpdateStatus(string status, int id)
         {

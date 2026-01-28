@@ -728,6 +728,7 @@ namespace skipper_group_new.Controllers
                     obj.ShortDetail = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["shortdetail"]));
                     obj.ProductDetail = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["detail"]));
                     obj.UploadAImage = Convert.ToString(dt.Rows[0]["banner"]);
+                    obj.uploadmobileimage = Convert.ToString(dt.Rows[0]["uploadmobilebanner"]);
                     obj.LongDesc = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["homedesc"]));
                     obj.LongDesc2 = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["homedesc2"]));
 

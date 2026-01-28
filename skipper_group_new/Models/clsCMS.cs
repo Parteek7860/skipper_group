@@ -28,6 +28,7 @@ namespace skipper_group_new.Models
         public string pagedesc3 { get; set; }
         public string mobilemegamenu { get; set; }
         public string uploadbanner { get; set; }
+        public string uploadmobilebanner { get; set; }
         public int displayorder { get; set; }
         public string pagetitle { get; set; }
         public string metakeywords { get; set; }

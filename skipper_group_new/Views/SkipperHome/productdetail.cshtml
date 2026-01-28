@@ -8,10 +8,29 @@
 @if (Model != null)
 {
     <section class="inner_banner">
-        @if (Convert.ToString(Model.UploadAImage) != null)
+        @{
+            var userAgent = Context.Request.Headers["User-Agent"].ToString();
+
+            bool isMobile =
+            userAgent.Contains("Android") ||
+            userAgent.Contains("iPhone") ||
+            userAgent.Contains("Mobile");
+
+            string bannerImage = "";
+
+            if (isMobile && !string.IsNullOrEmpty(Model.uploadmobileimage))
+            {
+                bannerImage = "/uploads/banner/" + Model.uploadmobileimage;
+            }
+            else
+            {
+                bannerImage = "/uploads/productsimage/" + Model.UploadAImage;
+            }
+        }
+        @if (!string.IsNullOrEmpty(bannerImage))
         {
             <figure>
-                <img src="/uploads/productsimage/@Convert.ToString(Model.UploadAImage)" alt="@Model.ProductName" class="img-fluid w-100" />
+                <img src="@Convert.ToString(bannerImage)" alt="@Model.ProductName" class="img-fluid w-100" />
             </figure>
         }
 

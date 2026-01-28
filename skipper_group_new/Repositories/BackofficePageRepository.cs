@@ -304,6 +304,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@rewriteid", DBNull.Value);
                     cmd.Parameters.AddWithValue("@rewriteurl", cls.rewriteurl);
                     cmd.Parameters.AddWithValue("@UploadBanner", cls.uploadbanner ?? "");
+                    cmd.Parameters.AddWithValue("@uploadmobilebanner", cls.uploadmobilebanner ?? "");
                     cmd.Parameters.AddWithValue("@displayorder", cls.displayorder);
                     cmd.Parameters.AddWithValue("@quicklinks", false);
                     cmd.Parameters.AddWithValue("@smalldesc", cls.smalldesc);
@@ -362,6 +363,23 @@ namespace skipper_group_new.Repositories
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@pageid", id);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+        public int DeleteMobileBannerRecords(int id)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("DeleteBannerRecordsSP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@id", id);
 
                     conn.Open();
                     result = cmd.ExecuteNonQuery();

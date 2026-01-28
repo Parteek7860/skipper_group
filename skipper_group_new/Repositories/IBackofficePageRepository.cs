@@ -22,7 +22,7 @@ namespace skipper_group_new.Repositories
         int AddCMS(clsCMS obj);
 
         Task<DataTable> GetPageListByID(int id);
-
+        int DeleteMobileBannerRecords(int id);
         int DeleteRecords(int id);
         int CMSUpdateStatus(string status, int id);
         Task<DataTable> GetFAQList();

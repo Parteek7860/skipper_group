@@ -316,7 +316,7 @@ namespace skipper_group_new.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("backoffice/products/addcategory")]
-        public async Task<IActionResult> addcategory(clsCategory c, IFormFile UploadAPDFFile, IFormFile BannerImgFile, IFormFile HomeImageFile)
+        public async Task<IActionResult> addcategory(clsCategory c, IFormFile UploadAPDFFile, IFormFile BannerImgFile, IFormFile HomeImageFile, IFormFile file_Uploader)
         {
             try
             {
@@ -367,6 +367,22 @@ namespace skipper_group_new.Controllers
                 else
                 {
                     obj.HomeImage = c.HomeImage ?? string.Empty;
+                }
+                if (file_Uploader != null && file_Uploader.Length > 0)
+                {
+                    var fileName = Path.GetFileName(file_Uploader.FileName); // captures name
+                    var filePath = Path.Combine("wwwroot/uploads/banner", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file_Uploader.CopyTo(stream);
+                    }
+
+                    obj.uploadmobilebanner = fileName;
+                }
+                else
+                {
+                    obj.uploadmobilebanner = c.uploadmobilebanner ?? string.Empty;
                 }
                 obj.Category = c.Category;
                 obj.Detail = c.Detail;
@@ -456,6 +472,7 @@ namespace skipper_group_new.Controllers
                         obj.PageMeta = filteredRows[0]["pagemeta"].ToString();
                         obj.PageMetaDesc = filteredRows[0]["pagemetadesc"].ToString();
                         obj.Banner = filteredRows[0]["banner"].ToString();
+                        obj.uploadmobilebanner = filteredRows[0]["uploadmobilebanner"].ToString();
                         obj.HomeImage = filteredRows[0]["homeimage"].ToString();
                         obj.UploadAPDF = filteredRows[0]["uploadapdf"].ToString();
                         obj.Canonical = filteredRows[0]["canonical"].ToString();
@@ -3249,6 +3266,49 @@ namespace skipper_group_new.Controllers
             }
             return RedirectToAction("addcapabilities", new { id = id });
 
+        }
+
+        [HttpGet]
+        [Route("backoffice/products/removebanner/{id}/{type}")]
+        public IActionResult RemoveBanner(int id, string type)
+        {
+            var y = _products.BindProductCategory().Result;
+            var filterresult = y.AsEnumerable().Where(p => p.Field<int>("pcatid") == id).CopyToDataTable();
+            string fileName = string.Empty;
+            if (filterresult != null)
+            {
+                if (type == "mobile")
+                {   
+                    fileName = filterresult.Rows[0]["uploadmobilebanner"].ToString();
+                }
+            }
+
+            // 3. Delete physical file
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                var filePath = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot/uploads/banner",
+                    fileName
+                );
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+
+            // 4. Save DB
+            var x = _products.DeleteMobileBannerRecords(id);
+            if (x > 0)
+            {
+                HttpContext.Session.SetString(
+                       "Message",
+                       (HttpContext.Session.GetString("Message") ?? "") + "Banner removed successfully."
+                   );
+
+            }
+            return RedirectToAction("viewcategory", "products");
         }
     }
 }

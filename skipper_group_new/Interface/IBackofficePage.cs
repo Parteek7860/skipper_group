@@ -21,6 +21,8 @@ namespace skipper_group_new.Interface
         int DeleteVedio(int id);
         Task<DataTable> BindPageList();
         Task<DataTable> GetPageListByID(int id);
+
+        int DeleteMobileBannerRecords(int id);
         int DeleteRecords(int id);
         int AddCMS(clsCMS obj);
         int CMSUpdateStatus(string status, int id);

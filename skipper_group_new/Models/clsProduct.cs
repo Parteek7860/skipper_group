@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Presentation;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace skipper_group_new.Models
 {
@@ -22,6 +23,7 @@ namespace skipper_group_new.Models
         public string PageMetaDesc { get; set; }
         public string Prospectus { get; set; }
         public string UploadAImage { get; set; }
+        public string uploadmobileimage { get; set; }
         public string Status { get; set; }
         public string Purl { get; set; }
         public bool IsFamilyProduct { get; set; }

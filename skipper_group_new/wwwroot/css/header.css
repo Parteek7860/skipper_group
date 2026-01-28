@@ -1569,7 +1569,9 @@ div#accordian h3 {
     z-index: 9;
     width: 13vw !important;
 }
-
+.logo .globe-dropdown{
+    display:none;
+}
 @media (max-width:1599px) {
     nav>ul>li {
         margin-inline: 4rem 0;
@@ -1611,22 +1613,33 @@ div#accordian h3 {
     .header-sticky .logo img {
         width: 15rem;
     }
-
+    .header-sticky .logo .globe-dropdown img {
+width: 2.5rem;
+    }
  
     header nav {
         display: none;
     }
 
     .logo {
-        width: auto !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100% !important;
         margin: auto;
     }
-
+ .logo .globe-dropdown{
+    display: block;
+ }
     .logo img {
         width: 15rem;
     }
 }
-
+@media (max-width:999px) {
+header {
+    padding-inline: 1.8rem 1.8rem;
+}
+}
 
 
 /* engineer header start */

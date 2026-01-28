@@ -83,6 +83,7 @@ namespace skipper_group_new.Controllers
                 {
                     Name = row["linkname"]?.ToString() ?? "",
                     uploadimage = row["uploadbanner"]?.ToString() ?? "",
+                    uploadmobileimage = row["uploadmobilebanner"]?.ToString() ?? "",
                     SmallDescription = row["smalldesc"]?.ToString() ?? "",
                     cmscontent = row["pagedescription"]?.ToString() ?? "",
                     tagline = row["tagline"]?.ToString() ?? "",
