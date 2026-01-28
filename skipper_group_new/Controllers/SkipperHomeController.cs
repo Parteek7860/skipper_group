@@ -23,15 +23,17 @@ namespace skipper_group_new.Controllers
         private readonly List<UrlValidationRule> _validationRules;
         private readonly ISkipperHome _homePageService;
         private readonly IWebHostEnvironment _env;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SkipperHomeController(ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService, IWebHostEnvironment env)
-     : base(homePageService, menuService)
+        public SkipperHomeController(ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService, IWebHostEnvironment env, IHttpContextAccessor httpContextAccessor)
+     : base(homePageService, menuService, httpContextAccessor)
         {
             _homePageService = homePageService;
 
             _validationRules = configuration.GetSection("UrlValidationRules:Rules")
              .Get<List<UrlValidationRule>>() ?? new();
             _env = env;
+            _httpContextAccessor = httpContextAccessor;
         }
         [HttpGet]
         [Route("/")]
@@ -345,6 +347,7 @@ namespace skipper_group_new.Controllers
         [Route("leadership-details/{title}/{id:int}")]
         public async Task<IActionResult> leadershipdetail(string title, int id)
         {
+            await LoadTableSeoDataAsync("ourteam", "teamid", Convert.ToInt32(id));
             await LoadCMSDataAsync(19);
             clsTeamType obj = new clsTeamType();
             var x = await _homePageService.GetLeadershipList();
@@ -681,8 +684,18 @@ namespace skipper_group_new.Controllers
         [HttpGet]
         public async Task<IActionResult> BindHomeBanner()
         {
-            var list = _homePageService.GetBannerList();
-            var filterlist = list.Result.Select("status=1 and collageid=0");
+            var list =  _homePageService.GetBannerList();
+            var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
+            bool isMobile = userAgent.Contains("Android") ||
+                            userAgent.Contains("iPhone") ||
+                            userAgent.Contains("Mobile");
+
+            DataRow[] filterlist = list.Result.Select(
+                isMobile
+                    ? "status=1 AND (collageid = 0 OR collageid IS not NULL) AND devicetype='Mobile'"
+                    : "status=1 and (collageid = 0 OR collageid IS not NULL) AND devicetype='Desktop'"
+            );
+            
             var top5 = filterlist.CopyToDataTable();
             ViewBag.BannerList = top5;
             return View();
@@ -703,7 +716,8 @@ namespace skipper_group_new.Controllers
             else
             {
                 var x = await this._homePageService.GetProductCategoryList();
-                DataRow[] results = x.Select($"status=1 and pcatid='{productid.ToString()}'");
+                DataRow[] results = x.Select($"status=1 and pcatid='{productid.ToString()}'", "displayorder asc");
+
                 if (results.Length > 0)
 
                 {
@@ -714,6 +728,7 @@ namespace skipper_group_new.Controllers
                     obj.ShortDetail = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["shortdetail"]));
                     obj.ProductDetail = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["detail"]));
                     obj.UploadAImage = Convert.ToString(dt.Rows[0]["banner"]);
+                    obj.uploadmobileimage = Convert.ToString(dt.Rows[0]["uploadmobilebanner"]);
                     obj.LongDesc = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["homedesc"]));
                     obj.LongDesc2 = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["homedesc2"]));
 
@@ -734,6 +749,7 @@ namespace skipper_group_new.Controllers
         [Route("water/{productname}/{productid:int}")]
         public async Task<IActionResult> productdetail(string productid)
         {
+            await LoadTableSeoDataAsync("productsubcategory", "psubcatid", Convert.ToInt32(productid));
             clsProduct obj = new clsProduct();
             obj.id = Convert.ToInt16(productid);
             if (string.IsNullOrEmpty(productid) || !int.TryParse(productid, out int projId))

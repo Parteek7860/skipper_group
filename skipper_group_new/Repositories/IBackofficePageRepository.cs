@@ -22,7 +22,7 @@ namespace skipper_group_new.Repositories
         int AddCMS(clsCMS obj);
 
         Task<DataTable> GetPageListByID(int id);
-
+        int DeleteMobileBannerRecords(int id);
         int DeleteRecords(int id);
         int CMSUpdateStatus(string status, int id);
         Task<DataTable> GetFAQList();
@@ -41,6 +41,12 @@ namespace skipper_group_new.Repositories
         Task<DataTable> BindPhotoGallaryList(int mode);
         Task<int> DeletePhotoGallary(int id);
         Task<int> changestatus(int id);
+
+        Task<DataTable> GetRedirectionList();
+
+        int AddRedirection(clsRedirection obj);
+        int DeleteRedirectionRecords(int id);
+        int UpdateRedirectionStatus(string status, int id);
     }
 
 }

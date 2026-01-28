@@ -72,6 +72,10 @@ namespace skipper_group_new.Service
         {
             return _repository.DeleteRecords(obj);
         }
+        public int DeleteMobileBannerRecords(int obj)
+        {
+            return _repository.DeleteMobileBannerRecords(obj);
+        }
 
         public int CMSUpdateStatus(string status, int id)
         {
@@ -138,6 +142,22 @@ namespace skipper_group_new.Service
         public async Task<int> changestatus(int id)
         {
             return await _repository.changestatus(id);
+        }
+        public Task<DataTable> GetRedirectionList()
+        {
+            return _repository.GetRedirectionList();
+        }
+        public int AddRedirection(clsRedirection obj)
+        {
+            return _repository.AddRedirection(obj);
+        }
+        public int DeleteRedirectionRecords(int obj)
+        {
+            return _repository.DeleteRedirectionRecords(obj);
+        }
+        public int UpdateRedirectionStatus(string status, int id)
+        {
+            return _repository.UpdateRedirectionStatus(status, id);
         }
     }
 }

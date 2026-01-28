@@ -1,8 +1,9 @@
-﻿using skipper_group_new.Interface;
-using skipper_group_new.mainclass;
-using skipper_group_new.Models;
+﻿using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using skipper_group_new.Interface;
+using skipper_group_new.mainclass;
+using skipper_group_new.Models;
 using System.Data;
 using System.Net;
 
@@ -64,7 +65,7 @@ namespace skipper_group_new.Controllers
             names.Add(new SelectListItem { Text = "Sub-Footer", Value = "Sub-Footer" });
             names.Add(new SelectListItem { Text = "MobileFooter", Value = "MobileFooter" });
             obj.linkposition = names;
-            ViewBag.CreateUpdate = "Save";
+            ViewBag.UpdateStatus = "Save";
 
             if (pageid > 0)
             {
@@ -76,7 +77,7 @@ namespace skipper_group_new.Controllers
         [HttpPost]
         [Route("backoffice/cms/addpages")]
         [Route("backoffice/cms/addpages/{name}/{pageid:int}")]
-        public IActionResult addpages(clsCMS cls, IFormCollection frm, IFormFile file_Uploader, int? pageid)
+        public IActionResult addpages(clsCMS cls, IFormCollection frm, IFormFile file_Uploader, IFormFile file_Uploader2, int? pageid)
         {
             var obj = new clsCMS();
             ViewBag.Menus = _menuService.GetMenu(cls.collageid);
@@ -125,7 +126,7 @@ namespace skipper_group_new.Controllers
             if (string.IsNullOrEmpty(cls.linkname))
             {
                 ViewBag.Message = "Page Name is required.";
-                if (cls.collageid != null)
+                if (cls.collageid > 0)
                 {
                     return RedirectToAction("addpages", "CMS", new { name = "micro", pageid = pageid });
                 }
@@ -197,6 +198,22 @@ namespace skipper_group_new.Controllers
             {
                 obj.uploadbanner = cls.uploadbanner;
             }
+            if (file_Uploader2 != null && file_Uploader2.Length > 0)
+            {
+                var fileName = Path.GetFileName(file_Uploader2.FileName); // captures name
+                var filePath = Path.Combine("wwwroot/uploads/banner", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file_Uploader2.CopyTo(stream);
+                }
+
+                obj.uploadmobilebanner = fileName;
+            }
+            else
+            {
+                obj.uploadmobilebanner = cls.uploadmobilebanner;
+            }
             obj.collageid = cls.collageid;
             int x = _backofficeService.AddCMS(obj);
             if (x > 0)
@@ -204,7 +221,7 @@ namespace skipper_group_new.Controllers
                 if (cls.Id > 0)
                 {
                     HttpContext.Session.SetString("Message", "Page Update successfully.");
-                    if (cls.collageid != null)
+                    if (cls.collageid > 0)
                     {
                         return RedirectToAction("viewpages", "CMS", new { name = "micro", pageid = obj.collageid });
                     }
@@ -217,7 +234,7 @@ namespace skipper_group_new.Controllers
                 else
                 {
                     HttpContext.Session.SetString("Message", "Page Save successfully.");
-                    if (cls.collageid != null)
+                    if (cls.collageid > 0)
                     {
                         return RedirectToAction("addpages", "CMS", new { name = "micro", pageid = obj.collageid });
                     }
@@ -377,6 +394,7 @@ namespace skipper_group_new.Controllers
                 obj.controllername = dt.Rows[0]["controller"].ToString();
                 obj.actionname = dt.Rows[0]["action"].ToString();
                 obj.uploadbanner = dt.Rows[0]["uploadbanner"].ToString();
+                obj.uploadmobilebanner = dt.Rows[0]["uploadmobilebanner"].ToString();
                 obj.pagedesc2 = WebUtility.HtmlDecode(dt.Rows[0]["pagedescription1"].ToString());
                 obj.pagedesc3 = WebUtility.HtmlDecode(dt.Rows[0]["pagedescription2"].ToString());
                 obj.mobilemegamenu = WebUtility.HtmlDecode(dt.Rows[0]["mobilemegamenu"].ToString());
@@ -409,6 +427,47 @@ namespace skipper_group_new.Controllers
                 TempData["Title"] = "Data Delete Successful";
             }
             return View("~/Views/backoffice/cms/viewpages.cshtml");
+        }
+        [HttpGet]
+        [Route("backoffice/cms/removebanner/{id}/{type}")]
+        public IActionResult RemoveBanner(int id, string type)
+        {
+            var y = _backofficeService.GetPageListByID(id).Result;
+            string fileName = string.Empty;
+            if (y != null)
+            {
+                if (type == "mobile")
+                {
+                    fileName = y.Rows[0]["uploadmobilebanner"].ToString();
+                }
+            }
+
+            // 3. Delete physical file
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                var filePath = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot/uploads/banner",
+                    fileName
+                );
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+
+            // 4. Save DB
+            var x = _backofficeService.DeleteMobileBannerRecords(id);
+            if (x > 0)
+            {
+                HttpContext.Session.SetString(
+                       "Message",
+                       (HttpContext.Session.GetString("Message") ?? "") + "Banner removed successfully."
+                   );
+
+            }
+            return RedirectToAction("viewpages", "CMS");
         }
 
 

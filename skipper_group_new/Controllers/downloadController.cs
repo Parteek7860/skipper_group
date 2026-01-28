@@ -22,7 +22,7 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpGet]
-        [Route("/backoffice/Imagepath/imagefilepath")]
+        [Route("/backoffice/imagepath/imagefilepath")]
         public async Task<IActionResult> imagefilepath()
         {
             var mennu = _menuService.GetMenu();
@@ -36,7 +36,7 @@ namespace skipper_group_new.Controllers
             return View("~/Views/backoffice/Imagepath/imagefilepath.cshtml");
         }
         [HttpPost]
-        [Route("/backoffice/Imagepath/imagefilepath")]
+        [Route("/backoffice/imagepath/imagefilepath")]
         public async Task<IActionResult> imagefilepath(clsDownload cls, IFormFile fileuploader)
         {
             var mennu = _menuService.GetMenu();

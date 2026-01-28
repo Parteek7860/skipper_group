@@ -1,12 +1,13 @@
 ﻿using Dapper;
-using skipper_group_new.Models;
-using System.Data.SqlClient;
-using System.Data;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using skipper_group_new.Models;
+using skipper_group_new.Models;
 using skipper_group_new.Repositories;
+using System.Data;
+using System.Data.SqlClient;
+using university.Repositories;
 
 namespace skipper_group_new.Repositories
 {
@@ -50,10 +51,11 @@ namespace skipper_group_new.Repositories
     public class ManagementRepository : IManagementRepo
     {
         private readonly string _connectionString;
+        Enc_Decyption enc = new Enc_Decyption();
 
-        public ManagementRepository(IConfiguration configuration)
+        public ManagementRepository(IDbConnectionProvider provider)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = provider.ConnectionString;
         }
 
         public async Task<List<TeamTypeDtl>> GetTeamTblData()

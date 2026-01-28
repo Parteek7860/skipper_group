@@ -20,6 +20,7 @@ namespace skipper_group_new.Repositories
         Task<clsCategory> GetCategoryById(int id);
         Task<int> DeleteCategory(int id);
         Task<int> ChangeCatStatus(int id);
+        int DeleteMobileBannerRecords(int id);
         #endregion
 
         #region Sub-Category

@@ -1265,20 +1265,30 @@ section.infra_three .swiper-container {
 
 /* Always hide line by default */
 .left-card::after {
-    width: 212px;
+    width: 47rem;
     content: "";
-    height: 10.605px;
+    height: 10.2px;
     background: #b0ea24;
     z-index: -1;
     display: block;
     content: '';
     position: absolute;
-    top: 20%;
-    left: -21rem;
+    top: 24.5%;
+    left: -14rem;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
-
+.swiper-slide:nth-child(3) .left-card::after {
+    top: 33.8%;
+}
+.swiper-slide:nth-child(4) .left-card::after {
+ width: 51rem;
+    top: 35.72%;
+    left: -46rem;
+}
+.swiper-slide:nth-child(4) .left-icon-bg{
+    display: none;
+}
 .swiper-slide.continued-line .left-card::after {
     opacity: 1;
 }
@@ -1840,7 +1850,7 @@ section.prodct_five .container {
 }
 
 .wind-structure h3 {
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
 }
 
 .wind-structure ul {
@@ -2923,4 +2933,13 @@ section.about_panel_six .about-bg-icon1 {
         border-radius: 28px;
     }
 
+}
+.project-note p{
+    font-weight: 600;
+}
+.project-note{
+    padding-top: 3rem;
+}
+.project-note p span{
+    color:red
 }

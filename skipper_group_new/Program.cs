@@ -1,15 +1,17 @@
 ﻿
-using skipper_group_new.Interface;
-using skipper_group_new.Interface;
-using skipper_group_new.mainclass;
-using skipper_group_new.Repositories;
-using skipper_group_new.Repositories;
-using skipper_group_new.Service;
-using skipper_group_new.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.FileProviders;
+using skipper_group_new.Interface;
+using skipper_group_new.Interface;
+using skipper_group_new.mainclass;
+using skipper_group_new.Models;
+using skipper_group_new.Repositories;
+using skipper_group_new.Repositories;
+using skipper_group_new.Service;
+using skipper_group_new.Service;
+using university.Repositories;
 
 
 
@@ -20,7 +22,7 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 //builder.Services.AddControllersWithViews();  // ✅ Add this line
 builder.Services.AddRazorPages();
 
-
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IHome, clsHome>();
 builder.Services.AddScoped<IHomeRepository, HomeRepository>();
@@ -58,17 +60,45 @@ builder.Services.AddSession(options =>
 });
 
 
+var crypto = new Enc_Decyption();
+
+var encrypted = builder.Configuration.GetConnectionString("DefaultConnection");
+var decrypted = crypto.AES_Decrypt(encrypted, crypto.encrptdecrpt);
+
+decrypted = decrypted.Replace(@"\\", @"\");
+
+
+
+
+// register provider
+builder.Services.AddSingleton<IDbConnectionProvider>(
+    new DbConnectionProvider(encrypted));
+
+
+
+
+
 var app = builder.Build();
 
 // -------------------------------------------------
 // 2️⃣ Developer Exception Page
 // -------------------------------------------------
-if (!app.Environment.IsDevelopment())
+//if (!app.Environment.IsDevelopment())
+//{
+//    app.UseExceptionHandler("/SkipperHome/Error");
+//    app.UseStatusCodePagesWithReExecute("/Error/Handle/{0}");
+//    app.UseHsts();
+//}
+app.MapGet("/robots.txt", async context =>
 {
-    app.UseExceptionHandler("/SkipperHome/Error");
-    app.UseStatusCodePagesWithReExecute("/Error/Handle/{0}");
-    app.UseHsts();
-}
+    context.Response.ContentType = "text/plain";
+
+    await context.Response.WriteAsync(
+@"User-Agent: *
+Disallow:
+Sitemap: https://www.skipperlimited.com/sitemap.xml"
+    );
+});
 
 // Catch malformed requests
 app.Use(async (context, next) =>
@@ -81,6 +111,24 @@ app.Use(async (context, next) =>
     {
         context.Response.Redirect("/Error/Handle/400");
     }
+});
+
+app.Use(async (context, next) =>
+{
+    var host = context.Request.Host;
+
+    if (!host.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
+    {
+        var newHost = new HostString("www." + host.Host, host.Port ?? 443);
+
+        var newUrl = $"{context.Request.Scheme}://{newHost}{context.Request.Path}{context.Request.QueryString}";
+
+        context.Response.StatusCode = StatusCodes.Status301MovedPermanently;
+        context.Response.Headers.Location = newUrl;
+        return;
+    }
+
+    await next();
 });
 
 
@@ -126,7 +174,7 @@ app.Use(async (context, next) =>
     var csp = string.Join(" ",
         "default-src 'self';",
 
-     $"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.ckeditor.com https://cdnjs.cloudflare.com https://code.jquery.com https://cdn.jsdelivr.net https://cke4.ckeditor.com; ",
+     $"script-src 'self' 'unsafe-inline' 'unsafe-eval ws: wss: ' https://www.googletagmanager.com https://www.google-analytics.com https://www.google-analytics.com https://region1.google-analytics.com https://cdn.ckeditor.com https://cdnjs.cloudflare.com https://code.jquery.com https://cdn.jsdelivr.net https://cke4.ckeditor.com; ",
 
         // ✅ Allow inline styles + external fonts & icons
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;",

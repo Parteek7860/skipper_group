@@ -21,6 +21,8 @@ namespace skipper_group_new.Interface
         int DeleteVedio(int id);
         Task<DataTable> BindPageList();
         Task<DataTable> GetPageListByID(int id);
+
+        int DeleteMobileBannerRecords(int id);
         int DeleteRecords(int id);
         int AddCMS(clsCMS obj);
         int CMSUpdateStatus(string status, int id);
@@ -41,5 +43,11 @@ namespace skipper_group_new.Interface
 
         Task<int> DeletePhotoGallary(int id);
         Task<int> changestatus(int id);
+
+        Task<DataTable> GetRedirectionList();
+
+        int AddRedirection(clsRedirection obj);
+        int DeleteRedirectionRecords(int id);
+        int UpdateRedirectionStatus(string status, int id);
     }
 }

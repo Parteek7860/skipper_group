@@ -1,18 +1,20 @@
-﻿using skipper_group_new.Models;
-using System.Data.SqlClient;
-using System.Data;
-using Dapper;
+﻿using Dapper;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using skipper_group_new.Models;
+using System.Data;
+using System.Data.SqlClient;
+using university.Repositories;
 
 namespace skipper_group_new.Repositories
 {
     public class ProductRepo : IProductRepository
     {
         private readonly string _connectionString;
+        Enc_Decyption enc = new Enc_Decyption();
 
-        public ProductRepo(IConfiguration configuration)
+        public ProductRepo(IDbConnectionProvider provider)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = provider.ConnectionString;
         }
         public async Task<DataTable> BindProductCategory()
         {
@@ -1681,6 +1683,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@showonhome", obj.ShowOnHome);
                     cmd.Parameters.AddWithValue("@banner", obj.Banner ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@homeimage", obj.HomeImage ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@uploadmobilebanner", obj.uploadmobilebanner ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@uname", obj.Uname ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@homedesc", obj.HomeDesc ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@detail", obj.Detail ?? (object)DBNull.Value);
@@ -1809,7 +1812,7 @@ namespace skipper_group_new.Repositories
                 cmd.Parameters.AddWithValue("@displayorder", "0");
                 cmd.Parameters.AddWithValue("@uname", "user");
                 cmd.Parameters.AddWithValue("@mode", obj.Mode);
-                
+
                 conn.Open();
                 result = cmd.ExecuteNonQuery();
             }
@@ -1830,10 +1833,28 @@ namespace skipper_group_new.Repositories
                 cmd.Parameters.AddWithValue("@displayorder", "0");
                 cmd.Parameters.AddWithValue("@uname", "user");
                 cmd.Parameters.AddWithValue("@mode", obj.Mode);
-                
+
                 conn.Open();
                 result = cmd.ExecuteNonQuery();
             }
+            return result;
+        }
+
+        public int DeleteMobileBannerRecords(int id)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("DeleteCategoryBannerRecordsSP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
             return result;
         }
     }

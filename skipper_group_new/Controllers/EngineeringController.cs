@@ -14,20 +14,22 @@ namespace skipper_group_new.Controllers
     {
         private readonly List<UrlValidationRule> _validationRules;
         private readonly ISkipperHome _homePageService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public EngineeringController(ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService)
-     : base(homePageService, menuService)
+        public EngineeringController(ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService, IHttpContextAccessor httpContextAccessor)
+     : base(homePageService, menuService, httpContextAccessor)
         {
             _homePageService = homePageService;
 
             _validationRules = configuration.GetSection("UrlValidationRules:Rules")
              .Get<List<UrlValidationRule>>() ?? new();
+            _httpContextAccessor = httpContextAccessor;
         }
         [HttpGet]
         [Route("/{productname}/{productid:int}")]
         public async Task<IActionResult> engineering(string productname, string productid)
         {
-            
+            await LoadTableSeoDataAsync("product_master", "productid", Convert.ToInt32(productid));
             clsHomeModel obj = new clsHomeModel();
             await LoadMenu(productid);
 
@@ -125,7 +127,8 @@ namespace skipper_group_new.Controllers
 
         [HttpGet]
         public async Task<IActionResult> projlist(int id)
-        {   
+        {
+            await LoadSeoDataAsync(id);
             await LoadCMSDataAsync(id);
             clsHomeModel obj = new clsHomeModel();
             var x = await this._homePageService.GetCMSData();

@@ -28,6 +28,7 @@ namespace skipper_group_new.Models
         public string? pageid { get; set; }
 
         public string? uploadimage { get; set; }
+        public string? uploadmobileimage { get; set; }
         public string pageurl_Id { get; set; }
         public string? cmscontent { get; set; }
         public string? shortdesc { get; set; }

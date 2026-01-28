@@ -320,7 +320,7 @@
 
 @media (max-width: 992px) {
     .inner_banner .container {
-        top: 16rem;
+        top: 32rem;
     }
 
     .inner_banner .without-bread_btm.shrt-title {
@@ -331,7 +331,7 @@
 
 @media (max-width: 768px) {
     .inner_banner .container {
-        top: 14rem;
+        top: 23rem;
     }
 
     .inner_banner .without-bread_btm.shrt-title {
@@ -759,7 +759,7 @@
 }
 
 .whats_new_one .whts_new_text h4, .whats_new_one .whts_new_text h4>a {
-    font-size: var(--font-36);
+    font-size: var(--font-30);
     color: #fff;
     font-weight: 200;
     margin-bottom: 0;
@@ -821,7 +821,7 @@
 
 .whats_new_two .whtsnew_btm_grid {
     display: grid;
-    grid-template-columns: repeat(1, 65.5% auto);
+    grid-template-columns:100%;
     gap: 4.8rem;
 }
 
@@ -1068,6 +1068,7 @@
 /* whats new page css end here */
 
 /* whats news details page css start here */
+
 .whats_new_two_details {
     padding-block: 10rem;
     background-color: #fff;
@@ -1199,14 +1200,20 @@ font-size: var(--font-21);
     margin-bottom: 3rem;
     font-weight: 300;
 }
-
+.whats_new_two-details .whtsnew_btm_grid .whts_right .evnt-nme p span.rs-icon{
+    position: relative;
+}
+.whats_new_two-details .whtsnew_btm_grid .whts_right .evnt-nme p span.rs-icon::after{
+        content: "\20B9";
+}
 .whats_new_two.whats_new_two_details .whtsnew_btm_grid {
     position: relative;
 }
 
 .whats_new_two_details .swiper-pagination {
-    bottom: -48px;
-    right: 45%;
+        bottom: -48px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .whats_new_two_details .swiper-pagination-bullet {
@@ -1248,7 +1255,11 @@ font-size: var(--font-21);
 .whats_new_two-details .video_sec {
     margin-top: 5rem;
 }
-
+.whats_new_two-details .video_sec .grid-3{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:3rem;
+}
 /* whats news details page css end here */
 
 /* blog page css start */
@@ -2209,7 +2220,7 @@ font-size: var(--font-21);
 
 .life_six .recog_grid .recog-rght .recg_bx {
     padding-right: 3rem;
-    padding-top: 3rem;
+    padding-top: 8rem;
     position: relative;
 }
 
@@ -2221,10 +2232,10 @@ font-size: var(--font-21);
 }
 
 .life_six .recog_grid .recog-lft h4 {
-    font-size: var(--font-24);
+    font-size: var(--font-36);
     font-weight: 500;
     color: var(--color00);
-    margin-bottom: 1rem;
+    margin-bottom: 3rem;
 }
 
 .life_six .recog_grid .recog-lft h5 {
@@ -2975,6 +2986,10 @@ font-size: var(--font-21);
 }
 
 @media (max-width: 767px) {
+    .whats_new_two-details .video_sec .grid-3{
+    grid-template-columns: repeat(2,1fr);
+    gap:3rem;
+}
     .life_eight .recognition_grid .recog_bx figcaption {
         padding-top: 2rem;
     }
@@ -3163,7 +3178,10 @@ font-size: var(--font-21);
 }
 
 @media screen and (max-width:475px) {
-
+ .whats_new_two-details .video_sec .grid-3{
+    grid-template-columns: repeat(1,1fr);
+    gap:3rem;
+}
     .life_nine .job-info {
         display: block;
         margin-bottom: 2rem;
@@ -3518,6 +3536,40 @@ font-size: var(--font-21);
     max-width: 4.9rem;
 }
 
+/* csr  */
+.csrsec1{
+    padding: 10rem 0 7rem;
+}
+
+.csrsec1 .Employee_safety h2 {
+    margin-bottom: 4rem;
+}
+section.Social_Responsibility4.csrsec3 {
+    background: #fff;
+}
+section.Social_Responsibility4.csrsec3 figure img{
+    border-radius: 2rem;
+}
+.grid-2.csr2image{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap:3rem;
+    padding-block: 6rem 0;
+}
+.grid-2.csr2image figure img{
+    border-radius: 2rem;
+}
+.grid-2.csr2image figure figcaption{
+    font-size: 20px;
+    padding-top: 3rem;
+    color: var(--color33);
+    font-weight: 500;
+    text-align: center;
+}
+.haryalitext2{
+    padding-top: 5rem;
+}
+
 /* SUSTAINABILITY Governance & Compliance end */
 
 /* Leadership page css start */
@@ -3683,9 +3735,11 @@ font-size: var(--font-21);
     margin-bottom: 2rem;
     line-height: var(--line-height-30);
 }
-
-.leadership_dtls_one .leadr-dtls_grid .ledr-dtls_rgt .msg_txt p {
+.leader-list1.leadership_dtls_one .leadr-dtls_grid .ledr-dtls_rgt .msg_txt p {
     font-size: var(--font-24);
+}
+.leadership_dtls_one .leadr-dtls_grid .ledr-dtls_rgt .msg_txt p {
+    font-size: var(--font-18);
     line-height: 1.6;
     margin-bottom: 2rem;
 }
@@ -3768,7 +3822,7 @@ font-size: var(--font-21);
 }
 
 .ledr_grid_lft p {
-    font-size: var(--font-24);
+    font-size: var(--font-18);
     line-height: 3.6rem;
 }
 
@@ -3789,8 +3843,15 @@ font-size: var(--font-21);
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
-
+.leadership_dtls_one .leadr-dtls_grid .ledr-dtls_rgt .read_icon a{
+        position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    align-content: center;
+}
 .leader-list1.leadership_dtls_one .leadr-dtls_grid .ledr-dtls_rgt {
     padding-left: 6rem;
     margin-right: 14.5rem;
@@ -3832,6 +3893,9 @@ font-size: var(--font-21);
 }
 
 @media screen and (max-width:1299px) {
+    .about_panel_four.transimission-1.fasterner-text.csrsec2  .pro_telcom_group{
+    grid-template-columns: repeat(2,1fr) !important;
+}
     .leadership_dtls_one .leadr-dtls_grid .ledr-dtls_rgt .msg_txt p {
         font-size: var(--font-18);
         line-height: 3rem;
@@ -3912,6 +3976,16 @@ font-size: var(--font-21);
 }
 
 @media screen and (max-width:767px) {
+      .about_panel_four.transimission-1.fasterner-text.csrsec2  .pro_telcom_group{
+    grid-template-columns: repeat(1,1fr) !important;
+}
+.csrsec1 {
+    padding: 4rem 0;
+}
+    .grid-2.csr2image {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    }
     .ledr_grid_lft {
         margin-left: 0rem;
     }
@@ -7210,7 +7284,9 @@ section.sustainbility_block10 {
     background: #EBEBEB;
     padding-block: 2rem 25rem;
 }
-
+section.sustainbility_block10 .container{
+    position: relative;
+}
 .col_text9 {
     background: #336E8C 0% 0% no-repeat padding-box;
     border-radius: 30px;
@@ -7219,6 +7295,7 @@ section.sustainbility_block10 {
     padding-block: 5rem;
     width: 100em;
     position: relative;
+    z-index: 1;
 }
 
 .col_text9 p {
@@ -8905,7 +8982,7 @@ section.Social_Responsibility10 .col-md-2 figure {
 .award-sec .award_grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 9rem 8.7rem;
+    gap: 7rem 6.7rem;
 }
 
 .award-sec .award_grid .logo_bx {
@@ -9856,6 +9933,7 @@ section.rd_panel4 .bottom_left_icon {
 }
 
 @media (max-width:600px) {
+
     .node p {
         font-size: 20px;
         margin-bottom: 2rem;
@@ -9943,11 +10021,58 @@ section.rd_panel4 .bottom_left_icon {
 .epc-advanimg img{
     border-radius: 2rem;
 }
+
+.sustainbility_block4.transimission-2.apart-sec{
+    background: #f2f2f2;
+    padding-block: 6rem 7rem;
+}
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace{
+    position: relative;
+}
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone {
+      position: absolute;
+    left: 0;
+    top: 39%;
+    margin-left: 0;
+    width: 30rem;
+    padding: 2rem;
+    text-align: left;
+    margin-bottom: 0;
+}
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone p{
+    font-weight:300;
+    color: var(--color33);
+    margin: 1rem 0;
+    padding-left: 0.4rem;
+}
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone .svg_icon1 {
+    width: 9px;
+    margin-left: -0rem;
+}
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone.box_radius .svg_icon1:nth-child(3) {
+    margin-left: auto;
+    margin-right: 0rem;
+}
+.sustainbility_block5{
+    max-width: 1920px;
+    margin: auto;
+}
+.keychain-solar{margin-block: 4rem 8rem;}
 @media (max-width:600px) {
     .privacy-sec {
         padding-block: 4rem;
     }
-
+.keychain-solar{margin-block:0rem 4rem;}
+.polymer_panel4.video_sec figure figcaption{
+    padding: 0;
+}
+ .polymer_panel4.video_sec figure figcaption .ply-btn {
+        padding-top: 0;
+        position: absolute;
+        top: 48%;
+        left: 46%;
+        transform: translate(-50%, -50%);
+}
 }
 @media (max-width:1600px) {
 
@@ -10072,6 +10197,9 @@ section.sustainbility_block10 figure img,
     .milestone-line {
         left: 17.9rem;
     }
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone {
+    width: 26rem;
+}
 }
 
 @media (max-width:1599px) {
@@ -10084,18 +10212,33 @@ section.sustainbility_block10 figure img,
     .milestone-line {
         left: 17.3rem;
     }
+    .sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone {
+    top: 29%;
+    width: 22rem;
+}
 }
 
 @media (max-width:1199px) {
     .milestone-line {
         left: 15.1rem;
     }
-
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone {
+    top: 27%;
+        width: 21rem;
+}
     .node {
         width: 45rem;
     }
 }
-
+@media (max-width:991px) {
+.sustainbility_block4.transimission-2.apart-sec .ingbdrspace .top_milestone {
+    top: unset;
+    width: 100%;
+    margin-top: 2rem;
+    padding: 1.5rem 2rem;
+    position: relative;
+}
+}
 @media (max-width:600px) {
     .node_block11.mf7 .box_rig .box.light img {
         width: 100%;
@@ -11167,7 +11310,9 @@ section.new_milestone {
     bottom: 1rem;
     right: 0;
 }
-
+.skipper_miltone1.miletone20 .left_milestone .top_milestone {
+margin-bottom: 5rem;
+}
 .skipper_miltone1.miletone20 .right_milestone .pic2-2015 figure img {
     width: 92%;
 }
@@ -11628,6 +11773,7 @@ left:62rem;
 
 
 @media only screen and (max-width:1599px) {
+ 
     .skipper_miltone1.miletone19.miles11 .top_milestone {
         width: 309px;
         margin-left: 77rem;
@@ -11657,7 +11803,12 @@ left:62rem;
         bottom: 18rem;
     }
 }
-
+@media only screen and (max-width:1499px) {
+ .life_two img.gptw{
+width: 8rem;
+    right: 0;
+    }
+}
 @media only screen and (max-width:1399px) {
     .skipper_miltone1.miletone24 .left_milestone .top_milestone {
         width: 234px;
@@ -12673,11 +12824,18 @@ left:62rem;
         position: relative;
     }
 
-
+.invest_detls_one { margin-top: -31rem; }
 }
 
 @media screen and (max-width:767px) {
-
+        .life_two img.gptw {
+        width: 6rem;
+        right: 0;
+    }
+    
+    .skipper_miltone1.miletone20 .left_milestone .top_milestone {
+    margin-bottom: 0rem;
+}
     .miletone81 .left_milestone {
         display: block;
     }
@@ -13003,7 +13161,7 @@ left:62rem;
     .skipper_miltone1.miletone81 .right_milestone .bottom_milestone {
         width: 100%;
     }
-
+.cont-sec .Catalogues_box { grid-template-columns: repeat(1, 1fr); gap: 3rem; }
 }
 
 /* milestone css end  */
@@ -13458,8 +13616,12 @@ img.gptw {
     z-index: 1;
     border-radius: 0;
 }
+.life_six  img.gptw{
+width: 9rem;
+}
 .life_five .womn_grid .womn_lft img.gptw {
-    left: 4rem;
+       left: 0rem;
+    width: 9rem;
 }
 .life_six .bgcolor .womn_lft img.gptw {
      right: 8rem;
@@ -13600,17 +13762,115 @@ section.rd_panel4 .nabl-cont p strong {
 .search_result .card a{
     color: #004a70;
 }
+
+/* footer search result css ends here */
+.about_panel_four.transimission-1.fasterner-text{
+    padding-block: 0rem 13rem;
+}
+.fasterner-text h2{
+    padding-inline: 0 !important;
+    margin-bottom: 3rem;
+}
+
+.about_panel_four.transimission-1.fasterner-text .pro_telcom_group{
+    margin-top: 6rem;
+    grid-template-columns: repeat(2,1fr);
+}
+.about_panel_four.transimission-1.fasterner-text .pro_telcom_group .telcom_list{
+padding: 5rem;
+}
+.about_panel_four.transimission-1.fasterner-text .pro_telcom_group .telcom_list strong{
+    display: block;
+    margin-bottom: 2.5rem;
+}
+
+.contact_one .contact_grid .contact_lft .ofc-loctn p>span.cin-add {
+    display: inline;
+}
+.award-faq .accordion-button{
+       font-size: var(--font-21);
+    color: var(--colorfff);
+    background-color: var(--color00);
+    padding: 1.5rem 2rem;
+    margin-top: 6rem;
+    border-radius: 0.5rem;
+}
+ .award-faq .accordion-button::after {
+        content: '+';
+        font-size: 18px;
+        position: absolute;
+        right: 2rem;
+        color: rgb(255, 255, 255);
+    }
+    .award-faq  .award_grid{
+    padding-top: 6rem;
+    }
+@media(max-width:1399px){
+.life_five .womn_grid .womn_lft img.gptw {
+    left: 0rem;
+    width: 6rem;
+}
+}
 @media(max-width:991px){
+    .life_six img.gptw {
+    width: 6rem;
+    right: -3rem;
+}
     .search_result {
         padding: 6rem 0;
     }
     .search_result .innerPageTitle {
         margin: 0 0 2rem;
     }
+    .about_panel_four.transimission-1.fasterner-text .pro_telcom_group .telcom_list {
+    padding: 3rem;
+}
+.about_panel_four.transimission-1.fasterner-text .pro_telcom_group .telcom_list strong {
+    margin-bottom: 1.5rem;
+}
+.about_panel_four.transimission-1.fasterner-text{
+    padding-block: 0rem 7rem;
+}
+  .contact_one .contact_grid .contact_lft .ofc-loctn p>span.cin-add{
+        display:block;
+        margin-top: 1rem;
+    }
+    .award-faq .accordion-button::after{
+        filter: unset;
+    }
 }
 @media(max-width:767px){
+        .life_six img.gptw {
+        width: 6rem;
+        right: 0;
+    }
     .search_result {
         padding: 4rem 0;
     }
+    .about_panel_four.transimission-1.fasterner-text .pro_telcom_group {
+    margin-top: 4rem;
+    grid-template-columns: repeat(1, 1fr);
 }
-/* footer search result css ends here */
+.about_panel_four.transimission-1.fasterner-text{
+    padding-block: 0rem 5rem;
+}
+.award-sec .award_grid .logo_bx figcaption {
+    padding-inline: 0;
+}
+    .award-sec .award_grid .logo_bx {
+        padding: 2rem;
+    }
+}
+@media(max-width:567px){
+        .life_six img.gptw {
+        width: 4rem;
+        right: 0;
+    }
+    .life_two img.gptw{
+        display: none;
+    }
+        .life_five .womn_grid .womn_lft img.gptw {
+        width: 4rem;
+    }
+}
+

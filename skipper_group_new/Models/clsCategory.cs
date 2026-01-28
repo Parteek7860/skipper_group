@@ -43,6 +43,7 @@ namespace skipper_group_new.Models
         public string? PageScript { get; set; }
 
         public string HomeImage { get; set; }
+        public string uploadmobilebanner { get; set; }
 
         public string HomeDesc { get; set; }
 

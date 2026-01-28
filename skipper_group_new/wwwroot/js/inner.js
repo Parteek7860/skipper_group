@@ -670,6 +670,7 @@ var swiper = new Swiper(".related-news", {
     el: ".swiper-pagination",
     clickable: true,
   },
+  autoplay:true,
   // Responsive breakpoints
   breakpoints: {
     1024: {

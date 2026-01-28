@@ -5,8 +5,9 @@
 
 header {
     padding-inline: 3.8rem 4.8rem;
-    padding-block: 2.8rem;
+    padding-block: 2.3rem;
     z-index: 99;
+    background: #fff !important;
 }
 
 nav {
@@ -47,7 +48,7 @@ header:before {
     transition: .5s ease all;
 }
 li.ps_d a {
-    color: #fff;
+    color: #000;
 }
 
 li.ps_d a svg {
@@ -77,7 +78,7 @@ li.ps_d {
 }
 
 nav>ul>li a {
-    color: #fff;
+    color:#000;
     position: relative;
     z-index: 9;
     font-size: var(--font-21);
@@ -148,10 +149,10 @@ li.ps_d>a {
     grid-area: 1/1;
 }
 
-img.img-fluid.after-sticky {
+/* img.img-fluid.after-sticky {
     opacity: 0;
     visibility: hidden;
-}
+} */
 
 .header-sticky img.img-fluid.before-sticky {
     opacity: 0;
@@ -598,7 +599,7 @@ img.img-fluid.after-sticky {
 
 .mega_dropdown01 .mega_dropmenu:nth-child(3) {
     position: relative;
-    grid-template-columns: auto 69.1%;
+    grid-template-columns: auto 50.1%;
     column-gap: 4.9rem;
     padding-block: 3.8rem 3.8rem;
     padding-inline: 7rem 4rem;
@@ -1302,7 +1303,7 @@ header .sub-menu li a {
     left: 0px;
     right: 0;
     height: 1px;
-    background: #fff;
+    background: #000;
     width: 15px;
 }
 
@@ -1313,7 +1314,7 @@ header .sub-menu li a {
     right: -5px;
     width: 87%;
     height: 1px;
-    background-color: #fff;
+    background-color:#000;
     content: "";
 }
 
@@ -1560,7 +1561,7 @@ div#accordian h3 {
 }
 
 .logo img {
-    width: 13vw;
+    width: 11vw;
 }
 
 .logo {
@@ -1568,7 +1569,9 @@ div#accordian h3 {
     z-index: 9;
     width: 13vw !important;
 }
-
+.logo .globe-dropdown{
+    display:none;
+}
 @media (max-width:1599px) {
     nav>ul>li {
         margin-inline: 4rem 0;
@@ -1610,30 +1613,37 @@ div#accordian h3 {
     .header-sticky .logo img {
         width: 15rem;
     }
-
-    img.img-fluid.after-sticky {
-        opacity: 1;
-        visibility: hidden;
+    .header-sticky .logo .globe-dropdown img {
+width: 2.5rem;
     }
-
+ 
     header nav {
         display: none;
     }
 
     .logo {
-        width: auto !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100% !important;
         margin: auto;
     }
-
+ .logo .globe-dropdown{
+    display: block;
+ }
     .logo img {
         width: 15rem;
     }
 }
-
+@media (max-width:999px) {
+header {
+    padding-inline: 1.8rem 1.8rem;
+}
+}
 
 
 /* engineer header start */
-li.ps_d.blu_clr a {background-color: var(--color00);border: 1px solid var(--color00);}
+li.ps_d.blu_clr a {background-color: var(--color00);border: 1px solid var(--color00);color:#fff;}
 .header-sticky li.ps_d.blu_clr a {color: var(--colorfff);}
 .eng_header {position: absolute;top: 15rem;z-index: 9;width: 100%;padding-inline: 5rem;}
 .eng_header::after {content: '';position: absolute;width: 75%;height: 1px;background-color: var(--color00);left: 33.3rem;top: 3rem;}
@@ -1760,4 +1770,29 @@ nav>ul>li a.active {
 }
 li.ps_d.blu_clr img {
     filter: invert(1);
+}
+.hove-text .globe-icon img{filter: invert(0);}
+.globe-icon img{width: 2.5rem;margin-inline:2.5rem 0.5rem;z-index: 999;}
+.header-sticky .globe-icon img{filter: invert(0);z-index: 999;}
+.globe-icon{position: relative;z-index: 999;}
+
+.globe-dropdown { position: relative; display: inline-block; margin-left: 0; }
+.globe-menu { visibility: hidden; position: absolute; right: -6rem; top: 3.8rem; background: #fff; min-width: 251px; 
+list-style: none; padding:3rem 0; margin: 0; z-index: 999; width: 100%;  transition: 0.3s linear;}
+.globe-menu li a { display: block; padding: 0px 2rem; color: #333; text-decoration: none; margin-top: 0; font-size: var(--font-18); }
+.globe-menu li a:hover { background: #f2f2f2; }
+.globe-dropdown:hover .globe-menu { display: block; visibility: visible;top: 5.8rem;}
+.globe-menu li:not(:last-child) { margin-bottom: 2rem; }
+.globe-menu li:hover a { color: var(--color00); background-color: transparent; }
+.header-sticky .globe-dropdown:hover .globe-menu { top: 5.6rem;}
+
+@media screen and (max-width:1499px){
+.globe-dropdown:hover .globe-menu {
+    top: 5.2rem;
+}
+}
+@media screen and (min-width:2500px){
+.globe-menu {
+    min-width: 277px;
+}
 }

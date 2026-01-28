@@ -29,6 +29,7 @@
     <link href="@Url.Content("/css/dynamic.css")" rel="stylesheet" asp-append-version="true" />
     <link href="@Url.Content("/css/vendor.css")" rel="stylesheet" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+    <link rel="icon" href="/favicon.png" type="" sizes="30x30" />
 </head>
 
 <body>
@@ -87,10 +88,20 @@
                                         {
                                             classactive = "active";
                                         }
+                                        @if(Convert.ToInt16(row["productid"])==3)
+                                        {
+                                            <li class="@classactive">
+                                                <a href="https://skipperpipes.in/" target="_blank">@Convert.ToString(row["productname"]) </a>
+                                            </li>
 
-                                        <li class="@classactive">
+                                        }
+                                        else
+                                        {
+                                              <li class="@classactive">
                                             <a href="/@Convert.ToString(row["productname"]).ToSlug()/@Convert.ToInt32(row["productid"])">@Convert.ToString(row["productname"]) </a>
                                         </li>
+                                        }
+                                      
                                     }
                                 </ul>
                             }
@@ -126,9 +137,19 @@
                                             classactive = "active";
                                         }
 
-                                        <li class="@classactive">
+                                     @if(Convert.ToInt16(row["productid"])==3)
+                                        {
+                                            <li class="@classactive">
+                                                <a href="https://skipperpipes.in/" target="_blank">@Convert.ToString(row["productname"]) </a>
+                                            </li>
+
+                                        }
+                                        else
+                                        {
+                                              <li class="@classactive">
                                             <a href="/@Convert.ToString(row["productname"]).ToSlug()/@Convert.ToInt32(row["productid"])">@Convert.ToString(row["productname"]) </a>
                                         </li>
+                                        }
                                     }
                                 </ul>
                             }

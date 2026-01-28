@@ -17,26 +17,24 @@
             <img width="250" height="78" src="~/images/logo/logo-sticky.png" class="img-fluid after-sticky"
                  alt="SKIPPER LIMITED">
         </a>
+        <div class="globe-dropdown">
+            <a class="globe-icon">
+                <img src="/images/globe-icon.png" alt="Globe">
+            </a>
+
+            <ul class="globe-menu">
+                <li><a href="https://us.skipperlimited.com/" target="_blank">Skipper North America </a></li>
+                <li><a href="https://skippermetzer.com/" target="_blank">Skipper Metzer</a></li>
+            </ul>
+        </div>
     </div>
     @await Html.PartialAsync("~/Views/PartialView/_MainMenu.cshtml")
 </header>
 
+
 @if(dt1.Rows.Count>0)
 {
-    @* <section class=home_banner>
-        <div class=video>
-            <div class=video-wrapper>
-                <div class=video-container>
-                    <div id=homebanner1_rptbanner_ctl00_panel2>
-                        <video autoplay height=700 id=video loop muted
-                               width=100%>
-                            <source src="video/banner_video.mp4" type=video/mp4>
-                        </video><span class="mute-toggle muted"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> *@
+   
 
     <section class="home_banner">
     <div class="video">

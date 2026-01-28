@@ -11,12 +11,12 @@ using System.Net;
 namespace skipper_group_new.Controllers
 {
     //Rakesh Chauhan - 14/11/2025 - Backoffice Project Controller Created
-    public class ProjetController : Controller
+    public class ProjectController : Controller
     {
         private readonly clsMainMenuList _menuService;
         private readonly IBacofficeProject _project;
 
-        public ProjetController(IBacofficeProject Project, clsMainMenuList menuService)
+        public ProjectController(IBacofficeProject Project, clsMainMenuList menuService)
         {
             _project = Project;
             _menuService = menuService;
@@ -63,8 +63,8 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/project/addProject")]
-        public async Task<IActionResult> AddProject(ResearchModel research, IFormFile file_Uploader, IFormFile file_Uploader1, IFormFile file_Uploader2, IFormFile file_Uploader3)
+        [Route("backoffice/project/addproject")]
+        public async Task<IActionResult> addproject(ResearchModel research, IFormFile file_Uploader, IFormFile file_Uploader1, IFormFile file_Uploader2, IFormFile file_Uploader3)
         {
             HttpContext.Session.Remove("Message");
             ViewBag.Menus = _menuService.GetMenu();
@@ -100,7 +100,7 @@ namespace skipper_group_new.Controllers
             if (!ModelState.IsValid)
             {
                 HttpContext.Session.SetString("Message", "Please fill in all required fields.");
-                return RedirectToAction("GetProject", "Projet");
+                return RedirectToAction("GetProject", "project");
             }
 
             try
@@ -170,12 +170,12 @@ namespace skipper_group_new.Controllers
                     if(research.ResearchId == 0)
                     {
                         HttpContext.Session.SetString("Message", "Project added successfully.");
-                        return RedirectToAction("GetProject", "Projet");
+                        return RedirectToAction("GetProject", "project");
                     }
                     else
                     {
                         HttpContext.Session.SetString("Message", "Project updated successfully.");
-                        return RedirectToAction("ViewProject", "Projet");
+                        return RedirectToAction("ViewProject", "project");
                     }
                 }
                 HttpContext.Session.SetString("Message", "Failed to save project.");
@@ -184,7 +184,7 @@ namespace skipper_group_new.Controllers
             {
                 HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
             }
-            return RedirectToAction("GetProject", "Projet");
+            return RedirectToAction("GetProject", "project");
         }
 
         [HttpGet]
@@ -215,7 +215,7 @@ namespace skipper_group_new.Controllers
                 if (!rows.Any())
                 {
                     HttpContext.Session.SetString("Message", "Project not found.");
-                    return RedirectToAction("GetProject", "Projet");
+                    return RedirectToAction("GetProject", "project");
                 }
 
                 var row = rows.First();
@@ -281,7 +281,7 @@ namespace skipper_group_new.Controllers
             catch (Exception ex)
             {
                 HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
-                return RedirectToAction("GetProject", "Projet");
+                return RedirectToAction("GetProject", "project");
             }
         }
 
@@ -306,7 +306,7 @@ namespace skipper_group_new.Controllers
             {
                 HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
             }
-            return RedirectToAction("ViewProject", "Projet");
+            return RedirectToAction("ViewProject", "project");
 
         }
 
@@ -331,7 +331,7 @@ namespace skipper_group_new.Controllers
             {
                 HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
             }
-            return RedirectToAction("ViewProject", "Projet");
+            return RedirectToAction("ViewProject", "project");
 
         }
 
@@ -356,7 +356,7 @@ namespace skipper_group_new.Controllers
             {
                 HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
             }
-            return RedirectToAction("ViewProject", "Projet");
+            return RedirectToAction("ViewProject", "project");
 
         }
 
@@ -381,7 +381,7 @@ namespace skipper_group_new.Controllers
             {
                 HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
             }
-            return RedirectToAction("ViewProject", "Projet");
+            return RedirectToAction("ViewProject", "project");
         }
 
 
@@ -411,8 +411,8 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/project/addCategory")]
-        public async Task<IActionResult> AddCategory(clsCategory m)
+        [Route("backoffice/project/addcategory")]
+        public async Task<IActionResult> addcategory(clsCategory m)
         {
             HttpContext.Session.Remove("Message");
             ViewBag.Menus = _menuService.GetMenu();
@@ -442,7 +442,7 @@ namespace skipper_group_new.Controllers
             if (!ModelState.IsValid)
             {
                 HttpContext.Session.SetString("Message", "Please fill in all required fields.");
-                return RedirectToAction("Category", "Projet");
+                return RedirectToAction("Category", "project");
             }
 
             try
@@ -457,12 +457,12 @@ namespace skipper_group_new.Controllers
                     if(m.PcatId == 0)
                     {
                         HttpContext.Session.SetString("Message", "Category added successfully.");
-                        return RedirectToAction("Category", "Projet");
+                        return RedirectToAction("Category", "project");
                     }
                     else
                     {
                         HttpContext.Session.SetString("Message", "Category updated successfully.");
-                        return RedirectToAction("ViewCategory", "Projet");
+                        return RedirectToAction("ViewCategory", "project");
                     }   
                 }
                 HttpContext.Session.SetString("Message", "Failed to save project.");
@@ -471,7 +471,7 @@ namespace skipper_group_new.Controllers
             {
                 HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
             }
-            return RedirectToAction("Category", "Projet");
+            return RedirectToAction("Category", "project");
         }
 
         [HttpGet]
@@ -485,7 +485,7 @@ namespace skipper_group_new.Controllers
                 if (!rows.Any())
                 {
                     HttpContext.Session.SetString("Message", "Category not found.");
-                    return RedirectToAction("Category", "Projet");
+                    return RedirectToAction("Category", "project");
                 }
                 var row = rows.First();
                 var research = new clsCategory
@@ -509,7 +509,7 @@ namespace skipper_group_new.Controllers
             catch (Exception ex)
             {
                 HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
-                return RedirectToAction("Category", "Projet");
+                return RedirectToAction("Category", "project");
             }
         }
 
@@ -534,7 +534,7 @@ namespace skipper_group_new.Controllers
             {
                 HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
             }
-            return RedirectToAction("ViewCategory", "Projet");
+            return RedirectToAction("ViewCategory", "project");
         }
 
         [HttpGet]
@@ -558,7 +558,7 @@ namespace skipper_group_new.Controllers
             {
                 HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
             }
-            return RedirectToAction("ViewCategory", "Projet");
+            return RedirectToAction("ViewCategory", "project");
         }        
     }
 }

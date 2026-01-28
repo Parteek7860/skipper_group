@@ -156,12 +156,32 @@
                         
                     </div>
                     <div class="row clearfix">
-                        <div class="col-lg-8 col-md-8 col-sm-8">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="form-group">
                                 <label> Upload Banner</label>
                                 <input type="file" name="file_Uploader" />
                                 <img src="/uploads/banner/@Url.Content(Model.uploadbanner)" width="80" />
                                 @Html.HiddenFor(model => model.uploadbanner)
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="form-group">
+                                <label> Upload Mobile Banner</label>
+                                <input type="file" name="file_Uploader2" />
+                                <img src="/uploads/banner/@Url.Content(Model.uploadmobilebanner)" width="80" />
+                                @Html.HiddenFor(model => model.uploadmobilebanner)
+                                @if (!string.IsNullOrEmpty(Model.uploadmobilebanner))
+                                {
+                                    <a asp-action="removebanner"
+                                       asp-controller="CMS"
+                                       asp-route-id="@Model.Id"
+                                       asp-route-type="mobile"
+                                       class="btn btn-sm btn-danger ms-2">
+                                        Remove Banner
+                                    </a>
+                                }
+                               
                             </div>
 
                         </div>

@@ -45,7 +45,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Product type *</label>
-                                    @Html.DropDownListFor(model => model.producttype, ViewBag.producttype as SelectList, "Select Product type", new { @class = "form-control" })
+                                    @Html.DropDownListFor(model => model.producttype, ViewBag.producttype as SelectList, "Select Product type", new { @class = "form-control", style = "border:1px solid #ccc; border-radius:4px;" })
                                 </div>
                             </div>
                             @Html.ValidationMessageFor(model => model.producttype, "", new { @class = "text-danger v-span" })
@@ -125,15 +125,25 @@
                         </div> 
                     </div>
                     <div class="row clearfix">
-                        @*   <div class="col-sm-6">
+                        <div class="col-sm-6">
                             <div class="form-group">
-                                <div class="form-line">
-                                    <label>Home Image</label>
-                                    <input type="file" name="HomeImageFile" class="form-control" />
-                                    @Html.HiddenFor(model => model.HomeImage)
-                                </div>
+                                <label> Upload Mobile Banner</label>
+                                <input type="file" name="file_Uploader" />
+                                <img src="/uploads/banner/@Url.Content(Model.uploadmobilebanner)" width="80" />
+                                @Html.HiddenFor(model => model.uploadmobilebanner)
+                                 @if (!string.IsNullOrEmpty(Model.uploadmobilebanner))
+                                {
+                                    <a asp-action="removebanner"
+                                       asp-controller="products"
+                                       asp-route-id="@Model.PcatId"
+                                       asp-route-type="mobile"
+                                       class="btn btn-sm btn-danger ms-2">
+                                        Remove Banner
+                                    </a>
+                                }
                             </div>
-                        </div> *@
+
+                        </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">

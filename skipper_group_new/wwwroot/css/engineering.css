@@ -1019,6 +1019,9 @@ section.Social_Responsibility.infraabt-1 figure {
 }
 
 @media(max-width:575px) {
+    .engineering .shrt-title h1 {
+    font-size: var(--font-48);
+    }
         .eng-prod .swiper-button-next {
         left: 17% !important;
     }
