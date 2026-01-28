@@ -32,6 +32,7 @@ namespace skipper_group_new.Controllers
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
+            ViewBag.ButtonName = "Save";
             return View("~/Views/backoffice/investor/category.cshtml");
         }
 
@@ -46,82 +47,39 @@ namespace skipper_group_new.Controllers
             return View("~/Views/backoffice/investor/viewcategory.cshtml");
         }
 
-        [HttpPost]
-        [Route("backoffice/investor/AddCategory")]
-        public async Task<IActionResult> AddCategory(clsCategory c, IFormFile UploadAPDFFile, IFormFile BannerImgFile, IFormFile HomeImageFile)
+        [HttpPost("backoffice/investor/addcategory")]      
+        public async Task<IActionResult> AddCategory(clsCategory c)
         {
             try
             {
-                if (UploadAPDFFile != null && UploadAPDFFile.Length > 0)
+                var keysToRemove = ModelState.Keys.Where(k => k != nameof(c.Category)).ToList();
+                foreach (var key in keysToRemove)
                 {
-                    var uploadFileName = Path.GetFileName(UploadAPDFFile.FileName);
-                    var uniqueName = $"{Guid.NewGuid()}_{uploadFileName}";
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/ProductImages", uniqueName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await UploadAPDFFile.CopyToAsync(stream);
-                    }
-
-                    c.UploadAPDF = "/uploads/ProductImages/" + uniqueName;
+                    ModelState.Remove(key);
                 }
-                if (BannerImgFile != null && BannerImgFile.Length > 0)
+
+                if (!ModelState.IsValid)
                 {
-                    var uploadFileName = Path.GetFileName(BannerImgFile.FileName);
-                    var uniqueName = $"{Guid.NewGuid()}_{uploadFileName}";
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/ProductImages", uniqueName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await BannerImgFile.CopyToAsync(stream);
-                    }
-
-                    c.Banner = "/uploads/ProductImages/" + uniqueName;
+                    ViewBag.ButtonName = c.PcatId > 0 ? "Update" : "Save";
+                    return View("~/Views/backoffice/investor/category.cshtml", c);
                 }
-                if (HomeImageFile != null && HomeImageFile.Length > 0)
-                {
-                    var uploadFileName = Path.GetFileName(HomeImageFile.FileName);
-                    var uniqueName = $"{Guid.NewGuid()}_{uploadFileName}";
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/ProductImages", uniqueName);
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await HomeImageFile.CopyToAsync(stream);
-                    }
+                await _Investor.AddCategory(c);
 
-                    c.HomeImage = "/uploads/ProductImages/" + uniqueName;
-                }
-                if (c != null)
-                {
-                    int x = await _Investor.AddCategory(c);
-                    if (x > 0)
-                    {
-                        if (c.PcatId > 0)
-                        {
-                            HttpContext.Session.SetString("Message", " Category updated successfully.");
+                HttpContext.Session.SetString(
+                    "Message",
+                    c.PcatId > 0
+                        ? "Category updated successfully."
+                        : "Category added successfully."
+                );
 
-                            return RedirectToAction("viewcategory", "investor");
-                        }
-                        else
-                        {
-                            HttpContext.Session.SetString("Message", " Category Add successfully.");
-                            return RedirectToAction("viewcategory", "investor");
-                        }
-                    }
-                }
-                else
-                {
-                    HttpContext.Session.SetString("Message", " Please correct the error and try again");
-
-                    return RedirectToAction("viewcategory", "investor");
-                }
+                return RedirectToAction("viewcategory", "investor");
             }
-            catch (Exception ex)
+            catch
             {
                 TempData["ErrorMessage"] = "❌ Something went wrong.";
                 return RedirectToAction("viewcategory", "investor");
             }
-            return RedirectToAction("viewcategory", "investor");
         }
 
         [HttpGet]
@@ -137,6 +95,7 @@ namespace skipper_group_new.Controllers
                     {
                         var menuList = _menuService.GetMenu();
                         ViewBag.Menus = menuList;
+                        ViewBag.ButtonName = "Update";
                         cat.Detail = WebUtility.HtmlDecode(cat.Detail);
                         return View("~/Views/backoffice/investor/category.cshtml", cat);
                     }
@@ -911,8 +870,5 @@ namespace skipper_group_new.Controllers
 
 
         }
-
-
     }
-
 }

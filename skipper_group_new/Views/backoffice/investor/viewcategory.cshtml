@@ -48,9 +48,9 @@
                         <div class="col-lg-2" style="padding-top:10px;">
                             <button class="btn btn-primary" type="button" onclick="filterByDate()" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Search</button>
                         </div>
-                        <div class="col-md-2 align-self-end" style="text-align: center;">
+                        <div class="col-lg-2" style="margin-bottom: 20px;">
                             <form method="post" asp-controller="Products" asp-action="ExportCategoryToExcel">
-                                <button type="submit" class="btn btn-success" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Export to Excel</button>
+                                <button type="submit" class="btn btn-primary" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Export to Excel</button>
                             </form>
                         </div>
                     </div>
@@ -67,40 +67,66 @@
                         <tbody>
                             @foreach (DataRow c in cat.Rows)
                             {
+                                bool isActive = false;
+
+                                if (c["status"] != DBNull.Value)
+                                {
+                                    isActive = Convert.ToBoolean(c["status"]);
+                                }
+
+                                string categoryName = c["Category"] != DBNull.Value ? c["Category"].ToString() : "";
+
+                                string dateText = c["trdate"] != DBNull.Value
+                                ? Convert.ToDateTime(c["trdate"]).ToShortDateString()
+                                : "-";
+
                                 <tr>
-                                    <td>@c["Category"]</td>
-                                   
-                                      <td>@Convert.ToDateTime(c["trdate"]).ToShortDateString()</td> 
+                                    <td>@categoryName</td>
+
+                                    <td>@dateText</td>
+
                                     <td>
-                                        @if (Convert.ToBoolean(c["status"]) == true)
+                                        @if (isActive)
                                         {
-                                            <form method="post" action="/Backoffice/investor/ChangeCatStatus/@c["pcatid"]" style="display: inline;">
-                                                <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to inactive?');">
+                                            <form method="post"
+                                                  action="/Backoffice/investor/ChangeCatStatus/@c["pcatid"]"
+                                                  style="display:inline;">
+                                                <button type="submit"
+                                                        style="border:none;background:none"
+                                                        onclick="return confirm('You want to change the status to inactive?');">
                                                     <img src="~/Backoffice/images/active.png" width="25" alt="Active" />
                                                 </button>
                                             </form>
                                         }
                                         else
                                         {
-                                            <form method="post" action="/Backoffice/investor/ChangeCatStatus/@c["pcatid"]" style="display: inline;">
-                                                <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to active?');">
+                                            <form method="post"
+                                                  action="/Backoffice/investor/ChangeCatStatus/@c["pcatid"]"
+                                                  style="display:inline;">
+                                                <button type="submit"
+                                                        style="border:none;background:none"
+                                                        onclick="return confirm('You want to change the status to active?');">
                                                     <img src="~/Backoffice/images/wrong.png" width="25" alt="Inactive" />
                                                 </button>
                                             </form>
                                         }
                                     </td>
+
                                     <td>
-                                        <a href="/Backoffice/investor/GetCategoryByID/@c["pcatid"]" class="btnEdit">
-                                            <img src="~/Backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
+                                        <a href="/Backoffice/investor/GetCategoryByID/@c["pcatid"]">
+                                            <img src="~/Backoffice/images/edit.png" width="20" alt="Edit" />
                                         </a>
 
-                                        <a href="#" class="btndelete" data-href="/Backoffice/investor/DeleteCategory/@c["pcatid"]">
-                                            <img src="~/Backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
+                                        <a href="#"
+                                           class="btndelete"
+                                           data-href="/Backoffice/investor/DeleteCategory/@c["pcatid"]">
+                                            <img src="~/Backoffice/images/delete.png" width="20" alt="Delete" />
                                         </a>
                                     </td>
                                 </tr>
                             }
                         </tbody>
+                        
                     </table>
                 }
                 else

@@ -1009,9 +1009,5 @@ namespace skipper_group_new.Controllers
         {
             return ViewPdf(file);
         }
-
-
     }
-
-
 }
