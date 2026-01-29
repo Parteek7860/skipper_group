@@ -25,7 +25,7 @@
 
 
 
-@using (Html.BeginForm("addsubcategory", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("subcategory", "products", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="row clearfix">
@@ -210,7 +210,7 @@
                     <div class="row mt-4">
                         <div class="col-sm-12">
 
-                            <button type="submit" class="btn btn-success btn-lg mx-2" value="Save" formmethod="post" formaction="@Url.Action("addsubcategory", "Products")">  @ViewBag.CreateUpdate  </button>
+                            <button type="submit" class="btn btn-success btn-lg mx-2" value="Save" formmethod="post" formaction="@Url.Action("addsubcategory", "products")">  @ViewBag.CreateUpdate  </button>
                             <a href="/backoffice/Products/viewsubcategory" class="btn btn-secondary btn-lg mx-2">Cancel</a>
                         </div>
                     </div>

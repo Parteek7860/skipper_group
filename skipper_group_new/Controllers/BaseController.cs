@@ -140,14 +140,20 @@ namespace skipper_group_new.Controllers
 
             if (row != null)
             {
+                var context = _httpContextAccessor.HttpContext;
+
+                var canonicalUrl = context != null
+                    ? $"{context.Request.Scheme}://{context.Request.Host}{context.Request.Path}"
+                    : "";
                 var seo = new SeoModel
                 {
                     Title = row["pagetitle"]?.ToString() ?? "",
                     MetaDescription = row["pagemetadesc"]?.ToString() ?? "",
                     MetaKeywords = row["pagemeta"]?.ToString() ?? "",
                     Robots = row["no_indexfollow"]?.ToString() ?? "index,follow",
+                    CanonicalUrl = canonicalUrl,
                     // CanonicalUrl = row["rewriteurl"]?.ToString() ?? ""
-                    
+
                 };
 
                 // Store in both ViewData and Service property (optional cache)

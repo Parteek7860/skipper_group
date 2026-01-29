@@ -1694,6 +1694,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@pagemetadesc", obj.PageMetaDesc ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@rewriteurl", obj.RewriteUrl ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@productid", obj.producttype ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@tagline", obj.tagline ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@canonical", obj.Canonical ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@mode", obj.Mode);
 

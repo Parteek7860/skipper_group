@@ -11,6 +11,8 @@ namespace skipper_group_new.Models
 
         public string shortname { get; set; }
 
+        public string tagline { get; set; }
+
 
         public string Detail { get; set; }
         public string homedesc2 { get; set; }

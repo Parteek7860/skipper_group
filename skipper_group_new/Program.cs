@@ -113,23 +113,23 @@ app.Use(async (context, next) =>
     }
 });
 
-app.Use(async (context, next) =>
-{
-    var host = context.Request.Host;
+//app.Use(async (context, next) =>
+//{
+//    var host = context.Request.Host;
 
-    if (!host.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
-    {
-        var newHost = new HostString("www." + host.Host, host.Port ?? 443);
+//    if (!host.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
+//    {
+//        var newHost = new HostString("www." + host.Host, host.Port ?? 443);
 
-        var newUrl = $"{context.Request.Scheme}://{newHost}{context.Request.Path}{context.Request.QueryString}";
+//        var newUrl = $"{context.Request.Scheme}://{newHost}{context.Request.Path}{context.Request.QueryString}";
 
-        context.Response.StatusCode = StatusCodes.Status301MovedPermanently;
-        context.Response.Headers.Location = newUrl;
-        return;
-    }
+//        context.Response.StatusCode = StatusCodes.Status301MovedPermanently;
+//        context.Response.Headers.Location = newUrl;
+//        return;
+//    }
 
-    await next();
-});
+//    await next();
+//});
 
 
 

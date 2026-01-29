@@ -1,4 +1,5 @@
 ﻿using AspNetCoreGeneratedDocument;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 using DocumentFormat.OpenXml.Math;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -233,8 +234,29 @@ namespace skipper_group_new.Controllers
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
-            var cat = await _Investor.GetCatDropdown();
-            ViewBag.Category = new SelectList(cat, "Key", "Value");
+            var cat = await _Investor.GetCategoryTblData();
+            var filterresult = cat.AsEnumerable()
+                 .Where(row => row.Status == true)
+                 .ToList();
+            if (filterresult != null && filterresult.Count > 0)
+            {
+
+                var categoryList = filterresult.AsEnumerable()
+
+                    .Select(row => new SelectListItem
+                    {
+                        Value =Convert.ToString(row.PcatId),  // or your key column
+                        Text = row.Category  // or your name column
+                    })
+                    .ToList();
+
+
+                ViewBag.Category = new SelectList(categoryList, "Value", "Text");
+            }
+            else
+            {
+                ViewBag.Category = new SelectList(Enumerable.Empty<SelectListItem>());
+            }
             return View("~/Views/backoffice/investor/subcategory.cshtml");
         }
 
@@ -328,8 +350,29 @@ namespace skipper_group_new.Controllers
                     {
                         var menuList = _menuService.GetMenu();
                         ViewBag.Menus = menuList;
-                        var catd = await _Investor.GetCatDropdown();
-                        ViewBag.Category = new SelectList(catd, "Key", "Value", cat.PCatId);
+                        var cat1 = await _Investor.GetCategoryTblData();
+                        var filterresult = cat1.AsEnumerable()
+                             .Where(row => row.Status == true)
+                             .ToList();
+                        if (filterresult != null && filterresult.Count > 0)
+                        {
+
+                            var categoryList = filterresult.AsEnumerable()
+
+                                .Select(row => new SelectListItem
+                                {
+                                    Value = Convert.ToString(row.PcatId),  // or your key column
+                                    Text = row.Category  // or your name column
+                                })
+                                .ToList();
+
+
+                            ViewBag.Category = new SelectList(categoryList, "Value", "Text");
+                        }
+                        else
+                        {
+                            ViewBag.Category = new SelectList(Enumerable.Empty<SelectListItem>());
+                        }
                         return View("~/Views/backoffice/investor/subcategory.cshtml", cat);
                     }
                     else
@@ -416,9 +459,9 @@ namespace skipper_group_new.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("backoffice/investor/ChangeSubCatStatus/{id}")]
-        public async Task<IActionResult> ChangeSubCatStatus(int id)
+        [HttpGet]
+        [Route("backoffice/investor/changesubcatstatus/{id}")]
+        public async Task<IActionResult> changesubcatstatus(int id)
         {
             try
             {
@@ -660,6 +703,7 @@ namespace skipper_group_new.Controllers
                     objcls.uploadfile = cls.uploadfile ?? string.Empty;
                 }
                 objcls.yearcategory = cls.yearcategory;
+                objcls.displayorder = cls.displayorder;
                 objcls.uname = HttpContext.Session.GetString("UserName");
                 int x = _Investor.AddInvestor(objcls);
                 {
@@ -708,7 +752,8 @@ namespace skipper_group_new.Controllers
 
                 objcls.vediourl = Convert.ToString(filterresults.First()["vedioname"]);
                 objcls.thirdpartyurl = Convert.ToString(filterresults.First()["purl"]);
-                objcls.investordate = Convert.ToDateTime(filterresults.First()["investordate"]);
+                objcls.investordate = filterresults.First().Field<DateTime?>("investordate");
+
                 objcls.doctype = Convert.ToString(filterresults.First()["modelno"]);
                 objcls.newexpiredate = filterresults.First().IsNull("expiraydate") ? (DateTime?)null : Convert.ToDateTime(filterresults.First()["expiraydate"]);
                 objcls.yearcategory = Convert.ToString(filterresults.First()["ycatid"]);
@@ -717,6 +762,7 @@ namespace skipper_group_new.Controllers
                 objcls.uploadfile = Convert.ToString(filterresults.First()["prospectus"]);
                 objcls.uploadimage = Convert.ToString(filterresults.First()["uploadaimage"]);
                 objcls.status = Convert.ToBoolean(filterresults.First()["status"]);
+                objcls.displayorder = Convert.ToString(filterresults.First()["displayorder"]);
                 ViewBag.CreateUpdate = "Update";
                 return View("~/Views/backoffice/investor/addinvestor.cshtml", objcls);
             }

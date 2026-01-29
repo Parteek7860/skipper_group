@@ -396,6 +396,7 @@ namespace skipper_group_new.Controllers
                 obj.PageMeta = c.PageMeta;
                 obj.PageMetaDesc = c.PageMetaDesc;
                 obj.Canonical = c.Canonical;
+                obj.tagline = c.tagline;
                 if (obj.PcatId > 0)
                 {
                     obj.Mode = 2;
@@ -477,6 +478,7 @@ namespace skipper_group_new.Controllers
                         obj.UploadAPDF = filteredRows[0]["uploadapdf"].ToString();
                         obj.Canonical = filteredRows[0]["canonical"].ToString();
                         obj.producttype = filteredRows[0]["productid"].ToString();
+                        obj.tagline = filteredRows[0]["tagline"].ToString();
 
                         var catd = await _products.BindProductSolution();
                         if (catd != null && catd.Rows.Count > 0)
@@ -629,7 +631,7 @@ namespace skipper_group_new.Controllers
 
         #region Sub-Category
         [HttpGet]
-        [Route("backoffice/Products/subcategory")]
+        [Route("backoffice/products/subcategory")]
         public async Task<IActionResult> subcategory()
         {
             SubCategory obj = new SubCategory();

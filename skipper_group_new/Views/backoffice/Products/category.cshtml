@@ -65,6 +65,16 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <div class="form-line">
+                                    <label>Tagline</label>
+                                    @Html.EditorFor(model => model.tagline, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="form-line">
                                     <label>Short Detail</label>
                                     @Html.TextAreaFor(model => model.ShortDetail, new { @class = "form-control editor1", @id = "editor1", @rows = "10" })
                                 </div>
@@ -102,7 +112,7 @@
 
 
                     <div class="row clearfix">
-                      
+
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
@@ -113,7 +123,7 @@
                                 </div>
                             </div>
                         </div>
-                         <div class="col-sm-6">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Upload Image</label>
@@ -122,7 +132,7 @@
                                     @Html.HiddenFor(model => model.HomeImage)
                                 </div>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                     <div class="row clearfix">
                         <div class="col-sm-6">
@@ -131,7 +141,7 @@
                                 <input type="file" name="file_Uploader" />
                                 <img src="/uploads/banner/@Url.Content(Model.uploadmobilebanner)" width="80" />
                                 @Html.HiddenFor(model => model.uploadmobilebanner)
-                                 @if (!string.IsNullOrEmpty(Model.uploadmobilebanner))
+                                @if (!string.IsNullOrEmpty(Model.uploadmobilebanner))
                                 {
                                     <a asp-action="removebanner"
                                        asp-controller="products"
@@ -174,6 +184,16 @@
                         </div>
                     </div>
                     <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Page Meta Desc</label>
+                                    @Html.TextBoxFor(model => model.PageMetaDesc, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
@@ -197,8 +217,8 @@
                             <form asp-action="category" asp-controller="Products" method="post">
                                 <button type="submit" class="btn btn-success btn-lg mx-2" value="Save"> @ViewBag.UpdateStatus </button>
                             </form>
-                         
-                           
+
+
                         </div>
                     </div>
                 </div>
