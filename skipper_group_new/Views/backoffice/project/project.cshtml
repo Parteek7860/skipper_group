@@ -38,7 +38,14 @@
                     <div class="row clearfix">                       
                         @Html.HiddenFor(model => model.ResearchId)
                         @Html.HiddenFor(model => model.Mode)
-                       @*  <div class="col-sm-6">
+                        @Html.HiddenFor(model => model.Status)
+                        @Html.HiddenFor(model => model.ShowOnHome)
+                        @Html.HiddenFor(model => model.ShowOnSchool)
+
+                        @Html.HiddenFor(model => model.Archive)
+                        @Html.HiddenFor(model => model.ShowOnGroup)
+
+                        @*  <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
                                     <label> Project type<span style="color:red">*</span></label>
@@ -105,7 +112,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label> Date</label>
-                                    @Html.TextBoxFor(model => model.ResearchEDate, new { type = "date", @class = "form-control" })
+                                    @Html.TextBoxFor(model => model.ResearchSDate, new { type = "date", @class = "form-control" })
                                 </div>
                             </div>
                         </div>
@@ -150,7 +157,7 @@
                         </div>
                     </div>
 
-                    <div class="row clearfix">
+                    @* <div class="row clearfix">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="form-group">
                                 <label> Upload Home Image</label>
@@ -169,7 +176,7 @@
                             </div>
 
                         </div>
-                    </div>
+                    </div> *@
 
                     <div class="row clearfix">
                         <div class="col-sm-6">

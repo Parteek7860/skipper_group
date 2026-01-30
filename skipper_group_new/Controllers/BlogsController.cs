@@ -67,12 +67,12 @@ namespace skipper_group_new.Controllers
         {
             try
             {
-                if (blg != null && blg.BlogId != 0)
+                if (!string.IsNullOrEmpty(blg.BlogTitle))
                 {
                     if (BlogImageFile != null && BlogImageFile.Length > 0)
                     {
                         var fileName = Path.GetFileName(BlogImageFile.FileName); // captures name
-                        var filePath = Path.Combine("wwwroot/uploads/vedio", fileName);
+                        var filePath = Path.Combine("wwwroot/uploads/blogs", fileName);
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
@@ -89,7 +89,7 @@ namespace skipper_group_new.Controllers
                     if (LargeImageFile != null && LargeImageFile.Length > 0)
                     {
                         var fileName = Path.GetFileName(LargeImageFile.FileName); // captures name
-                        var filePath = Path.Combine("wwwroot/uploads/vedio", fileName);
+                        var filePath = Path.Combine("wwwroot/uploads/blogs", fileName);
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
@@ -114,7 +114,7 @@ namespace skipper_group_new.Controllers
                         else
                         {
                             HttpContext.Session.SetString("Message", "Blog Added successfully.");
-                            return RedirectToAction("addblog", "Blogs");
+                            return RedirectToAction("addblogs", "Blogs");
                         }
 
 
@@ -238,7 +238,7 @@ namespace skipper_group_new.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("backoffice/blogs/blogstatus/{id}")]
         public async Task<IActionResult> blogstatus(int id)
         {

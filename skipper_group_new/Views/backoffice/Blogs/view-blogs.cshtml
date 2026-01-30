@@ -97,7 +97,7 @@
       asp-controller="Blogs"
       asp-action="blogstatus"
       asp-route-id="@blog.BlogId"
-      method="post"
+      method="get"
       style="display:inline;"
       onsubmit="return confirm('You want to change the status to inactive?');">
 
@@ -114,10 +114,10 @@
       asp-controller="Blogs"
       asp-action="blogstatus"
       asp-route-id="@blog.BlogId"
-      method="post"
+      method="get"
       style="display:inline;"
       onsubmit="return confirm('You want to change the status to inactive?');">
-                                                <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to active?');">
+                                                <button type="submit" class="btnstatus" style="border:none;background:none">
                                                     <img src="~/Backoffice/images/wrong.png" width="25" alt="Inactive" />
                                                 </button>
                                             </form>

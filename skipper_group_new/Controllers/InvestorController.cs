@@ -106,9 +106,14 @@ namespace skipper_group_new.Controllers
                         obj.ShortDetail = WebUtility.HtmlDecode(cat.ShortDetail);
                         obj.DisplayOrder = cat.DisplayOrder;
                         obj.Banner = cat.Banner;
+                        obj.PageMeta = cat.PageMeta;
+                        obj.PageTitle = cat.PageTitle;
+                        obj.PageMetaDesc = cat.PageMetaDesc;
+                        obj.Canonical = cat.Canonical;
+                        obj.PageScript = cat.PageScript;
                         obj.UploadAPDF = cat.UploadAPDF;
 
-                        
+                        ViewBag.ButtonName = "Update";
                         return View("~/Views/backoffice/investor/category.cshtml", obj);
                     }
                     else
@@ -144,10 +149,6 @@ namespace skipper_group_new.Controllers
                     {
                         HttpContext.Session.SetString("Message", " Category deleted successfully.");
                         TempData["Title"] = "Category";
-                    }
-                    else
-                    {
-                        TempData["ErrorMessage"] = "Failed to delete the category.";
                     }
                 }
                 else
@@ -195,9 +196,9 @@ namespace skipper_group_new.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("backoffice/investor/ChangeCatStatus/{id}")]
-        public async Task<IActionResult> ChangeCatStatus(int id)
+        [HttpGet]
+        [Route("backoffice/investor/changecatstatus/{id}")]
+        public async Task<IActionResult> changecatstatus(int id)
         {
             try
             {
@@ -403,15 +404,10 @@ namespace skipper_group_new.Controllers
                 if (id > 0)
                 {
                     var deletedCat = await _Investor.DeleteSubCategory(id);
-                    if (deletedCat > 0)
+                    if (deletedCat < 0)
                     {
                         HttpContext.Session.SetString("Message", " Sub-Category deleted successfully.");
-
                         TempData["Title"] = "Sub-Category";
-                    }
-                    else
-                    {
-                        TempData["ErrorMessage"] = "Failed to delete the sub-category.";
                     }
                 }
                 else
@@ -874,8 +870,8 @@ namespace skipper_group_new.Controllers
             var fileBytes = System.IO.File.ReadAllBytes(filePath);
             return File(fileBytes, contentType, id);
         }
-        [HttpGet("investor/GetYearCategory")]
-        public async Task<JsonResult> GetYearCategory()
+        [HttpGet("investor/getyearcategory")]
+        public async Task<JsonResult> getyearcategory()
         {
             DataTable dt = await _Investor.BindYearCategory();
 
@@ -889,26 +885,30 @@ namespace skipper_group_new.Controllers
                          .ToList();
 
 
+
             return Json(list);
         }
-        [HttpGet("investor/GetCategory")]
+        [HttpGet]
+        [Route(("Investor/GetCategory"))]
         public async Task<JsonResult> GetCategory()
         {
-            DataTable dt = await _Investor.GetCategory();
+            DataTable dt1 = await _Investor.GetCategory();
 
-            var list = dt.AsEnumerable()
-                .Where(row => row.Field<bool>("status") == true)
+            var list1 = dt1.AsEnumerable()
+               .Where(row => row.Field<bool>("status") == true)
                          .Select(row => new
                          {
                              Value = row["pcatid"],
                              Text = row["category"]
                          })
                          .ToList();
-            return Json(list);
+
+            return Json(list1);
+
         }
 
-        [HttpGet("investor/GetSubCategory")]
-        public async Task<JsonResult> GetSubCategory(int categoryId)
+        [HttpGet("investor/getsubcategory")]
+        public async Task<JsonResult> getsubcategory(int categoryId)
         {
             DataTable dt = await _Investor.GetSubCategory();
             var filterresults = from DataRow dr in dt.Rows

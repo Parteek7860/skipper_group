@@ -299,7 +299,7 @@ namespace skipper_group_new.Controllers
             objAlbumType.title = cls.title;
             objAlbumType.displayorder = cls.displayorder ?? "0";
             objAlbumType.URL = cls.URL;
-            objAlbumType.uname = HttpContext.Session.GetString("UserName");
+            objAlbumType.uname = HttpContext.Session.GetString("UserName") ?? "System";
             if (cls.id > 0)
             {
                 objAlbumType.mode = "2";

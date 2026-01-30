@@ -23,7 +23,13 @@ namespace skipper_group_new.mainclass
                                    .Where(r => r.Field<int>("pareentcode") == 1);
                 menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
             }
+            else
+            {
+                var rows = menuList.AsEnumerable()
+                                   .Where(r => r.Field<int>("moduleid") != 45);
 
+                menuList = rows.Any() ? rows.CopyToDataTable() : menuList.Clone();
+            }
 
 
             var menus = new List<clsmainmenu>();

@@ -66,38 +66,8 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/project/addproject")]
         public async Task<IActionResult> addproject(ResearchModel research, IFormFile file_Uploader, IFormFile file_Uploader1, IFormFile file_Uploader2, IFormFile file_Uploader3)
         {
-            HttpContext.Session.Remove("Message");
-            ViewBag.Menus = _menuService.GetMenu();
-            ModelState.Remove("Archive");
-            ModelState.Remove("Canonical");
-            ModelState.Remove("ColorCode");
-            ModelState.Remove("HomeImage");
-            ModelState.Remove("NoIndexFollow");
-            ModelState.Remove("LCID");
-            ModelState.Remove("LargeImage");
-            ModelState.Remove("OtherSchema");
-            ModelState.Remove("PageMeta");
-            ModelState.Remove("PageMetaDesc");
-            ModelState.Remove("PageTitle");
-            ModelState.Remove("ResearchSDate");
-            ModelState.Remove("RewriteUrl");
-            ModelState.Remove("ShowOnGroup");
-            ModelState.Remove("ShowOnSchool");
-            ModelState.Remove("UName");
-            ModelState.Remove("UploadEvents");
-            ModelState.Remove("UploadFile");
-            ModelState.Remove("VeryLargeImage");
-            ModelState.Remove("YoutubeUrl");
-            ModelState.Remove("Status");
-            ModelState.Remove("ResearchId");
-            ModelState.Remove("Mode");
-            ModelState.Remove("TRDate");
-            ModelState.Remove("file_Uploader");
-            ModelState.Remove("file_Uploader1");
-            ModelState.Remove("file_Uploader2");
-            ModelState.Remove("file_Uploader3");
-            
-            if (!ModelState.IsValid)
+
+            if (string.IsNullOrEmpty(research.ResearchTitle))
             {
                 HttpContext.Session.SetString("Message", "Please fill in all required fields.");
                 return RedirectToAction("GetProject", "project");
@@ -106,12 +76,12 @@ namespace skipper_group_new.Controllers
             try
             {
                 research.Mode = research.ResearchId > 0 ? 2 : 1;
-                research.Status = true;
+                research.Status = research.Status;
                 research.UName = HttpContext.Session.GetString("UserName");
-                research.ShowOnSchool = true;
-                research.ShowOnGroup = true;
-                research.Archive = true;
-                research.ShowOnHome = true;
+                research.ShowOnSchool = research.ShowOnSchool;
+                research.ShowOnGroup = research.ShowOnGroup;
+                research.Archive = research.Archive;
+                research.ShowOnHome = research.ShowOnHome;
                 if (file_Uploader != null && file_Uploader.Length > 0)
                 {
                     var fileName = Path.GetFileName(file_Uploader.FileName);
@@ -164,10 +134,11 @@ namespace skipper_group_new.Controllers
                 {
                     research.VeryLargeImage = research.VeryLargeImage;
                 }
+                research.ResearchSDate = research.ResearchSDate;
                 var newId = await _project.AddUpdateProject(research);
                 if (newId > 0)
                 {
-                    if(research.ResearchId == 0)
+                    if (research.ResearchId == 0)
                     {
                         HttpContext.Session.SetString("Message", "Project added successfully.");
                         return RedirectToAction("GetProject", "project");
@@ -231,8 +202,8 @@ namespace skipper_group_new.Controllers
                     Types = row.Field<string>("types"),
                     ResearchEDate = row.Field<DateTime?>("researchedate"),
                     ResearchSDate = row.Field<DateTime?>("researchsdate"),
-                    ShortDesc = WebUtility.HtmlDecode(row.Field<string>("shortdesc")??""),
-                    ResearchDesc = WebUtility.HtmlDecode(row.Field<string>("researchdesc")??""),
+                    ShortDesc = WebUtility.HtmlDecode(row.Field<string>("shortdesc") ?? ""),
+                    ResearchDesc = WebUtility.HtmlDecode(row.Field<string>("researchdesc") ?? ""),
                     UploadEvents = row.Field<string>("uploadevents"),
                     LargeImage = row.Field<string>("largeimage"),
                     HomeImage = row.Field<string>("homeimage"),
@@ -244,6 +215,11 @@ namespace skipper_group_new.Controllers
                     OtherSchema = row.Field<string>("other_schema"),
                     Canonical = row.Field<string>("canonical"),
                     NoIndexFollow = row.Field<bool?>("no_indexfollow"),
+                    Status = row.Field<bool?>("status") ?? false,
+                    ShowOnHome = row.Field<bool?>("ShowOnHome") ?? false,
+                    ShowOnGroup = row.Field<bool?>("ShowOnGroup") ?? false,
+                    ShowOnSchool = row.Field<bool?>("ShowOnSchool") ?? false,
+                    Archive = row.Field<bool?>("Archive") ?? false,
                 };
 
 
@@ -414,32 +390,8 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/project/addcategory")]
         public async Task<IActionResult> addcategory(clsCategory m)
         {
-            HttpContext.Session.Remove("Message");
-            ViewBag.Menus = _menuService.GetMenu();
-            ModelState.Remove("shortname");
-            ModelState.Remove("Detail");
-            ModelState.Remove("ShortDetail");
-            ModelState.Remove("ShowOnHome");
-            ModelState.Remove("Status");
-            ModelState.Remove("Banner");
-            ModelState.Remove("UploadAPDF");
-            ModelState.Remove("productid");
-            ModelState.Remove("PageTitle");
-            ModelState.Remove("PageMeta");
-            ModelState.Remove("PageMetaDesc");
-            ModelState.Remove("RewriteUrl");
-            ModelState.Remove("Canonical");
-            ModelState.Remove("NoIndexFollow");
-            ModelState.Remove("PageScript");
-            ModelState.Remove("HomeImage");
-            ModelState.Remove("HomeDesc");
-            ModelState.Remove("Uname");
-            ModelState.Remove("Mode");
-            var errors = ModelState
-   .Where(ms => ms.Value.Errors.Count > 0)
-   .Select(ms => new { Key = ms.Key, Errors = ms.Value.Errors })
-   .ToList();
-            if (!ModelState.IsValid)
+
+            if (string.IsNullOrEmpty(m.Category))
             {
                 HttpContext.Session.SetString("Message", "Please fill in all required fields.");
                 return RedirectToAction("Category", "project");
@@ -454,7 +406,7 @@ namespace skipper_group_new.Controllers
                 var newId = await _project.AddUpdateCategory(m);
                 if (newId > 0)
                 {
-                    if(m.PcatId == 0)
+                    if (m.PcatId == 0)
                     {
                         HttpContext.Session.SetString("Message", "Category added successfully.");
                         return RedirectToAction("Category", "project");
@@ -463,7 +415,7 @@ namespace skipper_group_new.Controllers
                     {
                         HttpContext.Session.SetString("Message", "Category updated successfully.");
                         return RedirectToAction("ViewCategory", "project");
-                    }   
+                    }
                 }
                 HttpContext.Session.SetString("Message", "Failed to save project.");
             }
@@ -492,7 +444,7 @@ namespace skipper_group_new.Controllers
                 {
                     PcatId = row.Field<int>("pcatid"),
                     Category = row.Field<string>("category"),
-                    Detail = WebUtility.HtmlDecode(row.Field<string>("detail")??""),
+                    Detail = WebUtility.HtmlDecode(row.Field<string>("detail") ?? ""),
                     DisplayOrder = row.Field<int?>("displayorder"),
                     Mode = 2,
                     PageTitle = row.Field<string>("PageTitle"),
@@ -559,6 +511,6 @@ namespace skipper_group_new.Controllers
                 HttpContext.Session.SetString("Message", "Unexpected Error: " + ex.Message);
             }
             return RedirectToAction("ViewCategory", "project");
-        }        
+        }
     }
 }

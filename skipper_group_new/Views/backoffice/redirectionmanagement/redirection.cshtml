@@ -98,12 +98,14 @@
                                                     }
                                                 </td>
                                                 <td>
-                                                   @*  <a href="/backoffice/faq/faqedit/@row["id"]" class="btnEdit">
-                                                        <img src="~/Backoffice/images/edit.png" class="img-fluid" width="20" alt="Edit" />
-                                                    </a> *@
-                                                    <a class="btndelete" href="/backoffice/redirectionmanagement/datadelete/@row["id"]" onclick="return confirm('You want to Delete the Records');">
+                                                    <form method="get" action="/backoffice/redirectionmanagement/redirectdelete/@row["id"]" style="display: inline;">
+                                                        <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to active?');">
+                                                            <img src="~/backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
+                                                        </button>
+                                                    </form>
+                                                  @*   <a data-value="@(Convert.ToString(row["id"]))" class="btndelete" href="/backoffice/redirectionmanagement/redirectdelete/@row["id"]">
                                                         <img src="~/backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
-                                                    </a>
+                                                    </a> *@
                                                 </td>
                                             </tr>
                                         }
@@ -151,7 +153,7 @@
 
     
     let currentPage = 1;
-    const rowsPerPage = 1;
+    const rowsPerPage = 10;
     function paginateTable() {
         const table = document.getElementById('productTable');
         const rows = table.querySelectorAll('tbody tr');

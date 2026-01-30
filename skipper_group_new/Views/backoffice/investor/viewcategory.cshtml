@@ -88,8 +88,8 @@
                                     <td>
                                         @if (isActive)
                                         {
-                                            <form method="post"
-                                                  action="/Backoffice/investor/ChangeCatStatus/@c["pcatid"]"
+                                            <form method="get"
+                                                  action="/Backoffice/investor/changecatstatus/@c["pcatid"]"
                                                   style="display:inline;">
                                                 <button type="submit"
                                                         style="border:none;background:none"
@@ -100,8 +100,8 @@
                                         }
                                         else
                                         {
-                                            <form method="post"
-                                                  action="/Backoffice/investor/ChangeCatStatus/@c["pcatid"]"
+                                            <form method="get"
+                                                  action="/Backoffice/investor/changecatstatus/@c["pcatid"]"
                                                   style="display:inline;">
                                                 <button type="submit"
                                                         style="border:none;background:none"

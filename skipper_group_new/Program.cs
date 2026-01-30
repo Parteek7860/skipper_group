@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.FileProviders;
 using skipper_group_new.Interface;
 using skipper_group_new.Interface;
@@ -152,8 +153,14 @@ app.Use(async (context, next) =>
 
     await next();
 });
-app.UseStaticFiles();
+//app.UseStaticFiles();
+var provider = new FileExtensionContentTypeProvider();
+provider.Mappings[".mp3"] = "audio/mpeg";
 
+app.UseStaticFiles(new StaticFileOptions
+{
+    ContentTypeProvider = provider
+});
 
 
 
@@ -174,7 +181,7 @@ app.Use(async (context, next) =>
     var csp = string.Join(" ",
         "default-src 'self';",
 
-     $"script-src 'self' 'unsafe-inline' 'unsafe-eval ws: wss: ' https://www.googletagmanager.com https://www.google-analytics.com https://www.google-analytics.com https://region1.google-analytics.com https://cdn.ckeditor.com https://cdnjs.cloudflare.com https://code.jquery.com https://cdn.jsdelivr.net https://cke4.ckeditor.com; ",
+     $"script-src 'self' 'unsafe-inline' 'unsafe-eval' ws: wss: https://www.googletagmanager.com https://www.google-analytics.com https://www.google-analytics.com https://region1.google-analytics.com https://cdn.ckeditor.com https://cdnjs.cloudflare.com https://code.jquery.com https://cdn.jsdelivr.net https://cke4.ckeditor.com; ",
 
         // ✅ Allow inline styles + external fonts & icons
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;",
@@ -188,6 +195,8 @@ app.Use(async (context, next) =>
         // ✅ Allow AJAX and WebSocket connections (for Live Reload / SignalR / CKEditor preview)
         "connect-src 'self' ws: wss: https://cdn.ckeditor.com https://cdnjs.cloudflare.com;",
     // ✅ THIS LINE FIXES VIDEO
+    // 🔥 THIS ENABLES AUDIO / VIDEO
+        
     "media-src 'self' https: data: blob:;",
         // ✅ Allow iframes from CKEditor (for previews, embeds, etc.)
         "frame-src 'self' https://cdn.ckeditor.com https://*;",

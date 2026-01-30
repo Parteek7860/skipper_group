@@ -102,8 +102,8 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpGet]
-        [Route("/backoffice/redirectionmanagement/datadelete/{id}")]
-        public async Task<IActionResult> datadelete(int id)
+        [Route("/backoffice/redirectionmanagement/redirectdelete/{id}")]
+        public async Task<IActionResult> redirectdelete(int id)
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
