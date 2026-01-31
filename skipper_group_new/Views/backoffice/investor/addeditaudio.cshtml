@@ -1,0 +1,228 @@
+﻿@using System.Data
+@model skipper_group_new.Models.AudioVideoModel
+
+@{
+    string nonce = Context.Items["CSPNonce"]?.ToString();
+    Layout = "~/Views/Shared/_homepage.cshtml";
+    ViewBag.Title = "Add/Edit Audio";
+    var audioList = ViewBag.AudioList as DataTable;
+}
+
+<div class="block-header">
+    <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>
+                @ViewBag.Title
+                <small class="text-muted">@Context.Session.GetString("ClientName")</small>
+            </h2>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-12">
+            <ul class="breadcrumb float-md-right">
+                <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i>Audio</a></li>
+                <li class="breadcrumb-item active">Banner Type</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("AddVideoAudio", "AudioVideo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="body">
+
+                    <h2 class="card-inside-title">Fields with * are mandatory</h2>
+
+                    <div class="row clearfix">
+                        @Html.HiddenFor(model => model.AudioId)
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Title<span style="color:red">*</span></label>
+                                    @Html.EditorFor(model => model.AudioTitle,
+                                        new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.AudioTitle, "", new { @class = "text-danger v-span" })
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Upload File </label>
+                                    <input type="file" name="file_Uploader" accept="audio/*,video/*" />
+
+                                    @if (!string.IsNullOrEmpty(Model.AudioPath))
+                                    {
+                                        string ext = System.IO.Path.GetExtension(Model.AudioPath).ToLower();
+                                        bool isVideo = ext == ".mp4" || ext == ".webm" || ext == ".avi";
+
+                                        if (isVideo)
+                                        {
+                                            <video controls style="width:200px;margin-top:5px">
+                                                <source src="~/uploads/AudioVideo/@Model.AudioPath" />
+                                            </video>
+                                        }
+                                        else
+                                        {
+                                            <audio controls style="width:200px;margin-top:5px">
+                                                <source src="~/uploads/AudioVideo/@Model.AudioPath" />
+                                            </audio>
+                                        }
+                                    }
+
+                                    @Html.HiddenFor(model => model.AudioPath)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label> Display order</label>
+                                    @Html.EditorFor(model => model.displayOrder,
+                                        new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.displayOrder, "", new { @class = "text-danger v-span" })
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>
+                                        @Html.CheckBoxFor(model => model.Status)
+                                        Status
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-12 my-lg-4 my-4">
+                            <button type="submit"
+                                    class="btn btn-raised btn-success waves-effect"
+                                    style="width:100px;">
+                                @ViewBag.ButtonName
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        @if (audioList != null && audioList.Rows.Count > 0)
+                        {
+                            <div class="col-sm-12">
+                                <table class="table table-bordered">
+                                    <thead class="table-header">
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Audio / Video</th>
+                                            <th>DisplayOrder</th>
+                                            <th>Status</th>
+                                            <th>Download</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow row in audioList.Rows)
+                                        {
+                                            <tr>
+                                                <td>@row["AudioTitle"]</td>
+
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(Convert.ToString(row["AudioPath"])))
+                                                    {
+                                                        string path = Convert.ToString(row["AudioPath"]);
+                                                        string ext = System.IO.Path.GetExtension(path).ToLower();
+                                                        bool isVideo = ext == ".mp4" || ext == ".webm" ||ext==".avi";
+
+                                                        if (isVideo)
+                                                        {
+                                                            <video controls style="width:150px;height:80px">
+                                                                <source src="~/uploads/AudioVideo/@path" />
+                                                            </video>
+                                                        }
+                                                        else
+                                                        {
+                                                            <audio controls style="width:150px">
+                                                                <source src="~/uploads/AudioVideo/@path" />
+                                                            </audio>
+                                                        }
+                                                    }
+                                                </td>
+
+                                                <td>@row["DisplayOrder"]</td>
+
+                                                <td>
+                                                    <a href="/backoffice/investor/togglestatus/@row["AudioId"]"
+                                                       class="btnUpdateStatus">
+                                                        @if (Convert.ToBoolean(row["Status"]))
+                                                        {
+                                                            <img src="~/Backoffice/images/active.png" width="20" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/Backoffice/images/wrong.png" width="20" />
+                                                        }
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(Convert.ToString(row["AudioPath"])))
+                                                    {
+                                                        <a href="~/uploads/AudioVideo/@row["AudioPath"]"
+                                                           target="_blank"
+                                                           title="Download">
+                                                            <img src="~/Backoffice/images/Download_24x24.png" width="20" alt="Download" />
+                                                        </a>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <a href="/backoffice/investor/addaudio?id=@row["AudioId"]"
+                                                       class="btnEdit">
+                                                        <img src="~/Backoffice/images/edit.png" width="20" />
+                                                    </a>
+
+                                                    <a data-href="/backoffice/investor/deleteaudio/@row["AudioId"]"
+                                                       class="btndelete">
+                                                        <img src="~/Backoffice/images/delete.png" width="20" />
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-lg-12 my-lg-2 text-lg-center message-top2">
+                                Records not found
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.btndelete').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                if (confirm("Are you sure you want to delete this record?")) {
+                    window.location.href = btn.getAttribute('data-href');
+                }
+            });
+        });
+    });
+</script>

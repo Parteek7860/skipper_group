@@ -624,9 +624,7 @@ namespace skipper_group_new.Controllers
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
             clsInvestor obj = new clsInvestor();
-
             ViewBag.CreateUpdate = "Save";
-
             return View("~/Views/backoffice/investor/addinvestor.cshtml", obj);
         }
         [HttpPost]
@@ -888,24 +886,29 @@ namespace skipper_group_new.Controllers
 
             return Json(list);
         }
+
         [HttpGet]
-        [Route(("Investor/GetCategory"))]
+        [Route("Investor/GetCategory")]
         public async Task<JsonResult> GetCategory()
         {
             DataTable dt1 = await _Investor.GetCategory();
 
             var list1 = dt1.AsEnumerable()
-               .Where(row => row.Field<bool>("status") == true)
-                         .Select(row => new
-                         {
-                             Value = row["pcatid"],
-                             Text = row["category"]
-                         })
-                         .ToList();
+                .Where(row =>
+                    dt1.Columns.Contains("status") &&
+                    row["status"] != DBNull.Value &&
+                    Convert.ToBoolean(row["status"]) == true
+                )
+                .Select(row => new
+                {
+                    value = row["pcatid"]?.ToString(),
+                    text = row["category"]?.ToString()
+                })
+                .ToList();
 
             return Json(list1);
-
         }
+
 
         [HttpGet("investor/getsubcategory")]
         public async Task<JsonResult> getsubcategory(int categoryId)

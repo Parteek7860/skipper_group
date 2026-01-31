@@ -232,121 +232,104 @@
 
 
 <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
- @* <script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-<script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script> *@
 <script nonce="@nonce" src="~/ckeditor/ckeditor.js"></script>
 <script nonce="@nonce">
-    $('.editor1').each(function () {
-        CKEDITOR.replace($(this).prop('id'));
-    });
-</script>
-<script>
-      var selectedCategory = "@Model.category";
-    var selectedSubCategory = "@Model.subcategory";
-    var selectedYearCategory = "@Model.yearcategory";
-</script>
-<script>
-    
     $(document).ready(function () {
+        var selectedCategory = '@(Model.category ?? "")';
+        var selectedSubCategory = '@(Model.subcategory ?? "")';
+        var selectedYearCategory = '@(Model.yearcategory ?? "")';
 
-        // Load data on page load
         LoadCategory();
         LoadYearCategory();
 
-        // -------------------------------
-        // Load Category
-        // -------------------------------
         function LoadCategory() {
             $.ajax({
                 url: '/Investor/GetCategory',
                 type: 'GET',
                 success: function (data) {
 
-                    $("#ddlCategory").empty();
-                    $("#ddlCategory").append('<option value="">Select Category</option>');
+                    $("#ddlCategory").empty()
+                        .append('<option value="">Select Category</option>');
 
                     $.each(data, function (i, item) {
                         $("#ddlCategory").append(
-                            $('<option>', { value: item.value, text: item.text })
+                            $('<option>', {
+                                value: item.value,
+                                text: item.text
+                            })
                         );
                     });
 
-                    // ==== Auto Select Saved Category ====
-                    if (selectedCategory) {
+                    // EDIT MODE ONLY
+                    if (selectedCategory !== "") {
                         $("#ddlCategory").val(selectedCategory).trigger("change");
                     }
                 }
             });
         }
 
-        // -------------------------------
-        // Load Year Category
-        // -------------------------------
         function LoadYearCategory() {
             $.ajax({
                 url: '/Investor/GetYearCategory',
                 type: 'GET',
                 success: function (data) {
 
-                    $("#ddlYearCategory").empty();
-                    $("#ddlYearCategory").append('<option value="">Select Year</option>');
+                    $("#ddlYearCategory").empty()
+                        .append('<option value="">Select Year</option>');
 
                     $.each(data, function (i, item) {
                         $("#ddlYearCategory").append(
-                            $('<option>', { value: item.value, text: item.text })
+                            $('<option>', {
+                                value: item.value,
+                                text: item.text
+                            })
                         );
                     });
 
-                    // ==== Auto Select Saved Year ====
-                    if (selectedYearCategory) {
+                    if (selectedYearCategory !== "") {
                         $("#ddlYearCategory").val(selectedYearCategory);
                     }
                 }
             });
         }
-
-        // -------------------------------
-        // Handle Category Change -> Load SubCategory
-        // -------------------------------
-        $("#ddlCategory").change(function () {
-
+        $("#ddlCategory").on("change", function () {
             var catId = $(this).val();
 
-            $("#ddlSubCategory").empty();
-            $("#ddlSubCategory").append('<option value="">Loading...</option>');
+            $("#ddlSubCategory").empty()
+                .append('<option value="">Select Sub Category</option>');
 
-            if (catId !== "") {
-                $.ajax({
-                    url: '/Investor/GetSubCategory',
-                    type: 'GET',
-                    data: { categoryId: catId },
-                    success: function (data) {
+            if (catId === "") return;
 
-                        $("#ddlSubCategory").empty();
-                        $("#ddlSubCategory").append('<option value="">Select Sub Category</option>');
+            $.ajax({
+                url: '/Investor/GetSubCategory',
+                type: 'GET',
+                data: { categoryId: catId },
+                success: function (data) {
 
-                        $.each(data, function (i, item) {
-                            $("#ddlSubCategory").append(
-                                $('<option>', { value: item.value, text: item.text })
-                            );
-                        });
+                    $("#ddlSubCategory").empty()
+                        .append('<option value="">Select Sub Category</option>');
 
-                        // ==== Auto Select Saved SubCategory ====
-                        if (selectedSubCategory) {
-                            $("#ddlSubCategory").val(selectedSubCategory);
-                        }
+                    $.each(data, function (i, item) {
+                        $("#ddlSubCategory").append(
+                            $('<option>', {
+                                value: item.value,
+                                text: item.text
+                            })
+                        );
+                    });
+
+                    // EDIT MODE ONLY
+                    if (selectedSubCategory !== "") {
+                        $("#ddlSubCategory").val(selectedSubCategory);
                     }
-                });
-            } else {
-                $("#ddlSubCategory").empty();
-                $("#ddlSubCategory").append('<option value="">Select Sub Category</option>');
-            }
+                }
+            });
         });
-
+        $('.editor1').each(function () {
+            CKEDITOR.replace($(this).prop('id'));
+        });
     });
 </script>
-
-@* } *@
 
 
 
