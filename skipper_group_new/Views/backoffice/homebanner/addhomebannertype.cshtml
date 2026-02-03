@@ -70,7 +70,7 @@
                     </div>
                     <div class="row clearfix">
                         <div class="col-sm-12 my-lg-4 my-4">
-                            <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" formaction="@Url.Action("Save", "HomeBanner")" formmethod="post" style="width:100px;">  @ViewBag.SuccessCreate</button>
+                            <button type="submit" class="btn btn-raised btn-success waves-effect" value="Save" formaction="@Url.Action("save", "homebanner")" formmethod="post" style="width:100px;">  @ViewBag.SuccessCreate</button>
                         </div>
                     </div>
                     <div class="row clearfix">
@@ -84,6 +84,7 @@
                                         <tr>
                                             <th>Name</th>
                                             <th>Status</th>
+                                            <th>Mobile Status</th>
                                             <th>Date</th>
                                             <th>Action</th>
                                         </tr>
@@ -108,7 +109,20 @@
                                                         }
                                                     </a>
                                                 </td>
-
+                                                <td>
+                                                    <a data-value="@Convert.ToString(row["btypeid"])"
+                                                       href="/Backoffice/Homebanner/UpdatemobileStatus/@Convert.ToString(row["btypeid"])"
+                                                       class="btnUpdateStatus">
+                                                        @if (Convert.ToBoolean(row["mobilestatus"]))
+                                                        {
+                                                            <img src="~/Backoffice/images/active.png" width="20" alt="Active" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/Backoffice/images/wrong.png" width="20" alt="Inactive" />
+                                                        }
+                                                    </a>
+                                                </td>
                                                 <td>@Convert.ToString(row["trdate"])</td>
 
                                                 <td>

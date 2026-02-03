@@ -31,8 +31,7 @@
     @await Html.PartialAsync("~/Views/PartialView/_MainMenu.cshtml")
 </header>
 
-@if(dt1!=null)
-{
+
 @if (dt1.Rows.Count > 0)
 {
     
@@ -97,9 +96,7 @@
             </div>
         }
     </section>
-}    
 }
-
 
 @Html.Raw(Model.SmallDescription)
 <div class=wrapper>

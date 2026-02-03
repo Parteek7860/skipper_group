@@ -404,6 +404,7 @@ namespace skipper_group_new.Controllers
                 else
                 {
                     obj.Mode = 1;
+                    obj.Status = true;
                 }
                 if (c != null)
                 {

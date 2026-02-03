@@ -19,6 +19,7 @@ namespace skipper_group_new.Repositories
         int DeleteBannerType(int id);
 
         int UpdateBannerType(string status,int id);
+        int UpdateMobileBannerTypeStatus(string status, int id);
 
         Task<DataTable> GetBannerTypeList();
 

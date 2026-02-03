@@ -53,6 +53,10 @@ namespace skipper_group_new.Service
         {
             return _repository.UpdateBannerType(status, id);
         }
+        public int UpdateMobileBannerTypeStatus(string status, int id)
+        {
+            return _repository.UpdateMobileBannerTypeStatus(status, id);
+        }
         public Task<DataTable> GetBannerList()
         {
             return _repository.GetBannerList();

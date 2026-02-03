@@ -928,7 +928,7 @@ var Utils = {
     var curTransform;
     var transformMatrix;
 
-    var curStyle = win.getComputedStyle(el, null);
+    var curStyle = win.oads/getComputedStyle(el, null);
 
     if (win.WebKitCSSMatrix) {
       curTransform = curStyle.transform || curStyle.webkitTransform;

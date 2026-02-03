@@ -69,6 +69,46 @@ namespace skipper_group_new.Controllers
 
             return View(obj);
         }
+
+        // Test Version
+
+        [HttpGet]
+        [Route("/test")]
+        public async Task<IActionResult> test()
+        {
+
+            clsHomeModel obj = new clsHomeModel();
+            await LoadSeoDataAsync(1);
+            await BindProjectsList();
+            await BindNewsList();
+            await BindHomeBanner();
+            await Task.Delay(1);
+
+            Task<DataTable> x = this._homePageService.GetCMSData();
+            if (x != null)
+            {
+                DataRow[] results = x.Result.Select($"pagestatus=1 and pageid='1'");
+                if (results.Length == 0)
+                {
+                    return (IActionResult)this.RedirectToAction("Index", "SkipperHome");
+                }
+                else
+                {
+                    DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
+                    obj.cmscontent = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
+                    obj.SmallDescription = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["smalldesc"]));
+                    obj.pagedesc2 = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription1"]));
+                    obj.pagedesc3 = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription2"]));
+                    obj.megamenu = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["mobilemegamenu"]));
+                    return View(obj);
+                }
+            }
+
+            return View(obj);
+        }
+
+        //End
+
         [HttpGet]
         [Route("thankyou")]
         public IActionResult Thankyou()
@@ -149,7 +189,7 @@ namespace skipper_group_new.Controllers
             var y = await _homePageService.GetInvestorList();
             ViewBag.InvestorList = y.Select("status=1").CopyToDataTable();
 
-         
+
 
             Task<DataTable> x = this._homePageService.GetCMSData();
             if (x != null)
@@ -167,7 +207,7 @@ namespace skipper_group_new.Controllers
                     return View("inestor", obj);
                 }
 
-              
+
 
             }
 
@@ -684,20 +724,24 @@ namespace skipper_group_new.Controllers
         [HttpGet]
         public async Task<IActionResult> BindHomeBanner()
         {
-            var list =  _homePageService.GetBannerList();
+            var list = _homePageService.GetBannerList();
             var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
             bool isMobile = userAgent.Contains("Android") ||
                             userAgent.Contains("iPhone") ||
                             userAgent.Contains("Mobile");
 
             DataRow[] filterlist = list.Result.Select(
-                isMobile
-                    ? "status=1 AND (collageid = 0 OR collageid IS not NULL) AND devicetype='Mobile'"
-                    : "status=1 and (collageid = 0 OR collageid IS not NULL) AND devicetype='Desktop'"
-            );
-            
-            var top5 = filterlist.CopyToDataTable();
-            ViewBag.BannerList = top5;
+    isMobile
+        ? "status=1 and mobilestatus=1 and collageid='0' AND devicetype='Desktop'"
+        : "status=1 and desktopstatus=1 and collageid='0' AND devicetype='Desktop'"
+);
+
+            if (filterlist.Length > 0)
+            {
+                var top5 = filterlist.CopyToDataTable();
+                ViewBag.BannerList = top5;
+            }
+
             return View();
         }
 

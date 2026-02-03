@@ -37,6 +37,7 @@
 	<ItemGroup>
 	  <Content Include="Views\SkipperHome\career.cshtml_old" />
 	  <Content Include="Views\SkipperHome\projectlist.cshtml_old" />
+	  <Content Include="Views\SkipperHome\Test.cshtml_old" />
 	</ItemGroup>
 	<Target Name="CopyViewsAfterPublish" AfterTargets="Publish">
 		<ItemGroup>

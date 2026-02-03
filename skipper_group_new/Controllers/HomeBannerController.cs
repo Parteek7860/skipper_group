@@ -80,12 +80,24 @@ namespace skipper_group_new.Controllers
             return View("~/Views/Backoffice/homebanner/addhomebannertype.cshtml", clsBannerType);
         }
         [HttpPost]
-        [Route("backoffice/homebanner/Save/{name}/{pageid:int}")]
-        [Route("backoffice/homebanner/Save")]
-        public async Task<IActionResult> Save(clsBannerType bannertype, int pageid)
+        [Route("backoffice/homebanner/save")]
+        [Route("backoffice/homebanner/save/{name}/{pageid:int}")]
+        public async Task<IActionResult> save(clsBannerType bannertype, int pageid)
         {
             try
             {
+
+                var bannerTypes = await _homePageService.GetBannerTypeList();
+                DataRow[] rows = bannerTypes.Select("btype = '" + bannertype.btype + "'");
+                if (rows != null)
+                {
+                    if (rows.Length > 0 && bannertype.btypeid == 0)
+                    {
+                        HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + " Banner Type already exists. Please enter a different Banner Type.");
+                        return RedirectToAction("addhomebannertype", "HomeBanner");
+                    }
+                }
+
                 clsBannerType objbannertype = new clsBannerType();
                 ModelState.Remove("bannertypeselect");
                 ModelState.Remove("collageid");
@@ -100,7 +112,7 @@ namespace skipper_group_new.Controllers
                     objbannertype.btypeid = bannertype.btypeid;
                     objbannertype.btype = bannertype.btype;
                     objbannertype.displayorder = bannertype.displayorder;
-                    objbannertype.uname = Convert.ToString(HttpContext.Session.GetString("UserName"));
+                    objbannertype.uname = Convert.ToString(HttpContext.Session.GetString("UserName") ?? "System");
                     if (bannertype.btypeid > 0)
                     {
                         objbannertype.mode = "2";
@@ -207,6 +219,36 @@ namespace skipper_group_new.Controllers
             }
             return View("~/Views/Backoffice/homebanner/addhomebannertype.cshtml", clsBannerType);
         }
+
+        [HttpGet]
+        [Route("backoffice/homebanner/updatemobilestatus/{id}")]
+        
+        public async Task<IActionResult> updatemobilestatus(int id, int? pageid)
+        {
+            try
+            {
+                clsBannerType objbannertype = new clsBannerType();
+                var x = _homePageService.GetBannerTypeListByID(id);
+                if (x.Result != null && x.Result.Rows.Count > 0)
+                {
+                    objbannertype.status = Convert.ToString(x.Result.Rows[0]["mobilestatus"]) == "True" ? "True" : "False"; // Toggle status
+
+                    int x1 = _homePageService.UpdateMobileBannerTypeStatus(objbannertype.status, id);
+                    if (x1 > 0)
+                    {
+                        HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "  Status update successfully.");
+
+                        return RedirectToAction("addhomebannertype", "HomeBanner");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View("~/Views/Backoffice/homebanner/addhomebannertype.cshtml", clsBannerType);
+        }
         public async Task<IActionResult> BindStaticdata()
         {
             clsBannerType = new clsBannerType();
@@ -237,7 +279,7 @@ namespace skipper_group_new.Controllers
         [HttpPost]
         [Route("backoffice/homebanner/addhomebanner")]
         [Route("backoffice/homebanner/addhomebanner/{name}/{pageid:int}")]
-        public async Task<IActionResult> addhomebanner(clsbanner obj, IFormFile file_Uploader, int pageid)
+        public async Task<IActionResult> addhomebanner(clsbanner obj, IFormFile file_Uploader, IFormFile file_Uploader2, int pageid)
         {
             var pageid1 = Convert.ToString(pageid);
             var menuList = _menuService.GetMenu(Convert.ToInt16(pageid1));
@@ -289,6 +331,22 @@ namespace skipper_group_new.Controllers
                 else
                 {
                     objbanner.uploadbanner = obj.uploadbanner ?? string.Empty;
+                }
+                if (file_Uploader2 != null && file_Uploader2.Length > 0)
+                {
+                    var fileName = Path.GetFileName(file_Uploader2.FileName); // captures name
+                    var filePath = Path.Combine("wwwroot/uploads/banner", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file_Uploader2.CopyTo(stream);
+                    }
+
+                    objbanner.bannerlogo = fileName;
+                }
+                else
+                {
+                    objbanner.bannerlogo = obj.bannerlogo ?? string.Empty;
                 }
                 objbanner.name = obj.name;
                 objbanner.tagline1 = obj.tagline1;
@@ -353,7 +411,8 @@ namespace skipper_group_new.Controllers
             };
             clsBanner.bannertypeselect = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
             {
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = "Banner", Value = "1" }
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = "Banner", Value = "1" },
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = "Video", Value = "5" }
 
             };
             return View(clsBannerType);
@@ -431,6 +490,7 @@ namespace skipper_group_new.Controllers
                     clsBanner.displayorder = Convert.ToString(bannerlist.Result.Rows[0]["displayorder"]);
                     clsBanner.uploadimage = Convert.ToString(bannerlist.Result.Rows[0]["bannerimage"]);
                     clsBanner.uploadbanner = Convert.ToString(bannerlist.Result.Rows[0]["bannerimage"]);
+                    clsBanner.bannerlogo = Convert.ToString(bannerlist.Result.Rows[0]["mobileimage"]);
                     clsBanner.status = Convert.ToString(bannerlist.Result.Rows[0]["status"]);
                     clsBanner.devicetype1 = Convert.ToString(bannerlist.Result.Rows[0]["devicetype"]);
                     clsBanner.url = Convert.ToString(bannerlist.Result.Rows[0]["url"]);

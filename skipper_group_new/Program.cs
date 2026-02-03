@@ -75,11 +75,17 @@ decrypted = decrypted.Replace(@"\\", @"\");
 builder.Services.AddSingleton<IDbConnectionProvider>(
     new DbConnectionProvider(encrypted));
 
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+});
 
 
 
 
 var app = builder.Build();
+
+app.UseResponseCompression();
 
 // -------------------------------------------------
 // 2️⃣ Developer Exception Page
@@ -154,13 +160,17 @@ app.Use(async (context, next) =>
     await next();
 });
 //app.UseStaticFiles();
-var provider = new FileExtensionContentTypeProvider();
-provider.Mappings[".mp3"] = "audio/mpeg";
+
 
 app.UseStaticFiles(new StaticFileOptions
 {
-    ContentTypeProvider = provider
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.Headers.Append(
+            "Cache-Control", "public,max-age=604800"); // 7 days
+    }
 });
+
 
 
 
@@ -214,10 +224,6 @@ app.Use(async (context, next) =>
 });
 
 
-
-
-
-
 app.UseRouting();
 
 
@@ -225,20 +231,6 @@ app.UseRouting();
 app.UseSession();
 app.UseAuthorization();
 
-//app.Use(async (context, next) =>
-//{
-//    var routeData = context.GetRouteData();
-
-//    if (routeData != null && routeData.Values.ContainsKey("id"))
-//    {
-//        if (int.TryParse(routeData.Values["id"]?.ToString(), out int id))
-//        {
-//            context.Items["route_menu_id"] = id;
-//        }
-//    }
-
-//    await next();
-//});
 
 
 // -------------------------------------------------

@@ -21,7 +21,7 @@
         </div>
     </div>
 </div>
-@using (Html.BeginForm("redirection", "redirectionmanagment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("redirection", "redirectionmanagement", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -57,75 +57,11 @@
                     </div>
                     <div class="row clearfix">
                         <div class="col-lg-6 col-md-6 col-sm-6">
-                            <input type="submit" class="btn btn-success btn-lg mx-2" formmethod="post" formaction="@Url.Action("redirection", "redirectionmanagement")" value="@ViewBag.SaveUpdate" />
-                            
+
+                            <input type="submit" class="btn btn-success btn-lg mx-2" formmethod="post" @Url.Action("redirection", "redirectionmanagement") value="@ViewBag.SaveUpdate" />
                         </div>
                     </div>
-                    <div class="row clearfix" style="padding-top:50px;">
-                        @if (RedirectionList != null && RedirectionList.Rows.Count > 0)
-                        {
-                            <div class="col-sm-12">
-                                <table class="table table-bordered" id="productTable">
-                                    <thead class="table-header">
-                                        <tr>
-                                            <th>Old Url</th>
-                                            <th>New Url</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (DataRow row in RedirectionList.Rows)
-                                        {
-                                            <tr>
-                                                <td>@(Convert.ToString(row["old_url"]))</td>
-                                                <td>@(Convert.ToString(row["new_url"]))</td>
-                                                
-                                                <td>
-                                                    @if (Convert.ToBoolean(row["Status"]) == true)
-                                                    {
-                                                        <a data-value="@(Convert.ToString(row["id"]))"
-                                                           href="/backoffice/redirectionmanagement/datastatus/@row["id"]" class="btnedit" onclick="return confirm('You want to change the status to active?');">
-                                                            <img src="~/backoffice/images/active.png" width="25" />
-                                                        </a>
-                                                    }
-                                                    else
-                                                    {
-                                                        <a data-value="@(Convert.ToString(row["id"]))"
-                                                           href="/backoffice/redirectionmanagement/datastatus/@row["id"]" class="btnedit" onclick="return confirm('You want to change the status to In-active?');">
-                                                            <img src="~/backoffice/images/wrong.png" width="25" />
-                                                        </a>
-                                                    }
-                                                </td>
-                                                <td>
-                                                    <form method="get" action="/backoffice/redirectionmanagement/redirectdelete/@row["id"]" style="display: inline;">
-                                                        <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to active?');">
-                                                            <img src="~/backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
-                                                        </button>
-                                                    </form>
-                                                  @*   <a data-value="@(Convert.ToString(row["id"]))" class="btndelete" href="/backoffice/redirectionmanagement/redirectdelete/@row["id"]">
-                                                        <img src="~/backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
-                                                    </a> *@
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                               
-                                 <div class="pagination-container text-center mt-3" style="text-align:right;">
-                                    <input id="prevPage" type="button" class="btn btn-secondary" style="background-color:#456976;" value="Previous" />
-                                    <span id="pageInfo" class="mx-2"></span>
-                                    <input id="nextPage" type="button" class="btn btn-secondary" style="background-color:#456976;" value="Next" />
-                                </div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-lg-12 my-lg-2 text-lg-center message-top2">
-                                Records not found
-                            </div>
-                        }
-                    </div>
+
 
                 </div>
             </div>
@@ -134,7 +70,81 @@
 
 }
 
+<div class="row clearfix" style="padding-top:50px;">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+            <div class="body">
+                @if (RedirectionList != null && RedirectionList.Rows.Count > 0)
+                {
+                    <div class="col-sm-12">
+                        <table class="table table-bordered" id="productTable">
+                            <thead class="table-header">
+                                <tr>
+                                    <th>Old Url</th>
+                                    <th>New Url</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (DataRow row in RedirectionList.Rows)
+                                {
+                                    <tr>
+                                        <td>@(Convert.ToString(row["old_url"]))</td>
+                                        <td>@(Convert.ToString(row["new_url"]))</td>
+
+                                        <td>
+                                            @if (Convert.ToBoolean(row["Status"]) == true)
+                                            {
+                                                <a data-value="@(Convert.ToString(row["id"]))"
+                                                   href="/backoffice/redirectionmanagement/datastatus/@row["id"]" class="btnedit" onclick="return confirm('You want to change the status to active?');">
+                                                    <img src="~/backoffice/images/active.png" width="25" />
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a data-value="@(Convert.ToString(row["id"]))"
+                                                   href="/backoffice/redirectionmanagement/datastatus/@row["id"]" class="btnedit" onclick="return confirm('You want to change the status to In-active?');">
+                                                    <img src="~/backoffice/images/wrong.png" width="25" />
+                                                </a>
+                                            }
+                                        </td>
+                                        <td>
+                                            <form method="get" action="/backoffice/redirectionmanagement/redirectdelete/@row["id"]" style="display: inline;">
+                                                <button type="submit" class="btnstatus" style="border:none;background:none" onclick="return confirm('You want to change the status to active?');">
+                                                    <img src="~/backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
+                                                </button>
+                                            </form>
+                                            @*   <a data-value="@(Convert.ToString(row["id"]))" class="btndelete" href="/backoffice/redirectionmanagement/redirectdelete/@row["id"]">
+                                                        <img src="~/backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
+                                                    </a> *@
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <div class="pagination-container text-center mt-3" style="text-align:right;">
+                            <input id="prevPage" type="button" class="btn btn-secondary" style="background-color:#456976;" value="Previous" />
+                            <span id="pageInfo" class="mx-2"></span>
+                            <input id="nextPage" type="button" class="btn btn-secondary" style="background-color:#456976;" value="Next" />
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-lg-12 my-lg-2 text-lg-center message-top2">
+                        Records not found
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
 @{
+
     var nonce = Context.Items["CSPNonce"]?.ToString();
 }
 
@@ -151,7 +161,7 @@
         });
     });
 
-    
+
     let currentPage = 1;
     const rowsPerPage = 10;
     function paginateTable() {
@@ -189,5 +199,5 @@
         }
     });
     document.addEventListener('DOMContentLoaded', paginateTable);
-    
+
 </script>

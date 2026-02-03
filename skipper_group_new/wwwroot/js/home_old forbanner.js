@@ -1,3 +1,64 @@
+// HERO SLIDER
+var menu = [];
+jQuery('.swiper-slide').each(function (index) {
+    menu.push(jQuery(this).find('.slide-inner').attr("data-text"));
+});
+var interleaveOffset = 0.3;
+var swiperOptions = {
+    loop: true,
+    speed: 1800,
+    parallax: true,
+    autoplay: {
+        delay: 4800,
+        disableOnInteraction: false,
+    },
+    watchSlidesProgress: true,
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+        renderBullet: function (index, className) {
+            return '<span class="' + className + '">' + (index + 1) + "</span>";
+        }
+    },
+
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
+
+    on: {
+        progress: function () {
+            var swiper = this;
+            for (var i = 0; i < swiper.slides.length; i++) {
+                var slideProgress = swiper.slides[i].progress;
+                var innerOffset = swiper.width * interleaveOffset;
+                var innerTranslate = slideProgress * innerOffset;
+                swiper.slides[i].querySelector(".slide-inner").style.transform =
+                    "translate3d(" + innerTranslate + "px, 0, 0)";
+            }
+        },
+
+        touchStart: function () {
+            var swiper = this;
+            for (var i = 0; i < swiper.slides.length; i++) {
+                swiper.slides[i].style.transition = "";
+            }
+        },
+
+        setTransition: function (speed) {
+            var swiper = this;
+            for (var i = 0; i < swiper.slides.length; i++) {
+                swiper.slides[i].style.transition = speed + "ms";
+                swiper.slides[i].querySelector(".slide-inner").style.transition =
+                    speed + "ms";
+            }
+        }
+    }
+};
+
+var swiper = new Swiper(".swiper-container", swiperOptions);
+
+
 /*Sustainability js start here*/
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -67,7 +128,7 @@ gsap.from(".icon_sustain", {
               });
           }
       });
-
+  
       // Scroll-linked movement for .icon_project
       gsap.to(".icon_project", {
           y: 700, // Move down by 300px
@@ -81,7 +142,7 @@ gsap.from(".icon_sustain", {
       });
     }
 });
-
+    
       /*Sustainability js end here*/
 
 /*happening js start here*/
@@ -97,7 +158,7 @@ gsap.from(".icon_sustain", {
                     setTimeout(() => {
                         entry.target.classList.add("visible");
                     }, index * 200); // 200ms delay between items
-
+                 
                     // After item animation, animate content inside with delay
                     const content = item.querySelector(".home_news_detail");
                     if (content) {
@@ -129,22 +190,4 @@ gsap.from(".icon_sustain", {
 
   /*happening  js end here*/
 
-
-
-  const homeSlider = new Swiper('.home_slider', {
-    loop: true,
-    speed: 3000,
-    autoplay: {
-      delay: 2000,
-      disableOnInteraction: false,
-    },
-    slidesPerView: 1,
-    spaceBetween: 0,
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
-  });
-
-
-  // ---home_slider-end---*//
+  

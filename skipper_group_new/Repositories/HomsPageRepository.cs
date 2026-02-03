@@ -208,6 +208,28 @@ namespace skipper_group_new.Repositories
 
             return result;
         }
+        public int UpdateMobileBannerTypeStatus(string status, int id)
+        {
+            int result = 0;
+            string query = "UpdMobileStatusHomeBannertypeSP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.Parameters.AddWithValue("@status", status == "True" ? 0 : 1);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
         public async Task<DataTable> GetBannerList()
         {
             DataTable dt = new DataTable();
@@ -521,6 +543,7 @@ namespace skipper_group_new.Repositories
                     
                     cmd.Parameters.AddWithValue("@status", obj.status);
                     cmd.Parameters.AddWithValue("@bannerimage", obj.uploadbanner);
+                    cmd.Parameters.AddWithValue("@mobilebanner", obj.bannerlogo);
                     cmd.Parameters.AddWithValue("@blogo", "");
                     cmd.Parameters.AddWithValue("@startdate", obj.startdate);
                     cmd.Parameters.AddWithValue("@enddate", obj.enddate);
