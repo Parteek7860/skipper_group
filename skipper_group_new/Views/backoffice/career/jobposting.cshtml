@@ -77,7 +77,7 @@
                             <div class="form-line">
                                 <label>Job Category</label>
                                 @Html.TextBoxFor(model => model.jobcategory, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.jobcategory, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.jobcategory, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                             <div class="form-line">
                                 <label>Department</label>
                                 @Html.TextBoxFor(model => model.department, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.department, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.department, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                             <div class="form-line">
                                 <label>Designation</label>
                                 @Html.TextBoxFor(model => model.designation, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.designation, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.designation, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -108,7 +108,7 @@
                             <div class="form-line">
                                 <label>Job Code</label>
                                 @Html.TextBoxFor(model => model.JobCode, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.JobCode, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.JobCode, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                             <div class="form-line">
                                 <label>No. Of Vacancies</label>
                                 @Html.TextBoxFor(model => model.NoOfVacancies, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.NoOfVacancies, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.NoOfVacancies, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -128,7 +128,7 @@
                             <div class="form-line">
                                 <label>Email Id</label>
                                 @Html.TextBoxFor(model => model.emailid, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.emailid, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.emailid, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                             <div class="form-line">
                                 <label>Salary</label>
                                 @Html.TextBoxFor(model => model.salary, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.salary, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.salary, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -182,7 +182,7 @@
                                                                 }, "Value", "Text", Model?.Min_Expyear),
                                                                 new { @class = "form-control" })
 
-                                @Html.ValidationMessageFor(m => m.Min_Expyear, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.Min_Expyear, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -207,7 +207,7 @@
                                                                 new { Value = "10", Text = "10 Months" },
                                                                 new { Value = "11", Text = "11 Months" }
                                                                 }, "Value", "Text", Model?.Min_Expmonth), new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Min_Expmonth, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.Min_Expmonth, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -271,7 +271,7 @@
                                                                 new { Value = "10", Text = "10 Months" },
                                                                 new { Value = "11", Text = "11 Months" }
                                                                 }, "Value", "Text", Model?.Max_Expmonth), new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Max_Expmonth, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.Max_Expmonth, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -291,7 +291,7 @@
                             <div class="form-line">
                                 <label>Qualification</label>
                                 @Html.TextAreaFor(model => model.Qualification, new { @class = "form-control editor1", @id = "editor4", @rows = "10" })
-                                @Html.ValidationMessageFor(m => m.Qualification, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.Qualification, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -302,7 +302,7 @@
                             <div class="form-line">
                                 <label>Short Description</label>
                                 @Html.TextAreaFor(model => model.shortdesc, new { @class = "form-control editor1", @id = "editor1", @rows = "10" })
-                                @Html.ValidationMessageFor(m => m.shortdesc, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.shortdesc, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -311,7 +311,7 @@
                             <div class="form-line">
                                 <label>Description</label>
                                 @Html.TextAreaFor(model => model.JobDesc, new { @class = "form-control editor1", @id = "editor2", @rows = "10" })
-                                @Html.ValidationMessageFor(m => m.JobDesc, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.JobDesc, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -322,7 +322,7 @@
                             <div class="form-line">
                                 <label>Job Opening Date</label>
                                 @Html.TextBoxFor(model => model.JobOpening_date, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                                @Html.ValidationMessageFor(m => m.JobOpening_date, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.JobOpening_date, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -331,7 +331,7 @@
                             <div class="form-line">
                                 <label>Job Closing Date</label>
                                 @Html.TextBoxFor(model => model.JobClosing_date, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                                @Html.ValidationMessageFor(m => m.JobClosing_date, "", new { @class = "text-danger" })
+                                @* @Html.ValidationMessageFor(m => m.JobClosing_date, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>

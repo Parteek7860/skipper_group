@@ -47,6 +47,8 @@ namespace skipper_group_new.Controllers
 
 
             ViewBag.EmpTypeList = new SelectList(list, "Value", "Text");
+            model.JobClosing_date = Convert.ToDateTime(DateTime.Now);
+            model.JobOpening_date = Convert.ToDateTime(DateTime.Now);
 
             ViewBag.Button = "Save";
             return View("~/Views/backoffice/career/jobposting.cshtml", model);
@@ -100,16 +102,21 @@ namespace skipper_group_new.Controllers
 
             ViewBag.EmpTypeList = new SelectList(list, "Value", "Text");
 
-            if (m.JobOpening_date == DateTime.MinValue || m.JobClosing_date == DateTime.MinValue)
-            {
-                return View("~/Views/backoffice/career/jobposting.cshtml");
-            }
+            //if (m.JobOpening_date == DateTime.MinValue || m.JobClosing_date == DateTime.MinValue)
+            //{
+            //    return View("~/Views/backoffice/career/jobposting.cshtml");
+            //}
             m.Uname = HttpContext.Session.GetString("UserName");
             m.Mode = (m.Jobid > 0) ? 2 : 1;
+            m.JobCode = m.JobCode ?? "";
+            if (m.Jobid <= 0)
+            {
+                m.Status = true;
+            }
             var resultJobId = await _management.AddEditJob(m);
             if (resultJobId > 0)
             {
-                if (m.Mode > 0)
+                if (m.Jobid > 0)
                 {
                     HttpContext.Session.SetString("Message", "Job Update successfully.");
                     return RedirectToAction("viewpostedjob", "Career");
@@ -157,22 +164,22 @@ namespace skipper_group_new.Controllers
             return View("~/Views/backoffice/career/jobposting.cshtml", result);
         }
 
-        [HttpPost]
-        [Route("/backoffice/career/Delete/{jobID}")]
-        public async Task<IActionResult> Delete(int jobID)
+        [HttpGet]
+        [Route("/backoffice/career/delete/{jobID}")]
+        public async Task<IActionResult> delete(int jobID)
         {
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
             var result = await _management.Delete(jobID);
             if (result > 0)
             {
-                TempData["SuccessMessage"] = "Deleted successfully.";
+                HttpContext.Session.SetString("Message", "Delete successfully.");
             }
             else
             {
                 TempData["ErrorMessage"] = "Something went wrong.";
             }
-            return View("~/Views/backoffice/career/viewpostedjob.cshtml");
+            return RedirectToAction("viewpostedjob", "career");
         }
 
         [HttpGet]
@@ -264,21 +271,21 @@ namespace skipper_group_new.Controllers
                     {
                         var dt = filtetedRows.First();
                         string status = dt.Status == true ? "True" : "False";
-                        var chngstatus =  _management.JobChangeStatus(status, id);
+                        var chngstatus = _management.JobChangeStatus(status, id);
                         if (chngstatus > 0)
                         {
                             HttpContext.Session.SetString("Message", "Status Update successfully.");
                             return RedirectToAction("viewpostedjob", "career");
                         }
-                       
+
                     }
 
                 }
-               
+
             }
             catch (Exception ex)
             {
-                
+
             }
             return RedirectToAction("viewpostedjobs", "career");
         }
