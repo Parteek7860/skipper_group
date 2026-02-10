@@ -12,37 +12,36 @@
                     <h2>@row["jobtitle"]</h2>
 
                     <div class="company-info">
+
                         <p>
-                            <strong>Name of the Company :</strong>
-                            <span>@row["company"]</span>
-                        </p>
-                        <p>
-                            <strong>Name of Department:</strong>
-                            <span>@row["department"]</span>
-                        </p>
-                        <p>
-                            <strong>Posted On:</strong>
-                            <span>@Convert.ToDateTime(row["jobopening_date"]).ToString("dd MM yyyy")</span>
-                        </p>
-                        <p>
-                            <strong>End Date:</strong>
-                            <span>@Convert.ToDateTime(row["jobclosing_date"]).ToString("dd MM yyyy")</span>
-                        </p>
-                        <p>
-                            <strong>Location:</strong>
+                            <strong>Job Location:</strong>
                             <span>@row["location"]</span>
+                        </p>
+                        <p>
+                            <strong>Qualification:</strong>
+                            <span>
+                                @Html.Raw(System.Net.WebUtility.HtmlDecode(Convert.ToString(@row["Qualification"])))
+                            </span>
                         </p>
                     </div>
 
                     <div class="required-experience">
                         <p>
-                            <strong>Required Experience:</strong>
+                            <strong>Experience:</strong>
                             <span>@row["min_expyear"] - @row["max_expyear"] years</span>
                         </p>
                     </div>
-
-                    @Html.Raw(System.Net.WebUtility.HtmlDecode(row["skills"]?.ToString()))
-
+                    <div class="required-experience">
+                        <p>
+                            <strong>
+                                No.of Openings
+                                :
+                            </strong>
+                            <span>
+                                @row["no_of_vac"]
+                            </span>
+                        </p>
+                    </div>
                     <div class="button-container">
                         <a href="#">Share</a>
                         <a href="/career-details/@Convert.ToString(row["jobtitle"]).ToSlug().ToLower()/@row["jobid"]">

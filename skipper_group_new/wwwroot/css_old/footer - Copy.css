@@ -1,0 +1,157 @@
+.footer {
+    background-color: #333333;
+    color: #ddd;
+    padding: 4.5rem 0 2.5rem;
+    font-size: var(--font-14);
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    /* flex-wrap: wrap; */
+}
+
+.footer-left {
+    flex: 0 0 18%;
+    margin: 0;
+}
+
+.footer-middle {
+    flex: 0 0 40%;
+    margin: 0;
+    padding-top: 2rem;
+}
+
+.footer-right {
+    flex: 0 0 23%;
+    margin: 0;
+    padding-top: 2rem;
+    padding-left: 7rem;
+}
+
+@media (max-width: 768px) {
+
+    .footer-left,
+    .footer-middle,
+    .footer-right {
+        flex: 0 0 100%;
+    }
+}
+
+.footer-logo {
+    width: 122px;
+    margin-bottom: 1.6rem;
+}
+
+.footer p,
+.footer a {
+    color: #ccc;
+    line-height: 1.6;
+    text-decoration: none;
+    font-size: var(--font-14);
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px 55px;
+}
+
+.footer-bottom-links {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px 20px;
+}
+
+.footer-middle hr {
+    border: none;
+    border-top: 1px solid #5B5B5B;
+    margin: 35px 0 25px;
+    opacity: 100%;
+}
+
+.footer-right {
+    text-align: left;
+    position: relative;
+}
+
+.social-icons {
+    display: flex;
+    gap: 12px;
+    margin: 2.5rem 0;
+    font-size: var(--font-18);
+}
+
+.social-icons i {
+    color: #ccc;
+    transition: color 0.3s;
+}
+
+.social-icons i:hover {
+    color: #fff;
+}
+
+.copyright {
+    font-size: var(--font14);
+    color: #aaa;
+}
+
+.footer-left ul {
+    padding: 0;
+    margin: 0;
+}
+
+.footer-left li {
+    margin-bottom: 1rem;
+}
+
+.footer-left li img {
+    width: 11.4px;
+    margin-right: 1rem;
+}
+
+.social-icons a {
+    width: 25px;
+    height: 25px;
+    background: #F6F6F6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-icons a img {
+    width: 1.2rem;
+}
+
+.social-icons a:first-child img {
+    width: .8rem;
+}
+
+.footer-links a {
+    color: #fff;
+}
+
+.footer-left p {
+    margin-bottom: 1.6rem;
+}
+
+.footer-right h5 {
+    color: #fff;font-size: var(--font-16); font-weight:500;
+}
+
+.footer-right:before {
+    content: "";
+    width: 1px;
+    height: 202px;
+    background: #5B5B5B;
+    position: absolute;
+    left: 0;
+    top: -20px;
+}

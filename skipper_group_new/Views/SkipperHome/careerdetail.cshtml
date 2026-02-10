@@ -4,7 +4,7 @@
 
 @{
     Layout = "~/Views/Shared/_cms.cshtml";
- 
+
 
 }
 <section class="contact_one apply-details">
@@ -13,7 +13,7 @@
 
             @if (Model != null)
             {
-                
+
                 <div class="col-lg-11 ms-auto">
                     <div class="contact-title">
                         <div class="apply-title">
@@ -30,17 +30,24 @@
                             <h4>Department</h4>
                             <p>@Model.department</p>
                         </div>
+
                         <div class="emplo1-box">
-                            <h4>Qualification</h4>
-                            <p>@Html.Raw(@Model.Qualification)</p>
+                            <h4>Division </h4>
+                            <p>@Model.division </p>
+                        </div>
+
+                        <div class="emplo1-box">
+                            <h4>Preferred Skills </h4>
+                            @Html.Raw(System.Net.WebUtility.HtmlDecode(Model.Skills.ToString()))
+                        </div>
+
+                        <div class="emplo1-box">
+                            <h4>Type of Employement </h4>
+                            <p>Full-Time </p>
                         </div>
                         <div class="emplo1-box">
-                            <h4>Experience</h4>
-                            <p>@Model.Min_Expyear - @Model.Max_Expyear years</p>
-                        </div>
-                        <div class="emplo1-box">
-                            <h4>Industry(s)</h4>
-                            <p>@Model.company</p>
+                            <h4>CTC </h4>
+                            <p>As per Inudstry standards </p>
                         </div>
                     </div>
                     @Html.Raw(Model.shortdesc.ToString())

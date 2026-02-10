@@ -1,0 +1,208 @@
+@media (max-width:1799px) {
+    .infra_box {
+        padding-block: 5rem 10rem;
+        height: 100%;
+    }
+   .home_people_content p br{display: none;}
+  .video-wrapper {
+    height: fit-content;
+}
+video, .video video{
+    height: auto;
+}
+}
+@media (max-width:1699px) {
+section.skipper_news .item figure img {
+    height: 35rem;
+}
+}
+@media (max-width: 1499px) {
+    section.skipper_news .item figure img {
+        height: 30rem;
+    }
+    .home_news_detail {
+    padding-inline: 2.8rem;
+    padding-block: 2.8rem;
+    }
+   
+}
+@media (max-width: 1199px) {
+.full_container {
+    gap: 2rem;
+}
+}
+@media (min-width:1000px) and (max-width:1099px) {
+    .we_are_list p {
+        line-height: inherit;
+    }
+
+    .we_are_list li {
+        padding: 0 2rem;
+    }
+
+    .we_are_list li:after {
+        right: 0;
+    }
+
+}
+@media (max-width:1099px) {
+.full_container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+}
+
+@media (max-width:999px) {
+     
+    section.featured_project {
+            padding-block: 7rem 2rem !important;
+        }
+        .infra_box {
+            padding-block: 5rem 4rem;
+        }
+                        .certificate-pic {
+                            left: 0;
+                        }
+    .video img {
+            width: 100%;   }
+    /* .video-wrapper {
+        height: 100vh;
+    } */
+
+    .about_img_panel {
+        padding-inline: 3rem 4rem !important;
+    }
+
+    section.skipper_home_about .col-md-7 {
+        order: 1;
+    }
+
+    section.skipper_home_about .col-md-5 {
+        order: 2;
+    }
+
+    section.skipper_home_about {
+        padding-block: 3rem;
+        text-align: center;
+        padding-inline: 2.5rem;
+    }
+
+    .we_are h1 {
+        padding-block: 0 2rem;
+        margin: 0;
+    }
+
+    .read_icon {
+        margin: inherit;
+        width: 22px;
+        height: 22px;
+    }
+
+    .we_are p {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        /* limits to 3 lines */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* .we_are_list li:last-child {
+        display: none;
+    } */
+
+    /* .we_are_list li:nth-child(2):after {
+        display: none;
+    } */
+
+    .we_are_list li:after {
+    right: 0em !important;
+    }
+    .we_are_list p {
+        line-height: inherit;
+        font-size: var(--font-14);
+        padding-inline: 1rem;
+    }
+
+    .we_are_list {
+        margin-block: 1rem 3rem;
+    }
+        .we_are_list {
+        margin-block: 1rem 0;
+    }
+    .engineering-image {
+    margin-top: 6rem;
+    }
+}
+@media (max-width:767px) {
+        .we_are_list li:after {
+        right: -1em !important;
+    }
+        .we_are_list p {
+        padding-inline: 2rem;
+    }
+    .full_container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+}
+.second-vertical-line2{
+    display: none;
+}
+.right-container {
+    grid-template-columns: repeat(1, 1fr) !important;
+}
+}
+@media (max-width:567px) {
+    .certificate-pic {
+        left: 3rem !important;
+    }
+}
+@media (max-width:499px) {
+      .certificate-pic {
+        left: 0rem !important;
+         padding: 0 0.5rem;
+    }
+    section.skipper_home_about {
+        padding-inline: 0.5rem;
+    }
+        .we_are_list p {
+        padding-inline: 1rem;
+    }
+        .we_are_list li:after {
+        right: 0em !important;
+    }
+        .we_are_list {
+        margin-block: 1rem 0 !important;
+    }
+    .we_are_list ul h2 {
+    font-size: var(--font-48) !important;
+    }
+        .we_are_list p {
+        font-size: 11px !important;
+        }
+
+}
+@media (max-width:360px) {
+    .we_are p {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        /* limits to 3 lines */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+   
+}
+@media (min-width:2399px) {
+
+    .icon_sustain {
+        bottom: -101.5em;
+        right: 33em;
+    }
+    .icon_sustain img{width:60rem;}
+    .home_people_content p br{display: none;}
+    .infra_num2 {
+        padding-block: 4rem 5rem;
+    }
+}

@@ -25,6 +25,7 @@ namespace skipper_group_new.Models
         public int Max_Expmonth { get; set; }
         public int srno { get; set; }
         public string productname { get; set; }
+        public string division { get; set; }
 
 
         [Required(ErrorMessage = "Salary is required")]

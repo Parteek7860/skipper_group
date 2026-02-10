@@ -102,8 +102,12 @@
                         <img src="/images/icon/humburger-icon.svg" class="img-fluid" />
                     </a>
                 </div>
+                @{
+                    string hamburgerengclass = "eng_icon";
+                    
+                }
                 <nav class="sub-menu open">
-                    <div id="accordian">
+                    <div id="accordian" class="@hamburgerengclass">
                         <ul class="list-unstyled">
                             @if (dthamburgar != null)
                             {

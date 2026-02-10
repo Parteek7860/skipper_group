@@ -450,6 +450,7 @@ namespace skipper_group_new.Controllers
          rewriteurl = dr["rewriteurl"].ToString(),
          pageid = dr["pageid"].ToString(),
          collageid = dr["collageid"].ToString(),
+         SmallDescription = dr["megamenu"].ToString(),
          // FIRST LEVEL SUB MENUS
          SubMenus = dt.AsEnumerable()
              .Where(sub => sub["ParentId"].ToString() == dr["pageid"].ToString()

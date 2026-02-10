@@ -10,7 +10,7 @@
     --font-42: 4.2rem;
     --font-36: 3.6rem;
     --font-30: 3rem;
-    --font-24: 2.2rem;
+    --font-24: 2.4rem;
     --font-21: 2.1rem;
     --font-18: 1.8rem;
     --font-16: 1.6rem;
@@ -33,16 +33,16 @@
 
 @media (min-width:2499px) {
     :root {
-            --font-72: 8rem;
-            --font-60: 6rem;
-            --font-48: 5rem;
-            --font-36: 4rem;
-            --font-30: 3.5rem;
-            --font-24: 2.5rem;
-            --font-21: 2.5rem;
-            --font-18: 2rem;
-            --font-16: 1.8rem;
-        }
+        --font-72: 8.5rem;
+        --font-60: 7rem;
+        --font-48: 5.2rem;
+        --font-36: 4rem;
+        --font-30: 3.5rem;
+        --font-24: 3rem;
+        --font-21: 2.8rem;
+        --font-18: 2.2rem;
+        --font-16: 1.8rem;
+    }
 
 }
 

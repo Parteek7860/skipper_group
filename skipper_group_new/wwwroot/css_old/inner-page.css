@@ -1200,19 +1200,6 @@ font-size: var(--font-21);
     margin-bottom: 3rem;
     font-weight: 300;
 }
-.whats_new_two-details .whtsnew_btm_grid .whts_right .evnt-nme a{
-    font-size: var(--font-16);
-    color: var(--color33);
-    font-weight: 400;
-}
-.whats_new_two-details .whtsnew_btm_grid .whts_right .evnt-nme a img{
-   margin-left:1rem;
-
-}
-.whats_new_two-details .whtsnew_btm_grid .whts_right .evnt-nme a:hover{
-color:var(--color00);
-
-}
 .whats_new_two-details .whtsnew_btm_grid .whts_right .evnt-nme p span.rs-icon{
     position: relative;
 }
@@ -10777,17 +10764,17 @@ section.Social_Responsibility9 .subtract_icon1 {
 .emplo1-box p {
     margin-bottom: 0;
 }
-.contact_one.apply-details h4 {
-    font-size: var(--font-24);
-    color: var(--color33);
-    font-weight: 600;
-    margin-bottom: 2rem;
-}
+
 .emplo-keys {
     margin-bottom: 5rem;
 }
 
-
+.emplo-keys h4 {
+    font-size: var(--font-30);
+    color: var(--color33);
+    font-weight: 600;
+    margin-bottom: 3rem;
+}
 
 .emplo-keys li {
     padding-left: 2rem;
@@ -10821,12 +10808,7 @@ section.Social_Responsibility9 .subtract_icon1 {
 .apply-text .custom-btn {
     margin-top: 3rem;
 }
-#careerJobsContainer .row{
-    gap:2rem 0;
-}
-.job-posting{
-    height: 100%;
-}
+
 @media screen and (max-width:1366px) {
     .employ-info {
         margin-bottom: 4rem;

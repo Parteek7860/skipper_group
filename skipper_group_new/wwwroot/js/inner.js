@@ -1,3 +1,35 @@
+// product-slider start here
+var swiper = new Swiper(".product-slider", {
+    slidesPerView: 3.8,
+    spaceBetween: 58,
+    speed: 1000,
+    loop: true,
+    pagination: {
+        el: ".swiper-pagination",
+        type: "progressbar",
+    },
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+    },
+    breakpoints: {
+        1400: {
+            slidesPerView: 3.8,
+            spaceBetween: 30
+        },
+        768: {
+            slidesPerView: 2,
+            spaceBetween: 20
+        },
+        575: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+        }
+    },
+});
+
+
+// product-slider end here
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -747,38 +779,6 @@ var swiper = new Swiper(".related-blog-slider", {
 
 
 
-// product-slider start here
-var swiper = new Swiper(".product-slider", {
-  slidesPerView: 3.8,
-  spaceBetween: 58,
-  speed: 1000,
-  loop:true,
-  pagination: {
-    el: ".swiper-pagination",
-    type: "progressbar",
-  },
-  navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
-  },
-  breakpoints: {
-    1400: {
-      slidesPerView: 3.8,
-      spaceBetween: 30
-    },
-    768: {
-      slidesPerView: 2,
-      spaceBetween: 20
-    },
-    575: {
-      slidesPerView: 1,
-      spaceBetween: 10,
-    }
-  },
-});
-
-
-// product-slider end here
 
 //talent_management_slider start here
 var swiper = new Swiper(".talent_management_slider", {
@@ -949,15 +949,25 @@ setTimeout(() => {
 
 // upcoming event slide start
 $(document).ready(function () {
-  const quoteSwiper = new Swiper('.swiper-containe1');
-  const imageSwiper = new Swiper('.swiper-containe2', {
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-  });
-  quoteSwiper.controller.control = imageSwiper;
-  imageSwiper.controller.control = quoteSwiper;
+    const quoteEl = document.querySelector('.swiper-containe1');
+    const imageEl = document.querySelector('.swiper-containe2');
+
+    if (quoteEl && imageEl) {
+        const quoteSwiper = new Swiper(quoteEl, {
+            allowTouchMove: false, // optional
+        });
+
+        const imageSwiper = new Swiper(imageEl, {
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+
+        // Sync both swipers
+        quoteSwiper.controller.control = imageSwiper;
+        imageSwiper.controller.control = quoteSwiper;
+    }
 });
 // upcoming event slide end
 
@@ -1218,25 +1228,25 @@ var swiper = new Swiper(".history_slidernew", {
 
   // Select input custom 
     
-    const selected = document.querySelector(".select-selected");
-    const items = document.querySelector(".select-items");
+    //const selected = document.querySelector(".select-selected");
+    //const items = document.querySelector(".select-items");
 
-    selected.addEventListener("click", () => {
-      items.classList.toggle("show");
-    });
+    //selected.addEventListener("click", () => {
+    //  items.classList.toggle("show");
+    //});
 
-    items.querySelectorAll("div").forEach(option => {
-      option.addEventListener("click", () => {
-        selected.textContent = option.textContent;
-        selected.setAttribute("data-value", option.getAttribute("data-value"));
-        items.classList.remove("show");
-      });
-    });
+    //items.querySelectorAll("div").forEach(option => {
+    //  option.addEventListener("click", () => {
+    //    selected.textContent = option.textContent;
+    //    selected.setAttribute("data-value", option.getAttribute("data-value"));
+    //    items.classList.remove("show");
+    //  });
+    //});
 
-    // close dropdown when clicking outside
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest(".custom-select")) {
-        items.classList.remove("show");
-      }
-    });
+    //// close dropdown when clicking outside
+    //document.addEventListener("click", (e) => {
+    //  if (!e.target.closest(".custom-select")) {
+    //    items.classList.remove("show");
+    //  }
+   // });
   

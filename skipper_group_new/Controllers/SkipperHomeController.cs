@@ -70,45 +70,7 @@ namespace skipper_group_new.Controllers
             return View(obj);
         }
 
-        // Test Version
-
-        [HttpGet]
-        [Route("/test")]
-        public async Task<IActionResult> test()
-        {
-
-            clsHomeModel obj = new clsHomeModel();
-            await LoadSeoDataAsync(1);
-            await BindProjectsList();
-            await BindNewsList();
-            await BindHomeBanner();
-            await Task.Delay(1);
-
-            Task<DataTable> x = this._homePageService.GetCMSData();
-            if (x != null)
-            {
-                DataRow[] results = x.Result.Select($"pagestatus=1 and pageid='1'");
-                if (results.Length == 0)
-                {
-                    return (IActionResult)this.RedirectToAction("Index", "SkipperHome");
-                }
-                else
-                {
-                    DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
-                    obj.cmscontent = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
-                    obj.SmallDescription = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["smalldesc"]));
-                    obj.pagedesc2 = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription1"]));
-                    obj.pagedesc3 = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription2"]));
-                    obj.megamenu = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["mobilemegamenu"]));
-                    return View(obj);
-                }
-            }
-
-            return View(obj);
-        }
-
-        //End
-
+        
         [HttpGet]
         [Route("thankyou")]
         public IActionResult Thankyou()
@@ -504,9 +466,8 @@ namespace skipper_group_new.Controllers
                 obj.Min_Expyear = Convert.ToInt32(dt.Rows[0]["min_expyear"]);
                 obj.Max_Expyear = Convert.ToInt32(dt.Rows[0]["max_expyear"]);
                 obj.Qualification = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["qualification"]));
-
-
-
+                obj.division = Convert.ToString(dt.Rows[0]["division"]);
+                obj.Skills = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["skills"]));
                 obj.Location = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["location"]));
                 obj.shortdesc = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["shortdesc"]));
             }

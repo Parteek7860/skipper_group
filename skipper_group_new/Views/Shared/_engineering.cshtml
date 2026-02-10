@@ -6,7 +6,7 @@
 @{
     DataTable dt = ViewBag.ProductList as DataTable;
 }
-<html>
+<html lang="en">
 <head>
     <meta name="viewport" content="width=device-width" />
     @await Html.PartialAsync("~/Views/Shared/_seosection.cshtml")
@@ -43,7 +43,7 @@
             </a>
         </div>
         <nav>
-            @await Html.PartialAsync("~/Views/PartialView/_MainMenu.cshtml")
+            @await Html.PartialAsync("~/Views/PartialView/_MainMenu_new.cshtml")
         </nav>
 
 
@@ -174,7 +174,7 @@
     <script src="https://code.jquery.com/jquery-migrate-3.4.1.min.js"></script>
     <script src="@Url.Content("/js/bootstrap.min.js")"></script>
     <script src="@Url.Content("/js/owl.carousel.min.js")"></script>
-    <script src="@Url.Content("/js/swiper.js")"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.js"></script>
 
     <script src="@Url.Content("/js/TweenMax.min.js")"></script>
     <script src="@Url.Content("/js/SmoothScroll.min.js")"></script>

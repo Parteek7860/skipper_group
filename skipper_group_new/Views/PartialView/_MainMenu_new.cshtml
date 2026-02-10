@@ -1,0 +1,440 @@
+﻿@using System.Data
+@using skipper_group_new.Models
+@inject skipper_group_new.Service.MenuDataService MenuService
+@using skipper_group_new.mainclass;
+@{
+    var leftHam = MenuService.HamBurgerList;
+    var mainmenu = MenuService.MainMenuList;
+    var investorlist = MenuService.InvestorList;
+    var productlist = MenuService.productlist;
+
+    DataTable dtmenu = ViewBag.MenuList as DataTable;
+    DataTable dthamburgar = ViewBag.SubHamburger as DataTable;
+    List<DataRow> mainmenuFiltered = new List<DataRow>();
+    if (dtmenu != null)
+    {
+        mainmenuFiltered = dtmenu.AsEnumerable()
+                                .Where(r => r.Field<int>("collageid") != 0).ToList();
+    }
+
+}
+<style>
+
+    .globe-dropdown {
+        position: relative;
+        display: inline-block;
+        margin-left: 0;
+    }
+
+    .globe-icon img {
+        width: 28px;
+        cursor: pointer;
+    }
+
+    .globe-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 5rem;
+        background: #fff;
+        min-width: 251px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        list-style: none;
+        padding: 3rem 0;
+        margin: 0;
+        z-index: 999;
+        width: 100%;
+    }
+
+        .globe-menu li a {
+            display: block;
+            padding: 0px 1rem;
+            color: #333;
+            text-decoration: none;
+            margin-top: 0;
+            font-size: var(--font-21);
+        }
+
+            .globe-menu li a:hover {
+                background: #f2f2f2;
+            }
+
+    /* Show dropdown on hover */
+    .globe-dropdown:hover .globe-menu {
+        display: block;
+    }
+
+
+    .globe-menu li:not(:last-child) {
+        margin-bottom: 2rem;
+    }
+
+    .globe-menu li:hover a {
+        color: var(--color00);
+        background-color: transparent;
+    }
+
+</style>
+@if (mainmenuFiltered.Count > 0)
+{
+    @if (dtmenu != null)
+    {
+        <ul class="d-flex align-items-center justify-content-between">
+            @foreach (DataRow row1 in dtmenu.Rows)
+            {
+                var href = !string.IsNullOrEmpty(Convert.ToString(row1["rewriteurl"]))
+                ? $"/{Convert.ToString(row1["rewriteurl"])}"
+                : $"/cms/{Convert.ToString(row1["linkname"]).ToSlug()}/{Convert.ToInt32(row1["pageid"])}/{Convert.ToInt32(row1["collageid"])}";
+                <li>
+                    <a href="@href">@Convert.ToString(row1["linkname"])</a>
+                </li>
+            }
+            <li class="ps_d"><a href="javascript:void(0)">Enquiry Now</a></li>
+            <li class="ps_d blu_clr">
+                <a href="/">
+                    Skipper Group <img src="images/icon/arrow-right.webp"
+                                       alt="">
+                </a>
+            </li>
+            <div class="top-humburger">
+                <div class="c-hamburger c-hamburger--htx">
+                    <a href="javascript:void(0)">
+                        <img src="/images/icon/humburger-icon.svg" class="img-fluid" />
+                    </a>
+                </div>
+                @{
+                    string hamburgerengclass = "eng_icon";
+
+                }
+                <nav class="sub-menu open">
+                    <div id="accordian" class="@hamburgerengclass">
+                        <ul class="list-unstyled">
+                            @if (dthamburgar != null)
+                            {
+                                @foreach (DataRow row in dthamburgar.Rows)
+                                {
+                                    var subHref = !string.IsNullOrEmpty(Convert.ToString(row["rewriteurl"]))
+                                    ? $"/{Convert.ToString(row["rewriteurl"])}"
+                                    : $"/cms/{Convert.ToString(row["linkname"]).ToSlug()}/{Convert.ToInt32(row["pageid"])}/{Convert.ToInt32(row["collageid"])}";
+                                    <li class="no_drop_menu">
+                                        <h3>
+                                            <a href="@subHref">@Convert.ToString(row["linkname"])</a>
+                                        </h3>
+                                    </li>
+                                }
+                            }
+
+
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </ul>
+    }
+
+}
+else
+{
+    <nav>
+        <ul class="align-items-center d-flex justify-content-between">
+            @if (mainmenu != null && mainmenu.Count > 0)
+            {
+                @foreach (var menu in mainmenu)
+                {
+                    string parentclass = "";
+                    string aboutclass = "";
+                    if (menu.pageid == "6")
+                    {
+                        aboutclass = "mega_dropdown mega_dropdown01 sustain_menu";
+                        parentclass = "sutain_d";
+                    }
+                    if (menu.pageid == "2")
+                    {
+                        aboutclass = "mega_dropdown mega_dropdown01 abt-menu";
+                    }
+                    if (menu.pageid == "7")
+                    {
+                        parentclass = "ps_d";
+                        aboutclass = "mega_dropdown mega_dropdown01 product_menu";
+                    }
+
+
+
+                    var subHref = !string.IsNullOrEmpty(menu.rewriteurl)
+                    ? $"/{menu.rewriteurl}"
+                    : $"/cms/{menu.linkname}/{menu.pageid}";
+
+                    var currentPath = Context.Request.Path.Value.ToLower();
+
+                    bool isActive =
+                    currentPath == subHref;
+
+                    <li class="menu-item menudrop-item @parentclass">
+
+                        <a class="@(isActive ? "active" : "")" href="@((menu.SubMenus != null && menu.SubMenus.Count > 0) || menu.pageid == "7" ? "javascript:void(0)" : subHref)">
+                            @menu.Name
+
+                        </a>
+                        @if (menu.pageid == "2" || menu.pageid == "6" || menu.pageid == "7")
+                        {
+                            <div class="@aboutclass">
+
+                                @Html.Raw(System.Net.WebUtility.HtmlDecode(menu.SmallDescription))
+                                @if (menu.pageid != "7")
+                                {
+                                    <div class="mega_item_right">
+                                        @foreach (var submenu in menu.SubMenus)
+                                        {
+                                            var Href = !string.IsNullOrEmpty(submenu.rewriteurl)
+                                            ? $"/{submenu.rewriteurl}"
+                                            : $"javascript:void()";
+                                            @if (Convert.ToInt16(submenu.pageid) != 17)
+                                            {
+                                                <ul>
+                                                    <h4>
+                                                        <a href="@((submenu.SubMenus2.Count > 0) ? "javascript:void(0)" : Href)">
+                                                            @Convert.ToString(submenu.linkname)
+                                                        </a>
+                                                    </h4>
+
+
+
+                                                    @if (submenu.SubMenus2.Count > 0)
+                                                    {
+                                                        @foreach (var submenu2 in submenu.SubMenus2)
+                                                        {
+                                                            var subHref1 =
+                                                            !string.IsNullOrEmpty(submenu2.rewriteurl)
+                                                            ? $"/{submenu2.rewriteurl}"
+                                                            : !string.IsNullOrEmpty(submenu2.uploadfile)
+                                                            ? $"/uploads/prospectus/{submenu2.uploadfile}"
+                                                            : $"/cms/{submenu2.linkname.ToSlug().ToLower()}/{submenu2.pageid}";
+                                                            <li>
+                                                                <a href="@subHref1">@Convert.ToString(submenu2.linkname) </a>
+                                                            </li>
+                                                        }
+                                                    }
+
+                                                </ul>
+                                            }
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+
+                                    <div class="mega_item_right">
+                                        @if (productlist != null && productlist.Count > 0)
+                                        {
+                                            var engineering = productlist.Where(p => p.pageid == "1").ToList();
+                                            var infrastructure = productlist.Where(p => p.pageid == "2").ToList();
+                                            var polymer = productlist.Where(p => p.pageid == "3").ToList();
+
+                                            if (engineering.Count > 0)
+                                            {
+                                                <div class="engmenu_list">
+                                                    <ul>
+                                                        @foreach (var e in engineering)
+                                                        {
+                                                            <h4>
+                                                                <a href="/engineering/1">
+                                                                    @Convert.ToString(e.Name)
+                                                                </a>
+                                                            </h4>
+                                                            @foreach (var e1 in e.SubMenus)
+                                                            {
+                                                                var subHref1 = !string.IsNullOrEmpty(e1.rewriteurl)
+                                                                ? $"/{e1.rewriteurl}/{e1.pageid}"
+                                                                : $"/cms/{e1.linkname}/{e1.pageid}";
+                                                                <li><a href="@subHref1">@Convert.ToString(e1.linkname) </a></li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+                                            if (infrastructure.Count > 0)
+                                            {
+                                                <div class="inframenu_list">
+                                                    <ul>
+                                                        @foreach (var e in infrastructure)
+                                                        {
+                                                            <h4>
+                                                                <a href="/infrastructure/2">
+                                                                    @Convert.ToString(e.Name)
+                                                                </a>
+                                                            </h4>
+                                                            @foreach (var e1 in e.SubMenus)
+                                                            {
+                                                                var subHref1 = !string.IsNullOrEmpty(e1.rewriteurl)
+                                                                ? $"/{e1.rewriteurl}/{e1.pageid}"
+                                                                : $"/cms/{e1.linkname}/{e1.pageid}";
+                                                                <li><a href="@subHref1">@Convert.ToString(e1.linkname) </a></li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                    @if (polymer.Count > 0)
+                                                    {
+                                                        @foreach (var e in polymer)
+                                                        {
+                                                            <ul class="polymer_menu">
+                                                                <h4>
+                                                                    <a href="https://skipperpipes.in/" target="_blank">@Convert.ToString(e.Name)</a>
+                                                                </h4>
+                                                                @Html.Raw(System.Web.HttpUtility.HtmlDecode(e.SmallDescription))
+                                                                @* <p>Skipper Pipes is a nationally reputed pipe manufacturing company that specialises in premium quality polymer pipes and fittings.</p>
+                                                                <div class="read_icon">
+                                                                    <a href="#">
+                                                                        <img alt="icon" src="/images/icon/plus-icon.svg">
+                                                                    </a>
+                                                                </div> *@
+                                                            </ul>
+                                                        }
+                                                    }
+
+                                                </div>
+                                            }
+
+                                        }
+
+                                    </div>
+                                }
+
+                            </div>
+                        }
+
+                        @if (menu.pageid == "4")
+                        {
+                            <div class="mega_dropdown investor_menu mega_dropdown01">
+                                @Html.Raw(System.Net.WebUtility.HtmlDecode(menu.SmallDescription))
+                                <div class="investormenu_link">
+                                    @if (investorlist != null)
+                                    {
+                                        <ul>
+                                            @foreach (var i in investorlist)
+                                            {
+                                                foreach (var row in i.SubMenus)
+                                                {
+                                                    var hrefinvestor = !string.IsNullOrEmpty(i.rewriteurl)
+                                                    ? $"/{i.rewriteurl}"
+                                                    : $"javascript:void()";
+
+                                                    <li>
+                                                        <a href="/investor-relations/@i.Name.ToSlug().ToLower()/@row.linkname.ToSlug().ToLower()/@Convert.ToInt16(i.pageid)/@Convert.ToInt16(row.pageid)">
+                                                            @i.Name
+                                                            <img src="/images/down-arrow.svg" alt="icon">
+                                                        </a>
+                                                    </li>
+                                                }
+                                                if (i.SubMenus.Count <= 0)
+                                                {
+                                                    var hrefinvestor = !string.IsNullOrEmpty(i.rewriteurl)
+                                                    ? $"/{i.rewriteurl}"
+                                                    : $"javascript:void()";
+                                                    <li>
+                                                        <a href="/investor-relations/@i.Name.ToSlug().ToLower()/@Convert.ToInt16(i.pageid)">@i.Name<img src="/images/down-arrow.svg" alt="icon"></a>
+                                                    </li>
+                                                }
+
+                                            }
+                                        </ul>
+                                    }
+                                    @* <ul>
+                                        <li><a href="#">Financial Performance <img src="images/down-arrow.svg" alt="icon"></a></li>
+                                        <li><a href="#">Corporate Governance <img src="images/down-arrow.svg" alt="icon"></a></li>
+                                        <li> <a href="#">Shareholder Information <img src="images/down-arrow.svg" alt="icon"></a></li>
+                                        <li><a href="#">Right Issue <img src="images/down-arrow.svg" alt="icon"></a></li>
+                                        <li><a href="#">Codes & Policies <img src="images/down-arrow.svg" alt="icon"></a></li>
+                                        <li><a href="#">MOA & AOA <img src="images/down-arrow.svg" alt="icon"></a></li>
+                                        <li><a href="#">QIP <img src="images/down-arrow.svg" alt="icon"></a></li>
+                                        <li><a href="#">Demerger <img src="images/down-arrow.svg" alt="icon"></a></li>
+                                        <li><a href="#">Other Disclosures <img src="images/down-arrow.svg" alt="icon"></a></li>
+                                        <li><a href="#">Investor Contact <img src="images/down-arrow.svg" alt="icon"></a></li>
+                                        <li>
+                                            <a href="#">
+                                                Disclosure under Regulation 46 <img src="images/down-arrow.svg" alt="icon">
+                                            </a>
+                                        </li>
+                                        <li><a href="#">Investor Query <img src="images/down-arrow.svg" alt="icon"></a></li>
+                                    </ul> *@
+                                </div>
+                                <div class="investormenu_pdf">
+                                    <figure>
+                                        <img src="/images/investormeupdf.webp" alt="quarter-img" class="img-fluid w-100">
+                                        <figcaption>
+                                            <p>Annual Report <span>2023-2024</span></p>
+                                            <img src="/images/icon/pdf-icon.svg" alt="pdf-icon">
+                                        </figcaption>
+                                    </figure>
+                                    <a href="/uploads/moduleimg/7imguf_annualreport2024-25.pdf
+                                                                                    " target="_blank'" class="links"></a>
+                                    <img class="pdfmenu-icon" src="/images/pdfmenuarrow.png" alt="icon">
+                                </div>
+                            </div>
+                        }
+                    </li>
+                }
+
+            }
+
+            <li class="globe-dropdown">
+                <a class="globe-icon">
+                    <img src="/images/globe-icon.png" alt="Globe">
+                </a>
+
+                <ul class="globe-menu">
+                    <li><a href="https://us.skipperlimited.com/" target="_blank">Skipper North America </a></li>
+                    <li><a href="https://skippermetzer.com/" target="_blank">Skipper Metzer</a></li>
+                </ul>
+            </li>
+
+
+            <div class=top-humburger>
+                <div class="c-hamburger c-hamburger--htx"><a href=javascript:void(0)></a></div>
+                <nav class="open sub-menu">
+                    <div id=accordian>
+                        @if (leftHam != null && leftHam.Count > 0)
+                        {
+                            <ul class=list-unstyled>
+                                @foreach (var ham in leftHam)
+                                {
+                                    var subHref = !string.IsNullOrEmpty(ham.rewriteurl) ? $"/{ham.rewriteurl}"
+                                    : $"/cms/{ham.Name.Replace(" ", "-").ToLower()}/{ham.pageid}";
+                                    <li class="@(ham.SubMenus.Count == 0 ? "no_drop_menu" : null)">
+                                        <h3>
+
+                                            <a href="@((ham.SubMenus != null && ham.SubMenus.Count > 0) ? "javascript:void(0)" : subHref)">
+                                                @ham.Name
+                                            </a>
+                                        </h3>
+                                        @if (ham.SubMenus != null)
+                                        {
+                                            <ul class=submenu>
+                                                @foreach (var sub in ham.SubMenus)
+                                                {
+                                                    var subHref1 = !string.IsNullOrEmpty(sub.rewriteurl)
+                                                    ? $"/{sub.rewriteurl}"
+                                                    : $"/cms/{sub.linkname.ToLower().Replace(" ", "-")}/{sub.pageid}";
+                                                    <li>  <a href="@subHref1">@sub.linkname</a> </li>
+                                                }
+                                            </ul>
+                                        }
+
+                                    </li>
+                                }
+                            </ul>
+                        }
+
+                    </div>
+                </nav>
+            </div>
+        </ul>
+    </nav>
+}
+
+
+
+
+
+
+
+

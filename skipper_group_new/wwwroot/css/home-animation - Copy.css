@@ -19,7 +19,7 @@
 
     .certificate-pic {
         display: inline-block;
-        padding: 2rem;
+        padding: 3rem;
         position: absolute;
     }
 
@@ -277,7 +277,7 @@
 
 
     .engineering-image {
-        /* clip-path: inset(0 0% 0 100%); */
+        clip-path: inset(0 0% 0 100%);
         position: relative;
         overflow: hidden;
         display: block;
@@ -681,9 +681,7 @@ section.home_banner {
         margin-top: -6rem;
         margin-right: 4px;
     }
-    .certificate-pic {
-        padding: 0rem;
-    }
+
     .second-vertical-line-svg {
         top: 2rem;
         right: -1rem;
