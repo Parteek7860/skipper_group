@@ -10762,7 +10762,7 @@ section.Social_Responsibility9 .subtract_icon1 {
 .employ-info {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 5rem;
+    gap: 2rem 5rem;
     margin-bottom: 5rem;
 }
 
@@ -10783,6 +10783,26 @@ section.Social_Responsibility9 .subtract_icon1 {
     font-weight: 600;
     margin-bottom: 2rem;
 }
+.emplo1-box:nth-child(3) p{
+    display:none;
+}
+/* .emplo1-box:nth-child(3) span{
+background: transparent;
+    padding: 0;
+    position: relative;
+    padding-right: 2px;
+    font-size: var(--font-16);
+    line-height: var(--line-height-30);
+    font-weight: 200;
+    color: var(--color33);
+}
+.emplo1-box:nth-child(3) span::after{
+    content: ',';
+    position: absolute;
+    right: -2px;
+    bottom: 1px;
+    font-size: 13px;
+} */
 .emplo-keys {
     margin-bottom: 5rem;
 }

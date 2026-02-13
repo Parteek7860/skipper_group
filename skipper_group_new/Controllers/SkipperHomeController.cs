@@ -269,8 +269,9 @@ namespace skipper_group_new.Controllers
             await LoadCMSDataAsync(id);
             var x = await _homePageService.GetNewsEvents();
             var filterlist = x.AsEnumerable()
-                   .Where(r => r.Field<bool>("status") == true)
-                   .OrderBy(r => r.Field<int>("displayorder"))
+                   .Where(r => r.Field<bool>("status") == true).OrderByDescending(r => r["eventsdate"] == DBNull.Value
+                                                                            ? DateTime.MinValue
+                                                                            : Convert.ToDateTime(r["eventsdate"]))
                    .ToList();
 
             var top2 = filterlist.Take(2).ToList();
@@ -975,12 +976,6 @@ namespace skipper_group_new.Controllers
                         return actionResult;
                 }
             }
-
-
-
-
-
-
 
             // Fallback to CMS
             return await cms(url, id);
