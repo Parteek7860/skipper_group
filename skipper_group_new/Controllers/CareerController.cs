@@ -101,11 +101,6 @@ namespace skipper_group_new.Controllers
 
 
             ViewBag.EmpTypeList = new SelectList(list, "Value", "Text");
-
-            //if (m.JobOpening_date == DateTime.MinValue || m.JobClosing_date == DateTime.MinValue)
-            //{
-            //    return View("~/Views/backoffice/career/jobposting.cshtml");
-            //}
             m.Uname = HttpContext.Session.GetString("UserName");
             m.Mode = (m.Jobid > 0) ? 2 : 1;
             m.JobCode = m.JobCode ?? "";
@@ -137,31 +132,25 @@ namespace skipper_group_new.Controllers
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
             ViewBag.Button = "Update";
-            var result = await _management.GetJobPostById(jobID);
-            if (result != null)
-            {
-                result.Skills = HttpUtility.HtmlDecode(result.Skills);
-                result.Qualification = HttpUtility.HtmlDecode(result.Qualification);
-                result.shortdesc = HttpUtility.HtmlDecode(result.shortdesc);
-                result.NoOfVacancies = HttpUtility.HtmlDecode(result.NoOfVacancies);
-            }
 
+            var result = await _management.GetJobPostById(jobID);
+
+            if (result == null)
+                return RedirectToAction("viewpostedjob");
+
+            result.Skills = HttpUtility.HtmlDecode(result.Skills ?? "");
+            result.Qualification = HttpUtility.HtmlDecode(result.Qualification ?? "");
+            result.shortdesc = HttpUtility.HtmlDecode(result.shortdesc ?? "");
+            result.NoOfVacancies = HttpUtility.HtmlDecode(result.NoOfVacancies ?? "");
 
             var x = await _management.GetProductSolutionList();
-            var filteredRows = x.AsEnumerable()
-                .Where(row => row.Field<bool>("status") == true);
-
-            DataTable dt = filteredRows.CopyToDataTable();
-
-
-            var list = dt.AsEnumerable()
+            var list = x.AsEnumerable()
+                .Where(row => row.Field<bool>("status") == true)
                 .Select(r => new SelectListItem
                 {
                     Value = r["productid"].ToString(),
                     Text = r["productname"].ToString()
                 }).ToList();
-
-
 
             ViewBag.EmpTypeList = new SelectList(list, "Value", "Text", result.EmpTypeId);
 
@@ -219,6 +208,7 @@ namespace skipper_group_new.Controllers
 
             return Json(new { success = true, data = applicant });
         }
+
         [HttpGet]
         [Route("/backoffice/career/downloadresume/{App_id}")]
         public async Task<IActionResult> DownloadResume(int App_id)

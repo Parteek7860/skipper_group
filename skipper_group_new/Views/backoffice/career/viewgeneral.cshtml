@@ -75,19 +75,25 @@
                                             <td>@i.Gender</td>
                                             <td>@i.App_Email</td>
                                             <td>@($"{i.App_Expyear}.{i.App_Expmonth} years")</td>
-                                              <td>@i.Trdate.ToString("dd-MMM-yyyy")</td>
+
+                                            <td data-date="@i.Trdate.ToString("yyyy-MM-dd")">
+                                                @i.Trdate.ToString("dd-MMM-yyyy")
+                                            </td>
+
                                             <td>
                                                 <a href="/backoffice/career/downloadresume/@i.App_id" class="btnDownload">
-                                                    <img src="~/backoffice/images/Download_24x24.png" class="img-fluid" width="30" alt="Download" title="Download" />
+                                                    <img src="~/backoffice/images/Download_24x24.png" width="30" />
                                                 </a>
+
                                                 <a href="/backoffice/career/GetApplicantDetail/@i.App_id" class="btnView">
-                                                    <img src="~/Backoffice/images/view_icon.svg" class="img-fluid" width="30" alt="View"  title="Click to View" />
+                                                    <img src="~/Backoffice/images/view_icon.svg" width="30" />
                                                 </a>
                                             </td>
                                         </tr>
                                         srNo++;
                                     }
                                 </tbody>
+
                             </table>
                             <div class="pagination-container text-center mt-3" style="text-align:right;">
                                 <button id="prevPage" class="btn btn-secondary" style="background-color:#456976;">Previous</button>
@@ -232,66 +238,90 @@
 }
 
 <script nonce="@nonce">
-    document.addEventListener('DOMContentLoaded', function () {
-        const deleteButtons = document.querySelectorAll('.btndelete');
-        deleteButtons.forEach(btn => {
-            btn.addEventListener('click', e => {
-                e.preventDefault();
-                if (confirm("Are you sure you want to delete this record?")) {
-                    window.location.href = btn.getAttribute('data-href');
-                }
-            });
-        });
-    });
 
+    /* ================= SEARCH ================= */
     function searchTable() {
         const input = document.getElementById('searchInput').value.toLowerCase();
         const rows = document.querySelectorAll('#productTable tbody tr');
+
         rows.forEach(row => {
-            const match = Array.from(row.getElementsByTagName('td')).some(td =>
+            const match = Array.from(row.cells).some(td =>
                 td.textContent.toLowerCase().includes(input)
             );
-            row.style.display = match ? '' : 'none';
+            row.dataset.search = match ? "1" : "0";
         });
+
+        applyFilters();
     }
 
+    /* ================= DATE FILTER ================= */
     function filterByDate() {
         const fromVal = document.getElementById('fromDate').value;
         const toVal = document.getElementById('toDate').value;
 
         const fromDate = fromVal ? new Date(fromVal) : null;
         const toDate = toVal ? new Date(toVal) : null;
-        if (toDate) toDate.setDate(toDate.getDate() + 1);
+
+        if (toDate) toDate.setHours(23,59,59,999);
 
         const rows = document.querySelectorAll('#productTable tbody tr');
+
         rows.forEach(row => {
-            const dateText = row.querySelectorAll('td')[6]?.textContent.trim();
-            const trDate = new Date(dateText.split('-').reverse().join('-'));
+
+            const dateCell = row.cells[5];
+            const isoDate = dateCell.getAttribute("data-date");
+            const trDate = new Date(isoDate);
+
             let show = true;
+
             if (fromDate && trDate < fromDate) show = false;
-            if (toDate && trDate >= toDate) show = false;
-            row.style.display = show ? '' : 'none';
+            if (toDate && trDate > toDate) show = false;
+
+            row.dataset.date = show ? "1" : "0";
         });
+
+        applyFilters();
     }
 
+    /* ================= APPLY COMBINED FILTER ================= */
+    function applyFilters() {
 
+        const rows = document.querySelectorAll('#productTable tbody tr');
+
+        rows.forEach(row => {
+
+            const searchOk = row.dataset.search !== "0";
+            const dateOk = row.dataset.date !== "0";
+
+            row.style.display = (searchOk && dateOk) ? "" : "none";
+        });
+
+        currentPage = 1;
+        paginateTable();
+    }
+
+    /* ================= PAGINATION ================= */
 
     let currentPage = 1;
     const rowsPerPage = 10;
+
     function paginateTable() {
-        const table = document.getElementById('productTable');
-        const rows = table.querySelectorAll('tbody tr');
-        const totalRows = rows.length;
-        const totalPages = Math.ceil(totalRows / rowsPerPage);
-        rows.forEach(row => row.style.display = 'none');
+
+        const rows = Array.from(document.querySelectorAll('#productTable tbody tr'))
+            .filter(r => r.style.display !== "none");
+
+        const totalPages = Math.ceil(rows.length / rowsPerPage) || 1;
+
+        rows.forEach(r => r.style.display = "none");
+
         const start = (currentPage - 1) * rowsPerPage;
         const end = start + rowsPerPage;
-        rows.forEach((row, index) => {
-            if (index >= start && index < end) {
-                row.style.display = '';
-            }
-        });
-        document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
+
+        rows.slice(start, end).forEach(r => r.style.display = "");
+
+        document.getElementById('pageInfo').textContent =
+            `Page ${currentPage} of ${totalPages}`;
+
         document.getElementById('prevPage').disabled = currentPage === 1;
         document.getElementById('nextPage').disabled = currentPage === totalPages;
     }
@@ -304,54 +334,49 @@
     });
 
     document.getElementById('nextPage').addEventListener('click', () => {
-        const table = document.getElementById('productTable');
-        const rows = table.querySelectorAll('tbody tr');
-        const totalPages = Math.ceil(rows.length / rowsPerPage);
-        if (currentPage < totalPages) {
-            currentPage++;
-            paginateTable();
-        }
+        currentPage++;
+        paginateTable();
     });
-    document.addEventListener('DOMContentLoaded', paginateTable);
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        document.querySelectorAll('#productTable tbody tr').forEach(r=>{
+            r.dataset.search="1";
+            r.dataset.date="1";
+        });
+
+        paginateTable();
+    });
 
         document.addEventListener("DOMContentLoaded", function () {
-        const viewButtons = document.querySelectorAll(".btnView");
 
-        viewButtons.forEach(btn => {
+        document.querySelectorAll(".btnView").forEach(btn => {
+
             btn.addEventListener("click", function (e) {
                 e.preventDefault();
-                const url = btn.getAttribute("href");
-                const appId = url.split('/').pop();
-                const modalEl = document.getElementById("viewApplicantModal");
-                const modal = new bootstrap.Modal(modalEl);
-                const body = document.getElementById("applicantDetailsBody");
 
-                // Show temporary loading message without deleting spans
-                const originalContent = body.innerHTML;
-                body.innerHTML = `
-                    <div class="text-center p-4" id="loadingSpinner">
-                        <div class="spinner-border text-primary" role="status"></div>
-                        <p class="mt-2">Loading applicant details...</p>
-                    </div>
-                `;
+                const url = this.getAttribute("href");
 
-                fetch(`/backoffice/career/GetApplicantDetail/${appId}`)
+                console.log("Calling:", url);
+
+                const modal = new bootstrap.Modal(document.getElementById("viewApplicantModal"));
+
+                fetch(url)
                     .then(response => {
-                        if (!response.ok) throw new Error("Network response was not ok");
+                        if (!response.ok) {
+                            throw new Error("HTTP error " + response.status);
+                        }
                         return response.json();
                     })
                     .then(result => {
-                        // Restore body structure
-                        body.innerHTML = originalContent;
 
                         if (!result.success) {
-                            body.innerHTML = `<div class="alert alert-danger text-center">${result.message}</div>`;
-                            modal.show();
+                            alert(result.message);
                             return;
                         }
 
                         const d = result.data;
-                       console.log("result:", d);
+
                         document.getElementById("aplName").textContent = d.name || "";
                         document.getElementById("aplDOB").textContent = d.dob || "";
                         document.getElementById("aplGender").textContent = d.gender || "";
@@ -373,20 +398,14 @@
 
                         modal.show();
                     })
-
                     .catch(error => {
-                        console.error("Error loading applicant details:", error);
-                        body.innerHTML = `<div class="alert alert-danger text-center">Failed to load applicant details.</div>`;
-                        modal.show();
+                        console.error("Error:", error);
+                        alert("Something went wrong. Check console.");
                     });
+
             });
         });
+
     });
 
-    setTimeout(function () {
-        var msg = document.getElementById("message");
-        if (msg) {
-            msg.style.display = "none";
-        }
-    }, 3000);
 </script>
