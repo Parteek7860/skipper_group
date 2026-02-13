@@ -70,7 +70,7 @@ namespace skipper_group_new.Controllers
             return View(obj);
         }
 
-        
+
         [HttpGet]
         [Route("thankyou")]
         public IActionResult Thankyou()
@@ -422,7 +422,7 @@ namespace skipper_group_new.Controllers
             ViewBag.Jobtitle = jobTitles;
             int firstProductId = jobTitles.Keys.First();
             var allJobs = await _homePageService.GetCarrer();
-            var filteredOpenings = allJobs.AsEnumerable().Where(r => r.Field<DateTime?>("JobClosing_date") >= DateTime.Now).OrderBy(r => r.Field<int?>("displayorder") ?? int.MaxValue);
+            var filteredOpenings = allJobs.AsEnumerable().Where(r => r.Field<DateTime?>("JobClosing_date") >= DateTime.Now && r.Field<bool>("status") == true).OrderBy(r => r.Field<int?>("displayorder") ?? int.MaxValue);
 
             ViewBag.CurrentOpenings = filteredOpenings.Any() ? filteredOpenings.CopyToDataTable() : allJobs.Clone();
             return View("career", obj);

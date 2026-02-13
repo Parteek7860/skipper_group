@@ -138,10 +138,14 @@ namespace skipper_group_new.Controllers
             ViewBag.Menus = menuList;
             ViewBag.Button = "Update";
             var result = await _management.GetJobPostById(jobID);
+            if (result != null)
+            {
+                result.Skills = HttpUtility.HtmlDecode(result.Skills);
+                result.Qualification = HttpUtility.HtmlDecode(result.Qualification);
+                result.shortdesc = HttpUtility.HtmlDecode(result.shortdesc);
+                result.NoOfVacancies = HttpUtility.HtmlDecode(result.NoOfVacancies);
+            }
 
-            result.Skills = HttpUtility.HtmlDecode(result.Skills);
-            result.Qualification = HttpUtility.HtmlDecode(result.Qualification);
-            result.shortdesc = HttpUtility.HtmlDecode(result.shortdesc);
 
             var x = await _management.GetProductSolutionList();
             var filteredRows = x.AsEnumerable()

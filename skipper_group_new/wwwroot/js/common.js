@@ -159,37 +159,53 @@ jQuery(document).ready(function () {
       $(".open").toggleClass("oppenned");
       $("body").toggleClass("active-overlay");
     });
-  
-    // Accordion for top-level <h3><a>
+  $(document).ready(function () {
+
+    // 🔹 Default open first li
+    var firstLi = $("#accordian > ul > li").first();
+    var firstSubmenu = firstLi.children("ul.submenu");
+
+    if (firstSubmenu.length && firstSubmenu.children("li").length) {
+        firstLi.addClass("active");
+        firstSubmenu.show();
+    }
+
+    // 🔹 Click toggle
     $("#accordian > ul > li > h3 > a").on("click", function (e) {
-    var parentLi = $(this).closest("li");
 
-    // 🔹 Skip items without dropdown
-    if (parentLi.hasClass("no_drop_menu")) {
-        return; // allow normal link click
-    }
+        var parentLi = $(this).closest("li");
 
-    var submenu = parentLi.children("ul.submenu");
-
-    // 🔹 Only prevent default if submenu has items
-    if (submenu.length && submenu.children("li").length) {
-        e.preventDefault();
-
-        if (parentLi.hasClass("active")) {
-            parentLi.removeClass("active");
-            submenu.slideUp(300);
-        } else {
-            // Close only top-level active menus
-            $("#accordian > ul > li.active")
-                .removeClass("active")
-                .children("ul.submenu")
-                .slideUp(300);
-
-            parentLi.addClass("active");
-            submenu.slideDown(300);
+        // Skip if no dropdown
+        if (parentLi.hasClass("no_drop_menu")) {
+            return;
         }
-    }
+
+        var submenu = parentLi.children("ul.submenu");
+
+        if (submenu.length && submenu.children("li").length) {
+            e.preventDefault();
+
+            // 🔹 If already active → close it
+            if (parentLi.hasClass("active")) {
+                parentLi.removeClass("active");
+                submenu.slideUp(300);
+            } 
+            // 🔹 Else open it and close others
+            else {
+                $("#accordian > ul > li.active")
+                    .removeClass("active")
+                    .children("ul.submenu")
+                    .slideUp(300);
+
+                parentLi.addClass("active");
+                submenu.slideDown(300);
+            }
+        }
+
+    });
+
 });
+
 
   
     // Toggle nested submenu on clicking .arrow links
