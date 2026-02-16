@@ -32,21 +32,28 @@ namespace skipper_group_new.Controllers
 
             var x = await _management.GetProductSolutionList();
             var filteredRows = x.AsEnumerable()
-                .Where(row => row.Field<bool>("status") == true);
+                .Where(row => row.Field<bool>("status") == true && row.Field<bool>("show_on_career") == true);
 
-            DataTable dt = filteredRows.CopyToDataTable();
+            if (filteredRows != null && filteredRows.Any())
+            {
+                DataTable dt = filteredRows.CopyToDataTable();
+
+                var list = dt.AsEnumerable()
+                    .Select(r => new SelectListItem
+                    {
+                        Value = r["productid"]?.ToString(),
+                        Text = r["productname"]?.ToString()
+                    }).ToList();
+
+                ViewBag.EmpTypeList = new SelectList(list, "Value", "Text");
+            }
+            else
+            {
+                ViewBag.EmpTypeList = new SelectList(new List<SelectListItem>(), "Value", "Text");
+            }
 
 
-            var list = dt.AsEnumerable()
-                .Select(r => new SelectListItem
-                {
-                    Value = r["productid"].ToString(),
-                    Text = r["productname"].ToString()
-                }).ToList();
 
-
-
-            ViewBag.EmpTypeList = new SelectList(list, "Value", "Text");
             model.JobClosing_date = Convert.ToDateTime(DateTime.Now);
             model.JobOpening_date = Convert.ToDateTime(DateTime.Now);
 

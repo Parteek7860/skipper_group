@@ -8,45 +8,49 @@
 @Html.Raw(Model.SmallDescription)
 @Html.Raw(Model.Description)
 <section class="life_nine" id="current-opening">
+@if (dt != null)
+{
     @if (dt.Rows.Count > 0)
     {
 
-        <div class="container">
-            <div class="curnt_opng_tilte">
-                <h3>Current Openings</h3>
-                <div class="custom-select">
-                    <form id="careerForm">
-                        @Html.AntiForgeryToken()
-                        <select class="form-select" name="emptypeid" id="careerId">
-                            <option value="0">All Division</option>
-                            @foreach (var item in (Dictionary<int, string>)ViewBag.Jobtitle)
-                            {
-                                <option value="@item.Key">@item.Value</option>
-                            }
-                        </select>
-                    </form>
+            <div class="container">
+                <div class="curnt_opng_tilte">
+                    <h3>Current Openings</h3>
+                    <div class="custom-select">
+                        <form id="careerForm">
+                            @Html.AntiForgeryToken()
+                            <select class="form-select" name="emptypeid" id="careerId">
+                                <option value="0">All Division</option>
+                                @foreach (var item in (Dictionary<int, string>)ViewBag.Jobtitle)
+                                {
+                                    <option value="@item.Key">@item.Value</option>
+                                }
+                            </select>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="careerJobsContainer">
+                    @Html.Partial("~/Views/PartialView/_CareerJobsPartial.cshtml", ViewBag.CurrentOpenings as DataTable)
+                </div>
+                <div class="apply-text">
+                    <blockquote>
+                        Not finding what you're looking for? <span>
+                            Drop your CV to us and we will reach out
+                            to you.
+                        </span>
+                    </blockquote>
+
+                    <a href="/apply-now/asset-management/2"
+                       class="custom-btn aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                        Reach
+                        out to us
+                    </a>
                 </div>
             </div>
 
-            <div id="careerJobsContainer">
-                @Html.Partial("~/Views/PartialView/_CareerJobsPartial.cshtml", ViewBag.CurrentOpenings as DataTable)
-            </div>
-            <div class="apply-text">
-                <blockquote>
-                    Not finding what you're looking for? <span>
-                        Drop your CV to us and we will reach out
-                        to you.
-                    </span>
-                </blockquote>
-
-                <a href="/apply-now/asset-management/2"
-                   class="custom-btn aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
-                    Reach
-                    out to us
-                </a>
-            </div>
-        </div>
-
     }
+    
+}
 </section>
 <script src="~/js/career.js" nonce="@Context.Items["CSPNonce"]"></script>

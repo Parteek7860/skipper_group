@@ -1213,10 +1213,10 @@ font-size: var(--font-21);
 color:var(--color00);
 
 }
-.whats_new_two-details .whtsnew_btm_grid .whts_right .evnt-nme p span.rs-icon{
+.whats_new_two-details .whtsnew_btm_grid p span.rs-icon{
     position: relative;
 }
-.whats_new_two-details .whtsnew_btm_grid .whts_right .evnt-nme p span.rs-icon::after{
+.whats_new_two-details .whtsnew_btm_grid  p span.rs-icon::after{
         content: "\20B9";
 }
 .whats_new_two.whats_new_two_details .whtsnew_btm_grid {

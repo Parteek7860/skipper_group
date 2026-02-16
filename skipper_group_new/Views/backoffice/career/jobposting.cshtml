@@ -149,7 +149,8 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label>Min Experience Year</label>
-                                @Html.DropDownListFor(model => model.Min_Expyear,
+                                @Html.TextBoxFor(model => model.Min_Expyear, new { @class = "form-control" })
+                                @* @Html.DropDownListFor(model => model.Min_Expyear,
                                                                 new SelectList(new[]
                                                                 {
                                                                 new { Value = "", Text = "-- Select Year --" },
@@ -180,7 +181,7 @@
                                                                 new { Value = "24", Text = "24 Years" },
                                                                 new { Value = "25", Text = "25 Years" }
                                                                 }, "Value", "Text", Model?.Min_Expyear),
-                                                                new { @class = "form-control" })
+                                                                new { @class = "form-control" }) *@
 
                                 @* @Html.ValidationMessageFor(m => m.Min_Expyear, "", new { @class = "text-danger" }) *@
                             </div>
@@ -191,7 +192,8 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label>Min Experience Month</label>
-                                @Html.DropDownListFor(model => model.Min_Expmonth,
+                                @Html.TextBoxFor(model => model.Min_Expmonth, new { @class = "form-control" })
+                                @* @Html.DropDownListFor(model => model.Min_Expmonth,
                                                                 new SelectList(new[]                                             {
                                                                 new { Value = "", Text = "-- Select Month --" },
                                                                 new { Value = "0", Text = "0 Month" },
@@ -206,7 +208,7 @@
                                                                 new { Value = "9", Text = "9 Months" },
                                                                 new { Value = "10", Text = "10 Months" },
                                                                 new { Value = "11", Text = "11 Months" }
-                                                                }, "Value", "Text", Model?.Min_Expmonth), new { @class = "form-control" })
+                                                                }, "Value", "Text", Model?.Min_Expmonth), new { @class = "form-control" }) *@
                                 @* @Html.ValidationMessageFor(m => m.Min_Expmonth, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
@@ -216,7 +218,8 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label>Max Experience Year</label>
-                                @Html.DropDownListFor(model => model.Max_Expyear, new SelectList(new[]
+                                @Html.TextBoxFor(model => model.Max_Expyear, new { @class = "form-control" })
+                                @* @Html.DropDownListFor(model => model.Max_Expyear, new SelectList(new[]
                                                                 {
                                         new { Value = "", Text = "-- Select Year --" },
                                                                 new { Value = "0", Text = "0 Year" },
@@ -245,8 +248,8 @@
                                                                 new { Value = "23", Text = "23 Years" },
                                                                 new { Value = "24", Text = "24 Years" },
                                                                 new { Value = "25", Text = "25 Years" }
-                                                                }, "Value", "Text", Model?.Max_Expyear), new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Max_Expyear, "", new { @class = "text-danger" })
+                                                                }, "Value", "Text", Model?.Max_Expyear), new { @class = "form-control" }) *@
+                                @* @Html.ValidationMessageFor(m => m.Max_Expyear, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>
                     </div>
@@ -255,7 +258,8 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label>Max Experience Month</label>
-                                @Html.DropDownListFor(model => model.Max_Expmonth, new SelectList(new[]
+                                @Html.TextBoxFor(model => model.Max_Expmonth, new { @class = "form-control" })
+                                @* @Html.DropDownListFor(model => model.Max_Expmonth, new SelectList(new[]
                                                                 {
                                         new { Value = "", Text = "-- Select Month --" },
                                                                 new { Value = "0", Text = "0 Month" },
@@ -270,7 +274,7 @@
                                                                 new { Value = "9", Text = "9 Months" },
                                                                 new { Value = "10", Text = "10 Months" },
                                                                 new { Value = "11", Text = "11 Months" }
-                                                                }, "Value", "Text", Model?.Max_Expmonth), new { @class = "form-control" })
+                                                                }, "Value", "Text", Model?.Max_Expmonth), new { @class = "form-control" }) *@
                                 @* @Html.ValidationMessageFor(m => m.Max_Expmonth, "", new { @class = "text-danger" }) *@
                             </div>
                         </div>

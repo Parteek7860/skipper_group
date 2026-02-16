@@ -285,8 +285,8 @@ namespace skipper_group_new.Controllers
 
                     .Select(row => new SelectListItem
                     {
-                        Value = row["productid"].ToString(), 
-                        Text = row["productname"].ToString()  
+                        Value = row["productid"].ToString(),
+                        Text = row["productname"].ToString()
                     })
                     .ToList();
 
@@ -488,8 +488,8 @@ namespace skipper_group_new.Controllers
                             var categoryList = catd.AsEnumerable()
                                 .Select(row => new SelectListItem
                                 {
-                                    Value = row["productid"].ToString(),  
-                                    Text = row["productname"].ToString()  
+                                    Value = row["productid"].ToString(),
+                                    Text = row["productname"].ToString()
                                 })
                                 .ToList();
 
@@ -662,7 +662,7 @@ namespace skipper_group_new.Controllers
                 ViewBag.Category = new SelectList(Enumerable.Empty<SelectListItem>());
             }
             ViewBag.CreateUpdate = "Update";
-            return View("~/Views/backoffice/Products/subcategory.cshtml",obj);
+            return View("~/Views/backoffice/Products/subcategory.cshtml", obj);
         }
 
         [HttpGet]
@@ -1095,7 +1095,7 @@ namespace skipper_group_new.Controllers
             return View("~/Views/backoffice/products/viewproductsolution.cshtml", objcls);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("backoffice/Products/chkstatus/{id}")]
         public async Task<IActionResult> chkstatus(int id)
         {
@@ -1118,6 +1118,55 @@ namespace skipper_group_new.Controllers
                         {
                             objbannertype.Status = Convert.ToString(Convert.ToInt32(filterresults[0]["Status"])) == "1" ? "False" : "True"; // Toggle status
                             int x1 = _products.UpdateStatus(objbannertype.Status, id);
+                            if (x1 > 0)
+                            {
+                                HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Status Update successfully.");
+
+                                return RedirectToAction("viewproductsolution", "Products");
+                            }
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Id is necessary.";
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "An error occurred while processing your request.";
+            }
+            return RedirectToAction("viewproductsolution", "Products");
+        }
+
+        [HttpGet]
+        [Route("backoffice/Products/chkcareerstatus/{id}")]
+        public async Task<IActionResult> chkcareerstatus(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
+                    try
+                    {
+                        HttpContext.Session.Remove("Message");
+                        clsProduct objbannertype = new clsProduct();
+                        // Get the Media list by ID
+                        var productTypes = _products.BindProductSolution();
+
+                        var filterresults = productTypes.Result.AsEnumerable()
+                       .Where(pt => pt.Field<int>("productid") == id)
+                       .ToList();
+
+                        if (filterresults.Count > 0)
+                        {
+                            objbannertype.Status = Convert.ToString(Convert.ToInt32(filterresults[0]["show_on_career"])) == "1" ? "False" : "True"; // Toggle status
+                            int x1 = _products.UpdateShowCareerStatus(objbannertype.Status, id);
                             if (x1 > 0)
                             {
                                 HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Status Update successfully.");
@@ -3098,10 +3147,10 @@ namespace skipper_group_new.Controllers
         [HttpGet]
         [Route("backoffice/products/aboutproduct/{name}/{pageid}")]
         public async Task<IActionResult> aboutproduct(string name, int pageid)
-        {   
+        {
             clsCategory objcls = new clsCategory();
             try
-            {   
+            {
                 var menuList = _menuService.GetMenu(pageid);
                 ViewBag.Menus = menuList;
 
@@ -3154,7 +3203,7 @@ namespace skipper_group_new.Controllers
 
             clsCategory objcls = new clsCategory();
             try
-            {   
+            {
                 var menuList = _menuService.GetMenu(pageid);
                 ViewBag.Menus = menuList;
                 //Get Data
@@ -3281,7 +3330,7 @@ namespace skipper_group_new.Controllers
             if (filterresult != null)
             {
                 if (type == "mobile")
-                {   
+                {
                     fileName = filterresult.Rows[0]["uploadmobilebanner"].ToString();
                 }
             }

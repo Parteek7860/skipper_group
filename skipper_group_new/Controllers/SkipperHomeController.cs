@@ -414,18 +414,22 @@ namespace skipper_group_new.Controllers
 
             //ViewBag.CurrentOpenings = filterlist;
             var x = await _homePageService.GetProductSolutionList();
-            var filteredRows = x.AsEnumerable().Where(r => r.Field<bool?>("status") == true);
+            var filteredRows = x.AsEnumerable().Where(r => r.Field<bool?>("status") == true && r.Field<bool?>("show_on_career") == true);
 
-            DataTable ndt = filteredRows.Any() ? filteredRows.CopyToDataTable() : x.Clone();
+            if (filteredRows != null && filteredRows.Any())
+            {
+                DataTable ndt = filteredRows.Any() ? filteredRows.CopyToDataTable() : x.Clone();
 
-            Dictionary<int, string> jobTitles = ndt.AsEnumerable().Where(r => r.Field<int?>("productid") != null).ToDictionary(r => r.Field<int>("productid"), r => r.Field<string>("productname"));
+                Dictionary<int, string> jobTitles = ndt.AsEnumerable().Where(r => r.Field<int?>("productid") != null).ToDictionary(r => r.Field<int>("productid"), r => r.Field<string>("productname"));
 
-            ViewBag.Jobtitle = jobTitles;
-            int firstProductId = jobTitles.Keys.First();
-            var allJobs = await _homePageService.GetCarrer();
-            var filteredOpenings = allJobs.AsEnumerable().Where(r => r.Field<DateTime?>("JobClosing_date") >= DateTime.Now && r.Field<bool>("status") == true).OrderBy(r => r.Field<int?>("displayorder") ?? int.MaxValue);
+                ViewBag.Jobtitle = jobTitles;
+                int firstProductId = jobTitles.Keys.First();
+                var allJobs = await _homePageService.GetCarrer();
+                var filteredOpenings = allJobs.AsEnumerable().Where(r => r.Field<DateTime?>("JobClosing_date") >= DateTime.Now && r.Field<bool>("status") == true).OrderBy(r => r.Field<int?>("displayorder") ?? int.MaxValue);
 
-            ViewBag.CurrentOpenings = filteredOpenings.Any() ? filteredOpenings.CopyToDataTable() : allJobs.Clone();
+                ViewBag.CurrentOpenings = filteredOpenings.Any() ? filteredOpenings.CopyToDataTable() : allJobs.Clone();
+            }
+
             return View("career", obj);
         }
         [HttpGet]
@@ -437,7 +441,7 @@ namespace skipper_group_new.Controllers
             var filtered = allJobs.AsEnumerable()
                 .Where(r =>
                     r.Field<DateTime?>("jobclosing_date") != null &&
-                    r.Field<DateTime>("jobclosing_date") >= DateTime.Now &&
+                    r.Field<DateTime>("jobclosing_date") >= DateTime.Now && r.Field<bool>("status") == true &&
                     (
                         emptypeid == 0 ||
                         r.Field<int?>("emptypeid") == emptypeid
@@ -464,8 +468,8 @@ namespace skipper_group_new.Controllers
                 obj.department = Convert.ToString(dt.Rows[0]["department"]);
                 obj.company = Convert.ToString(dt.Rows[0]["company"]);
                 obj.JobCode = Convert.ToString(dt.Rows[0]["jobcode"]);
-                obj.Min_Expyear = Convert.ToInt32(dt.Rows[0]["min_expyear"]);
-                obj.Max_Expyear = Convert.ToInt32(dt.Rows[0]["max_expyear"]);
+                obj.Min_Expyear = Convert.ToString(dt.Rows[0]["min_expyear"]);
+                obj.Max_Expyear = Convert.ToString(dt.Rows[0]["max_expyear"]);
                 obj.Qualification = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["qualification"]));
                 obj.division = Convert.ToString(dt.Rows[0]["division"]);
                 obj.Skills = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["skills"]));

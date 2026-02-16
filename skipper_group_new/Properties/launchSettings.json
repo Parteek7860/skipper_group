@@ -7,8 +7,8 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      //"applicationUrl": "http://localhost:5132",
-      "applicationUrl": "http://localhost:5133"
+      "applicationUrl": "http://localhost:5132",
+      
     },
     "https": {
       "commandName": "Project",
@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7244;http://localhost:5133"
+      "applicationUrl": "https://localhost:7244;http://localhost:5132"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -32,7 +32,7 @@
       "launchUrl": "https://localhost:7244",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "https://localhost:7244;http://localhost:5133"
+        "ASPNETCORE_URLS": "https://localhost:7244;http://localhost:5132"
       },
       "distributionName": ""
     }

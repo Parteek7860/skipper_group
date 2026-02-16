@@ -615,6 +615,28 @@ namespace skipper_group_new.Repositories
 
             return result;
         }
+        public int UpdateShowCareerStatus(string status, int id)
+        {
+            int result = 0;
+            string query = "UpdCareerStatusproductsolutionSP";
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;   // Important!
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.Parameters.AddWithValue("@status", status == "True" ? 1 : 0);
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
         public int DeleteRecords(int id)
         {
             int result = 0;

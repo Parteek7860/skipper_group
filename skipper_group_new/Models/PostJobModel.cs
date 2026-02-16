@@ -19,10 +19,10 @@ namespace skipper_group_new.Models
         [Required(ErrorMessage = "This field is required")]
         public string Qualification { get; set; }
         [Required(ErrorMessage = "This field is required")]
-        public int Min_Expyear { get; set; }
-        public int Min_Expmonth { get; set; }
-        public int Max_Expyear { get; set; }
-        public int Max_Expmonth { get; set; }
+        public string Min_Expyear { get; set; }
+        public string Min_Expmonth { get; set; }
+        public string Max_Expyear { get; set; }
+        public string Max_Expmonth { get; set; }
         public int srno { get; set; }
         public string productname { get; set; }
         public string division { get; set; }
