@@ -204,6 +204,7 @@ namespace skipper_group_new.Controllers
 
             return View("contactus", obj);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("contact-us")]
@@ -255,6 +256,18 @@ namespace skipper_group_new.Controllers
             }
 
             return View("contactus", obj);
+        }
+
+        [HttpGet]
+        [IgnoreAntiforgeryToken]
+        [Route("refresh-captcha")]
+        public IActionResult RefreshCaptcha()
+        {
+            var newCaptcha = CaptchaHelper.GenerateCaptcha();
+
+            HttpContext.Session.SetString("CaptchaCode", newCaptcha);
+
+            return Json(new { captcha = newCaptcha });
         }
 
         #endregion
