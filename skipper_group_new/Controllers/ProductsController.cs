@@ -1001,7 +1001,7 @@ namespace skipper_group_new.Controllers
                     objcls.PageMeta = obj.PageMeta ?? string.Empty;
                     objcls.PageMetaDesc = obj.PageMetaDesc ?? string.Empty;
                     objcls.UploadAPDF = obj.UploadAPDF ?? string.Empty;
-                    if (obj.productid == "0")
+                    if (obj.productid == null)
                     {
                         objcls.Mode = 1;
                     }
@@ -1010,7 +1010,7 @@ namespace skipper_group_new.Controllers
                         objcls.Mode = 2;
                     }
                     objcls.RewriteUrl = obj.RewriteUrl ?? string.Empty;
-                    objcls.Uname = HttpContext.Session.GetString("UserName");
+                    objcls.Uname = HttpContext.Session.GetString("UserName") ?? "System";
                     if (file_Uploader != null && file_Uploader.Length > 0)
                     {
                         var fileName = Path.GetFileName(file_Uploader.FileName); // captures name
@@ -1256,8 +1256,8 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpGet]
-        [Route("backoffice/Products/delete/{id}")]
-        public async Task<IActionResult> delete(int id)
+        [Route("backoffice/Products/productdelete/{id}")]
+        public async Task<IActionResult> productdelete(int id)
         {
             try
             {

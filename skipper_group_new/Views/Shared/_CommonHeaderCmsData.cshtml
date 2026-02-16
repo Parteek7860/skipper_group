@@ -5,73 +5,75 @@
 @if (cms != null && cms.Any())
 {
     var data = cms.FirstOrDefault();
-    <section class="inner_banner">
-        <figure>
-            @{
-                var userAgent = Context.Request.Headers["User-Agent"].ToString();
+    @if (data.Name != "Thank you")
+    {
+        <section class="inner_banner">
+            <figure>
+                @{
+                    var userAgent = Context.Request.Headers["User-Agent"].ToString();
 
-                bool isMobile =
-                userAgent.Contains("Android") ||
-                userAgent.Contains("iPhone") ||
-                userAgent.Contains("Mobile");
+                    bool isMobile =
+                    userAgent.Contains("Android") ||
+                    userAgent.Contains("iPhone") ||
+                    userAgent.Contains("Mobile");
 
-                string bannerImage = "";
+                    string bannerImage = "";
 
-                if (isMobile && !string.IsNullOrEmpty(data.uploadmobileimage))
-                {
-                    bannerImage = data.uploadmobileimage;
+                    if (isMobile && !string.IsNullOrEmpty(data.uploadmobileimage))
+                    {
+                        bannerImage = data.uploadmobileimage;
+                    }
+                    else
+                    {
+                        bannerImage = data.uploadimage;
+                    }
                 }
-                else
+                @if (!string.IsNullOrEmpty(bannerImage))
                 {
-                    bannerImage = data.uploadimage;
+                    <img src="/uploads/banner/@bannerImage" alt="@data.Name" class="img-fluid w-100">
                 }
-            }
-            @if (!string.IsNullOrEmpty(bannerImage))
-            {
-                <img src="/uploads/banner/@bannerImage" alt="@data.Name" class="img-fluid w-100">
-            }
 
-        </figure>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-bar">
-                        <div class="breadcrumb-left">
-                            @if (data.parentname != "")
-                            {
-                                <h5>@data.parentname</h5>
-                            }
-                            else
-                            {
-                                <h5>@data.Name</h5>
-                            }
+            </figure>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-bar">
+                            <div class="breadcrumb-left">
+                                @if (data.parentname != "")
+                                {
+                                    <h5>@data.parentname</h5>
+                                }
+                                else
+                                {
+                                    <h5>@data.Name</h5>
+                                }
 
+                            </div>
+                            <div class="breadcrumb-right">
+                                <a href="/">Home</a><img src="/images/icon/arrow-right.webp" alt="arrow-right">
+                                @if (data.parentname != "")
+                                {
+                                    <a href="#">@data.parentname</a>
+                                    <img src="/images/icon/arrow-right.webp" alt="arrow-right">
+
+                                }
+
+                                <span>@data.Name</span>
+                            </div>
                         </div>
-                        <div class="breadcrumb-right">
-                            <a href="/">Home</a><img src="/images/icon/arrow-right.webp" alt="arrow-right">
-                            @if (data.parentname != "")
-                            {
-                                <a href="#">@data.parentname</a>
-                                <img src="/images/icon/arrow-right.webp" alt="arrow-right">
-
-                            }
-
-                            <span>@data.Name</span>
+                        <div class="bread_btm">
+                            <h5>@data.Name</h5>
                         </div>
-                    </div>
-                    <div class="bread_btm">
-                        <h5>@data.Name</h5>
-                    </div>
-                    <div class="shrt-title">
-                        <h6>
-                            @Html.Raw(data.tagline)
-                        </h6>
+                        <div class="shrt-title">
+                            <h6>
+                                @Html.Raw(data.tagline)
+                            </h6>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    }
+    
 
 }
-
-

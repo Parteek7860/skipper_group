@@ -36,6 +36,7 @@ namespace skipper_group_new.Models
         [BindProperty]
         public string CaptchaInput { get; set; }
         public string CaptchaCode { get; set; }
+        [Required(ErrorMessage = "Please upload a file")]
         public string uploadfile { get; set; }
         public string jobname { get; set; }
 

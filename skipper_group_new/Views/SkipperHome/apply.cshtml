@@ -12,7 +12,7 @@
     }
 
 </style>
-@using (Html.BeginForm("apply", "SkipperHome", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("apply", "SkipperHome", FormMethod.Post, new { id = "applyForm", enctype = "multipart/form-data" }))
 {
     @Html.ValidationSummary(true)
     <section class="contact_one apply-form">
@@ -41,15 +41,15 @@
                                 </div>
                                 <div class="input_bx" data-aos="fade-up" data-aos-delay="400">
                                     @Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "form-control", placeholder = "City" } })
-                                    @Html.ValidationMessageFor(m => m.city, "", new { @class = "text-danger v-span" })
+                                    @* @Html.ValidationMessageFor(m => m.city, "", new { @class = "text-danger v-span" }) *@
                                 </div>
                                 <div class="input_bx" data-aos="fade-up" data-aos-delay="500">
                                     @Html.EditorFor(model => model.country, new { htmlAttributes = new { @class = "form-control", placeholder = "Country" } })
-                                    @Html.ValidationMessageFor(m => m.country, "", new { @class = "text-danger v-span" })
+                                    @* @Html.ValidationMessageFor(m => m.country, "", new { @class = "text-danger v-span" }) *@
                                 </div>
                                 <div class="input_bx" data-aos="fade-up" data-aos-delay="500">
                                     @Html.EditorFor(model => model.state, new { htmlAttributes = new { @class = "form-control", placeholder = "State" } })
-                                    @Html.ValidationMessageFor(m => m.state, "", new { @class = "text-danger v-span" })
+                                    @* @Html.ValidationMessageFor(m => m.state, "", new { @class = "text-danger v-span" }) *@
                                 </div>
 
                                 <div class="input_bx" data-aos="fade-up" data-aos-delay="600">
@@ -62,7 +62,7 @@
 
                                 </div>
                                 <div class="input_bx" data-aos="fade-up" data-aos-delay="700">
-                                    @Html.EditorFor(model => model.EmailId, new { htmlAttributes = new { @class = "form-control", placeholder = "Enail Address" } })
+                                    @Html.EditorFor(model => model.EmailId, new { htmlAttributes = new { @class = "form-control", placeholder = "Email Address" } })
                                     @Html.ValidationMessageFor(m => m.EmailId, "", new { @class = "text-danger v-span" })
 
                                 </div>
@@ -75,10 +75,25 @@
                                 <div class="input_bx" data-aos="fade-up" data-aos-delay="800">
                                     <input type="file" name="file_Uploader" />
                                     @Html.HiddenFor(model => model.uploadfile)
-
+                                    @Html.ValidationMessageFor(m => m.uploadfile, "", new { @class = "text-danger v-span" })
+                                    
 
                                 </div>
-                                <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="800">
+                                <div class=input_bx aos-init aos-animate data-aos=fade-up data-aos-delay=800>
+                                    <figure class="captcha_wrap">
+                                        <div class="d-flex align-items-center">
+                                            <div id="captchaText" style="background:#f1f1f1; padding:10px 20px; font-weight:bold; letter-spacing:4px; font-size:18px; border-radius:6px;">
+                                                @Model.capacha
+                                                @Html.HiddenFor(model => model.CaptchaCode)
+                                            </div>
+                                            <a id="refreshCaptcha" class="btn btn-link ms-2">↻ Refresh</a>
+                                        </div>
+                                        <input asp-for="CaptchaInput" class="form-control mt-2" placeholder="Enter the code above" />
+                                        <span asp-validation-for="CaptchaInput" class="text-danger"></span>
+
+                                    </figure>
+                                </div>
+                               @*  <div class="input_bx aos-init aos-animate" data-aos="fade-up" data-aos-delay="800">
                                     <figure class="captcha_wrap">
 
                                         <input asp-for="CaptchaInput" class="form-control mt-2" placeholder="Enter the code above" />
@@ -94,12 +109,13 @@
 
 
                                             }
-                                            <a href="@id" class="btn btn-link ms-2">↻ Refresh</a>
+                                            @* <a href="@id" class="btn btn-link ms-2">↻ Refresh</a> 
+                                            <a id="refreshCaptcha" class="btn btn-link ms-2">↻ Refresh</a>
                                         </div>
 
                                     </figure>
-                                </div>
-                            </div>
+                                </div>*@
+                            </div> 
                             <div class="text-center">
 
                                 <input type="submit" data-aos="fade-up" data-aos-delay="900" Text="Submit" class="btn mt-5" formmethod="post" action="@Url.Action("apply", "SkipperHome")" value="Submit">
@@ -122,3 +138,35 @@
 
     </section>
 }
+
+
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+
+<script nonce="@nonce">
+    $(document).ready(function () {
+        $("#refreshCaptcha").click(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: '/refresh-captcha',
+                type: 'GET',
+                success: function (response) {
+                    $("#captchaText").text(response.captcha);
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                    alert("Unable to refresh captcha.");
+                }
+            });
+        });
+    });
+
+    $("#applyForm").submit(function (e) {
+        if (!$(this).valid()) {
+            e.preventDefault();
+        }
+    });
+
+</script>
