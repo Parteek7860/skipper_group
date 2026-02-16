@@ -12,9 +12,8 @@
                     <h3 data-aos=fade-up data-aos-delay=200>Offices</h3>
                 </div>
                 <div class=contact_grid>
-
                     @Html.Raw(@Model.desc)
-                    @using (Html.BeginForm("contactus", "skipperHome", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("contactus", "skipperHome", FormMethod.Post, new { id = "contactForm", enctype = "multipart/form-data" }))
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
@@ -72,22 +71,18 @@
                                 <div class=input_bx data-aos=fade-up data-aos-delay=900>
                                     <figure class="captcha_wrap">
                                         <div class="d-flex align-items-center">
-                                            <div style="background:#f1f1f1; padding:10px 20px; font-weight:bold; letter-spacing:4px; font-size:18px; border-radius:6px;">
+                                            <div id="captchaText" style="background:#f1f1f1; padding:10px 20px; font-weight:bold; letter-spacing:4px; font-size:18px; border-radius:6px;">
                                                 @Model.capacha
                                                 @Html.HiddenFor(model => model.CaptchaCode)
                                             </div>
-
-
-                                            <a href="/contact-us" class="btn btn-link ms-2">↻ Refresh</a>
+                                            <a id="refreshCaptcha" class="btn btn-link ms-2">↻ Refresh</a>
                                         </div>
                                         <input asp-for="CaptchaInput" class="form-control mt-2" placeholder="Enter the code above" />
                                         <span asp-validation-for="CaptchaInput" class="text-danger"></span>
 
                                     </figure>
                                 </div>
-                                <input type="submit" data-aos="fade-up" data-aos-delay="900" Text="Submit" class="btn btn-success" formmethod="post" action="@Url.Action("contactus", "skipperHome")" value="Submit" />
-
-
+                                <input type="submit" data-aos="fade-up" data-aos-delay="900" class="btn btn-success" value="Submit" />
                             </div>
                         </div>
                     }
@@ -180,4 +175,38 @@
     </div>
 </section>
 @Html.Raw(@Model.SmallDescription)
+@{
+    var nonce = Context.Items["CSPNonce"]?.ToString();
+}
+<script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+<script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+
+<script nonce="@nonce" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+<script nonce="@nonce">
+    $(document).ready(function () {
+        $("#refreshCaptcha").click(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: '/refresh-captcha',
+                type: 'GET',
+                success: function (response) {
+                    $("#captchaText").text(response.captcha);
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                    alert("Unable to refresh captcha.");
+                }
+            });
+        });
+    });
+
+    $("#contactForm").submit(function (e) {
+        if (!$(this).valid()) {
+            e.preventDefault();
+        }
+    });
+
+</script>
