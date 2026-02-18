@@ -46,6 +46,11 @@ namespace skipper_group_new.Repositories
         int UpdateTestimonilsStatus(bool status, int id);
         int DeleteTestimonils(int id);
         Task<DataTable> GetImagePath();
+
         int CreateFilePathImage(clsDownload obj);
+        int AddEditPopupBanner(clsbanner b);
+        Task<DataTable> GetPopupData();
+        int DeletePopup(int id);
+        int ChangeStatus(int id);
     }
 }

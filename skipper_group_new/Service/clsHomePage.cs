@@ -150,5 +150,22 @@ namespace skipper_group_new.Service
         {
             return _repository.CreateFilePathImage(obj);
         }
+
+        public int AddEditPopupBanner(clsbanner b)
+        {
+            return _repository.AddEditPopupBanner(b);
+        }
+        public Task<DataTable> GetPopupData()
+        {
+            return _repository.GetPopupData();
+        }
+        public int DeletePopup(int id)
+        {
+            return _repository.DeletePopup(id);
+        }
+        public int ChangeStatus(int id)
+        {
+            return _repository.ChangeStatus(id);
+        }
     }
 }

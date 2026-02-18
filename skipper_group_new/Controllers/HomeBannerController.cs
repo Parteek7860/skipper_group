@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.InkML;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
 using skipper_group_new.Models;
@@ -222,7 +223,7 @@ namespace skipper_group_new.Controllers
 
         [HttpGet]
         [Route("backoffice/homebanner/updatemobilestatus/{id}")]
-        
+
         public async Task<IActionResult> updatemobilestatus(int id, int? pageid)
         {
             try
@@ -626,5 +627,208 @@ namespace skipper_group_new.Controllers
             return View("~/Views/Backoffice/homebanner/ViewHomeBanner.cshtml", clsBanner);
         }
         #endregion
+
+        #region POPUP BANNER
+        [HttpGet]
+        [Route("backoffice/homebanner/addpopupbanner")]
+        public async Task<IActionResult> AddPopupBanner(int pageid=0)
+        {
+            var menuList = _menuService.GetMenu(pageid);
+            ViewBag.Menus = menuList;
+            var b = new clsbanner();
+            b.bannertypeselect = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Banner", Value = "Banner" }                
+            };            
+            ViewBag.CreateUpdate = "Save";
+            return View("~/Views/Backoffice/homebanner/addpopupbanner.cshtml", b);
+        }
+
+        [HttpPost]
+        [Route("backoffice/homebanner/addpopupbanner")]
+        public IActionResult AddEditPopupBanner(clsbanner model, IFormFile PopupBannerFile)
+        {
+            var requiredFields = new[] { "bannertype", "name", "startdate" };
+
+            foreach (var key in ModelState.Keys.ToList())
+            {
+                if (!requiredFields.Contains(key))
+                {
+                    ModelState.Remove(key);
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var menuList = _menuService.GetMenu();
+                ViewBag.Menus = menuList;
+                ViewBag.CreateUpdate = "Save";
+
+                model.bannertypeselect = new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Banner", Value = "Banner" }
+                };
+
+                return View("~/Views/Backoffice/homebanner/addpopupbanner.cshtml", model);
+            }
+            
+
+            var objbanner = new clsbanner
+            {
+                id = model.id,
+                status = model.status ?? "1",
+                bannertype = model.bannertype,
+                name = model.name,
+                startdate = model.startdate,
+                url = model.url,
+                displayorder = model.displayorder,
+                uname = Convert.ToString(HttpContext.Session.GetString("UserName")),
+                bannerlogo = model.bannerlogo
+            };
+            if (model.id > 0)
+            {
+                objbanner.mode = "2";
+            }
+            else
+            {
+                objbanner.mode = "1";
+            }
+
+            if (PopupBannerFile != null && PopupBannerFile.Length > 0)
+            {
+                var fileName = Path.GetFileName(PopupBannerFile.FileName);
+                var filePath = Path.Combine("wwwroot/uploads/banner", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    PopupBannerFile.CopyTo(stream);
+                }
+
+                objbanner.bannerlogo = fileName;
+            }
+
+            int x = _homePageService.AddEditPopupBanner(objbanner);
+
+            if (x > 0)
+            {
+                HttpContext.Session.SetString("Message",
+                    (HttpContext.Session.GetString("Message") ?? "") +
+                    (model.id > 0 ? " Updated successfully." : " Saved successfully.")
+                );
+
+                return RedirectToAction("ViewPopupBanner");
+            }
+
+            return RedirectToAction("ViewPopupBanner");
+        }
+
+        [HttpGet]
+        [Route("backoffice/homebanner/getpopupdatabyid/{id}")]
+        public async Task<IActionResult> GetPopupData(int? id)
+        {
+            if (id == null || id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Banner ID.";
+                return RedirectToAction("ViewPopupBanner");
+            }
+
+            try
+            {
+                var menuList = _menuService.GetMenu();
+                ViewBag.Menus = menuList;
+
+                var data = await _homePageService.GetPopupData();
+
+                if (data == null || data.Rows.Count == 0)
+                {
+                    TempData["ErrorMessage"] = "No popup banner data found.";
+                    return RedirectToAction("ViewPopupBanner");
+                }
+
+                var row = data.AsEnumerable()
+                              .FirstOrDefault(x => x.Field<int>("bid") == id);
+
+                if (row == null)
+                {
+                    TempData["ErrorMessage"] = "Popup banner not found.";
+                    return RedirectToAction("ViewPopupBanner");
+                }
+
+                var obj = new clsbanner
+                {
+                    id = row.Field<int>("bid"),
+                    bannertype = row.Field<string>("btype"),
+                    name = row.Field<string>("Title"),
+                    shortdesc = row.Field<string>("tagline1"),
+                    bannerlogo = row.Field<string>("bannerimage"),
+                    displayorder = row.Field<int>("displayorder").ToString(),
+                    status = row.Field<bool>("status") ? "1" : "0",
+                    url = row.Field<string>("url"),
+                    collageid = row.Field<int?>("collageid")?.ToString(),
+                    startdate = row.Field<DateTime?>("trdate") != null ? row.Field<DateTime>("trdate").ToString("yyyy-MM-dd"): ""
+                };
+
+                obj.bannertypeselect = new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Banner", Value = "Banner" }
+                };
+
+                ViewBag.CreateUpdate = "Update";
+
+                return View("~/Views/Backoffice/homebanner/addpopupbanner.cshtml", obj);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while fetching popup banner.";
+                return RedirectToAction("ViewPopupBanner");
+            }
+        }
+
+
+        [HttpGet]
+        [Route("backoffice/homebanner/deletepopup/{id}")]
+        public IActionResult deletepopup(int id)
+        {
+            if (id > 0)
+            {
+                var deleted = _homePageService.DeletePopup(id);
+
+                if (deleted > 0)
+                    HttpContext.Session.SetString("Message", "Deleted successfully.");
+                else
+                    TempData["ErrorMessage"] = "Failed to delete.";
+            }
+
+            return RedirectToAction("ViewPopupBanner");
+        }
+
+
+        [HttpGet]
+        [Route("backoffice/homebanner/changestatus/{id}")]
+        public IActionResult changestatus(int id)
+        {
+            if (id > 0)
+            {
+                var updated = _homePageService.ChangeStatus(id);
+
+                if (updated > 0)
+                    HttpContext.Session.SetString("Message", "Status updated successfully.");
+                else
+                    TempData["ErrorMessage"] = "Failed to update status.";
+            }
+
+            return RedirectToAction("ViewPopupBanner");
+        }
+
+        [HttpGet]
+        [Route("backoffice/homebanner/viewpopupnbanner")]
+        public async Task<IActionResult> ViewPopupBanner()
+        {
+            var menuList = _menuService.GetMenu();
+            ViewBag.Menus = menuList;
+            var bannerTypes = await _homePageService.GetPopupData();
+            return View("~/Views/Backoffice/homebanner/viewpopupbanner.cshtml",bannerTypes);
+        }
+        #endregion POPUP BANNER
     }
 }

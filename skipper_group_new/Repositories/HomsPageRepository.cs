@@ -788,5 +788,109 @@ namespace skipper_group_new.Repositories
 
             return result;
         }
+
+        public int AddEditPopupBanner(clsbanner b)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("popbannerSP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@bid", SqlDbType.Int).Value = b.id;
+                    cmd.Parameters["@bid"].Direction = ParameterDirection.InputOutput;
+                    cmd.Parameters.AddWithValue("@btype", b.bannertype ?? "");
+                    cmd.Parameters.AddWithValue("@Title", b.name ?? "");
+                    cmd.Parameters.AddWithValue("@tagline1", b.shortdesc ?? "");
+                    cmd.Parameters.AddWithValue("@tagline2", "");
+                    cmd.Parameters.AddWithValue("@bannerimage", b.bannerlogo ?? "");
+                    cmd.Parameters.AddWithValue("@bannermobile", b.uploadbanner ?? "");
+                    cmd.Parameters.AddWithValue("@displayorder",string.IsNullOrEmpty(b.displayorder) ? 0 : Convert.ToInt32(b.displayorder));
+                    bool statusValue = false;
+                    if (string.IsNullOrEmpty(b.status))
+                    {
+                        statusValue = true; 
+                    }
+                    else
+                    {
+                        statusValue = b.status == "1" || b.status.ToLower() == "true";
+                    }
+                    cmd.Parameters.Add("@Status", SqlDbType.Bit).Value = statusValue;
+                    cmd.Parameters.AddWithValue("@url", b.url ?? "");
+                    cmd.Parameters.AddWithValue("@collageid", string.IsNullOrEmpty(b.collageid) ? 0 : Convert.ToInt32(b.collageid));
+                    cmd.Parameters.AddWithValue("@Uname", b.uname ?? "");
+                    cmd.Parameters.AddWithValue("@Mode", b.mode);
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                    b.id = Convert.ToInt32(cmd.Parameters["@bid"].Value);
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<DataTable> GetPopupData()
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SELECT * FROM popbanner ORDER BY displayorder", conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        await Task.Run(() => da.Fill(dt));
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public int DeletePopup(int id)
+        {
+            int result = 0;
+
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("popbannerSP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@bid", SqlDbType.Int).Value = id;
+                    cmd.Parameters.Add("@Mode", SqlDbType.Int).Value = 3;
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+
+        public int ChangeStatus(int id)
+        {
+            int result = 0;
+
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("popbannerSP", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@bid", SqlDbType.Int).Value = id;
+                    cmd.Parameters.Add("@Mode", SqlDbType.Int).Value = 4;
+
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return result;
+        }
+
+
     }
 }
