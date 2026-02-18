@@ -356,3 +356,27 @@ document.addEventListener("DOMContentLoaded", function () {
 $(document).on("click", ".has-submenu ul li a", function () {
   $(".menu_wrap").removeClass("show3");
 });
+
+
+// popup home start
+
+window.addEventListener("load", function() {
+    setTimeout(function() {
+        document.getElementById("popup").classList.add("active");
+    }, 2000);
+});
+
+// Close popup
+document.getElementById("closePopup").addEventListener("click", function() {
+    document.getElementById("popup").classList.remove("active");
+});
+
+// Close when clicking outside
+document.getElementById("popup").addEventListener("click", function(e) {
+    if(e.target === this){
+        this.classList.remove("active");
+    }
+});
+
+
+// popup home ends
