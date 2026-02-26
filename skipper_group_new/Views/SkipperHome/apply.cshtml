@@ -73,11 +73,9 @@
                                 </div>
 
                                 <div class="input_bx" data-aos="fade-up" data-aos-delay="800">
-                                    <input type="file" name="file_Uploader" />
-                                    @Html.HiddenFor(model => model.uploadfile)
-                                    @Html.ValidationMessageFor(m => m.uploadfile, "", new { @class = "text-danger v-span" })
-                                    
-
+                                    <input type="file" id="realFileInput" class="form-control" name="file_uploader" />
+                                    @Html.HiddenFor(m => m.uploadfile)
+                                    <span id="fileError" class="text-danger v-span"></span>
                                 </div>
                                 <div class=input_bx aos-init aos-animate data-aos=fade-up data-aos-delay=800>
                                     <figure class="captcha_wrap">
@@ -122,26 +120,28 @@
 
 <script nonce="@nonce">
     $(document).ready(function () {
-
-        $("#applyForm").submit(function (e) {
-
-            var isValid = true;
-
-            // Remove old file error
-            $("#fileError").remove();
-
-            // Check file input
-            if ($("input[name='file_Uploader']").val() === "") {
-                isValid = false;
-
-                $("input[name='file_Uploader']").after(
-                    '<span id="fileError" class="text-danger v-span">File is required.Please upload a file</span>'
-                );
+        $("#realFileInput").on("change", function () {
+            if (this.files.length > 0) {
+                $("input[name='uploadfile']").val(this.files[0].name);
+            } else {
+                $("input[name='uploadfile']").val("");
             }
+        });
 
-            if (!isValid) {
+        $("#applyForm").on("submit", function (e) {
+
+            var fileInput = document.getElementById("realFileInput");
+            var errorSpan = document.getElementById("fileError");
+
+            errorSpan.innerText = ""; 
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                errorSpan.innerText = "Please upload a file";
+                fileInput.focus();
                 e.preventDefault();
+                return false;
             }
+
         });
 
         $("#refreshCaptcha").click(function (e) {

@@ -548,7 +548,7 @@ namespace skipper_group_new.Controllers
 
             if (file_uploader != null && file_uploader.Length > 0)
             {
-                var fileName = Path.GetFileName(file_uploader.FileName); // captures name
+                var fileName = Path.GetFileName(file_uploader.FileName); 
                 var filePath = Path.Combine("wwwroot/uploads/files", fileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
