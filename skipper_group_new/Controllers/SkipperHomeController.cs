@@ -45,6 +45,7 @@ namespace skipper_group_new.Controllers
             await BindProjectsList();
             await BindNewsList();
             await BindHomeBanner();
+            await BindPopupBanner();
             await Task.Delay(1);
 
             Task<DataTable> x = this._homePageService.GetCMSData();
@@ -521,14 +522,34 @@ namespace skipper_group_new.Controllers
             await LoadCMSDataAsync(81);
             EnquiryModel obj = new EnquiryModel();
 
-            if (cls.CaptchaInput != cls.CaptchaCode)
+            
+
+            var sessionCaptcha = HttpContext.Session.GetString("CaptchaCode");
+
+            if (string.IsNullOrEmpty(cls.CaptchaInput) ||
+                sessionCaptcha == null ||
+                cls.CaptchaInput != sessionCaptcha)
             {
-                ModelState.AddModelError("CaptchaInput", "Invalid Captcha. Please try again.");
-                obj = cls;
+
                 obj.capacha = CaptchaHelper.GenerateCaptcha();
                 obj.CaptchaCode = obj.capacha;
+                HttpContext.Session.SetString("CaptchaCode", obj.capacha);
                 return View("apply", obj);
             }
+
+            
+
+            if (string.IsNullOrEmpty(cls.FName) || string.IsNullOrEmpty(cls.EmailId) || string.IsNullOrEmpty(cls.phone) || file_uploader == null ||
+    string.IsNullOrEmpty(file_uploader.FileName))
+            {
+                //obj = cls;
+                obj.capacha = CaptchaHelper.GenerateCaptcha();
+                obj.CaptchaCode = obj.capacha;
+                HttpContext.Session.SetString("CaptchaCode", obj.capacha);
+                return View("apply", obj);
+            }
+
+           
             obj.Eid = Convert.ToInt32(HttpContext.Request.RouteValues["id"]?.ToString());
             obj.phone = cls.phone;
             obj.FName = cls.FName;
@@ -723,6 +744,34 @@ namespace skipper_group_new.Controllers
 
             return View();
         }
+        [HttpGet]
+        public async Task<IActionResult> BindPopupBanner()
+        {
+            // ✅ Proper async usage
+            var list = await _homePageService.GetBannerPopupList();
+
+            var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
+            bool isMobile = userAgent.Contains("Android") ||
+                            userAgent.Contains("iPhone") ||
+                            userAgent.Contains("Mobile");
+
+
+            DateTime today = DateTime.Today;
+
+            string filterExpression =
+                $"status = 1 AND collageid = '0' AND popupenddate >= #{today:MM/dd/yyyy}#";
+
+            DataRow[] filterlist = list.Select(filterExpression);
+
+            if (filterlist.Length > 0)
+            {
+                var top5 = filterlist.CopyToDataTable();
+                ViewBag.PopupBannerList = top5;
+            }
+
+            return View();
+        }
+
 
         #endregion
         [HttpGet]

@@ -6,17 +6,23 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     DataTable dtnews = ViewBag.Newslist as DataTable;
     DataTable dt1 = ViewBag.BannerList as DataTable;
+    DataTable dtpopup = ViewBag.PopupBannerList as DataTable;
 }
- <!-- Popup Structure start -->
+@if(dtpopup !=null)
+{
+    
 <div class="popup-overlay" id="popup">
     <div class="popup-content">
         <div class="close-btn" id="closePopup">×</div>
-        <a href="https://www.skipperlimited.com/">
-            <img src="https://www.skipperlimited.com/uploads/smallimages/aisc.webp" alt="Popup Banner">
+        
+        <a href="@Convert.ToString(dtpopup.Rows[0]["url"])">
+            <img src="/uploads/banner/@Convert.ToString(dtpopup.Rows[0]["bannerimage"])" alt="@Convert.ToString(dtpopup.Rows[0]["title"])">
         </a>
     </div>
 </div>
-    <!-- Popup Structure end -->
+    
+}
+
 <!---------header html start here--------->
 <header class="position-fixed d-flex align-items-center justify-content-between w-full">
     <div class="logo">

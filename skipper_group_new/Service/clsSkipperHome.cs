@@ -42,6 +42,7 @@ namespace skipper_group_new.Service
 
         public Task<DataTable> GetNewsEvents() => this._repository.GetNewsEvents();
         public Task<DataTable> GetBannerList() => this._repository.GetBannerList();
+        public Task<DataTable> GetBannerPopupList() => this._repository.GetBannerPopupList();
         public Task<DataTable> GetAboutProduct() => this._repository.GetAboutProduct();
         public Task<DataTable> GetProductCapabilities() => this._repository.GetProductCapabilities();
         public Task<DataTable> GetDynamicTableSEO(string table_name) => this._repository.GetDynamicTableSEO(table_name);
