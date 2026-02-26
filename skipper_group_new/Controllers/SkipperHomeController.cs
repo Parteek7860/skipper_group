@@ -446,6 +446,7 @@ namespace skipper_group_new.Controllers
 
             return View("career", obj);
         }
+
         [HttpGet]
         [Route("career/filter")]
         public async Task<IActionResult> Filter(int emptypeid)
@@ -466,6 +467,7 @@ namespace skipper_group_new.Controllers
             DataTable dt = filtered.Any() ? filtered.CopyToDataTable() : allJobs.Clone();
             return PartialView("~/Views/PartialView/_CareerJobsPartial.cshtml", dt);
         }
+
         [HttpGet]
         [Route("career-details/{title}/{jobid:int}")]
         public async Task<IActionResult> careerdetail(string title, string jobid)
@@ -514,6 +516,7 @@ namespace skipper_group_new.Controllers
 
             return View("apply", obj);
         }
+
         [HttpPost]
         [Route("apply-now/{title}/{id:int}")]
         public async Task<IActionResult> apply(EnquiryModel cls, IFormFile file_uploader)
@@ -774,6 +777,7 @@ namespace skipper_group_new.Controllers
 
 
         #endregion
+
         [HttpGet]
         [Route("/{name:regex(^(?!investor-relations$).*)}/{productname}/{productid:int}")]
         public async Task<IActionResult> productdetail(string productname, string productid)

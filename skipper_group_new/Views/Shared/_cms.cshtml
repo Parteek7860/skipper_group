@@ -92,9 +92,11 @@
     <script src="@Url.Content("/js/inner.js")" asp-append-version="true"></script>
     <script src="@Url.Content("/js/canvas.js")" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-
-
     <script src="@Url.Content("/js/timeline.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
+    <script src="@Url.Content("~/lib/jquery-validation/dist/jquery.validate.js")"></script>
+    <script src="@Url.Content("~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js")"></script>
+    @RenderSection("Scripts", required: false)
     @RenderSection("Scripts", required: false)
 </body>
 </html>

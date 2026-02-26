@@ -89,8 +89,9 @@
                                             <a id="refreshCaptcha" class="btn btn-link ms-2">↻ Refresh</a>
                                         </div>
                                         <input asp-for="CaptchaInput" class="form-control mt-2" placeholder="Enter the code above" />
-                                        <span asp-validation-for="CaptchaInput" class="text-danger"></span>
-
+                                        <span asp-validation-for="CaptchaInput"
+                                              style="color:#df3444; font-size:12px; font-weight:600; margin-top:6px; display:block;">
+                                        </span>
                                     </figure>
                                 </div>
                             </div> 
@@ -121,27 +122,38 @@
 
 <script nonce="@nonce">
     $(document).ready(function () {
+
+        $("#applyForm").submit(function (e) {
+
+            var isValid = true;
+
+            // Remove old file error
+            $("#fileError").remove();
+
+            // Check file input
+            if ($("input[name='file_Uploader']").val() === "") {
+                isValid = false;
+
+                $("input[name='file_Uploader']").after(
+                    '<span id="fileError" class="text-danger v-span">File is required.Please upload a file</span>'
+                );
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+
         $("#refreshCaptcha").click(function (e) {
             e.preventDefault();
-
             $.ajax({
                 url: '/refresh-captcha',
                 type: 'GET',
                 success: function (response) {
                     $("#captchaText").text(response.captcha);
-                },
-                error: function (xhr) {
-                    console.log(xhr);
-                    alert("Unable to refresh captcha.");
                 }
             });
         });
-    });
 
-    $("#applyForm").submit(function (e) {
-        if (!$(this).valid()) {
-            e.preventDefault();
-        }
     });
-
 </script>
