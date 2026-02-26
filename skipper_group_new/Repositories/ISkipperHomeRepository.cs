@@ -31,6 +31,7 @@ namespace skipper_group_new.Repositories
         Task<DataTable> GetProductSubCategoryList();
         Task<DataTable> GetNewsEvents();
         Task<DataTable> GetBannerList();
+        Task<DataTable> GetBannerPopupList();
         Task<DataTable> GetAboutProduct();
         Task<DataTable> GetProductCapabilities();
         Task<DataTable> GetDynamicTableSEO(string table_name);

@@ -54,10 +54,11 @@
                     <table class="table table-bordered" id="blogTable">
                         <thead class="table-header">
                             <tr>
-                                <th>Blog Title</th>
+                                <th> Title</th>
                                 <th>Image</th>
-
-                                <th>Date</th>
+                                <th>Display Order</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -74,6 +75,8 @@
                                     </td>
 
                                     <td>@row["displayorder"]</td>
+                                    <td>@Convert.ToDateTime(row["popupstartdate"]).ToString("dd/MMM/yyyy")</td>
+                                    <td>@Convert.ToDateTime(row["popupenddate"]).ToString("dd/MMM/yyyy")</td>
 
                                     <td>
                                         @if (Convert.ToBoolean(row["status"]))

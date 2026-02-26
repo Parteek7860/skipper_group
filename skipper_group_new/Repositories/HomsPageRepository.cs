@@ -819,6 +819,8 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@url", b.url ?? "");
                     cmd.Parameters.AddWithValue("@collageid", string.IsNullOrEmpty(b.collageid) ? 0 : Convert.ToInt32(b.collageid));
                     cmd.Parameters.AddWithValue("@Uname", b.uname ?? "");
+                    cmd.Parameters.AddWithValue("@popupstartdate", b.startdate ?? "");
+                    cmd.Parameters.AddWithValue("@popupenddate", b.enddate ?? "");
                     cmd.Parameters.AddWithValue("@Mode", b.mode);
                     conn.Open();
                     result = cmd.ExecuteNonQuery();

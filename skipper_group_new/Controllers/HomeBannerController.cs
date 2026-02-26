@@ -631,15 +631,15 @@ namespace skipper_group_new.Controllers
         #region POPUP BANNER
         [HttpGet]
         [Route("backoffice/homebanner/addpopupbanner")]
-        public async Task<IActionResult> AddPopupBanner(int pageid=0)
+        public async Task<IActionResult> AddPopupBanner(int pageid = 0)
         {
             var menuList = _menuService.GetMenu(pageid);
             ViewBag.Menus = menuList;
             var b = new clsbanner();
             b.bannertypeselect = new List<SelectListItem>
             {
-                new SelectListItem { Text = "Banner", Value = "Banner" }                
-            };            
+                new SelectListItem { Text = "Banner", Value = "Banner" }
+            };
             ViewBag.CreateUpdate = "Save";
             return View("~/Views/Backoffice/homebanner/addpopupbanner.cshtml", b);
         }
@@ -671,7 +671,7 @@ namespace skipper_group_new.Controllers
 
                 return View("~/Views/Backoffice/homebanner/addpopupbanner.cshtml", model);
             }
-            
+
 
             var objbanner = new clsbanner
             {
@@ -680,9 +680,10 @@ namespace skipper_group_new.Controllers
                 bannertype = model.bannertype,
                 name = model.name,
                 startdate = model.startdate,
+                enddate = model.enddate,
                 url = model.url,
                 displayorder = model.displayorder,
-                uname = Convert.ToString(HttpContext.Session.GetString("UserName")),
+                uname = Convert.ToString(HttpContext.Session.GetString("UserName")) ?? "Syatem",
                 bannerlogo = model.bannerlogo
             };
             if (model.id > 0)
@@ -765,7 +766,8 @@ namespace skipper_group_new.Controllers
                     status = row.Field<bool>("status") ? "1" : "0",
                     url = row.Field<string>("url"),
                     collageid = row.Field<int?>("collageid")?.ToString(),
-                    startdate = row.Field<DateTime?>("trdate") != null ? row.Field<DateTime>("trdate").ToString("yyyy-MM-dd"): ""
+                    startdate = row.Field<DateTime?>("popupstartdate") != null ? row.Field<DateTime>("popupstartdate").ToString("yyyy-MM-dd") : "",
+                    enddate = row.Field<DateTime?>("popupenddate") != null ? row.Field<DateTime>("popupenddate").ToString("yyyy-MM-dd") : ""
                 };
 
                 obj.bannertypeselect = new List<SelectListItem>
@@ -827,7 +829,7 @@ namespace skipper_group_new.Controllers
             var menuList = _menuService.GetMenu();
             ViewBag.Menus = menuList;
             var bannerTypes = await _homePageService.GetPopupData();
-            return View("~/Views/Backoffice/homebanner/viewpopupbanner.cshtml",bannerTypes);
+            return View("~/Views/Backoffice/homebanner/viewpopupbanner.cshtml", bannerTypes);
         }
         #endregion POPUP BANNER
     }
