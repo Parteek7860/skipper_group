@@ -157,7 +157,10 @@ else
                         parentclass = "ps_d";
                         aboutclass = "mega_dropdown mega_dropdown01 product_menu";
                     }
-
+                    if (menu.pageid == "8")
+                    {
+                        parentclass = "people_mega_menu";
+                    }
 
 
                     var subHref = !string.IsNullOrEmpty(menu.rewriteurl)
@@ -366,11 +369,43 @@ else
                                         </figcaption>
                                     </figure>
                                     <a href="/uploads/moduleimg/7imguf_annualreport2024-25.pdf
-                                                                                    " target="_blank'" class="links"></a>
+                                                                                                                                    " target="_blank'" class="links"></a>
                                     <img class="pdfmenu-icon" src="/images/pdfmenuarrow.png" alt="icon">
                                 </div>
                             </div>
                         }
+
+                        @if (menu.pageid == "8")
+                        {
+                            <div class="mega_dropdown people_menu mega_dropdown01">
+                                @Html.Raw(System.Net.WebUtility.HtmlDecode(menu.SmallDescription))
+
+                                <div class="people_right">
+                                    <div class="people_grid">
+                                        @if (menu.SubMenus.Count > 0)
+                                        {
+                                            foreach (var inner in menu.SubMenus)
+                                            {
+                                                <div class="people_list">
+                                                    <figure class="abtmenu_icon"> <img alt="icon" src="/uploads/banner/@Convert.ToString(inner.uploadimage)"> </figure>
+                                                    <p>@inner.linkname <img alt="icon" src="/images/rd-icon.svg"> </p>
+                                                    <a href="/@Convert.ToString(inner.rewriteurl)" class="streched_link"></a>
+                                                </div>
+
+                                            }
+                                        }
+
+
+
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
+                        }
+
                     </li>
                 }
 

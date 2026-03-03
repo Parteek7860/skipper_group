@@ -104,7 +104,7 @@
                 </div>
                 @{
                     string hamburgerengclass = "eng_icon";
-                    
+
                 }
                 <nav class="sub-menu open">
                     <div id="accordian" class="@hamburgerengclass">
@@ -158,6 +158,10 @@ else
                     if (menu.pageid == "7")
                     {
                         parentclass = "ps_d";
+                    }
+                    if (menu.pageid == "8")
+                    {
+                        parentclass = "people_mega_menu";
                     }
 
 
@@ -432,6 +436,68 @@ else
 
                         }
 
+                        @if(menu.pageid == "8")
+                        {
+                            <div class="mega_dropdown people_menu mega_dropdown01">
+                                <div class="people_left">
+                                    <h2>People</h2>
+                                    <h3>A Culture of Growth and Engagement</h3>
+                                    <div class="read_icon">
+                                        <a href="/about-us/company-profile">
+                                            <img alt="icon" src="images/icon/plus-icon.svg">
+                                        </a>
+                                    </div>
+                                    <div class="p_icons">
+                                        <figure class="abtmenu_icon">
+                                            <img alt="icon" src="images/abtmenuarrow.svg">
+                                        </figure>
+                                    </div>
+
+
+
+                                </div>
+                                <div class="people_right">
+                                    <div class="people_grid">
+                                        <div class="people_list">
+                                            <figure class="abtmenu_icon"> <img alt="icon" src="/images/people-icon1.webp"> </figure>
+                                            <p>Life at Skipper <img alt="icon" src="images/rd-icon.svg"> </p>
+                                            <a href="" class="streched_link"></a>
+                                        </div>
+                                        <div class="people_list">
+                                            <figure class="abtmenu_icon"> <img alt="icon" src="/images/people-icon2.webp"> </figure>
+                                            <p>Employee Connect Programs <img alt="icon" src="images/rd-icon.svg"> </p>
+                                            <a href="" class="streched_link"></a>
+                                        </div>
+                                        <div class="people_list">
+                                            <figure class="abtmenu_icon"> <img alt="icon" src="/images/people-icon3.webp"> </figure>
+                                            <p>Talent Management <img alt="icon" src="images/rd-icon.svg"> </p>
+                                            <a href="" class="streched_link"></a>
+                                        </div>
+                                        <div class="people_list">
+                                            <figure class="abtmenu_icon"> <img alt="icon" src="/images/people-icon4.webp"> </figure>
+                                            <p>Diversity, Equity & Inclusion <img alt="icon" src="images/rd-icon.svg"> </p>
+                                            <a href="" class="streched_link"></a>
+                                        </div>
+                                        <div class="people_list">
+                                            <figure class="abtmenu_icon"> <img alt="icon" src="/images/people-icon5.webp"> </figure>
+                                            <p>Performance Management <img alt="icon" src="images/rd-icon.svg"> </p>
+                                            <a href="" class="streched_link"></a>
+                                        </div>
+                                        <div class="people_list">
+                                            <figure class="abtmenu_icon"> <img alt="icon" src="/images/people-icon6.webp"> </figure>
+                                            <p>Current Openings <img alt="icon" src="images/rd-icon.svg"> </p>
+                                            <a href="" class="streched_link"></a>
+                                        </div>
+
+
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
+                        }
 
 
                     </li>

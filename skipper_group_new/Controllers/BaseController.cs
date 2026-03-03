@@ -462,6 +462,7 @@ namespace skipper_group_new.Controllers
                  rewriteurl = sub["rewriteurl"].ToString(),
                  ParentId = sub["ParentId"].ToString(),
                  smalldesc = sub["smalldesc"].ToString(),
+                 uploadimage = sub["uploadbanner"].ToString(),
                  pageid = sub["pageid"].ToString(),
 
 
