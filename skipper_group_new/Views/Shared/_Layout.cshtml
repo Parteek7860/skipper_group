@@ -4,19 +4,21 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     @await Html.PartialAsync("~/Views/Shared/_seosection.cshtml")
-
+ @{
+     var nonce = Context.Items["CSPNonce"]?.ToString();
+ }
 
     <link href="@Url.Content("~/css/bootstrap.min.css")" rel="stylesheet" asp-append-version="true">
     <link href="@Url.Content("~/css/common.css")" rel="stylesheet" asp-append-version="true">
     <link href="@Url.Content("~/css/header.css")" rel="stylesheet" asp-append-version="true">
     <link href="@Url.Content("~/css/footer.css")" rel="stylesheet" asp-append-version="true">
 
-    <link href="@Url.Content("~/css/home-responsive.css")" rel="stylesheet preload" asp-append-version=" true">
-    <link href="@Url.Content("~/css/home.css")" rel="stylesheet preload" asp-append-version="true">
-    <link href="@Url.Content("~/css/home-animation.css")" rel="stylesheet preload" asp-append-version="true">
-    <link href="@Url.Content("~/css/swiper.min.css")" rel="stylesheet preload" asp-append-version="true">
-    <link href="@Url.Content("~/css/aos.css")" rel="stylesheet preload" asp-append-version="true">
-    <link href="@Url.Content("~/css/Search.css")" rel="stylesheet preload" asp-append-version="true" />
+    <link href="@Url.Content("~/css/home-responsive.css")" rel="stylesheet" asp-append-version=" true">
+    <link href="@Url.Content("~/css/home.css")" rel="stylesheet" asp-append-version="true">
+    <link href="@Url.Content("~/css/home-animation.css")" rel="stylesheet" asp-append-version="true">
+    <link href="@Url.Content("~/css/swiper.min.css")" rel="stylesheet" asp-append-version="true">
+    <link href="@Url.Content("~/css/aos.css")" rel="stylesheet" asp-append-version="true">
+    <link href="@Url.Content("~/css/Search.css")" rel="stylesheet" asp-append-version="true" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
@@ -25,8 +27,8 @@
     <link rel="icon" href="favicon.png" type="" sizes="30x30" />
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RLPL114LGW"></script>
-    <script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RLPL114LGW" nonce="@nonce"></script>
+    <script nonce="@nonce">
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
@@ -36,7 +38,7 @@
 
 
     <!-- Google Tag Manager -->
-    <script>
+    <script nonce="@nonce">
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -44,7 +46,7 @@
         })(window,document,'script','dataLayer','GTM-5LXQ6PCQ');</script>
     <!-- End Google Tag Manager -->
 
-
+<meta name="google-site-verification" content="RfWqt-MuepFUYZ37ULxxbEBxdBhv1CtSPq2DqDUxv-8" />
 
 </head>
 

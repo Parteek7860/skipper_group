@@ -101,9 +101,11 @@ else
     <h4>No Data Available</h4>
 }
 
+@{
 
+}
 
-<script >
+<script nonce="@Context.Items["CSPNonce"]">
     $(document).ready(function () {
         RefreshCaptcha();
     });

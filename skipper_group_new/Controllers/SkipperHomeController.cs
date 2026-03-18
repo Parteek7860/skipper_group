@@ -25,7 +25,8 @@ namespace skipper_group_new.Controllers
         private readonly IWebHostEnvironment _env;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SkipperHomeController(ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService, IWebHostEnvironment env, IHttpContextAccessor httpContextAccessor)
+        private readonly EmailService _emailService;
+        public SkipperHomeController(ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService, IWebHostEnvironment env, IHttpContextAccessor httpContextAccessor, EmailService emailService)
      : base(homePageService, menuService, httpContextAccessor)
         {
             _homePageService = homePageService;
@@ -34,12 +35,14 @@ namespace skipper_group_new.Controllers
              .Get<List<UrlValidationRule>>() ?? new();
             _env = env;
             _httpContextAccessor = httpContextAccessor;
+            _emailService = emailService;
         }
+       
         [HttpGet]
         [Route("/")]
         public async Task<IActionResult> Index()
         {
-
+            
             clsHomeModel obj = new clsHomeModel();
             await LoadSeoDataAsync(1);
             await BindProjectsList();
@@ -505,6 +508,7 @@ namespace skipper_group_new.Controllers
             EnquiryModel obj = new EnquiryModel();
             obj.capacha = CaptchaHelper.GenerateCaptcha();
             obj.CaptchaCode = obj.capacha;
+            HttpContext.Session.SetString("CaptchaCode", obj.capacha);
 
             var x = await _homePageService.GetCarrer();
             var filterresults = x.AsDataView().ToTable().Select($"status=1 and jobid='{id.ToString()}'");
@@ -521,6 +525,11 @@ namespace skipper_group_new.Controllers
         [Route("apply-now/{title}/{id:int}")]
         public async Task<IActionResult> apply(EnquiryModel cls, IFormFile file_uploader)
         {
+            //await _emailService.SendEmailAsync(
+            //    cls.EmailId,
+            //    "Apply Job",
+            //    "<h1>Hello from ASP.NET Core</h1>"
+            //);
             await LoadSeoDataAsync(81);
             await LoadCMSDataAsync(81);
             EnquiryModel obj = new EnquiryModel();
@@ -556,6 +565,7 @@ namespace skipper_group_new.Controllers
             obj.Eid = Convert.ToInt32(HttpContext.Request.RouteValues["id"]?.ToString());
             obj.phone = cls.phone;
             obj.FName = cls.FName;
+            
             obj.EmailId = cls.EmailId;
             obj.EmailId = cls.EmailId;
             obj.OrganizationName = cls.OrganizationName;
@@ -566,18 +576,19 @@ namespace skipper_group_new.Controllers
             obj.zipcode = cls.zipcode;
             obj.FMessage = cls.FMessage;
             obj.jobname = cls.jobname;
-
+            obj.lastname = cls.lastname;
             if (file_uploader != null && file_uploader.Length > 0)
             {
-                var fileName = Path.GetFileName(file_uploader.FileName); 
-                var filePath = Path.Combine("wwwroot/uploads/files", fileName);
+                var fileName = Path.GetFileName(file_uploader.FileName);
+                var uniqueName = $"{Guid.NewGuid()}_{fileName}";
+                var filePath = Path.Combine("wwwroot/uploads/files", uniqueName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     file_uploader.CopyTo(stream);
                 }
 
-                obj.uploadfile = fileName;
+                obj.uploadfile = uniqueName;
             }
             var x = _homePageService.SaveEnquiryDetails(obj);
             if (x > 0)

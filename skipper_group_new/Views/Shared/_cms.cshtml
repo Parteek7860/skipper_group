@@ -4,6 +4,9 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     @await Html.PartialAsync("~/Views/Shared/_seosection.cshtml")
+ @{
+     var nonce = Context.Items["CSPNonce"]?.ToString();
+ }
 
     <link href="@Url.Content("~/css/bootstrap.min.css")" rel="stylesheet" asp-append-version="true">
     <link href="@Url.Content("~/css/common.css")" rel="stylesheet" asp-append-version="true">
@@ -27,8 +30,8 @@
 
     
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RLPL114LGW"></script>
-    <script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RLPL114LGW" nonce="@nonce"></script>
+    <script nonce="@nonce">
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
@@ -38,7 +41,7 @@
 
 
     <!-- Google Tag Manager -->
-    <script>
+    <script nonce="@nonce">
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -48,7 +51,7 @@
 
 
 
-    
+    <meta name="google-site-verification" content="RfWqt-MuepFUYZ37ULxxbEBxdBhv1CtSPq2DqDUxv-8" />
 
 </head>
 
@@ -92,11 +95,9 @@
     <script src="@Url.Content("/js/inner.js")" asp-append-version="true"></script>
     <script src="@Url.Content("/js/canvas.js")" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
     <script src="@Url.Content("/js/timeline.js")" asp-append-version="true"></script>
-    <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
-    <script src="@Url.Content("~/lib/jquery-validation/dist/jquery.validate.js")"></script>
-    <script src="@Url.Content("~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js")"></script>
     @RenderSection("Scripts", required: false)
-    
 </body>
 </html>

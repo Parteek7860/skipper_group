@@ -12,6 +12,7 @@ using skipper_group_new.Repositories;
 using skipper_group_new.Repositories;
 using skipper_group_new.Service;
 using skipper_group_new.Service;
+using System.Net;
 using university.Repositories;
 
 
@@ -52,6 +53,10 @@ builder.Services.AddScoped<ISkipperHomeRepository, SkipperHomeRepository>();
 builder.Services.AddScoped<ISkipperHome, clsSkipperHome>();
 builder.Services.AddScoped<ISkipperInvestorPage, SkipperInvestorService>();
 builder.Services.AddScoped<ISkipperInvestorRepo, SkipperInvestorRepository>();
+builder.Services.Configure<SmtpSettings>(
+    builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.AddTransient<EmailService>();
+System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
 builder.Services.AddSession(options =>
 {
@@ -120,30 +125,47 @@ app.Use(async (context, next) =>
     }
 });
 
-//app.Use(async (context, next) =>
-//{
-//    var host = context.Request.Host;
+var forceWWW = builder.Configuration.GetValue<bool>("UrlSettings:ForceWWW");
 
-//    if (!host.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
-//    {
-//        var newHost = new HostString("www." + host.Host, host.Port ?? 443);
+if (forceWWW)
+{
+    app.Use(async (context, next) =>
+    {
+        var host = context.Request.Host;
 
-//        var newUrl = $"{context.Request.Scheme}://{newHost}{context.Request.Path}{context.Request.QueryString}";
+        if (!host.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
+        {
+            var newHost = "www." + host.Host;
 
-//        context.Response.StatusCode = StatusCodes.Status301MovedPermanently;
-//        context.Response.Headers.Location = newUrl;
-//        return;
-//    }
+            // Port only if exists
+            if (host.Port.HasValue)
+            {
+                newHost += ":" + host.Port.Value;
+            }
 
-//    await next();
-//});
+            var newUrl = $"{context.Request.Scheme}://{newHost}{context.Request.Path}{context.Request.QueryString}";
+
+            context.Response.StatusCode = StatusCodes.Status301MovedPermanently;
+            context.Response.Headers.Location = newUrl;
+            return;
+        }
+
+        await next();
+    });
+}
+var forceHttps = builder.Configuration.GetValue<bool>("UrlSettings:ForceHttps");
+
+if (forceHttps)
+{
+    app.UseHttpsRedirection();
+}
 
 
 
 // -------------------------------------------------
 // 3️⃣ Standard Middleware Order
 // -------------------------------------------------
-app.UseHttpsRedirection();
+
 app.Use(async (context, next) =>
 {
     var path = context.Request.Path.Value;
@@ -172,70 +194,28 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 
-//app.Use(async (context, next) =>
-//{
-//    var nonce = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
-//    context.Items["CSPNonce"] = nonce;
+app.Use(async (context, next) =>
+{
+    var path = context.Request.Path.Value.ToLower();
+    var nonce = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+    context.Items["CSPNonce"] = nonce;
 
-//    var cspTemplate = builder.Configuration["SecurityHeaders:CSP"];
+    // Skip CSP for back office
+    if (!path.StartsWith("/admin") && !path.StartsWith("/backoffice"))
+    {
+        
 
-//    context.Response.Headers["Content-Security-Policy"] = cspTemplate;
+        var cspTemplate = builder.Configuration["SecurityHeaders:CSP"];
+        var finalPolicy = cspTemplate.Replace("{nonce}", $"'nonce-{nonce}'");
 
-//    await next();
-//});
+        context.Response.Headers["Content-Security-Policy"] = finalPolicy;
+
+        
+    }
+    await next();
+});
 
 
-
-//app.Use(async (context, next) =>
-//{
-//    var nonce = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
-//    context.Items["CSPNonce"] = nonce;
-
-//    // Security headers
-//    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
-//    context.Response.Headers["X-Frame-Options"] = "DENY";
-//    context.Response.Headers["X-XSS-Protection"] = "1; mode=block";
-//    context.Response.Headers["Referrer-Policy"] = "no-referrer";
-//    context.Response.Headers["Permissions-Policy"] = "geolocation=(), microphone=()";
-
-//    // ✅ FINAL CSP - CKEditor, jQuery, Slick, Font Awesome, WOW.js, WebSocket, Google Fonts
-//    var csp = string.Join(" ",
-//        "default-src 'self';",
-
-//     $"script-src 'self' 'unsafe-inline' 'unsafe-eval' ws: wss: https://www.googletagmanager.com https://www.google-analytics.com https://www.google-analytics.com https://region1.google-analytics.com https://cdn.ckeditor.com https://cdnjs.cloudflare.com https://code.jquery.com https://cdn.jsdelivr.net https://cke4.ckeditor.com; ",
-
-//        // ✅ Allow inline styles + external fonts & icons
-//        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;",
-
-//        // ✅ Allow fonts from Google & cdnjs
-//        "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net data:;",
-
-//        // ✅ Allow local + base64 images
-//        "img-src 'self' data: https://cdn.ckeditor.com https://cdnjs.cloudflare.com;",
-
-//    // ✅ Allow AJAX and WebSocket connections (for Live Reload / SignalR / CKEditor preview)
-//    //  "connect-src 'self' ws: wss: https://cdn.ckeditor.com https://cdnjs.cloudflare.com;",
-
-//    "connect-src 'self' ws: wss: https://cdn.ckeditor.com https://cdnjs.cloudflare.com https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com;",
-
-//    // ✅ THIS LINE FIXES VIDEO
-//    // 🔥 THIS ENABLES AUDIO / VIDEO
-
-//    "media-src 'self' https: data: blob:;",
-//        // ✅ Allow iframes from CKEditor (for previews, embeds, etc.)
-//        "frame-src 'self' https://cdn.ckeditor.com https://*;",
-
-//        // ✅ Secure form submissions
-//        "form-action 'self';",
-
-//        // ✅ Prevent other sites from embedding your pages
-//        "frame-ancestors 'none';"
-//    );
-
-//    context.Response.Headers["Content-Security-Policy"] = csp;
-
-//    await next();
-//});
 
 
 app.UseRouting();

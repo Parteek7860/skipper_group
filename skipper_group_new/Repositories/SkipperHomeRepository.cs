@@ -190,10 +190,12 @@ namespace skipper_group_new.Repositories
                 cmd.Parameters.AddWithValue("@App_Email", objML_contact.EmailId);
                 cmd.Parameters.AddWithValue("@mobile", objML_contact.phone);
                 cmd.Parameters.AddWithValue("@City", objML_contact.city);
+                cmd.Parameters.AddWithValue("@country", objML_contact.country);
                 cmd.Parameters.AddWithValue("@App_Address", objML_contact.address);
                 cmd.Parameters.AddWithValue("@MaritalStatus", objML_contact.zipcode);
                 cmd.Parameters.AddWithValue("@state", objML_contact.state);
                 cmd.Parameters.AddWithValue("@jobtitle", objML_contact.jobname);
+                cmd.Parameters.AddWithValue("@uploadfile", objML_contact.uploadfile);
                 cmd.Parameters.AddWithValue("@uname", "user");
                 cmd.Parameters.AddWithValue("@mode", 1);
                 cmd.Parameters.Add("@App_id", SqlDbType.Int, 0, "@App_id").Direction = ParameterDirection.Output;

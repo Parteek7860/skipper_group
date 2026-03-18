@@ -115,7 +115,7 @@
         background: #232323;
         position: fixed;
         bottom: 0;
-        z-index: 9999;
+        z-index: 999999;
         width: 100%;
         display: block;
         height: 7rem;
@@ -725,11 +725,13 @@
     color: #fff;
     fill: currentColor;
 }
+
 @media (max-width:1699px) {
-.footer-links {
-    gap: 9px 24px;
+    .footer-links {
+        gap: 9px 24px;
+    }
 }
-}
+
 @media (max-width:1199px) {
     .footer {
         padding: 4.5rem 2rem 10rem;
@@ -761,10 +763,11 @@
         padding-left: 3rem;
     }
 }
+
 @media (max-width: 767px) {
-.footer-links {
-    display: flex;
-}
+    .footer-links {
+        display: flex;
+    }
 }
 
 @media (max-width: 360px) {
@@ -823,8 +826,7 @@ li.has-submenu ul li a {
 @media (max-width:999px) {
 
     .footer-right {
-            padding-left: 0;
-        }
-    
-}
+        padding-left: 0;
+    }
 
+}

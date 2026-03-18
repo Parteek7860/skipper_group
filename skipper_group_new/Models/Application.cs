@@ -45,10 +45,16 @@
     {
         public int App_id { get; set; }
         public string FName { get; set; }
+        public string jobtitle { get; set; }
         public string LName { get; set; }
         public string Gender { get; set; }
         public string MaritalStatus { get; set; }
         public string App_Email { get; set; }
+        public string Mobile { get; set; }
+        public string app_address { get; set; }
+        public string country { get; set; }
+        public string state { get; set; }
+        public string city { get; set; }
         public string App_Qualification { get; set; }
         public int? App_Expyear { get; set; }
         public int? App_Expmonth { get; set; }
