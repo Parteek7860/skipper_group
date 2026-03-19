@@ -92,9 +92,9 @@
                                                     <img src="~/backoffice/images/Download_24x24.png" width="30" />
                                                 </a>
 
-                                                <a href="/backoffice/career/GetApplicantDetail/@i.App_id" class="btnView">
+                                                 <a href="/backoffice/career/GetApplicantDetail/@i.App_id" class="btnView">
                                                     <img src="~/Backoffice/images/view_icon.svg" width="30" />
-                                                </a>
+                                                </a> 
                                             </td>
                                         </tr>
                                         srNo++;
@@ -140,46 +140,12 @@
                             <label style="font-weight:600;">Name:</label>
                             <div id="aplName" style="color:#007bff;"></div>
                         </div>
-                        <div class="col-sm-6">
-                            <label style="font-weight:600;">DOB:</label>
-                            <div id="aplDOB" style="color:#007bff;"></div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-sm-6">
-                            <label style="font-weight:600;">Gender:</label>
-                            <div id="aplGender"></div>
-                        </div>
-                        <div class="col-sm-6">
-                            <label style="font-weight:600;">Marital Status:</label>
-                            <div id="aplMaritalStatus"></div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-sm-6">
-                            <label style="font-weight:600;">Father/Husband Name:</label>
-                            <div id="aplFName"></div>
-                        </div>
-                        <div class="col-sm-6">
-                            <label style="font-weight:600;">Address:</label>
-                            <div id="aplAddress"></div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-sm-6">
+                         <div class="col-sm-6">
                             <label style="font-weight:600;">Mobile Number:</label>
                             <div id="aplMobile"></div>
                         </div>
-                        <div class="col-sm-6">
-                            <label style="font-weight:600;">Telephone:</label>
-                            <div id="aplTelephone"></div>
-                        </div>
                     </div>
-
-                    <div class="row mb-3">
+                     <div class="row mb-3">
                         <div class="col-sm-6">
                             <label style="font-weight:600;">Email:</label>
                             <div id="aplEmail" style="color:#007bff; word-break:break-word;"></div>
@@ -189,50 +155,25 @@
                             <div id="aplCity"></div>
                         </div>
                     </div>
-
-                    <div class="row mb-3">
+                     <div class="row mb-3">
                         <div class="col-sm-6">
                             <label style="font-weight:600;">State:</label>
                             <div id="aplState"></div>
                         </div>
-                        <div class="col-sm-6">
-                            <label style="font-weight:600;">Qualification:</label>
-                            <div id="aplQualification"></div>
-                        </div>
+                      @*   <div class="col-sm-6">
+                            <label style="font-weight:600;">Country:</label>
+                            <div id="aplcountry"></div>
+                        </div> *@
                     </div>
-
                     <div class="row mb-3">
-                        <div class="col-sm-6">
-                            <label style="font-weight:600;">Total Experience:</label>
-                            <div id="aplexperience"></div>
-                        </div>
-                        <div class="col-sm-6">
-                            <label style="font-weight:600;">Skills:</label>
-                            <div id="aplSkills"></div>
+                        <div class="col-sm-12">
+                            <label style="font-weight:600;">Address:</label>
+                            <div id="aplAddress"></div>
                         </div>
                     </div>
+                   
 
-                    <div class="row mb-3">
-                        <div class="col-sm-6">
-                            <label style="font-weight:600;">Function:</label>
-                            <div id="aplFunction"></div>
-                        </div>
-                        <div class="col-sm-6">
-                            <label style="font-weight:600;">Current Industry:</label>
-                            <div id="aplIndustry"></div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-sm-6">
-                            <label style="font-weight:600;">Location:</label>
-                            <div id="aplLocation"></div>
-                        </div>
-                        <div class="col-sm-6">
-                            <label style="font-weight:600;">Current Salary:</label>
-                            <div id="aplSalary"></div>
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
         </div>
@@ -397,23 +338,13 @@
                         const d = result.data;
 
                         document.getElementById("aplName").textContent = d.name || "";
-                        document.getElementById("aplDOB").textContent = d.dob || "";
-                        document.getElementById("aplGender").textContent = d.gender || "";
-                        document.getElementById("aplMaritalStatus").textContent = d.maritalStatus || "";
-                        document.getElementById("aplFName").textContent = d.fatherName || "";
+                        
                         document.getElementById("aplAddress").textContent = d.address || "";
                         document.getElementById("aplMobile").textContent = d.mobile || "";
-                        document.getElementById("aplTelephone").textContent = d.telephone || "";
                         document.getElementById("aplEmail").textContent = d.email || "";
                         document.getElementById("aplCity").textContent = d.city || "";
                         document.getElementById("aplState").textContent = d.state || "";
-                        document.getElementById("aplQualification").textContent = d.qualification || "";
-                        document.getElementById("aplexperience").textContent = d.experience || "";
-                        document.getElementById("aplSkills").textContent = d.skills || "";
-                        document.getElementById("aplFunction").textContent = d.function || "";
-                        document.getElementById("aplIndustry").textContent = d.industry || "";
-                        document.getElementById("aplLocation").textContent = d.location || "";
-                        document.getElementById("aplSalary").textContent = d.salary || "";
+                         //document.getElementById("aplcountry").textContent = d.country || "";
 
                         modal.show();
                     })

@@ -194,10 +194,6 @@ namespace skipper_group_new.Controllers
             var applicant = new
             {
                 Name = $"{a.FName} {a.LName}",
-                DOB = a.App_DOB.HasValue ? a.App_DOB.Value.ToString("dd-MM-yyyy") : "",
-                Gender = a.Gender,
-                MaritalStatus = a.MaritalStatus,
-                FatherName = a.Father_HusbandName,
                 Address = a.App_Address,
                 Mobile = a.Mobile,
                 Telephone = a.Telephone,
@@ -210,7 +206,9 @@ namespace skipper_group_new.Controllers
                 Function = a.Funarea,
                 Industry = a.CurrIndustries,
                 Location = a.PrefLocation,
-                Salary = a.Csalary
+                Salary = a.Csalary,
+                country = a.Country ?? ""
+
             };
 
             return Json(new { success = true, data = applicant });
