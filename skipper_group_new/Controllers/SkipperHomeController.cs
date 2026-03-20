@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
 using skipper_group_new.Models;
@@ -24,7 +25,7 @@ namespace skipper_group_new.Controllers
         private readonly ISkipperHome _homePageService;
         private readonly IWebHostEnvironment _env;
         private readonly IHttpContextAccessor _httpContextAccessor;
-
+        private readonly IConfiguration _config;
         private readonly EmailService _emailService;
         public SkipperHomeController(ISkipperHome homePageService, IConfiguration configuration, MenuDataService menuService, IWebHostEnvironment env, IHttpContextAccessor httpContextAccessor, EmailService emailService)
      : base(homePageService, menuService, httpContextAccessor)
@@ -36,13 +37,14 @@ namespace skipper_group_new.Controllers
             _env = env;
             _httpContextAccessor = httpContextAccessor;
             _emailService = emailService;
+            _config = configuration;
         }
-       
+
         [HttpGet]
         [Route("/")]
         public async Task<IActionResult> Index()
         {
-            
+
             clsHomeModel obj = new clsHomeModel();
             await LoadSeoDataAsync(1);
             await BindProjectsList();
@@ -228,7 +230,6 @@ namespace skipper_group_new.Controllers
                     DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
                     obj.desc = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
                     obj.SmallDescription = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["smalldesc"]));
-
 
                 }
 
@@ -534,7 +535,7 @@ namespace skipper_group_new.Controllers
             await LoadCMSDataAsync(81);
             EnquiryModel obj = new EnquiryModel();
 
-            
+
 
             var sessionCaptcha = HttpContext.Session.GetString("CaptchaCode");
 
@@ -549,10 +550,9 @@ namespace skipper_group_new.Controllers
                 return View("apply", obj);
             }
 
-            
 
-            if (string.IsNullOrEmpty(cls.FName) || string.IsNullOrEmpty(cls.EmailId) || string.IsNullOrEmpty(cls.phone) || file_uploader == null ||
-    string.IsNullOrEmpty(file_uploader.FileName))
+
+            if (string.IsNullOrEmpty(cls.FName) || string.IsNullOrEmpty(cls.EmailId) || string.IsNullOrEmpty(cls.phone) || file_uploader == null || string.IsNullOrEmpty(file_uploader.FileName))
             {
                 //obj = cls;
                 obj.capacha = CaptchaHelper.GenerateCaptcha();
@@ -561,11 +561,11 @@ namespace skipper_group_new.Controllers
                 return View("apply", obj);
             }
 
-           
+
             obj.Eid = Convert.ToInt32(HttpContext.Request.RouteValues["id"]?.ToString());
             obj.phone = cls.phone;
             obj.FName = cls.FName;
-            
+
             obj.EmailId = cls.EmailId;
             obj.EmailId = cls.EmailId;
             obj.OrganizationName = cls.OrganizationName;
@@ -580,19 +580,27 @@ namespace skipper_group_new.Controllers
             if (file_uploader != null && file_uploader.Length > 0)
             {
                 var fileName = Path.GetFileName(file_uploader.FileName);
-                var uniqueName = $"{Guid.NewGuid()}_{fileName}";
-                var filePath = Path.Combine("wwwroot/uploads/files", uniqueName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    file_uploader.CopyTo(stream);
-                }
+                var uniqueName = $"{fileName}";
+                
 
                 obj.uploadfile = uniqueName;
             }
             var x = _homePageService.SaveEnquiryDetails(obj);
             if (x > 0)
             {
+                if (file_uploader != null && file_uploader.Length > 0)
+                {
+                    var fileName = Path.GetFileName(file_uploader.FileName);
+                    var uniqueName = x + $"_{fileName}";
+                    var filePath = Path.Combine("wwwroot/uploads/files", uniqueName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file_uploader.CopyTo(stream);
+                    }
+
+
+                }
                 return RedirectToAction("Thankyou", "SkipperHome");
             }
 
@@ -933,6 +941,22 @@ namespace skipper_group_new.Controllers
                 return RedirectToAction("Index", "SkipperHome");
 
             url = url.Trim('/').ToLower();
+
+            var allowedFiles = _config
+         .GetSection("AllowedHtmlFiles")
+         .Get<List<string>>() ?? new List<string>();
+
+            if (allowedFiles.Contains(url.ToLower()))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", url);
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    return PhysicalFile(filePath, "text/html");
+                }
+
+                return NotFound();
+            }
 
             string requestPath = "/" + url;
 
