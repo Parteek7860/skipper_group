@@ -620,14 +620,15 @@ namespace skipper_group_new.Controllers
                     await _emailService.SendEmailAsync(
                         cls.EmailId,
                         "Apply Job",
-                        mailcontent, true
+                        mailcontent
                     );
                     // admin mail
                     string mailadmin = mailadmincontent(cls, uniqueName);
                     if (productid == 7)
                     {
                         await _emailService.SendEmailAsync(
-                      "careerepc@skipperlimited.com",
+                      //"careerepc@skipperlimited.com",
+                      "parteeksappalofficw@gmail.com",
                       "Career",
                       mailadmin
                   );
@@ -635,7 +636,8 @@ namespace skipper_group_new.Controllers
                     else
                     {
                         await _emailService.SendEmailAsync(
-                      "career@skipperlimited.com ",
+                     // "career@skipperlimited.com ",
+                      "parteeksappalofficw@gmail.com",
                       "Career",
                       mailadmin
                   );

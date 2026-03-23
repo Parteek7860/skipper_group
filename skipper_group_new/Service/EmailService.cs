@@ -14,7 +14,7 @@ namespace skipper_group_new.Service
             _smtp = smtpSettings.Value;
         }
 
-        public async Task SendEmailAsync(string toEmail, string subject, string body, bool IsUser = false)
+        public async Task SendEmailAsync(string toEmail, string subject, string body)
         {
             var message = new MailMessage
             {
@@ -25,11 +25,10 @@ namespace skipper_group_new.Service
             };
 
             message.To.Add(toEmail);
-            //if (IsUser == false)
-            //{
-            //    message.CC.Add(_smtp.CcEmail);
-            //}
-
+            if (_smtp.IsAdminCcEmail)
+            {
+                message.CC.Add(_smtp.CcEmail);
+            }
 
             var client = new SmtpClient(_smtp.Host, _smtp.Port)
             {
@@ -37,8 +36,10 @@ namespace skipper_group_new.Service
                 Credentials = new NetworkCredential(_smtp.UserName, "^k1s87#$90B@"),
                 EnableSsl = _smtp.EnableSsl
             };
-
-            await client.SendMailAsync(message);
+            if (_smtp.IsMail == true)
+            {
+                await client.SendMailAsync(message);
+            }
         }
     }
 }
