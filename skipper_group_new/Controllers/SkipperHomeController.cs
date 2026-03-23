@@ -9,6 +9,7 @@ using skipper_group_new.Models;
 using skipper_group_new.Service;
 using System.Data;
 using System.Net;
+using System.Net.Mail;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
@@ -526,11 +527,7 @@ namespace skipper_group_new.Controllers
         [Route("apply-now/{title}/{id:int}")]
         public async Task<IActionResult> apply(EnquiryModel cls, IFormFile file_uploader)
         {
-            //await _emailService.SendEmailAsync(
-            //    cls.EmailId,
-            //    "Apply Job",
-            //    "<h1>Hello from ASP.NET Core</h1>"
-            //);
+
             await LoadSeoDataAsync(81);
             await LoadCMSDataAsync(81);
             EnquiryModel obj = new EnquiryModel();
@@ -581,7 +578,7 @@ namespace skipper_group_new.Controllers
             {
                 var fileName = Path.GetFileName(file_uploader.FileName);
                 var uniqueName = $"{fileName}";
-                
+
 
                 obj.uploadfile = uniqueName;
             }
@@ -598,6 +595,51 @@ namespace skipper_group_new.Controllers
                     {
                         file_uploader.CopyTo(stream);
                     }
+                    //find category
+                    int productid = 0;
+
+                    var a = await _homePageService.GetCarrer();
+                    var filterresults1 = a.AsDataView().ToTable().Select($"jobid='{obj.Eid}'");
+
+                    if (filterresults1.Length > 0)
+                    {
+                        DataTable dt = ((IEnumerable<DataRow>)filterresults1).CopyToDataTable<DataRow>();
+                        productid = Convert.ToInt16(dt.Rows[0]["EmpTypeId"]);
+
+                        var x1 = await _homePageService.GetProductSolutionList();
+                        var filterresults = x1.AsDataView().ToTable().Select($"productid='{productid}'");
+                        if (filterresults.Length > 0)
+                        {
+                            DataTable d = ((IEnumerable<DataRow>)filterresults).CopyToDataTable<DataRow>();
+                            productid = Convert.ToInt16(d.Rows[0]["productid"]);
+                        }
+
+                    }
+
+                    string mailcontent = mailingcontent(cls.FName);
+                    await _emailService.SendEmailAsync(
+                        cls.EmailId,
+                        "Apply Job",
+                        mailcontent, true
+                    );
+                    // admin mail
+                    string mailadmin = mailadmincontent(cls, uniqueName);
+                    if (productid == 7)
+                    {
+                        await _emailService.SendEmailAsync(
+                      "careerepc@skipperlimited.com",
+                      "Career",
+                      mailadmin
+                  );
+                    }
+                    else
+                    {
+                        await _emailService.SendEmailAsync(
+                      "career@skipperlimited.com ",
+                      "Career",
+                      mailadmin
+                  );
+                    }
 
 
                 }
@@ -605,6 +647,43 @@ namespace skipper_group_new.Controllers
             }
 
             return View("apply", obj);
+        }
+
+        public string mailingcontent(string name)
+        {
+            string mailmsgtest;
+            mailmsgtest = "<html><body> <table cellpadding=\'3\' align=\'left\' cellspacing=\'1\' width =\'450px\'>";
+            mailmsgtest += "<tr><td colspan='2'> Dear " + name + ", </td></tr>";
+            mailmsgtest += "<tr><td colspan='2'></td></tr>";
+            mailmsgtest += "<tr><td colspan='2'>Thank You!!! Your Application has been successfully submitted. </td></tr>";
+            mailmsgtest += "<tr><td colspan='2'><b>Thanks & Regards</b></td></tr>";
+            mailmsgtest += "<tr><td colspan='2'><b>Skipper Group</b></td></tr>";
+            mailmsgtest += "</table></body></html>";
+
+            return mailmsgtest;
+        }
+
+        public string mailadmincontent(EnquiryModel cls, string attachcv)
+        {
+            string mailmsgtest;
+            mailmsgtest = "<html><body> <table cellpadding=\'3\' align=\'left\' cellspacing=\'1\' width =\'450px\'>";
+            mailmsgtest += "<tr><td colspan=2> Dear Admin </td></tr>";
+            mailmsgtest += "<tr><td colspan='2'>You have received a new application for current Position. </td></tr><br />";
+            mailmsgtest += "<tr><td colspan=2>Job Title  &nbsp;                 : " + cls.jobname + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Name of Applicant  &nbsp;                 : " + cls.FName + "</td></tr>";
+
+            mailmsgtest += "<tr><td colspan=2>Mobile Number  &nbsp;                 : " + cls.phone + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Email  &nbsp;                 : " + cls.EmailId + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>City  &nbsp;                 : " + cls.city + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>State  &nbsp;                 : " + cls.state + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Country  &nbsp;                 : " + cls.country + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>ZipCode  &nbsp;                 : " + cls.zipcode + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Address  &nbsp;                 : " + cls.address + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Attach CV  &nbsp;                 : https://skipperlimited.com/uploads/files/" + attachcv + "</td></tr>";
+            mailmsgtest += "<tr><td  nowrap = 'true' colspan=2><b>Regards,</b></td></tr>";
+            mailmsgtest += "<tr><td  nowrap = 'true' colspan=2><b>Skipper Group</b></td></tr>";
+            mailmsgtest += "</table></body></html>";
+            return mailmsgtest;
         }
 
         #endregion

@@ -14,7 +14,7 @@ namespace skipper_group_new.Service
             _smtp = smtpSettings.Value;
         }
 
-        public async Task SendEmailAsync(string toEmail, string subject, string body)
+        public async Task SendEmailAsync(string toEmail, string subject, string body, bool IsUser = false)
         {
             var message = new MailMessage
             {
@@ -25,6 +25,11 @@ namespace skipper_group_new.Service
             };
 
             message.To.Add(toEmail);
+            //if (IsUser == false)
+            //{
+            //    message.CC.Add(_smtp.CcEmail);
+            //}
+
 
             var client = new SmtpClient(_smtp.Host, _smtp.Port)
             {
