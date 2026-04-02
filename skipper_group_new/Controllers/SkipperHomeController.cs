@@ -479,6 +479,7 @@ namespace skipper_group_new.Controllers
         {
             PostJobModel obj = new PostJobModel();
             await LoadCMSDataAsync(8);
+            await LoadTableSeoDataAsync("postedjobs", "jobid", Convert.ToInt32(jobid));
             var x = await _homePageService.GetCarrer();
             DataRow[] results = x.Select($"status=1 and jobid='{jobid.ToString()}'");
             if (results.Length > 0)
@@ -629,17 +630,19 @@ namespace skipper_group_new.Controllers
                         await _emailService.SendEmailAsync(
                       //"careerepc@skipperlimited.com",
                       "parteeksappalofficw@gmail.com",
-                      "Career",
-                      mailadmin
+                      cls.FName,
+                     mailadmin,
+                      cls.uploadfile
                   );
                     }
                     else
                     {
                         await _emailService.SendEmailAsync(
-                     // "career@skipperlimited.com ",
+                      // "career@skipperlimited.com ",
                       "parteeksappalofficw@gmail.com",
-                      "Career",
-                      mailadmin
+                      cls.FName,
+                      mailadmin,
+                      cls.uploadfile
                   );
                     }
 
