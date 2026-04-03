@@ -195,7 +195,7 @@ namespace skipper_group_new.Repositories
                 cmd.Parameters.AddWithValue("@MaritalStatus", objML_contact.zipcode);
                 cmd.Parameters.AddWithValue("@state", objML_contact.state);
                 cmd.Parameters.AddWithValue("@jobtitle", objML_contact.jobname);
-                cmd.Parameters.AddWithValue("@uploadfile", objML_contact.uploadfile);
+                cmd.Parameters.AddWithValue("@AttachCV", objML_contact.uploadfile);
                 cmd.Parameters.AddWithValue("@uname", "user");
                 cmd.Parameters.AddWithValue("@mode", 1);
                 cmd.Parameters.Add("@App_id", SqlDbType.Int, 0, "@App_id").Direction = ParameterDirection.Output;

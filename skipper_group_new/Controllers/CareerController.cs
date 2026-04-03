@@ -233,19 +233,25 @@ namespace skipper_group_new.Controllers
                     return RedirectToAction("viewgeneral");
                 }
 
-                var cleanFileName = applicant.AttachCV.Replace("~/Uploads/files/", "").TrimStart('/', '\\');
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads", "files", cleanFileName);
+                var fileName = Path.GetFileName(applicant.AttachCV);
+
+                var filePath = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "Uploads",
+                    "Files",
+                    fileName
+                );
+
+                Console.WriteLine($"File Path: {filePath}");
+
                 if (!System.IO.File.Exists(filePath))
                 {
                     TempData["ErrorMessage"] = "Resume file not found on server.";
                     return RedirectToAction("viewgeneral");
                 }
 
-                var provider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
-                if (!provider.TryGetContentType(filePath, out string contentType))
-                    contentType = "application/octet-stream";
-
-                return PhysicalFile(filePath, contentType, Path.GetFileName(filePath));
+                return PhysicalFile(filePath, "application/octet-stream", fileName);
             }
             catch (Exception ex)
             {
