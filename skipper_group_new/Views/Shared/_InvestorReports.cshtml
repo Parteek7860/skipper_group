@@ -29,7 +29,15 @@
                                 <img src="/images/icon/pdf-icon.svg" alt="pdf-icon">
                             </figcaption>
                         </figure>
-                        <a href="/investor/downloadfile/@item.prospectus" class="links" target="_blank"></a>
+                        @if (!string.IsNullOrEmpty(item.purl))
+                        {
+                            <a href="@item.purl" class="links" target="_blank"></a>
+                        }
+                        else
+                        {
+                            <a href="/investor/downloadfile/@item.prospectus" class="links" target="_blank"></a>
+                        }
+                       
                     </div>
                 }
             </div>
