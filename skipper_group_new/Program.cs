@@ -181,6 +181,12 @@ app.Use(async (context, next) =>
 
     await next();
 });
+
+var allowedFiles = builder.Configuration
+    .GetSection("AllowedHtmlFiles")
+    .Get<List<string>>();
+
+
 //app.UseStaticFiles();
 
 

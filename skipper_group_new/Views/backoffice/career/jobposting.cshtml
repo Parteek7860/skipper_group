@@ -388,7 +388,41 @@
                     </div>
 
                 </div>
+                <h5>SEO Section</h5>
+                <div class="row clearfix">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label> Page Title</label>
+                                @Html.EditorFor(model => model.pagetitle, new { htmlAttributes = new { @class = "form-control" } })
 
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label> Meta Keywords</label>
+                                @Html.EditorFor(model => model.PageMeta, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label> Meta Description </label>
+                                @Html.EditorFor(model => model.PageMetaDesc, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </div>
 
                 <div class="row clearfix">
                     <div class="col-lg-6 col-md-6 col-sm-6">

@@ -75,7 +75,7 @@
                                 <div class="input_bx" data-aos="fade-up" data-aos-delay="800">
                                     <input type="file" id="realFileInput" class="form-control" name="file_uploader" />
                                     @Html.HiddenFor(m => m.uploadfile)
-                                    <span id="fileError" class="text-danger v-span"></span>
+                                    @Html.ValidationMessageFor(m => m.uploadfile, "", new { @class = "text-danger v-span" })
                                 </div>
                                 <div class=input_bx aos-init aos-animate data-aos=fade-up data-aos-delay=800>
                                     <figure class="captcha_wrap">

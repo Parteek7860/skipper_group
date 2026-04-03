@@ -66,5 +66,8 @@ namespace skipper_group_new.Models
         [BindProperty]
         public string CaptchaInput { get; set; }
         public string CaptchaCode { get; set; }
+        public string pagetitle { get; set; }
+        public string PageMetaDesc { get; set; }
+        public string PageMeta { get; set; }
     }
 }

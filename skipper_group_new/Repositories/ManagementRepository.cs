@@ -396,6 +396,9 @@ namespace skipper_group_new.Repositories
             cmd.Parameters.AddWithValue("@rewriteurl", job.rewriteurl ?? "");
             cmd.Parameters.AddWithValue("@no_of_vac", job.NoOfVacancies ?? "");
             cmd.Parameters.AddWithValue("@emptypeid", job.EmpTypeId ?? "");
+            cmd.Parameters.AddWithValue("@PageTitle", job.pagetitle ?? "");
+            cmd.Parameters.AddWithValue("@PageMetaDesc", job.PageMetaDesc ?? "");
+            cmd.Parameters.AddWithValue("@PageMeta", job.PageMeta ?? "");
             cmd.Parameters.AddWithValue("@Uname", job.Uname ?? "");
             cmd.Parameters.AddWithValue("@Mode", job.Mode ?? 0);
         }

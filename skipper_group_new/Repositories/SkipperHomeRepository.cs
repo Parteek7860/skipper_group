@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using skipper_group_new.Models;
 using System.Data;
@@ -179,6 +180,7 @@ namespace skipper_group_new.Repositories
         public int SaveEnquiryDetails(EnquiryModel objML_contact)
         {
             int result = 0;
+            
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
 
@@ -198,9 +200,15 @@ namespace skipper_group_new.Repositories
                 cmd.Parameters.AddWithValue("@AttachCV", objML_contact.uploadfile);
                 cmd.Parameters.AddWithValue("@uname", "user");
                 cmd.Parameters.AddWithValue("@mode", 1);
-                cmd.Parameters.Add("@App_id", SqlDbType.Int, 0, "@App_id").Direction = ParameterDirection.Output;
+                //cmd.Parameters.Add("@App_id", SqlDbType.Int, 0, "@App_id").Direction = ParameterDirection.Output;
+
+                SqlParameter outputId = new SqlParameter("@App_id", SqlDbType.Int);
+                outputId.Direction = ParameterDirection.Output;
+                cmd.Parameters.Add(outputId);
+
                 conn.Open();
                 result = cmd.ExecuteNonQuery();
+                result = Convert.ToInt32(outputId.Value);
             }
             return result;
 
