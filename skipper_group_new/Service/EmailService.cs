@@ -28,6 +28,42 @@ namespace skipper_group_new.Service
             };
 
             message.To.Add(toEmail);
+
+
+            var client = new SmtpClient(_smtp.Host, _smtp.Port)
+            {
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(_smtp.UserName, "^k1s87#$90B@"),
+                EnableSsl = _smtp.EnableSsl,
+
+
+            };
+            if (_smtp.IsMail == true)
+            {
+                await client.SendMailAsync(message);
+            }
+
+        }
+
+        public async Task SendAdminEmailAsync(string toEmail, string subject, string body, string attachment = "")
+        {
+            var message = new MailMessage
+            {
+                From = new MailAddress(_smtp.FromEmail, _smtp.FromName),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            };
+            if (!string.IsNullOrEmpty(toEmail))
+            {
+                var emails = toEmail.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var email in emails)
+                {
+                    message.To.Add(email.Trim());
+                }
+            }
+
             if (_smtp.IsAdminCcEmail)
             {
                 message.CC.Add(_smtp.CcEmail);
@@ -49,7 +85,7 @@ namespace skipper_group_new.Service
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(_smtp.UserName, "^k1s87#$90B@"),
                 EnableSsl = _smtp.EnableSsl,
-                
+
 
             };
             if (_smtp.IsMail == true)

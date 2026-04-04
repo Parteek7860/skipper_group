@@ -627,20 +627,19 @@ namespace skipper_group_new.Controllers
                     string mailadmin = mailadmincontent(cls, uniqueName);
                     if (productid == 7)
                     {
-                        await _emailService.SendEmailAsync(
-                      //"careerepc@skipperlimited.com",
-                      "parteeksappalofficw@gmail.com",
-                      cls.FName,
+                        await _emailService.SendAdminEmailAsync(
+                      "careerepc@skipperlimited.com",
+                      
+                      cls.jobname + "_" + cls.FName,
                      mailadmin,
                       cls.uploadfile
                   );
                     }
                     else
                     {
-                        await _emailService.SendEmailAsync(
-                      // "career@skipperlimited.com ",
-                      "parteeksappalofficw@gmail.com",
-                      cls.FName,
+                        await _emailService.SendAdminEmailAsync(
+                       "career@skipperlimited.com ",
+                      cls.jobname + "_" + cls.FName,
                       mailadmin,
                       cls.uploadfile
                   );
@@ -684,7 +683,7 @@ namespace skipper_group_new.Controllers
             mailmsgtest += "<tr><td colspan=2>Country  &nbsp;                 : " + cls.country + "</td></tr>";
             mailmsgtest += "<tr><td colspan=2>ZipCode  &nbsp;                 : " + cls.zipcode + "</td></tr>";
             mailmsgtest += "<tr><td colspan=2>Address  &nbsp;                 : " + cls.address + "</td></tr>";
-            mailmsgtest += "<tr><td colspan=2>Attach CV  &nbsp;                 : https://skipperlimited.com/uploads/files/" + attachcv + "</td></tr>";
+            
             mailmsgtest += "<tr><td  nowrap = 'true' colspan=2><b>Regards,</b></td></tr>";
             mailmsgtest += "<tr><td  nowrap = 'true' colspan=2><b>Skipper Group</b></td></tr>";
             mailmsgtest += "</table></body></html>";
