@@ -33,7 +33,7 @@ namespace skipper_group_new.Service
             var client = new SmtpClient(_smtp.Host, _smtp.Port)
             {
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(_smtp.UserName, "^k1s87#$90B@"),
+                Credentials = new NetworkCredential(_smtp.UserName, "^k1s87^@90B@"),
                 EnableSsl = _smtp.EnableSsl,
 
 
@@ -83,7 +83,7 @@ namespace skipper_group_new.Service
             var client = new SmtpClient(_smtp.Host, _smtp.Port)
             {
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(_smtp.UserName, "^k1s87#$90B@"),
+                Credentials = new NetworkCredential(_smtp.UserName, "^k1s87^@90B@"),
                 EnableSsl = _smtp.EnableSsl,
 
 
