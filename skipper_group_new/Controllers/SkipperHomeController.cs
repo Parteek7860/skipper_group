@@ -639,6 +639,7 @@ namespace skipper_group_new.Controllers
                     {
                         await _emailService.SendAdminEmailAsync(
                        "career@skipperlimited.com ",
+                       //"parteeksappaloffice@gmail.com ",
                       cls.jobname + "_" + cls.FName,
                       mailadmin,
                       cls.uploadfile
