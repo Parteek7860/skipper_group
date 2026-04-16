@@ -160,6 +160,22 @@ if (forceHttps)
     app.UseHttpsRedirection();
 }
 
+// static media redirect
+app.Use(async (context, next) =>
+{
+    var path = context.Request.Path.Value?.ToLower();
+
+    if (path.StartsWith("/media/") || path.StartsWith("/repository/") || path.StartsWith("/investor-relations/") && path.EndsWith(".pdf"))
+    {
+        context.Response.Redirect(
+            "/investor-relations/",
+            permanent: true
+        );
+        return;
+    }
+
+    await next();
+});
 
 
 // -------------------------------------------------

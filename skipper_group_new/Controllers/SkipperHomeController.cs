@@ -1100,7 +1100,7 @@ namespace skipper_group_new.Controllers
              staticExtensions.Any(ext => url.EndsWith(ext, StringComparison.OrdinalIgnoreCase)) ||
              ignoredRoutes.Any(r => url.StartsWith(r, StringComparison.OrdinalIgnoreCase)))
             {
-                return NotFound(); // Let normal routing handle it
+                return RedirectToAction("Handle", "Error", new { code = 400 });
             }
             string fullUrl = HttpContext.Request.GetDisplayUrl();
 
