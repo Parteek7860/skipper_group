@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.Extensions;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using skipper_group_new.Interface;
 using skipper_group_new.Models;
@@ -98,7 +99,7 @@ namespace skipper_group_new.Controllers
                 }
                 obj.collageid = productid;
 
-               
+
                 return View("engineering", obj);
             }
 
@@ -157,8 +158,13 @@ namespace skipper_group_new.Controllers
         public async Task<IActionResult> LoadMenu(string productid)
         {
             var x1 = await _homePageService.GetProductList();
-            DataRow[] data = x1.Select($"status=1");
-            ViewBag.ProductList = data.CopyToDataTable();
+            DataRow[] data;
+            data = x1.Select("status=1");
+
+            ViewBag.ProductList = data.Length > 0
+                ? data.CopyToDataTable()
+                : x1.Clone();
+
             ViewBag.CurrentProductId = productid;
 
             // Menu List

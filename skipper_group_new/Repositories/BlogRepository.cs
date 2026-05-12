@@ -127,7 +127,7 @@ namespace skipper_group_new.Repositories
             parameters.Add("@longdesc", b.LongDesc);
             parameters.Add("@blogdate", b.BlogDate ?? DateTime.Now);
             parameters.Add("@urllink", b.UrlLink);
-            parameters.Add("@displayorder", b.DisplayOrder);
+            parameters.Add("@displayorder", b.DisplayOrder ?? 0);
             parameters.Add("@rewriteurl", b.RewriteUrl);
             parameters.Add("@PageTitle", b.PageTitle);
             parameters.Add("@PageMeta", b.PageMeta);

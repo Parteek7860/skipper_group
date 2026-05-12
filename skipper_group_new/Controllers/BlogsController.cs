@@ -26,6 +26,9 @@ namespace skipper_group_new.Controllers
                 var menuList = _menuService.GetMenu();
                 ViewBag.Menus = menuList;
                 ViewBag.CreateUpdate = "Save";
+
+                ViewBag.CSSClass = "blog";
+
                 return View("~/Views/backoffice/Blogs/add-blogs.cshtml", new clsBlog());
             }
             catch (Exception ex)

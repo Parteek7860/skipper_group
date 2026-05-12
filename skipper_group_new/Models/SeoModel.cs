@@ -8,6 +8,7 @@ namespace skipper_group_new.Models
         public string MetaDescription { get; set; }
         public string MetaKeywords { get; set; }
         public string CanonicalUrl { get; set; }
+        public string image { get; set; }
         public string Robots { get; set; }
         public int PageId { get; set; }
     }

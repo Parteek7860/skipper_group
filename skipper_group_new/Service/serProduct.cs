@@ -162,6 +162,10 @@ namespace skipper_group_new.Service
         {
             return _repository.UpdateShowCareerStatus(status, id);
         }
+        public int UpdateShowInfrastructureStatus(string status, int id)
+        {
+            return _repository.UpdateShowInfrastructureStatus(status, id);
+        }
         public int DeleteRecords(int id)
         {
             return _repository.DeleteRecords(id);

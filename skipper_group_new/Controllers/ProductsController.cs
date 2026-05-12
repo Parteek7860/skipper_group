@@ -1194,6 +1194,55 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpGet]
+        [Route("backoffice/Products/chkinfrastructurestatus/{id}")]
+        public async Task<IActionResult> chkinfrastructurestatus(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
+                    try
+                    {
+                        HttpContext.Session.Remove("Message");
+                        clsProduct objbannertype = new clsProduct();
+                        // Get the Media list by ID
+                        var productTypes = _products.BindProductSolution();
+
+                        var filterresults = productTypes.Result.AsEnumerable()
+                       .Where(pt => pt.Field<int>("productid") == id)
+                       .ToList();
+
+                        if (filterresults.Count > 0)
+                        {
+                            objbannertype.Status = Convert.ToString(Convert.ToInt32(filterresults[0]["show_infrastructure"])) == "1" ? "False" : "True"; // Toggle status
+                            int x1 = _products.UpdateShowInfrastructureStatus(objbannertype.Status, id);
+                            if (x1 > 0)
+                            {
+                                HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Status Update successfully.");
+
+                                return RedirectToAction("viewproductsolution", "Products");
+                            }
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Id is necessary.";
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "An error occurred while processing your request.";
+            }
+            return RedirectToAction("viewproductsolution", "Products");
+        }
+
+        [HttpGet]
         [Route("backoffice/Products/edit/{id}")]
         public async Task<IActionResult> edit(int id)
         {

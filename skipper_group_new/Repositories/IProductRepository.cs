@@ -46,6 +46,7 @@ namespace skipper_group_new.Repositories
         Task<List<CategoryDtl>> GetProductTypeTblData();
         int UpdateStatus(string status, int id);
         int UpdateShowCareerStatus(string status, int id);
+        int UpdateShowInfrastructureStatus(string staus, int id);
 
         int DeleteRecords(int id);
         Task<List<clsCategory>> GetProductTypeList();

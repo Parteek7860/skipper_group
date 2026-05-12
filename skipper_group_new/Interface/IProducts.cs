@@ -25,6 +25,7 @@ namespace skipper_group_new.Interface
         int UpdateStatus(string status, int id);
 
         int UpdateShowCareerStatus(string status, int id);
+        int UpdateShowInfrastructureStatus(string staus, int id);
 
         Task<List<CategoryDtl>> GetProductTypeyTblData();
         Task<clsCategory> EditCategory(int id);

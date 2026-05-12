@@ -88,12 +88,14 @@ namespace skipper_group_new.Controllers
                     cmscontent = row["pagedescription"]?.ToString() ?? "",
                     tagline = row["tagline"]?.ToString() ?? "",
                     parentname = parentName,
-                    id = row["parentid"]?.ToString() ?? ""
-
+                    id = row["parentid"]?.ToString() ?? "",
 
 
                 };
-
+                if (pageId == 13)
+                {
+                    seo.CSSClass = "blog1";
+                }
 
                 _menuService.GetCMSData = new List<clsHomeModel> { seo };
             }
