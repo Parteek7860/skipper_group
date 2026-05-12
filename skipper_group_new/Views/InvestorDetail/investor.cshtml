@@ -27,7 +27,7 @@
                 <div class="accordian_sec">
                     <ul>
                         @foreach (var cat in Model)
-                        {                          
+                        {
 
                             if (cat.subcategory != null && cat.subcategory.Count > 0)
                             {
@@ -62,12 +62,31 @@
                     </ul>
                 </div>
             </div>
+
             @if (ViewBag.RightPartData != null && ((IEnumerable<ReportModel>)ViewBag.RightPartData).Any())
-            {
+            {                
+                var reports = ViewBag.RightPartData as IEnumerable<ReportModel>;
+
+                var years = reports?.Where(x => !string.IsNullOrEmpty(x.yearcategory)).Select(x => x.yearcategory.Trim()).Distinct().OrderByDescending(x => x).ToList();
+               
                 <div class="invest_rght">
+                    <div class="filter-new">
+                        <label for="year">Financial Year wise Filter</label>
+                        <select id="year" class="form-select" name="year">
+                            <option value="">All Years</option>
+                            @if (years != null)
+                            {
+                                foreach (var year in years)
+                                {
+                                    <option value="@year">@year</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
                     @await Html.PartialAsync("_InvestorReports", (IEnumerable<ReportModel>)ViewBag.RightPartData)
                 </div>
-            }            
+            }
             <div class="vertical-line">
                 <img src="/images/icon/investor-line.svg" alt="investor line">
             </div>
