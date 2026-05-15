@@ -60,7 +60,7 @@ namespace skipper_group_new.Controllers
             await next();
 
         }
-        protected async Task LoadCMSDataAsync(int pageId)
+        protected async Task LoadCMSDataAsync(int pageId, int detail = 0)
         {
             var dt = await _homePageService.GetCMSData();
             if (dt == null || dt.Rows.Count == 0)
@@ -92,9 +92,11 @@ namespace skipper_group_new.Controllers
 
 
                 };
-                if (pageId == 13)
+                if (pageId == 13 && detail == 1)
                 {
                     seo.CSSClass = "blog1";
+
+                    seo.CSSClass1 = "blog_class";
                 }
 
                 _menuService.GetCMSData = new List<clsHomeModel> { seo };

@@ -48,7 +48,13 @@
                         <div class="col-lg-2" style="padding-top:10px;">
                             <button class="btn btn-primary" type="button" onclick="filterByDate()" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Search</button>
                         </div>
+                        <div class="col-md-2" style="padding-top:10px;">
+                            <form method="get" asp-controller="others" asp-action="ExportToExcel">
+                                <button type="submit" class="btn btn-success" style="width: 50%; padding: 10px; border-radius: 5px; font-weight: bold;background-color:#456976 !important">Export to Excel</button>
+                            </form>
+                        </div>
                     </div>
+                   
 
                     <table class="table table-bordered" id="productTable">
                         <thead class="table-header">

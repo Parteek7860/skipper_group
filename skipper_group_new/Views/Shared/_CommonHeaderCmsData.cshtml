@@ -7,7 +7,7 @@
     var data = cms.FirstOrDefault();
     @if (data.Name != "Thank you")
     {
-        <section class="inner_banner">
+        <section class="inner_banner @data.CSSClass1">
             <figure>
                 @{
                     var userAgent = Context.Request.Headers["User-Agent"].ToString();

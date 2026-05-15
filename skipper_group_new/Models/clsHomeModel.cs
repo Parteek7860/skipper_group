@@ -18,6 +18,7 @@ namespace skipper_group_new.Models
         public List<clsHomeModel> projectlist { get; set; }
 
         public string CSSClass { get; set; }
+        public string CSSClass1 { get; set; }
 
         public string? Name { get; set; }
         public string tagline { get; set; }

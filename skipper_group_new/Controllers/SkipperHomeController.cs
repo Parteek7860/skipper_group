@@ -92,7 +92,7 @@ namespace skipper_group_new.Controllers
         {
             clsHomeModel obj = new clsHomeModel();
             await LoadSeoDataAsync(id);
-            await LoadCMSDataAsync(id);
+            await LoadCMSDataAsync(id, 1);
 
             var x = await _homePageService.GetBlogList();
 
@@ -629,7 +629,7 @@ namespace skipper_group_new.Controllers
                     {
                         await _emailService.SendAdminEmailAsync(
                       "careerepc@skipperlimited.com",
-                      
+
                       cls.jobname + "_" + cls.FName,
                      mailadmin,
                       cls.uploadfile
@@ -639,7 +639,7 @@ namespace skipper_group_new.Controllers
                     {
                         await _emailService.SendAdminEmailAsync(
                        "career@skipperlimited.com ",
-                       //"parteeksappaloffice@gmail.com ",
+                      //"parteeksappaloffice@gmail.com ",
                       cls.jobname + "_" + cls.FName,
                       mailadmin,
                       cls.uploadfile
@@ -684,7 +684,7 @@ namespace skipper_group_new.Controllers
             mailmsgtest += "<tr><td colspan=2>Country  &nbsp;                 : " + cls.country + "</td></tr>";
             mailmsgtest += "<tr><td colspan=2>ZipCode  &nbsp;                 : " + cls.zipcode + "</td></tr>";
             mailmsgtest += "<tr><td colspan=2>Address  &nbsp;                 : " + cls.address + "</td></tr>";
-            
+
             mailmsgtest += "<tr><td  nowrap = 'true' colspan=2><b>Regards,</b></td></tr>";
             mailmsgtest += "<tr><td  nowrap = 'true' colspan=2><b>Skipper Group</b></td></tr>";
             mailmsgtest += "</table></body></html>";
