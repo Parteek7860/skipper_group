@@ -123,7 +123,7 @@ namespace skipper_group_new.Controllers
         public async Task<IActionResult> blogdetail(string title, int blogid)
         {
             await LoadTableSeoDataAsync("blogs", "blogid", blogid);
-            await LoadCMSDataAsync(13);
+            await LoadCMSDataAsync(13, 2);
             clsBlog obj = new clsBlog();
 
 

@@ -98,6 +98,12 @@ namespace skipper_group_new.Controllers
 
                     seo.CSSClass1 = "blog_class";
                 }
+                if (pageId == 13 && detail == 2)
+                {
+                    seo.CSSClass = "blog1";
+
+                    seo.CSSClass1 = "blog_detail_class";
+                }
 
                 _menuService.GetCMSData = new List<clsHomeModel> { seo };
             }
