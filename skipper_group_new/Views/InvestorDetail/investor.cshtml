@@ -74,13 +74,16 @@
                     {
                         <div class="filter-new">
                             <label for="year">Financial Year wise Filter</label>
-
+                            @{
+                                var currentYear = DateTime.Now.Month >= 4? $"{DateTime.Now.Year}-{DateTime.Now.Year + 1}": $"{DateTime.Now.Year - 1}-{DateTime.Now.Year}";
+                            }
                             <select id="year" class="form-select" name="year">
-                                <option value="">All Years</option>
 
                                 @foreach (var year in years)
                                 {
-                                    <option value="@year">@year</option>
+                                    <option value="@year" selected="@(year.Trim() == currentYear ? "selected" : null)">
+                                        @year
+                                    </option>
                                 }
                             </select>
                         </div>

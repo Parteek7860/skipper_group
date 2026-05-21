@@ -241,23 +241,27 @@ else
 
         if (yearDropdown) {
 
+            filterReports(yearDropdown.value);
+
             yearDropdown.addEventListener("change", function () {
+                filterReports(this.value);
+            });
+        }
 
-                var selectedYear = this.value;
+        function filterReports(selectedYear) {
 
-                var reports = document.querySelectorAll(".pdf-img");
+            var reports = document.querySelectorAll(".pdf-img");
 
-                reports.forEach(function (item) {
+            reports.forEach(function (item) {
 
-                    var reportYear = item.getAttribute("data-year");
+                var reportYear = item.getAttribute("data-year");
 
-                    if (selectedYear === "" || reportYear === selectedYear) {
-                        item.style.display = "";
-                    }
-                    else {
-                        item.style.display = "none";
-                    }
-                });
+                if (selectedYear === "" || reportYear === selectedYear) {
+                    item.style.display = "";
+                }
+                else {
+                    item.style.display = "none";
+                }
             });
         }
     });
