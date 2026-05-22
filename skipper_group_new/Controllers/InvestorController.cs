@@ -59,6 +59,11 @@ namespace skipper_group_new.Controllers
                 {
                     ModelState.Remove(key);
                 }
+                if (c.PcatId == 0)
+                {
+                    c.Status = true;
+                    c.DisplayOrder = 0;
+                }
 
                 if (!ModelState.IsValid)
                 {
@@ -93,14 +98,14 @@ namespace skipper_group_new.Controllers
                 var menuList = _menuService.GetMenu();
                 ViewBag.Menus = menuList;
                 clsCategory obj = new clsCategory();
-                
+
                 if (id > 0)
                 {
                     var cat = await _Investor.EditCategory(id);
                     if (cat != null)
                     {
                         obj.Category = cat.Category;
-                        obj.Status= cat.Status;
+                        obj.Status = cat.Status;
                         obj.Detail = WebUtility.HtmlDecode(cat.Detail);
                         obj.PcatId = cat.PcatId;
                         obj.ShortDetail = WebUtility.HtmlDecode(cat.ShortDetail);
@@ -246,7 +251,7 @@ namespace skipper_group_new.Controllers
 
                     .Select(row => new SelectListItem
                     {
-                        Value =Convert.ToString(row.PcatId),  // or your key column
+                        Value = Convert.ToString(row.PcatId),  // or your key column
                         Text = row.Category  // or your name column
                     })
                     .ToList();
@@ -303,6 +308,17 @@ namespace skipper_group_new.Controllers
                     }
 
                     c.Banner = "/uploads/ProductImages/" + uniqueName;
+                }
+                if (c.PSubCatId > 0)
+                {
+                    c.Mode = "2";
+                }
+                else
+                {
+                    c.Mode = "1";
+                    c.Status = true;
+                    c.ShowOnHome = false;
+                    c.DisplayOrder = 0;
                 }
                 if (c != null)
                 {
