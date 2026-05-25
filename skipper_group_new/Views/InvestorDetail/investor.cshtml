@@ -64,35 +64,56 @@
             </div>
 
             @if (ViewBag.RightPartData != null && ((IEnumerable<ReportModel>)ViewBag.RightPartData).Any())
-            {                
+            {
                 var reports = ViewBag.RightPartData as IEnumerable<ReportModel>;
+                var firstReport = reports?.FirstOrDefault();
+
+                bool isAllYearsDefault = firstReport != null && firstReport.pcatid == 1 && firstReport.psubcatid == 2;
 
                 var years = reports?.Where(x => !string.IsNullOrEmpty(x.yearcategory)).Select(x => x.yearcategory.Trim()).Distinct().OrderByDescending(x => x).ToList();
+
+                var currentYear = DateTime.Now.Month >= 4 ? $"{DateTime.Now.Year}-{DateTime.Now.Year + 1}" : $"{DateTime.Now.Year - 1}-{DateTime.Now.Year}";
+
                 <div class="invest_rght">
 
                     @if (years != null && years.Any())
                     {
                         <div class="filter-new">
+
                             <label for="year">Financial Year wise Filter</label>
-                            @{
-                                var currentYear = DateTime.Now.Month >= 4? $"{DateTime.Now.Year}-{DateTime.Now.Year + 1}": $"{DateTime.Now.Year - 1}-{DateTime.Now.Year}";
-                            }
+
                             <select id="year" class="form-select" name="year">
+
+                                @if (isAllYearsDefault)
+                                {
+                                    <option value="" selected>All Years</option>
+                                }                               
 
                                 @foreach (var year in years)
                                 {
-                                    <option value="@year" selected="@(year.Trim() == currentYear ? "selected" : null)">
-                                        @year
-                                    </option>
+                                    if (!isAllYearsDefault && year.Trim() == currentYear)
+                                    {
+                                        <option value="@year" selected>
+                                            @year
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@year">
+                                            @year
+                                        </option>
+                                    }
                                 }
+
                             </select>
+
                         </div>
                     }
 
                     @await Html.PartialAsync("_InvestorReports", (IEnumerable<ReportModel>)ViewBag.RightPartData)
 
-                </div>
-            }
+            </div>
+                        }
             <div class="vertical-line">
                 <img src="/images/icon/investor-line.svg" alt="investor line">
             </div>
