@@ -28,6 +28,7 @@ namespace skipper_group_new.Models
         public string productname { get; set; }
         public string yearcategory { get; set; }
         public string shortDetail { get; set; }
+        public DateTime trdate { get; set; }
     }
 
     public class InvestorQueryModel

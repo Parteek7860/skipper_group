@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
@@ -110,11 +111,8 @@ namespace skipper_group_new.Controllers
                     prospectus = "",
                     uploadaimage = "",
                     purl = "",
-                    shortDetail = WebUtility.HtmlDecode(
-                        detailTable.Columns.Contains("detail")
-                            ? row["detail"]?.ToString() ?? ""
-                            : ""
-                    )
+                    trdate = row.Table.Columns.Contains("trdate") &&  DateTime.TryParse(row["trdate"]?.ToString(), out DateTime trDate) ? trDate : DateTime.MinValue,
+                    shortDetail = WebUtility.HtmlDecode(detailTable.Columns.Contains("detail")? row["detail"]?.ToString() ?? "" : "")
                 });
             }
 
@@ -174,6 +172,7 @@ namespace skipper_group_new.Controllers
                         prospectus = "",
                         uploadaimage = "",
                         purl = "",
+                        trdate = row.Table.Columns.Contains("trdate") && DateTime.TryParse(row["trdate"]?.ToString(), out DateTime trDate) ? trDate : DateTime.MinValue,
                         shortDetail = WebUtility.HtmlDecode(row.Table.Columns.Contains("detail") ? row["detail"]?.ToString() ?? "" : "")
                     });
 
@@ -185,8 +184,7 @@ namespace skipper_group_new.Controllers
 
             if (dt != null && dt.Rows.Count > 0)
             {
-                var rows = dt.AsEnumerable()
-                 .OrderBy(r => r.Field<int?>("displayorder") ?? int.MaxValue);
+                var rows = dt.AsEnumerable().OrderByDescending(r => r.Table.Columns.Contains("trdate") && DateTime.TryParse(r["trdate"]?.ToString(), out DateTime trDate)?trDate: DateTime.MinValue).ThenBy(r => r.Field<int?>("displayorder") ?? int.MaxValue);
                 foreach (DataRow r in rows)
                 {
                     int subCatId = Convert.ToInt32(r["psubcatid"]);
@@ -202,6 +200,7 @@ namespace skipper_group_new.Controllers
                         prospectus = r["prospectus"].ToString(),
                         uploadaimage = r["uploadaimage"].ToString(),
                         purl = r["purl"].ToString(),
+                        trdate = r.Table.Columns.Contains("trdate") && DateTime.TryParse(r["trdate"]?.ToString(), out DateTime trDate) ? trDate: DateTime.MinValue,
                         shortDetail = null
                     });
                 }
