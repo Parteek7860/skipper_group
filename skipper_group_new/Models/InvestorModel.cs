@@ -7,12 +7,14 @@ namespace skipper_group_new.Models
         public int psubcatid { get; set; }
         public string subcategory { get; set; }
         public string subcatrewriteurl { get; set; }
+        public int displayorder { get; set; }
     }
     public class InvestorModel
     {
         public int pcatid { get; set; }
         public string category { get; set; }
         public string rewriteurl { get; set; }
+        public int displayorder { get; set; }
         public List<InvSubCategoryModel> subcategory { get; set; }
     }
 

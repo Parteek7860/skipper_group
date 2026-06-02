@@ -139,11 +139,12 @@ namespace skipper_group_new.Controllers
                     {
                         psubcatid = Convert.ToInt32(r["psubcatid"]),
                         subcategory = r["subcategory"].ToString().Trim(),
-                        subcatrewriteurl = r["subcatrewriteurl"].ToString().Trim()
+                        subcatrewriteurl = r["subcatrewriteurl"].ToString().Trim(),
+                        displayorder = r.Table.Columns.Contains("displayorder") && int.TryParse(r["displayorder"]?.ToString(), out int displayOrder) ? displayOrder : int.MaxValue
                     })
                     .GroupBy(x => x.subcategory.ToLower().Trim())
                     .Select(g => g.First())
-                    .OrderBy(x => x.subcategory)
+                    .OrderBy(x => x.displayorder)
                     .ToList();
 
                 categoryData.Add(new InvestorModel
@@ -151,6 +152,7 @@ namespace skipper_group_new.Controllers
                     pcatid = catId,
                     category = cat["category"].ToString(),
                     rewriteurl = cat["rewriteurl"].ToString(),
+                    displayorder = cat.Table.Columns.Contains("displayorder") && int.TryParse(cat["displayorder"]?.ToString(), out int catDisplayOrder) ? catDisplayOrder : int.MaxValue,
                     subcategory = subList
                 });
             }
