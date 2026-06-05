@@ -5,6 +5,9 @@
     ViewBag.Title = "Add Image Path";
     Layout = "~/Views/Shared/_homepage.cshtml";
     var Faq = ViewBag.Faq as System.Data.DataTable;
+    var sortedFaq = Faq?.AsEnumerable()
+                        .OrderByDescending(row => row.Field<DateTime>("CreatedDate"))
+                        .CopyToDataTable();
 }
 
 <div class="block-header">
