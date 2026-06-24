@@ -79,7 +79,7 @@ decrypted = decrypted.Replace(@"\\", @"\");
 
 // register provider
 builder.Services.AddSingleton<IDbConnectionProvider>(
-    new DbConnectionProvider(encrypted));
+    new DbConnectionProvider(decrypted));
 
 
 

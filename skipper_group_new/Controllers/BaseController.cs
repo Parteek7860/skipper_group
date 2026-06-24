@@ -48,21 +48,28 @@ namespace skipper_group_new.Controllers
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var x = await _homePageService.GetLicenseExpire();
-            if (x != null)
+            if (x != null &&
+        x.Rows.Count > 0 &&
+        x.Rows[0]["dateencrypt"] != DBNull.Value)
             {
-                DateTime expiryDate = Convert.ToDateTime(x.Rows[0]["dateencrypt"]);
+                string dateValue = Convert.ToString(x.Rows[0]["dateencrypt"]);
 
-                if (DateTime.Now.Date >= expiryDate.Date)
+                if (!string.IsNullOrWhiteSpace(dateValue) &&
+                    DateTime.TryParse(dateValue, out DateTime expiryDate))
                 {
-                    context.Result = new ViewResult
+                    if (DateTime.Today >= expiryDate.Date)
                     {
-                        ViewName = "~/Views/Shared/licensefile.cshtml"
-                    };
+                        context.Result = new ViewResult
+                        {
+                            ViewName = "~/Views/Shared/licensefile.cshtml"
+                        };
 
-                    return;
+                        return;
+                    }
                 }
             }
-           
+
+
             base.OnActionExecuting(context);
 
 
