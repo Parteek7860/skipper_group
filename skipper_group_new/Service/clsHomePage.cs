@@ -167,5 +167,10 @@ namespace skipper_group_new.Service
         {
             return _repository.ChangeStatus(id);
         }
+
+        public Task<DataTable> GetLicenseExpire()
+        {
+         return _repository.GetLicenseExpire();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DocumentFormat.OpenXml.InkML;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
@@ -37,6 +38,25 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/dashboard")]
         public async Task<IActionResult> dashboard(clsLogin objlogin)
         {
+            var x = await _homePageService.GetLicenseExpire();
+            if (x != null &&
+   x.Rows.Count > 0 &&
+   x.Rows[0]["dateencrypt"] != DBNull.Value &&
+   !string.IsNullOrWhiteSpace(Convert.ToString(x.Rows[0]["dateencrypt"])))
+            {
+                DateTime expiryDate;
+
+                if (DateTime.TryParse(
+                    Convert.ToString(x.Rows[0]["dateencrypt"]),
+                    out expiryDate))
+                {
+                    if (DateTime.Today >= expiryDate.Date)
+                    {
+                        return View("~/Views/Shared/licensefile.cshtml");
+                    }
+                }
+            }
+
             if (objlogin.UserName == null || objlogin.Password == null)
             {
                 ModelState.AddModelError("", "Username and password are required.");
@@ -66,6 +86,24 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/dashboard")]
         public async Task<IActionResult> dashboard()
         {
+            var x = await _homePageService.GetLicenseExpire();
+            if (x != null &&
+   x.Rows.Count > 0 &&
+   x.Rows[0]["dateencrypt"] != DBNull.Value &&
+   !string.IsNullOrWhiteSpace(Convert.ToString(x.Rows[0]["dateencrypt"])))
+            {
+                DateTime expiryDate;
+
+                if (DateTime.TryParse(
+                    Convert.ToString(x.Rows[0]["dateencrypt"]),
+                    out expiryDate))
+                {
+                    if (DateTime.Today >= expiryDate.Date)
+                    {
+                        return View("~/Views/Shared/licensefile.cshtml");
+                    }
+                }
+            }
             BindListofdashBoard();
             await BindMenuList();
             return View("/Views/Backoffice/DashBoard.cshtml");

@@ -42,5 +42,6 @@ namespace skipper_group_new.Interface
         Task<DataTable> GetBlogList();
         Task<DataTable> GetProductSolutionList();
         Task<List<clsSearchModel>> GetsearchList(string q);
+        Task<DataTable> GetLicenseExpire();
     }
 }

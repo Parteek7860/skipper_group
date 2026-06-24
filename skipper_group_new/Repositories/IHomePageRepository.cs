@@ -52,5 +52,7 @@ namespace skipper_group_new.Repositories
         Task<DataTable> GetPopupData();
         int DeletePopup(int id);
         int ChangeStatus(int id);
+
+        Task<DataTable> GetLicenseExpire();
     }
 }

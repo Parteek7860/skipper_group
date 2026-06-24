@@ -40,5 +40,6 @@ namespace skipper_group_new.Repositories
 
         Task<DataTable> GetProductSolutionList();
         Task<List<clsSearchModel>> GetsearchList(string q);
+        Task<DataTable> GetLicenseExpire();
     }
 }

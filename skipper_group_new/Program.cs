@@ -1,4 +1,5 @@
 ﻿
+using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
@@ -80,15 +81,22 @@ decrypted = decrypted.Replace(@"\\", @"\");
 builder.Services.AddSingleton<IDbConnectionProvider>(
     new DbConnectionProvider(encrypted));
 
+
+
+
+
+
 builder.Services.AddResponseCompression(options =>
-{
-    options.EnableForHttps = true;
-});
+    {
+        options.EnableForHttps = true;
+    });
 
 
 
 
 var app = builder.Build();
+
+
 
 app.UseResponseCompression();
 
@@ -225,14 +233,14 @@ app.Use(async (context, next) =>
     // Skip CSP for back office
     if (!path.StartsWith("/admin") && !path.StartsWith("/backoffice"))
     {
-        
+
 
         var cspTemplate = builder.Configuration["SecurityHeaders:CSP"];
         var finalPolicy = cspTemplate.Replace("{nonce}", $"'nonce-{nonce}'");
 
         context.Response.Headers["Content-Security-Policy"] = finalPolicy;
 
-        
+
     }
     await next();
 });
