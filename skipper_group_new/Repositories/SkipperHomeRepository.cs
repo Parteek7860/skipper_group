@@ -604,7 +604,7 @@ namespace skipper_group_new.Repositories
         public async Task<DataTable> GetLicenseExpire()
         {
             DataTable menuList;
-            using (SqlConnection conn = new SqlConnection(this._connectionString))
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("GetLicenseExpireListSP", conn))
                 {

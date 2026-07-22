@@ -758,7 +758,7 @@ namespace skipper_group_new.Controllers
         public IActionResult GetProjectList()
         {
             var x = _homePageService.GetCategoryList();
-            ViewBag.ProjectTypes = x.Result.Select("status=1").OrderBy(r => Convert.ToInt32(r["displayorder"])).Select(r => new clsHomeModel
+            ViewBag.ProjectTypes = x.Result.Select("status=1").OrderBy(r => Convert.ToInt32(r["displayorder"] == DBNull.Value ? 0 : r["displayorder"])).Select(r => new clsHomeModel
             {
                 id = Convert.ToString(r["pcatid"]),
                 Name = Convert.ToString(r["category"])
@@ -767,7 +767,7 @@ namespace skipper_group_new.Controllers
 
 
             var list = _homePageService.GetProjectsList();
-            var filterlist = list.Result.Select("status=1").OrderBy(r => Convert.ToInt32(r["displayorder"]));
+            var filterlist = list.Result.Select("status=1").OrderBy(r => Convert.ToInt32(r["displayorder"] == DBNull.Value ? 0 : r["displayorder"]));
             ViewBag.ProjectsList = filterlist.CopyToDataTable();
             return View();
 

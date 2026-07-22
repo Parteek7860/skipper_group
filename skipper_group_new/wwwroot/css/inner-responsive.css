@@ -483,7 +483,7 @@
     }
 
     .gallery-card:nth-child(6n-1) {
-        margin-top: -27rem;
+        margin-top: 0rem;
     }
 }
 
@@ -491,7 +491,14 @@
     .our_energy h3 {
         padding-inline: 2rem;
     }
-
+    .product_panel1 {
+        margin-top: -6rem;
+    }
+	.product_panel1 img {
+    width: 90px!important;
+    margin-left: 0rem;
+	margin-top: -8rem;
+}
     .Energy_Efficiency_Initiatives h2 {
         margin-bottom: 3rem;
         font-size: 33px;
@@ -2755,6 +2762,10 @@
     .product_panel1 {
         margin-top: -3rem;
     }
+	.product_panel1 img {
+    margin-top: -3rem;
+    width: 110px;
+}
 
     .driver_twer {
         margin-block: 6rem 0;

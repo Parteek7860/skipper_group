@@ -210,12 +210,14 @@
 
 .product-slider {
     overflow: hidden;
-    margin-right: -21rem;
+    /*margin-right: -21rem;*/
+	margin-right: 0rem;
     padding-bottom: 8rem;
     position: relative;
 }
 .eng-prod  .product-slider{
-    padding-bottom: 12rem;
+   /* padding-bottom: 12rem;*/
+	padding-bottom: 2rem;
    }
 .slide_bx figure {
     position: relative;
@@ -270,6 +272,7 @@
     left: 0rem;
     bottom: 0;
     top: auto;
+	display:none;
 }
 
 .product-slider.swiper-container-horizontal .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {

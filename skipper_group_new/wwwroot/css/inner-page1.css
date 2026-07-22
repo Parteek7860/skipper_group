@@ -2003,17 +2003,17 @@ section.prodct_six h2 {
     margin-top: -10rem;
 }
 
-.gallery-card:nth-child(6) {
+/* .gallery-card:nth-child(6) {
     margin-top: -5rem;
-}
+} */
 
 .gallery-card:nth-child(6n-1) {
     margin-top: 0rem;
 }
 
-.gallery-card.gallery-card:nth-child(7n-1) {
+/* .gallery-card.gallery-card:nth-child(7n-1) {
     margin-top: -5rem;
-}
+} */
 
 
 /*ploymer page css start here*/

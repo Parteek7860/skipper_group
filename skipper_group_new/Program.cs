@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.FileProviders;
+using parle_new.mainclass;
 using skipper_group_new.Interface;
 using skipper_group_new.Interface;
 using skipper_group_new.mainclass;
@@ -58,10 +59,15 @@ builder.Services.Configure<SmtpSettings>(
     builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddTransient<EmailService>();
 System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<LoginFilter>();
+});
+
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromHours(2);
+    options.IdleTimeout = TimeSpan.FromMinutes(20);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
