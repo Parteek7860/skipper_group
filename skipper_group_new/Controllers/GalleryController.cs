@@ -99,7 +99,7 @@ namespace skipper_group_new.Controllers
                     if (file_Uploader != null && file_Uploader.Length > 0)
                     {
                         var fileName = Path.GetFileName(file_Uploader.FileName); // captures name
-                        var filePath = Path.Combine("wwwroot/uploads/SmallImages", fileName);
+                        var filePath = Path.Combine("wwwroot/uploads/LargeImages", fileName);
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
@@ -470,12 +470,13 @@ namespace skipper_group_new.Controllers
         }
 
         [HttpPost]
-        [Route("backoffice/gallery/addPhoto")]
-        public async Task<IActionResult> addPhoto(clsGallery objgallery, IFormFile? file_Uploader)
+        [Route("backoffice/gallery/addphoto")]
+        public async Task<IActionResult> addphoto(clsGallery objgallery, IFormFile? file_Uploader)
         {
             HttpContext.Session.Remove("Message");
             var objAlbumType = new clsGallery();
             ViewBag.Menus = _menuService.GetMenu();
+
             ModelState.Remove("eventsdate");
             ModelState.Remove("pagetitle");
             ModelState.Remove("metakeywords");
@@ -492,6 +493,10 @@ namespace skipper_group_new.Controllers
             ModelState.Remove("tagline");
             ModelState.Remove("selectalbumtype");
             ModelState.Remove("uploadlargeimage");
+            ModelState.Remove("uploadbanner");   
+            ModelState.Remove("title");          
+            ModelState.Remove("albumtype");      
+            ModelState.Remove("displayorder");   
 
             if (ModelState.IsValid)
             {
@@ -502,6 +507,7 @@ namespace skipper_group_new.Controllers
                     objgallery.displayorder = objgallery.displayorder ?? "0";
                     objgallery.uname = HttpContext.Session.GetString("UserName");
                     objgallery.status = true;
+
                     if (objgallery.id == 0)
                     {
                         objgallery.mode = "1";
@@ -511,6 +517,7 @@ namespace skipper_group_new.Controllers
                         objgallery.mode = "2";
                         objgallery.id = objgallery.id;
                     }
+
                     if (file_Uploader != null && file_Uploader.Length > 0)
                     {
                         var fileName = Path.GetFileName(file_Uploader.FileName);
@@ -527,6 +534,7 @@ namespace skipper_group_new.Controllers
                     {
                         objgallery.uploadbanner = objgallery.uploadbanner;
                     }
+
                     int result = await _backofficeService.AddAlbumPhoto(objgallery);
                     if (result > 0)
                     {
@@ -562,6 +570,7 @@ namespace skipper_group_new.Controllers
             ViewBag.CreateUpdate = "Save";
             return View("~/Views/backoffice/gallery/addphotogallery.cshtml", objAlbumType);
         }
+        
 
         [HttpGet]
         [Route("backoffice/gallery/editPhotoGallary/{id}")]
