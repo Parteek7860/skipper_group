@@ -53,6 +53,45 @@ namespace skipper_group_new.Repositories
 
             return dt;
         }
+
+        public async Task<List<int>> GetMappedAlbumIds(int productId)
+        {
+            var ids = new List<int>();
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("SELECT AlbumId FROM map_album_events WHERE ProductId = @ProductId", conn);
+                cmd.Parameters.AddWithValue("@ProductId", productId);
+                await conn.OpenAsync();
+                using var reader = await cmd.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    ids.Add(Convert.ToInt32(reader["AlbumId"]));
+                }
+            }
+            return ids;
+        }
+
+        public async Task<int> SaveAlbumMapping(int productId, List<int> albumIds)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                await conn.OpenAsync();
+                using var tran = conn.BeginTransaction();
+                var delCmd = new SqlCommand("DELETE FROM map_album_events WHERE ProductId = @ProductId", conn, tran);
+                delCmd.Parameters.AddWithValue("@ProductId", productId);
+                await delCmd.ExecuteNonQueryAsync();
+                foreach (var albumId in albumIds)
+                {
+                    var insCmd = new SqlCommand("INSERT INTO map_album_events (ProductId, AlbumId, trdate) VALUES (@ProductId, @AlbumId, GETDATE())",conn, tran);
+                    insCmd.Parameters.AddWithValue("@ProductId", productId);
+                    insCmd.Parameters.AddWithValue("@AlbumId", albumId);
+                    await insCmd.ExecuteNonQueryAsync();
+                }
+                tran.Commit();
+                return albumIds.Count;
+            }
+        }
+
         public int AddAlbum(clsGallery objgallery)
         {
             int result = 0;

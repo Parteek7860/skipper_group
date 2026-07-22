@@ -24,6 +24,14 @@ namespace skipper_group_new.Service
         {
             return _repository.GetAlbumList();
         }
+        public Task<List<int>> GetMappedAlbumIds(int productId)
+        {
+            return _repository.GetMappedAlbumIds(productId);
+        }
+        public Task<int> SaveAlbumMapping(int productId, List<int> albumIds)
+        {
+            return _repository.SaveAlbumMapping(productId, albumIds);
+        }
         public int DeleteAlbum(int id)
         {
             return _repository.DeleteAlbum(id);

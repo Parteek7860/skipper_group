@@ -103,7 +103,11 @@
                                     <a href="#" class="btndelete" data-href="/Backoffice/Products/DeleteCategory/@id">
                                         <img src="~/Backoffice/images/delete.png" class="img-fluid" width="20" alt="Delete" />
                                     </a>
-                                </td>
+
+                                        <a href="#" class="btnMap" data-id="@id" onclick="return false;">
+                                            <img src="~/backoffice/images/addicon.png" class="img-fluid" width="20" alt="MapAlbum" />
+                                        </a>
+                                    </td>
                             </tr>
                             }
                         </tbody>
@@ -115,6 +119,21 @@
                 }
 
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Map Album Modal -->
+<div class="modal fade" id="mapAlbumModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Map Album</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="mapAlbumModalBody"></div>
         </div>
     </div>
 </div>
@@ -131,6 +150,21 @@
                 if (confirmed) {
                     window.location.href = btn.getAttribute('data-href');
                 }
+            });
+        });
+
+        document.querySelectorAll('.btnMap').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                var id = this.getAttribute('data-id');
+
+                fetch('/backoffice/products/mapalbum/' + id)
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('mapAlbumModalBody').innerHTML = html;
+                        $('#mapAlbumModal').modal('show');
+                    })
+                    .catch(err => alert('Error loading albums: ' + err));
             });
         });
     });
@@ -160,7 +194,6 @@
             }
         }
     }
-
 
     function filterByDate() {
         const fromDateInput = document.getElementById('fromDate').value;
@@ -193,6 +226,43 @@
                 tr[i].style.display = showRow ? "" : "none";
             }
         }
+    }
+
+    // --- Album mapping functions ---
+    function toggleAllAlbums(src) {
+        document.querySelectorAll('.albumChk').forEach(c => c.checked = src.checked);
+    }
+
+    function filterAlbumCheckboxes() {
+        var input = document.getElementById('albumSearchInput');
+        if (!input) return;
+        var filter = input.value.toLowerCase();
+        document.querySelectorAll('#albumMapTable tbody tr').forEach(r => {
+            var txt = r.cells[1].textContent.toLowerCase();
+            r.style.display = txt.indexOf(filter) > -1 ? "" : "none";
+        });
+    }
+
+    function saveAlbumMapping() {
+        var productIdInput = document.querySelector('#mapAlbumForm input[name="productId"]');
+        if (!productIdInput) return;
+
+        var productId = productIdInput.value;
+        var albumIds = Array.from(document.querySelectorAll('.albumChk:checked')).map(c => parseInt(c.value));
+
+        fetch('/backoffice/products/savealbummap', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productId: parseInt(productId), albumIds: albumIds })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message);
+            if (data.success) {
+                $('#mapAlbumModal').modal('hide');
+            }
+        })
+        .catch(err => alert('Error: ' + err));
     }
 
     setTimeout(function () {

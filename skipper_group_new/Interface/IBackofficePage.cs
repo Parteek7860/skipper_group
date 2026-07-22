@@ -11,6 +11,8 @@ namespace skipper_group_new.Interface
         Task<DataTable> GetAlbumTypeListByID();
 
         Task<DataTable> GetAlbumList();
+        Task<List<int>> GetMappedAlbumIds(int productId);
+        Task<int> SaveAlbumMapping(int productId, List<int> albumIds);
         int AddAlbum(clsGallery objgallery);
         int DeleteAlbum(int id);
         Task<DataTable> GetAlbumListByID(int id);

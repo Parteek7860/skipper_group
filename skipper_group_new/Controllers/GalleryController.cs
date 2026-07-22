@@ -53,6 +53,7 @@ namespace skipper_group_new.Controllers
             ViewBag.CreateUpdate = "Save";
             return View("~/Views/backoffice/gallery/addalbum.cshtml", objAlbumType);
         }
+
         [HttpPost]
         [Route("backoffice/gallery/addalbum")]
         public async Task<IActionResult> addalbum(clsGallery objgallery, IFormFile file_Uploader)
@@ -207,14 +208,10 @@ namespace skipper_group_new.Controllers
         [Route("backoffice/gallery/viewalbum")]
         public async Task<IActionResult> viewalbum()
         {
-
             var objAlbumType = new clsGallery();
             ViewBag.Menus = _menuService.GetMenu();
-
-            //Get list of banner types
             var bannerTypes = _backofficeService.GetAlbumList();
             ViewBag.medialist = bannerTypes.Result;
-
             return View("~/Views/Backoffice/gallery/viewalbum.cshtml", objAlbumType);
         }
         [HttpGet]

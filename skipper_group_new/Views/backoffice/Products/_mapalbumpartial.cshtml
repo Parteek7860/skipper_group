@@ -1,0 +1,49 @@
+﻿@model System.Data.DataTable
+@{
+    var mappedIds = ViewBag.MappedAlbumIds as List<int> ?? new List<int>();
+    int productId = ViewBag.ProductId;
+}
+<form id="mapAlbumForm">
+    <input type="hidden" name="productId" value="@productId" />
+    <input type="text" id="albumSearchInput" class="form-control mb-2" placeholder="Search album..." onkeyup="filterAlbumCheckboxes()" />
+    <div style="max-height:400px; overflow-y:auto;">
+        <table class="table table-bordered" id="albumMapTable">
+            <thead>
+                <tr>
+                    <th style="width:70px;">Image</th>
+                    <th>Album Title</th>
+                    <th style="width:60px; text-align:center;">
+                        <input type="checkbox" id="checkAllAlbums" onclick="toggleAllAlbums(this)" />
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (System.Data.DataRow row in Model.Rows)
+                    {
+                        var albumId = Convert.ToInt32(row["Albumid"]);
+                        var albumTitle = row["Albumtitle"]?.ToString();
+                        var albumImage = row.Table.Columns.Contains("UploadAImage") ? row["UploadAImage"]?.ToString() : null;
+                        bool isChecked = mappedIds.Contains(albumId);
+                        <tr>
+                            <td>
+                                @if (!string.IsNullOrEmpty(albumImage))
+                                {
+                                    <img src="~/uploads/LargeImages/@albumImage" class="img-fluid" alt="@albumTitle" width="25">
+                                }
+                            </td>
+                            <td>@albumTitle</td>
+                            <td style="text-align:center;">
+                                <input type="checkbox" class="albumChk" name="albumIds" value="@albumId" @(isChecked ? "checked" : "") />
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="text-right" style="margin-top:15px;">
+        <button type="button" class="btn btn-primary" onclick="saveAlbumMapping()">Save</button>
+    </div>
+</form>

@@ -15,12 +15,14 @@ namespace skipper_group_new.Controllers
     public class ProductsController : Controller
     {
         private readonly IProducts _products;
+        private readonly IBackofficePage _backofficeService;
         private readonly clsMainMenuList _menuService;
 
-        public ProductsController(clsMainMenuList menuService, IProducts products)
+        public ProductsController(clsMainMenuList menuService, IProducts products, IBackofficePage backofficeService)
         {
             _products = products;
             _menuService = menuService;
+            _backofficeService = backofficeService;
         }
 
         #region Product
@@ -628,6 +630,44 @@ namespace skipper_group_new.Controllers
             }
             return RedirectToAction("viewcategory", "Products");
         }
+
+        [HttpGet]
+        [Route("backoffice/products/mapalbum/{id}")]
+        public async Task<IActionResult> GetAlbumDataToMap(int id)
+        {
+            try
+            {
+                DataTable albums = await _backofficeService.GetAlbumList(); 
+                List<int> mappedAlbumIds = await _backofficeService.GetMappedAlbumIds(id); 
+
+                ViewBag.ProductId = id;
+                ViewBag.MappedAlbumIds = mappedAlbumIds;
+
+                return PartialView("~/Views/backoffice/products/_mapalbumpartial.cshtml", albums);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error loading album data: " + ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("backoffice/products/savealbummap")]
+        public async Task<IActionResult> SaveAlbumMap([FromBody] AlbumMapRequest req)
+        {
+            try
+            {
+                var albumIds = req?.AlbumIds ?? new List<int>();
+                int result = await _backofficeService.SaveAlbumMapping(req.ProductId, albumIds);
+                return Json(new { success = result > 0, message = result > 0 ? "Album mapping saved successfully." : "Nothing saved." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error: " + ex.Message });
+            }
+        }
+
+
         #endregion
 
         #region Sub-Category

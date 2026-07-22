@@ -39,4 +39,10 @@ namespace skipper_group_new.Models
         //public int photoid { get; set; }
         //public bool isselect { get; set; }
     }
+
+    public class AlbumMapRequest
+    {
+        public int ProductId { get; set; }
+        public List<int> AlbumIds { get; set; }
+    }
 }
