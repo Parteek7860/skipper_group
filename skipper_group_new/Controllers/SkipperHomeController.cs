@@ -261,7 +261,8 @@ namespace skipper_group_new.Controllers
                     mailcontent
                 );
                 string mailadmin = contactAdminMailContent(cls);
-                await _emailService.SendAdminEmailAsync("career@skipperlimited.com", "New Contact Enquiry - " + cls.FName,mailadmin, null);
+                string emailSubject = $"New Enquiry - {GetOrganizationName(cls.OrganizationName)} / {cls.corp_grup}";
+                await _emailService.SendAdminEmailAsync("career@skipperlimited.com",emailSubject,mailadmin, null);                
                 return RedirectToAction("Thankyou", "SkipperHome");
             }
             return View("contactus", obj);
@@ -282,6 +283,8 @@ namespace skipper_group_new.Controllers
 
         public string contactAdminMailContent(EnquiryModel cls)
         {
+            string orgName = GetOrganizationName(cls.OrganizationName);
+
             string mailmsgtest;
             mailmsgtest = "<html><body> <table cellpadding='3' align='left' cellspacing='1' width='450px'>";
             mailmsgtest += "<tr><td colspan=2> Dear Admin </td></tr>";
@@ -291,7 +294,7 @@ namespace skipper_group_new.Controllers
             mailmsgtest += "<tr><td colspan=2>Email  &nbsp;                 : " + cls.EmailId + "</td></tr>";
             mailmsgtest += "<tr><td colspan=2>Subject  &nbsp;                 : " + cls.Subject + "</td></tr>";
             mailmsgtest += "<tr><td colspan=2>Company  &nbsp;                 : " + cls.company + "</td></tr>";
-            mailmsgtest += "<tr><td colspan=2>Organization Name  &nbsp;                 : " + cls.OrganizationName + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Division  &nbsp;                 : " + orgName + "</td></tr>";
             mailmsgtest += "<tr><td colspan=2>Corporate/Group  &nbsp;                 : " + cls.corp_grup + "</td></tr>";
             mailmsgtest += "<tr><td colspan=2>Country  &nbsp;                 : " + cls.country + "</td></tr>";
             mailmsgtest += "<tr><td colspan=2>Address  &nbsp;                 : " + cls.address + "</td></tr>";
@@ -300,6 +303,18 @@ namespace skipper_group_new.Controllers
             mailmsgtest += "<tr><td  nowrap='true' colspan=2><b>Skipper Group</b></td></tr>";
             mailmsgtest += "</table></body></html>";
             return mailmsgtest;
+        }
+
+        private string GetOrganizationName(string value)
+        {
+            return value switch
+            {
+                "0" => "All Divisions",
+                "1" => "Engineering",
+                "2" => "Infrastructure",
+                "3" => "Polymer",
+                _ => "N/A"
+            };
         }
 
         [HttpGet]
