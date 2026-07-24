@@ -221,7 +221,6 @@ namespace skipper_group_new.Controllers
             await LoadCMSDataAsync(10);
             EnquiryModel obj = new EnquiryModel();
 
-
             Task<DataTable> x1 = this._homePageService.GetCMSData();
             if (x1 != null)
             {
@@ -231,20 +230,16 @@ namespace skipper_group_new.Controllers
                     DataTable dt = ((IEnumerable<DataRow>)results).CopyToDataTable<DataRow>();
                     obj.desc = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["pagedescription"]));
                     obj.SmallDescription = WebUtility.HtmlDecode(Convert.ToString(dt.Rows[0]["smalldesc"]));
-
                 }
-
             }
 
             if (cls.CaptchaInput != cls.CaptchaCode)
             {
                 ModelState.AddModelError("CaptchaInput", "Invalid Captcha. Please try again.");
-                //obj = cls;
                 obj.capacha = CaptchaHelper.GenerateCaptcha();
                 obj.CaptchaCode = obj.capacha;
                 return View("contactus", obj);
             }
-
 
             obj.phone = cls.phone;
             obj.FName = cls.FName;
@@ -255,13 +250,56 @@ namespace skipper_group_new.Controllers
             obj.FMessage = cls.FMessage;
             obj.corp_grup = cls.corp_grup;
             obj.OrganizationName = cls.OrganizationName;
+
             var x = _homePageService.SaveContactEnquiry(obj);
             if (x > 0)
             {
+                string mailcontent = contactUserMailContent(cls.FName);
+                await _emailService.SendEmailAsync(
+                    cls.EmailId,
+                    "Thank You for Contacting Us",
+                    mailcontent
+                );
+                string mailadmin = contactAdminMailContent(cls);
+                await _emailService.SendAdminEmailAsync("career@skipperlimited.com", "New Contact Enquiry - " + cls.FName,mailadmin, null);
                 return RedirectToAction("Thankyou", "SkipperHome");
             }
-
             return View("contactus", obj);
+        }
+
+        public string contactUserMailContent(string name)
+        {
+            string mailmsgtest;
+            mailmsgtest = "<html><body> <table cellpadding='3' align='left' cellspacing='1' width='450px'>";
+            mailmsgtest += "<tr><td colspan='2'> Dear " + name + ", </td></tr>";
+            mailmsgtest += "<tr><td colspan='2'></td></tr>";
+            mailmsgtest += "<tr><td colspan='2'>Thank You!!! We have received your enquiry and will get back to you shortly. </td></tr>";
+            mailmsgtest += "<tr><td colspan='2'><b>Thanks & Regards</b></td></tr>";
+            mailmsgtest += "<tr><td colspan='2'><b>Skipper Group</b></td></tr>";
+            mailmsgtest += "</table></body></html>";
+            return mailmsgtest;
+        }
+
+        public string contactAdminMailContent(EnquiryModel cls)
+        {
+            string mailmsgtest;
+            mailmsgtest = "<html><body> <table cellpadding='3' align='left' cellspacing='1' width='450px'>";
+            mailmsgtest += "<tr><td colspan=2> Dear Admin </td></tr>";
+            mailmsgtest += "<tr><td colspan='2'>You have received a new contact us enquiry. </td></tr><br />";
+            mailmsgtest += "<tr><td colspan=2>Name  &nbsp;                 : " + cls.FName + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Mobile Number  &nbsp;                 : " + cls.phone + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Email  &nbsp;                 : " + cls.EmailId + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Subject  &nbsp;                 : " + cls.Subject + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Company  &nbsp;                 : " + cls.company + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Organization Name  &nbsp;                 : " + cls.OrganizationName + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Corporate/Group  &nbsp;                 : " + cls.corp_grup + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Country  &nbsp;                 : " + cls.country + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Address  &nbsp;                 : " + cls.address + "</td></tr>";
+            mailmsgtest += "<tr><td colspan=2>Message  &nbsp;                 : " + cls.FMessage + "</td></tr>";
+            mailmsgtest += "<tr><td  nowrap='true' colspan=2><b>Regards,</b></td></tr>";
+            mailmsgtest += "<tr><td  nowrap='true' colspan=2><b>Skipper Group</b></td></tr>";
+            mailmsgtest += "</table></body></html>";
+            return mailmsgtest;
         }
 
         [HttpGet]
