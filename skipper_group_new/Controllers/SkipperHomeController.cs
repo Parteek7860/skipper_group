@@ -262,7 +262,7 @@ namespace skipper_group_new.Controllers
                 );
                 string mailadmin = contactAdminMailContent(cls);
                 string emailSubject = $"New Enquiry - {GetOrganizationName(cls.OrganizationName)} / {cls.corp_grup}";
-                await _emailService.SendAdminEmailAsync("career@skipperlimited.com",emailSubject,mailadmin, null);                
+                await _emailService.SendAdminEmailAsync("Sarmistha.ghosh@skipperlimited.com,Soumik.r@skipperlimited.com", emailSubject,mailadmin, null);                
                 return RedirectToAction("Thankyou", "SkipperHome");
             }
             return View("contactus", obj);
