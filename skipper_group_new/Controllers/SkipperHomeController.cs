@@ -486,7 +486,7 @@ namespace skipper_group_new.Controllers
 
             //ViewBag.CurrentOpenings = filterlist;
             var x = await _homePageService.GetProductSolutionList();
-            var filteredRows = x.AsEnumerable().Where(r => r.Field<bool?>("status") == true && r.Field<bool?>("show_on_career") == true);
+            var filteredRows = x.AsEnumerable().Where(r => r.Field<bool?>("show_on_career") == true);
 
             if (filteredRows != null && filteredRows.Any())
             {

@@ -159,7 +159,7 @@ namespace skipper_group_new.Controllers
         {
             var x1 = await _homePageService.GetProductList();
             DataRow[] data;
-            data = x1.Select("status=1");
+            data = x1.Select("show_infrastructure=1");
 
             ViewBag.ProductList = data.Length > 0
                 ? data.CopyToDataTable()
