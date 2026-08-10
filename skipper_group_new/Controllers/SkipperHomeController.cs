@@ -246,7 +246,7 @@ namespace skipper_group_new.Controllers
             obj.EmailId = cls.EmailId;
             obj.address = cls.address;
             obj.country = cls.country;
-            obj.company = cls.company;
+            obj.zipcode = cls.zipcode;
             obj.FMessage = cls.FMessage;
             obj.corp_grup = cls.corp_grup;
             obj.OrganizationName = cls.OrganizationName;

@@ -80,10 +80,28 @@ namespace skipper_group_new.Controllers
                     var proj = await _homePageService.GetProjectsList();
 
 
-                    DataRow[] projdata = proj.Select($"status=1 and ntypeid={productid}").OrderBy(r => r.Field<int>("displayorder")).ToArray();
+                    //DataRow[] projdata = proj.Select($"status=1 and ntypeid={productid}").OrderBy(r => r.Field<int>("displayorder")).ToArray();
 
-                    var firstOne = projdata.Take(1).CopyToDataTable();
-                    var firstTwo = projdata.Skip(1).Take(2).CopyToDataTable();
+                    //var firstOne = projdata.Take(1).CopyToDataTable();
+                    //var firstTwo = projdata.Skip(1).Take(2).CopyToDataTable();
+
+                    DataRow[] projdata = proj
+    .Select($"status=1 and ntypeid={productid}")
+    .OrderBy(r => r.Field<int>("displayorder"))
+    .ToArray();
+
+                    DataTable firstOne = proj.Clone();
+                    DataTable firstTwo = proj.Clone();
+
+                    if (projdata.Length > 0)
+                    {
+                        firstOne = projdata.Take(1).CopyToDataTable();
+                    }
+
+                    if (projdata.Length > 1)
+                    {
+                        firstTwo = projdata.Skip(1).Take(2).CopyToDataTable();
+                    }
 
 
                     ViewBag.FeaturedProjList1 = firstOne;

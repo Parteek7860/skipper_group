@@ -230,7 +230,7 @@ namespace skipper_group_new.Repositories
                 cmd.Parameters.AddWithValue("@mobile", objML_contact.phone);
                 cmd.Parameters.AddWithValue("@City", objML_contact.country);
                 cmd.Parameters.AddWithValue("@Address", objML_contact.address);
-                cmd.Parameters.AddWithValue("@fmessage", objML_contact.country);
+                cmd.Parameters.AddWithValue("@fmessage", objML_contact.FMessage);
                 cmd.Parameters.AddWithValue("@division", objML_contact.OrganizationName);
                 cmd.Parameters.AddWithValue("@corporate_group", objML_contact.corp_grup);
 

@@ -32,7 +32,7 @@ namespace skipper_group_new.Controllers
 
             var x = await _management.GetProductSolutionList();
             var filteredRows = x.AsEnumerable()
-                .Where(row => row.Field<bool>("status") == true && row.Field<bool>("show_on_career") == true);
+                .Where(row => row.Field<bool>("show_on_career") == true);
 
             if (filteredRows != null && filteredRows.Any())
             {
