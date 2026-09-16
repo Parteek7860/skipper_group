@@ -714,6 +714,9 @@ namespace skipper_group_new.Controllers
                 }
                 objcls.yearcategory = cls.yearcategory;
                 objcls.displayorder = cls.displayorder;
+                objcls.PageTitle = cls.PageTitle;
+                objcls.MetaDescription = cls.MetaDescription;
+                objcls.MetaKeywords = cls.MetaKeywords;
                 objcls.uname = HttpContext.Session.GetString("UserName");
                 int x = _Investor.AddInvestor(objcls);
                 {

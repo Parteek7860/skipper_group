@@ -1,0 +1,74 @@
+﻿@using System.Data
+@using skipper_group_new.mainclass;
+
+@{
+    Layout = "~/Views/Shared/_cms.cshtml";
+    DataTable dttop = (ViewBag.Top3 as System.Data.DataTable);
+    DataTable dtBalance = (ViewBag.Balance as System.Data.DataTable);
+}
+<section class="press_release_one top_sec">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="press_Grid">
+                    @if (dttop != null)
+                    {
+                        @foreach (DataRow row in dttop.Rows)
+                        {
+                            <div class="press_R_bx">
+                                <h6>
+                                    @Convert.ToDateTime(row["eventsdate"]).ToString("MMM dd, yyyy")
+                                </h6>
+                                <h5>
+                                    @row["eventstitle"]
+                                </h5>
+                                @if (row["uploadfile"] != DBNull.Value && !string.IsNullOrEmpty(row["uploadfile"].ToString()))
+                                {
+                                    <a href="/uploads/files/@row["uploadfile"]" target="_blank">
+                                        <img alt="press_pdf_icon"
+                                             class="img-fluid"
+                                             src="/images/press_pdf_icon.png" />
+                                    </a>
+                                }
+                            </div>
+                        }
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="press_release_two">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-11 mx-auto">
+                <div class="rela_Press showEventsAanNewsClass">
+                    @if (dtBalance != null)
+                    {   @foreach (DataRow row in dtBalance.Rows)
+                        {
+                            <div class="press_Rel">
+                                <div class="re_sec">
+                                    <h6>
+                                        @Convert.ToDateTime(row["eventsdate"]).ToString("MMM dd, yyyy")
+                                    </h6>
+                                    <p>
+                                        @row["eventstitle"]
+                                    </p>
+                                </div>
+                                @if (row["uploadfile"] != DBNull.Value && !string.IsNullOrEmpty(row["uploadfile"].ToString()))
+                                {
+                                    <img alt="press_pdf_icon" class="img-fluid" src="/images/press_pdf_icon.png" />
+                                    <a class="links" href="/uploads/files/@row["uploadfile"]" target="_blank">&nbsp;</a>
+                                }
+                                
+                            </div>
+                        }
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

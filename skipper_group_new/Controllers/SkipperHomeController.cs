@@ -331,6 +331,75 @@ namespace skipper_group_new.Controllers
 
         #endregion
 
+        #region Press Release
+
+        [HttpGet]
+        public async Task<IActionResult> pressrelease(int id)
+        {
+            clsMediatype obj = new clsMediatype();
+
+            await LoadSeoDataAsync(id);
+            await LoadCMSDataAsync(id);
+            var x = await _homePageService.GetNewsEvents();
+            var filterlist = x.AsEnumerable()
+                   .Where(r => r.Field<bool>("status") == true && r.Field<Int32>("ntypeid") == 4).OrderByDescending(r => r["eventsdate"] == DBNull.Value
+                                                                            ? DateTime.MinValue
+                                                                            : Convert.ToDateTime(r["eventsdate"]))
+                   .ToList();
+
+            var top2 = filterlist.Take(3).ToList();
+
+            
+            // --- Balance records ---
+            var balance = filterlist.Skip(3).ToList();
+
+            // Convert to DataTable only if needed
+            DataTable dtTop2 = top2.Any() ? top2.CopyToDataTable() : x.Clone();
+            DataTable dtBalance = balance.Any() ? balance.CopyToDataTable() : x.Clone();
+
+            // Send to ViewBag
+            ViewBag.Top3 = dtTop2;
+            
+            ViewBag.Balance = dtBalance;
+
+            return View("pressrelease", obj);
+        }
+
+
+        #endregion
+
+        #region Media Release
+
+        [HttpGet]
+        public async Task<IActionResult> mediacoverage(int id)
+        {
+            clsMediatype obj = new clsMediatype();
+
+            await LoadSeoDataAsync(id);
+            await LoadCMSDataAsync(id);
+            var x = await _homePageService.GetNewsEvents();
+            var filterlist = x.AsEnumerable()
+                   .Where(r => r.Field<bool>("status") == true && r.Field<Int32>("ntypeid") == 5).OrderByDescending(r => r["eventsdate"] == DBNull.Value
+                                                                            ? DateTime.MinValue
+                                                                            : Convert.ToDateTime(r["eventsdate"]))
+                   .ToList();
+
+          
+            var balance = filterlist.ToList();
+
+            // Convert to DataTable only if needed
+            
+            DataTable dtBalance = balance.Any() ? balance.CopyToDataTable() : x.Clone();
+
+            
+            ViewBag.Balance = dtBalance;
+
+            return View("mediacoverage", obj);
+        }
+
+
+        #endregion
+
         #region News and Events
         [HttpGet]
         public async Task<IActionResult> news(int id)
@@ -341,7 +410,7 @@ namespace skipper_group_new.Controllers
             await LoadCMSDataAsync(id);
             var x = await _homePageService.GetNewsEvents();
             var filterlist = x.AsEnumerable()
-                   .Where(r => r.Field<bool>("status") == true).OrderByDescending(r => r["eventsdate"] == DBNull.Value
+                   .Where(r => r.Field<bool>("status") == true && r.Field<string>("ntypeid") == "1").OrderByDescending(r => r["eventsdate"] == DBNull.Value
                                                                             ? DateTime.MinValue
                                                                             : Convert.ToDateTime(r["eventsdate"]))
                    .ToList();

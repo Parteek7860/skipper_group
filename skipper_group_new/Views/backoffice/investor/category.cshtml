@@ -102,7 +102,16 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="row clearfix">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label> Meta Description</label>
+                                @Html.EditorFor(model => model.PageMetaDesc, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row clearfix">
                     <div class="col-sm-6">
                         <div class="form-group">

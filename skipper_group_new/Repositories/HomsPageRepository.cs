@@ -514,7 +514,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@PageMeta", obj.metakeywords);
                     cmd.Parameters.AddWithValue("@PageMetaDesc", obj.metadesc);
                     cmd.Parameters.AddWithValue("@rewriteurl", "");
-                    cmd.Parameters.AddWithValue("@uploadfile", "");
+                    cmd.Parameters.AddWithValue("@uploadfile", obj.uploadfile);
                     cmd.Parameters.AddWithValue("@colorcode", "");
                     // cmd.Parameters.AddWithValue("@pagescript", obj.pagescript ?? string.Empty);
                     cmd.Parameters.AddWithValue("@uname", obj.uname);

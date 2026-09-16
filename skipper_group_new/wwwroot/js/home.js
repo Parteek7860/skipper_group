@@ -116,35 +116,35 @@ gsap.from(".icon_sustain", {
         items.forEach(item => observer.observe(item));
     });
 
-    setTimeout(() => {
-      var swiper = new Swiper(".mySwiper", {
-          loop: true,
-          navigation: {
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
-          },
-          spaceBetween: 30,
-      });
-  }, 1500); // after project_slider fade-in
+//     setTimeout(() => {
+//       var swiper = new Swiper(".mySwiper", {
+//           loop: true,
+//           navigation: {
+//               nextEl: ".swiper-button-next",
+//               prevEl: ".swiper-button-prev",
+//           },
+//           spaceBetween: 30,
+//       });
+//   }, 1500); // after project_slider fade-in
 
   /*happening  js end here*/
 
 
 
-  const homeSlider = new Swiper('.home_slider', {
-    loop: true,
-    speed: 3000,
-    autoplay: {
-      delay: 2000,
-      disableOnInteraction: false,
-    },
-    slidesPerView: 1,
-    spaceBetween: 0,
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
-  });
+//   const homeSlider = new Swiper('.home_slider', {
+//     loop: true,
+//     speed: 3000,
+//     autoplay: {
+//       delay: 2000,
+//       disableOnInteraction: false,
+//     },
+//     slidesPerView: 1,
+//     spaceBetween: 0,
+//     pagination: {
+//       el: '.swiper-pagination',
+//       clickable: true,
+//     },
+//   });
 
 
   // ---home_slider-end---*//

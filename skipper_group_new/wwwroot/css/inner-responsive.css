@@ -1,4 +1,8 @@
 /* responsive strat  */
+@media (min-width: 2000px) {
+	.press_release_one {padding-block: 9.7rem 1.7rem;}
+.gallery {margin: 10.2rem 0 10rem;}
+}
 @media (max-width: 1799px) {
     .left-section {
         width: 90em;
@@ -75,6 +79,9 @@
 }
 
 @media (max-width: 1599px) {
+	.gallery {
+    margin: 11rem 0 10rem;
+}
     .left-card::after {
             top: 12.5%;
         left: -12rem;
@@ -85,6 +92,9 @@
             width: 48rem;
         top: 25.2%;
         left: -47rem;
+}
+.press_release_one .press_Grid {
+    margin-top: -34rem;
 }
 .swiper-slide:nth-child(3) .left-card::after {
     top: 22.5%;
@@ -165,6 +175,12 @@
     }
 }
 @media (max-width: 1399px) {
+	    .gallery {
+        margin: 14rem 0 10rem;
+    }
+	    .press_release_one .press_Grid {
+        margin-top: -29rem;
+    }
     .swiper-slide:nth-child(3) .left-card::after {
    
         left: 4rem;
@@ -488,6 +504,15 @@
 }
 
 @media (max-width: 1199px) {
+	    .gallery {
+        margin: 5rem 0 10rem;
+    }
+	.press_release_one .press_Grid {
+        margin-top: -40rem;
+    }
+	.press_release_one {
+    padding-block: 4.7rem 2.7rem;
+}
     .our_energy h3 {
         padding-inline: 2rem;
     }
@@ -817,6 +842,19 @@
 }
 
 @media (max-width: 991px) {
+	.press_release_one .press_Grid {
+        margin-top: -28rem;
+    }
+	.gallery {
+        margin: 16rem 0 10rem;
+    }
+	.gallery-desc {
+    columns: 2
+	}
+	.press_release_one .press_Grid {
+    display:block;
+}
+.press_release_one .press_Grid .press_R_bx{margin-bottom:2rem;}
 .about_panel_eight {
     padding-block: 8rem 0rem;
 }
@@ -1564,7 +1602,15 @@
 
 @media (max-width: 767px) {
 
-
+.press_release_one .press_Grid {
+        margin-top: -22rem;
+    }
+	    .gallery {
+        margin: 20rem 0 10rem;
+    }
+	.media-content p a {
+    font-size: var(--font-18);
+}
     .ledr-dtls_lft figure .img-corner,
     .ledr_grid_rgt figure .img-corner {
         bottom: 1px;
@@ -2194,6 +2240,7 @@
 }
 
 @media (max-width: 565px) {
+	   
     .leadership_dtls_one {
         padding-block: 4rem 2rem;
     }
@@ -2762,6 +2809,9 @@
     .product_panel1 {
         margin-top: -3rem;
     }
+	.press_release_two .press_Rel .re_sec {
+    padding-right: 2rem;
+}
 	.product_panel1 img {
     margin-top: -3rem;
     width: 110px;
@@ -3033,7 +3083,10 @@
     .inner_banner .shrt-title h6 , .inner_banner .bread_btm h5{
     text-shadow: 3px 3px 6px #0c0c0c;
 }
-
+    .press_release_one {
+        padding-block: 4.7rem 0.7rem;
+    }
+.press_release_one .press_Grid .press_R_bx {padding-block: 4rem 4rem;}
 
     body .about_panel_eight h3 {
         margin-bottom: 3rem;
@@ -3154,7 +3207,12 @@
         gap: 2rem;
         padding-block: 0rem 6rem;
     }
-
+.gallery-desc {
+    margin-top: -37rem;
+}
+    .gallery-desc {
+        columns: 1;
+    }
     section.prodct_six h2 {
         margin-bottom: 2rem;
     }
@@ -4031,6 +4089,16 @@
         .founder3 .leader_grid2.ldr_grid .ledr_grid_rgt {
     grid-template-columns: auto;
 }
+ .press_release_one .press_Grid {
+        margin-top: -20rem;
+    }
+	.press_release_one .press_Grid .press_R_bx {
+    padding-block: 3rem 2rem;padding-inline: 2.6rem 2.1rem;
+	}
+	.press_release_one .press_Grid .press_R_bx h5 {
+    font-size: var(--font-18);
+    line-height: 2.6rem;
+	}
 }
 @media screen and (max-width:499px) {
     .founder2 {

@@ -64,7 +64,7 @@ namespace skipper_group_new.Controllers
         [Route("investor-relations/{category}/{pcatid:int}")]
         public async Task<IActionResult> GetCatReports(int pcatid)
         {
-            await LoadTableSeoDataAsync("productsubcate", "psubcatid", Convert.ToInt32(pcatid));
+            await LoadTableSeoDataAsync("productcate", "pcatid", Convert.ToInt32(pcatid));
             var categoryData = new List<InvestorModel>();
             var reportList = new List<ReportModel>();
             var catTable = await _enterface.GetCategoryItem();

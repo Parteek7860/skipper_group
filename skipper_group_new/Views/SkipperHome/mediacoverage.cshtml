@@ -1,0 +1,53 @@
+﻿@using System.Data
+@using skipper_group_new.mainclass;
+
+@{
+    Layout = "~/Views/Shared/_cms.cshtml";
+    DataTable dtBalance = (ViewBag.Balance as System.Data.DataTable);
+}
+<section class="gallery pt-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+
+                @if (dtBalance != null)
+                {
+                    <div class="gallery-image gallery-desc">
+                        @foreach (DataRow row in dtBalance.Rows)
+                        {
+                            <figure>
+                                <a class="wow fadeInUp animated img-fit"
+                                   data-lightbox="example-2"
+                                   data-wow-delay=".1s"
+                                   href="/uploads/smallimages/@row["uploadevents"]">
+
+                                    <img alt="gallery-thumb"
+                                         class="img-fluid"
+                                         src="/uploads/smallimages/@row["uploadevents"]" />
+
+                                    <div class="media-content">
+                                        <p>
+                                            <span>
+                                                @Convert.ToDateTime(row["eventsdate"]).ToString("dd-MMM-yyyy")
+                                            </span>
+                                        </p>
+
+                                        <p>
+                                            @row["eventstitle"]
+                                        </p>
+                                    </div>
+
+                                </a>
+                            </figure>
+                        }
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+                 
+                          

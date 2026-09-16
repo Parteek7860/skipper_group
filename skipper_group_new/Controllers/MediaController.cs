@@ -303,7 +303,9 @@ namespace skipper_group_new.Controllers
                     objbannertype.status = Convert.ToBoolean(Convert.ToInt32(filteredRows[0]["status"]));
                     objbannertype.eventstitle = Convert.ToString(filteredRows[0]["eventstitle"]);
                     objbannertype.mediatype = Convert.ToString(filteredRows[0]["ntypeid"]);
-                    objbannertype.eventsdate = Convert.ToDateTime(filteredRows[0]["eventsdate"]);
+                    objbannertype.eventsdate = filteredRows[0]["eventsdate"] == DBNull.Value
+       ? DateTime.MinValue
+       : Convert.ToDateTime(filteredRows[0]["eventsdate"]);
                     //objbannertype.tagline = Convert.ToString(filteredRows[0]["tagline"]);
                     objbannertype.shortdetail = WebUtility.HtmlDecode(Convert.ToString(filteredRows[0]["shortdesc"]));
                     objbannertype.detail = WebUtility.HtmlDecode(Convert.ToString(filteredRows[0]["eventsdesc"]));
@@ -319,7 +321,8 @@ namespace skipper_group_new.Controllers
 
                     objbannertype.Largeimage = Convert.ToString(filteredRows[0]["largeimage"]);
                     objbannertype.uploadlargeimage = Convert.ToString(filteredRows[0]["largeimage"]);
-
+                    objbannertype.showonhome = Convert.ToBoolean(Convert.ToInt32(filteredRows[0]["showonhome"]));
+                    objbannertype.uploadfile = Convert.ToString(filteredRows[0]["uploadfile"]);
                     objbannertype.id = Convert.ToInt16(filteredRows[0]["eventsid"]);
 
                     ViewBag.CreateUpdate = "Update";
@@ -374,9 +377,10 @@ namespace skipper_group_new.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("backoffice/media/media_section")]
-        public async Task<IActionResult> media_section(clsMediatype obj, IFormFile file_Uploader, IFormFile file_Uploader2)
+        public async Task<IActionResult> media_section(clsMediatype obj, IFormFile file_Uploader, IFormFile file_Uploader2, IFormFile file_Uploader3)
         {
-            HttpContext.Session.Remove("Message");
+            var menuList = _menuService.GetMenu();
+            ViewBag.Menus = menuList;
             clsMediatype objMedia = new clsMediatype();
             try
             {
@@ -384,7 +388,7 @@ namespace skipper_group_new.Controllers
                 {
                     objMedia.mediatype = obj.mediatype;
                     objMedia.eventstitle = obj.eventstitle;
-                    objMedia.eventsdate = obj.eventsdate;
+                    objMedia.eventsdate = obj.eventsdate == null || obj.eventsdate == DateTime.MinValue ? DateTime.Now : obj.eventsdate;
                     objMedia.tagline = obj.tagline;
                     objMedia.shortdetail = obj.shortdetail ?? string.Empty;
                     objMedia.detail = obj.detail ?? string.Empty;
@@ -395,6 +399,7 @@ namespace skipper_group_new.Controllers
                     objMedia.metadesc = obj.metadesc ?? string.Empty;
                     objMedia.canonical = obj.canonical ?? string.Empty;
                     objMedia.status = obj.status;
+                    objMedia.showonhome = obj.showonhome;
                     objMedia.uname = HttpContext.Session.GetString("UserName") ?? "sadmin";
                     objMedia.colorcode = obj.colorcode ?? string.Empty;
                     if (file_Uploader != null && file_Uploader.Length > 0)
@@ -428,6 +433,50 @@ namespace skipper_group_new.Controllers
                     else
                     {
                         objMedia.Largeimage = obj.Largeimage ?? string.Empty;
+                    }
+                    if (file_Uploader3 != null && file_Uploader3.Length > 0)
+                    {
+                        var fileName = Path.GetFileName(file_Uploader3.FileName); // captures name
+                        var filePath = Path.Combine("wwwroot/uploads/files", fileName);
+                        var extension = Path.GetExtension(fileName).ToLower();
+                        var contentType = file_Uploader3.ContentType;
+
+                        // Allow only PDF
+                        if (extension == ".pdf")
+                        {
+                            objMedia.uploadfile = fileName;
+                        }
+                        else
+                        {
+                            HttpContext.Session.SetString("Message", HttpContext.Session.GetString("Message") + "Only Pdf files is allowed.");
+                            ViewBag.CreateUpdate = "Save";
+
+                            var mediatypeList = _homePageService.GetEventTypeList();
+                            if (mediatypeList.Result != null && mediatypeList.Result.Rows.Count > 0)
+                            {
+                                objMedia.selectmediatype = mediatypeList.Result.AsEnumerable().Where(row => row["status"].ToString() == "True").Select(row => new SelectListItem
+                                {
+                                    Value = row["ntypeid"].ToString(),
+                                    Text = row["ntype"].ToString()
+                                }).ToList();
+                            }
+                            else
+                            {
+                                objMedia.selectmediatype = new List<SelectListItem>();
+                            }
+
+                            return View("~/Views/backoffice/media/media_section.cshtml", objMedia);
+                        }
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            file_Uploader3.CopyTo(stream);
+                        }
+
+                        objMedia.uploadfile = fileName;
+                    }
+                    else
+                    {
+                        objMedia.uploadfile = obj.uploadfile ?? string.Empty;
                     }
                     objMedia.id = obj.id;
                     if (obj.id == 0)
@@ -471,9 +520,6 @@ namespace skipper_group_new.Controllers
                         objMedia.selectmediatype = new List<SelectListItem>();
                     }
                     ViewBag.CreateUpdate = "Save";
-
-                    var menuList = _menuService.GetMenu();
-                    ViewBag.Menus = menuList;
 
                     return View("~/Views/backoffice/media/media_section.cshtml", objMedia);
                 }

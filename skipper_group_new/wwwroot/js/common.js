@@ -273,26 +273,32 @@ jQuery(document).ready(function () {
   });
    });
 
-      function toggleAccordion(header) {
-    const content = header.nextElementSibling;
-    const icon = header.querySelector('.toggle-icon');
-    const isOpen = content.classList.contains('show');
+document.addEventListener("click", function(e){
+    const header = e.target.closest(".menu-title");
 
-    // Close all
-    document.querySelectorAll('.accordion-content').forEach(el => el.classList.remove('show'));
-    document.querySelectorAll('.accordion-title').forEach(el => {
-      el.classList.remove('open');
-      el.querySelector('.toggle-icon').textContent = '+';
+    if(!header) return;
+
+    // console.log("clicked");
+
+    const menucontent = header.nextElementSibling;
+    const menuicon = header.querySelector('.toggle-icon');
+    const menuisOpen = menucontent.classList.contains('show');
+
+    document.querySelectorAll('.menu-content').forEach(el => el.classList.remove('show'));
+
+    document.querySelectorAll('.menu-title').forEach(el => {
+        el.classList.remove('open');
+        const icon = el.querySelector('.toggle-icon');
+        if(icon) icon.textContent = '+';
     });
 
-    // Toggle clicked
-    if (!isOpen) {
-      content.classList.add('show');
-      header.classList.add('open');
-      icon.textContent = '–';
+    if(!menuisOpen){
+        menucontent.classList.add('show');
+        header.classList.add('open');
+        if(menuicon) menuicon.textContent = '–';
     }
-  }
 
+});
   
 function toggleMenu(header) {
   const menucontent = header.nextElementSibling;
@@ -360,23 +366,78 @@ $(document).on("click", ".has-submenu ul li a", function () {
 
 // popup home start
 
-window.addEventListener("load", function() {
-    setTimeout(function() {
-        document.getElementById("popup").classList.add("active");
-    }, 2000);
-});
+// window.addEventListener("load", function() {
+//     setTimeout(function() {
+//         document.getElementById("popup").classList.add("active");
+//     }, 2000);
+// });
 
 // Close popup
-document.getElementById("closePopup").addEventListener("click", function() {
-    document.getElementById("popup").classList.remove("active");
-});
+// document.getElementById("closePopup").addEventListener("click", function() {
+//     document.getElementById("popup").classList.remove("active");
+// });
 
 // Close when clicking outside
-document.getElementById("popup").addEventListener("click", function(e) {
-    if(e.target === this){
-        this.classList.remove("active");
+// document.getElementById("popup").addEventListener("click", function(e) {
+//     if(e.target === this){
+//         this.classList.remove("active");
+//     }
+// });
+
+
+// popup home ends
+
+
+
+document.addEventListener("click", function (e) {
+
+    const header = e.target.closest(".accordion-title");
+
+    if (!header) return;
+
+    const content = header.nextElementSibling;
+    const icon = header.querySelector(".toggle-icon");
+    const isOpen = content.classList.contains("show");
+
+    // Close all accordions
+    document.querySelectorAll(".accordion-content").forEach(el => {
+        el.classList.remove("show");
+    });
+
+    document.querySelectorAll(".accordion-title").forEach(el => {
+        el.classList.remove("open");
+
+        const ic = el.querySelector(".toggle-icon");
+        if (ic) ic.textContent = "+";
+    });
+
+    // Open clicked accordion
+    if (!isOpen) {
+        content.classList.add("show");
+        header.classList.add("open");
+
+        if (icon) icon.textContent = "–";
     }
 });
 
 
-// popup home ends
+
+$(document).ready(function () {
+
+    $(".humburger-dropdown-toggle").on("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        $(this)
+            .next(".humburger-dropdown-menu")
+            .stop(true, true)
+            .slideToggle(600);
+
+        $(this)
+            .find("img")
+            .toggleClass("rotate-arrow");
+
+    });
+
+});

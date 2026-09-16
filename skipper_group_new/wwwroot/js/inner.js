@@ -1,9 +1,10 @@
 // product-slider start here
 var swiper = new Swiper(".product-slider", {
-    slidesPerView: 3.8,
+    slidesPerView: 3,
     spaceBetween: 58,
     speed: 1000,
-    loop: true,
+    loop: false,
+	  allowTouchMove: false, // drag disable
     pagination: {
         el: ".swiper-pagination",
         type: "progressbar",
@@ -14,7 +15,7 @@ var swiper = new Swiper(".product-slider", {
     },
     breakpoints: {
         1400: {
-            slidesPerView: 3.8,
+            slidesPerView: 3,
             spaceBetween: 30
         },
         768: {
@@ -1250,3 +1251,21 @@ var swiper = new Swiper(".history_slidernew", {
     //  }
    // });
   
+  
+  
+$(document).on('click', '.single-video', function(){
+  //console.log(myImageModal);
+ let videoid = $(this).data('video');
+ //let srcLink = `https://www.youtube.com/embed/${videoid}`;
+  $('#video-modal').find('iframe').attr('src', videoid);
+  $("#video-modal").modal('show');
+})
+$('#video-modal').on('hide.bs.modal', function(){
+  let src = $('#video-modal').find('iframe').attr('src');
+  $('#video-modal').find('iframe').attr('src', '');
+});
+
+
+
+
+

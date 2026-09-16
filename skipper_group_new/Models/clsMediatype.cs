@@ -31,6 +31,7 @@ namespace skipper_group_new.Models
         public string detail { get; set; }
         public string bannerimage { get; set; }
         public string uploadbanner { get; set; }
+        public string uploadfile { get; set; }
         public string pagetitle { get; set; }
         public string metakeywords { get; set; }
         public string metadesc { get; set; }

@@ -17,6 +17,7 @@
     <link href="@Url.Content("~/css/home.css")" rel="stylesheet" asp-append-version="true">
     <link href="@Url.Content("~/css/home-animation.css")" rel="stylesheet" asp-append-version="true">
     <link href="@Url.Content("~/css/swiper.min.css")" rel="stylesheet" asp-append-version="true">
+	<link href="@Url.Content("~/css/lightbox.min.css")" rel="stylesheet" asp-append-version="true">	
     <link href="@Url.Content("~/css/aos.css")" rel="stylesheet" asp-append-version="true">
     <link href="@Url.Content("~/css/Search.css")" rel="stylesheet" asp-append-version="true" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,17 +63,20 @@
     @RenderBody()
 
     @await Html.PartialAsync("~/Views/Shared/_footer.cshtml")
-
-    <script src="@Url.Content("/js/bootstrap.min.js")" asp-append-version="true"></script>
-    <script src="@Url.Content("/js/swiper.min.js")" asp-append-version="true"></script>
-    <script src="@Url.Content("/js/search-overlay.js")" asp-append-version="true"></script>
-    <script src="@Url.Content("/js/TweenMax.min.js")" asp-append-version="true"></script>
-    <script src="@Url.Content("/js/SmoothScroll.min.js")" asp-append-version="true"></script>
-    <script src="@Url.Content("/js/gsap.min.js")" asp-append-version="true"></script>
-    <script src="@Url.Content("/js/ScrollTrigger.min.js")" asp-append-version="true"></script>
-    <script src="@Url.Content("/js/aos.js")" asp-append-version="true"></script>
-    <script src="@Url.Content("/js/common.js")" asp-append-version="true"></script>
-    <script src="@Url.Content("/js/home.js")" asp-append-version="true"></script>
-    <script src="@Url.Content("/js/home-animation.js")" asp-append-version="true"></script>
+	
+	<script src="@Url.Content("/js/bootstrap.min.js")" asp-append-version="true"></script>
+	<script src="@Url.Content("/js/lightbox-plus-jquery.min.js")" asp-append-version="true"></script>
+	<script src="@Url.Content("/js/swiper.min.js")" asp-append-version="true"></script>
+	<script src="@Url.Content("/js/search-overlay.js")" asp-append-version="true"></script>
+	<script src="@Url.Content("/js/TweenMax.min.js")" asp-append-version="true"></script>
+	<script src="@Url.Content("/js/SmoothScroll.min.js")" asp-append-version="true"></script>
+	<script src="@Url.Content("/js/gsap.min.js")" asp-append-version="true"></script>
+	<script src="@Url.Content("/js/ScrollTrigger.min.js")" asp-append-version="true"></script>
+	<script src="@Url.Content("/js/aos.js")" asp-append-version="true"></script>
+	<script src="@Url.Content("/js/common.js")" asp-append-version="true"></script>
+	<script src="@Url.Content("/js/home.js")" asp-append-version="true"></script>
+	<script src="@Url.Content("/js/home-animation.js")" asp-append-version="true"></script>
+	
+	
 </body>
 </html>

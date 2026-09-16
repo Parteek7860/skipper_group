@@ -26,10 +26,17 @@ section.skipper_news .item figure img {
     }
    
 }
+
 @media (max-width: 1199px) {
 .full_container {
     gap: 2rem;
 }
+}
+@media (max-width: 1135px){
+    .banner-video{
+        height: auto !important;
+        object-fit: contain; /* agar video crop ho rahi ho */
+    }
 }
 @media (min-width:1000px) and (max-width:1099px) {
     .we_are_list p {

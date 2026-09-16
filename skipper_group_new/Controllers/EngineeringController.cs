@@ -165,9 +165,13 @@ namespace skipper_group_new.Controllers
 
             // Projects Master List
             var x1 = await _homePageService.GetProjectsList();
-            DataRow[] data = x1.Select($"status=1 and ntypeid={obj.id}");
-            ViewBag.ProjList = data.CopyToDataTable();
 
+            DataRow[] data = x1?.Select($"status=1 and ntypeid={obj.id}")
+                             ?? Array.Empty<DataRow>();
+
+            ViewBag.ProjList = data.Length > 0
+                ? data.CopyToDataTable()
+                : x1?.Clone();
             GetProjectList();
 
             return View("/Views/engineering/projlist.cshtml", obj);

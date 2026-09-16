@@ -41,6 +41,7 @@
                                     <label> Parent Page</label>
                                     @Html.HiddenFor(model => model.id)
                                     @Html.HiddenFor(model => model.status)
+                                    @Html.HiddenFor(model => model.showonhome)
                                     @Html.DropDownListFor(model => model.mediatype, Model.selectmediatype, "Select Type", new { @class = "form-control" })
                                 </div>
                             </div>
@@ -107,6 +108,25 @@
                                 <input type="file" name="file_Uploader2" />
                                 <img src="/uploads/largeimages/@Url.Content(Model.Largeimage)" width="80" />
                                 @Html.HiddenFor(model => model.uploadlargeimage)
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label> Upload File</label>
+                                <input type="file" name="file_Uploader3" />
+                                 @Html.HiddenFor(model => model.uploadfile)
+                                @if (!string.IsNullOrEmpty(Model.uploadfile))
+                                {
+                                    <a href="/uploads/files/@Url.Content(Model.uploadfile)"
+                                       target="_blank"
+                                       class="btn btn-sm btn-primary">
+
+                                        View File
+                                    </a>
+                                }
                             </div>
 
                         </div>
@@ -207,7 +227,7 @@
             CKEDITOR.replace($(this).prop('id'));
         });
     </script>
-    
+
 }
 
 
