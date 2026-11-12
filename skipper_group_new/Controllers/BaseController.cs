@@ -111,7 +111,7 @@ namespace skipper_group_new.Controllers
                     tagline = row["tagline"]?.ToString() ?? "",
                     parentname = parentName,
                     id = row["parentid"]?.ToString() ?? "",
-
+                    pageid = row["pageid"]?.ToString() ?? "",
 
                 };
                 if (pageId == 13 && detail == 1)

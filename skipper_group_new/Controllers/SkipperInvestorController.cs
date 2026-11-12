@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
+﻿using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using skipper_group_new.Interface;
@@ -111,8 +112,8 @@ namespace skipper_group_new.Controllers
                     prospectus = "",
                     uploadaimage = "",
                     purl = "",
-                    trdate = row.Table.Columns.Contains("trdate") &&  DateTime.TryParse(row["trdate"]?.ToString(), out DateTime trDate) ? trDate : DateTime.MinValue,
-                    shortDetail = WebUtility.HtmlDecode(detailTable.Columns.Contains("detail")? row["detail"]?.ToString() ?? "" : "")
+                    trdate = row.Table.Columns.Contains("trdate") && DateTime.TryParse(row["trdate"]?.ToString(), out DateTime trDate) ? trDate : DateTime.MinValue,
+                    shortDetail = WebUtility.HtmlDecode(detailTable.Columns.Contains("detail") ? row["detail"]?.ToString() ?? "" : "")
                 });
             }
 
@@ -186,7 +187,7 @@ namespace skipper_group_new.Controllers
 
             if (dt != null && dt.Rows.Count > 0)
             {
-                var rows = dt.AsEnumerable().OrderByDescending(r => r.Table.Columns.Contains("trdate") && DateTime.TryParse(r["trdate"]?.ToString(), out DateTime trDate)?trDate: DateTime.MinValue).ThenBy(r => r.Field<int?>("displayorder") ?? int.MaxValue);
+                var rows = dt.AsEnumerable().OrderByDescending(r => r.Table.Columns.Contains("trdate") && DateTime.TryParse(r["trdate"]?.ToString(), out DateTime trDate) ? trDate : DateTime.MinValue).ThenBy(r => r.Field<int?>("displayorder") ?? int.MaxValue);
                 foreach (DataRow r in rows)
                 {
                     int subCatId = Convert.ToInt32(r["psubcatid"]);
@@ -202,7 +203,7 @@ namespace skipper_group_new.Controllers
                         prospectus = r["prospectus"].ToString(),
                         uploadaimage = r["uploadaimage"].ToString(),
                         purl = r["purl"].ToString(),
-                        trdate = r.Table.Columns.Contains("trdate") && DateTime.TryParse(r["trdate"]?.ToString(), out DateTime trDate) ? trDate: DateTime.MinValue,
+                        trdate = r.Table.Columns.Contains("trdate") && DateTime.TryParse(r["trdate"]?.ToString(), out DateTime trDate) ? trDate : DateTime.MinValue,
                         shortDetail = null
                     });
                 }
@@ -210,6 +211,19 @@ namespace skipper_group_new.Controllers
 
             ViewBag.RightPartData = reportList;
             return View("~/Views/InvestorDetail/investor.cshtml", categoryData);
+        }
+
+        [HttpGet]
+        //[Route("refresh-captcha")]
+        public IActionResult RefreshCaptcha()
+        {
+            var newCaptcha = CaptchaHelper.GenerateCaptcha();
+
+            HttpContext.Session.SetString("CaptchaCode", newCaptcha);
+
+            ViewBag.Capcha = newCaptcha;
+
+            return Json(new { captcha = newCaptcha });
         }
 
         [HttpGet]
@@ -254,6 +268,51 @@ namespace skipper_group_new.Controllers
 
             return Json(new { status = true, message = "Query submitted successfully!" });
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("skipperenquiry")]
+        public async Task<IActionResult> skipperenquiry()
+        {
+            var form = Request.Form;
+
+            InvestorQueryModel enquiry = new InvestorQueryModel();
+
+            enquiry.Name = form["FName"].ToString();
+            enquiry.Email = form["EmailId"].ToString();
+            enquiry.Mobile = form["phone"].ToString();
+            enquiry.Address = form["address"].ToString();
+            enquiry.Comment = form["FMessage"].ToString();
+            string captcha = form["CaptchaInput"].ToString();
+
+            bool privacyConsent =
+                form["PrivacyConsent"] == "true";
+
+            string enteredCaptcha = Request.Form["CaptchaInput"].ToString();
+
+            string actualCaptcha = ViewBag.Capcha;
+
+            if (string.IsNullOrEmpty(actualCaptcha) ||
+                !string.Equals(enteredCaptcha, actualCaptcha,
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                //TempData["ErrorMessage"] = "Invalid CAPTCHA.";
+                //return RedirectToAction("Investor");
+            }
+
+            HttpContext.Session.Remove("Captcha");
+
+            // Add your existing database save logic here.
+            var res = await _enterface.SaveQuery(enquiry);
+            if (res > 0)
+            {
+                return RedirectToAction("Thankyou", "SkipperHome");
+            }
+
+            return RedirectToAction("Thankyou", "SkipperHome");
+        }
+
 
     }
 }

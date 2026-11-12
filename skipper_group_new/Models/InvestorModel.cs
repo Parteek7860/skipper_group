@@ -17,6 +17,13 @@ namespace skipper_group_new.Models
         public int displayorder { get; set; }
         public List<InvSubCategoryModel> subcategory { get; set; }
     }
+    public class InvestorViewModel
+    {
+        public EnquiryModel Enquiry { get; set; } = new EnquiryModel();
+
+        public IEnumerable<ReportModel> Reports { get; set; }
+            = new List<ReportModel>();
+    }
 
     public class ReportModel
     {
@@ -31,6 +38,15 @@ namespace skipper_group_new.Models
         public string yearcategory { get; set; }
         public string shortDetail { get; set; }
         public DateTime trdate { get; set; }
+
+        public string FName { get; set; }
+        public string? lastname { get; set; }
+
+        [Required(ErrorMessage = "Email is required")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Please enter a valid email address")]
+        public string? EmailId { get; set; }
+        public string? Subject { get; set; }
+        public string? FMessage { get; set; }
     }
 
     public class InvestorQueryModel

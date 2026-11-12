@@ -499,7 +499,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@eventsid", obj.id);
                     cmd.Parameters.AddWithValue("@eventstitle", obj.eventstitle);
                     cmd.Parameters.AddWithValue("@ntypeid", obj.mediatype);
-                    cmd.Parameters.AddWithValue("@location", obj.tagline ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@tagline", obj.tagline ?? string.Empty);
                     cmd.Parameters.AddWithValue("@shortdesc", obj.shortdetail ?? string.Empty);
                     cmd.Parameters.AddWithValue("@EventsDesc", obj.detail ?? string.Empty);
                     cmd.Parameters.AddWithValue("@UploadEvents", obj.uploadbanner);
@@ -514,6 +514,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@PageMeta", obj.metakeywords);
                     cmd.Parameters.AddWithValue("@PageMetaDesc", obj.metadesc);
                     cmd.Parameters.AddWithValue("@rewriteurl", "");
+                    cmd.Parameters.AddWithValue("@location", "");
                     cmd.Parameters.AddWithValue("@uploadfile", obj.uploadfile);
                     cmd.Parameters.AddWithValue("@colorcode", "");
                     // cmd.Parameters.AddWithValue("@pagescript", obj.pagescript ?? string.Empty);

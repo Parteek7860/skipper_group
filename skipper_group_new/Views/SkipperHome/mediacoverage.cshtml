@@ -17,9 +17,7 @@
                         {
                             <figure>
                                 <a class="wow fadeInUp animated img-fit"
-                                   data-lightbox="example-2"
-                                   data-wow-delay=".1s"
-                                   href="/uploads/smallimages/@row["uploadevents"]">
+                                   href="/uploads/files/@row["uploadfile"]" target="_blank">
 
                                     <img alt="gallery-thumb"
                                          class="img-fluid"
@@ -35,6 +33,13 @@
                                         <p>
                                             @row["eventstitle"]
                                         </p>
+                                        @if (!string.IsNullOrEmpty(row["tagline"].ToString()))
+                                        {
+                                            <div class="sub-title-media">
+                                                @row["tagline"]
+                                            </div>
+                                        }
+                                       
                                     </div>
 
                                 </a>

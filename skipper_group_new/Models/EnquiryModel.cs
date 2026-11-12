@@ -42,6 +42,10 @@ namespace skipper_group_new.Models
         [Required(ErrorMessage = "Please upload a file")]
         public string uploadfile { get; set; }
         public string? jobname { get; set; }
+        [BindProperty]
+
+        
+        public bool PrivacyConsent { get; set; }
 
     }
 

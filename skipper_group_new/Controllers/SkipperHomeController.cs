@@ -410,7 +410,7 @@ namespace skipper_group_new.Controllers
             await LoadCMSDataAsync(id);
             var x = await _homePageService.GetNewsEvents();
             var filterlist = x.AsEnumerable()
-                   .Where(r => r.Field<bool>("status") == true && r.Field<string>("ntypeid") == "1").OrderByDescending(r => r["eventsdate"] == DBNull.Value
+                   .Where(r => r.Field<bool>("status") == true && r.Field<int>("ntypeid") == 1).OrderByDescending(r => r["eventsdate"] == DBNull.Value
                                                                             ? DateTime.MinValue
                                                                             : Convert.ToDateTime(r["eventsdate"]))
                    .ToList();

@@ -7,7 +7,7 @@
     var data = cms.FirstOrDefault();
     @if (data.Name != "Thank you")
     {
-        <section class="inner_banner @data.CSSClass1">
+        <section class="@(data.pageid == "96" || data.pageid == "97" || data.pageid == "99" ? "inner_banner whats-banner" : "inner_banner") @data.CSSClass1">
 
             <figure>
                 @{
@@ -63,7 +63,7 @@
                             </div>
                         </div>
                         <div class="bread_btm">
-                            <h5>@data.Name</h5>
+                            <h1>@data.Name</h1>
                         </div>
                         <div class="shrt-title">
                             <h6>
@@ -73,10 +73,13 @@
                     </div>
                 </div>
             </div>
-            <div class="skippertaglineinvestor"><h3>Trusted to Deliver</h3></div>
-                 </section>
-                  
+
+            <div class="@(data.pageid == "96" || data.pageid == "97" || data.pageid == "99" ? "skippertaglineinvestor whats-trusted-btn" : "skippertaglineinvestor")"><h3>Trusted to Deliver</h3></div>
+            
+
+        </section>
+
     }
-    
+
 
 }

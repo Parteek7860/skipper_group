@@ -306,7 +306,7 @@ namespace skipper_group_new.Controllers
                     objbannertype.eventsdate = filteredRows[0]["eventsdate"] == DBNull.Value
        ? DateTime.MinValue
        : Convert.ToDateTime(filteredRows[0]["eventsdate"]);
-                    //objbannertype.tagline = Convert.ToString(filteredRows[0]["tagline"]);
+                    objbannertype.tagline = Convert.ToString(filteredRows[0]["tagline"]);
                     objbannertype.shortdetail = WebUtility.HtmlDecode(Convert.ToString(filteredRows[0]["shortdesc"]));
                     objbannertype.detail = WebUtility.HtmlDecode(Convert.ToString(filteredRows[0]["eventsdesc"]));
                     objbannertype.displayorder = Convert.ToString(filteredRows[0]["displayorder"]);

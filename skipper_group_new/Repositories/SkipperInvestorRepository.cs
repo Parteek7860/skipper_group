@@ -101,7 +101,7 @@ namespace skipper_group_new.Repositories
                     cmd.Parameters.AddWithValue("@Address", m.Address);
                     cmd.Parameters.AddWithValue("@FMessage",m.Comment);
                     cmd.Parameters.AddWithValue("@Subject", "");
-                    cmd.Parameters.AddWithValue("@category", "");
+                    cmd.Parameters.AddWithValue("@category", "investor");
                     cmd.Parameters.AddWithValue("@state", "");
                     cmd.Parameters.AddWithValue("@organizationname", "");
                     cmd.Parameters.AddWithValue("@country", "");

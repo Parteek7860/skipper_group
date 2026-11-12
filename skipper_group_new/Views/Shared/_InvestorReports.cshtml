@@ -1,4 +1,10 @@
-﻿@model IEnumerable<ReportModel>
+﻿@using skipper_group_new.mainclass
+@model IEnumerable<ReportModel>
+
+@{
+    ViewBag.Capcha = CaptchaHelper.GenerateCaptcha();
+}
+
 
 @if (Model != null && Model.Any())
 {
@@ -47,6 +53,7 @@
 
                     </div>
                 }
+
             </div>
         }
         else
@@ -60,7 +67,86 @@
                         <div class="contact_rght">
                             <div class="inquiry-form-wrapper">
 
-                                <input type="hidden" id="eid" name="name" value="0" />
+
+                                @using (Html.BeginForm("skipperenquiry", "skipperinvestor", FormMethod.Post,
+                                                    new { id = "contactForm", enctype = "multipart/form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="contact_rght">
+                                        <div class="inquiry-form-wrapper">
+
+
+                                            <div class="input_bx">
+                                                <input type="text" name="FName" class="form-control"
+                                                       placeholder="Name" required />
+                                            </div>
+
+
+                                            <div class="input_bx">
+                                                <input type="email" name="EmailId" class="form-control"
+                                                       placeholder="Email Address" required />
+                                            </div>
+
+                                            <div class="input_bx">
+                                                <input type="text" name="phone" class="form-control"
+                                                       placeholder="Mobile No" maxlength="10" />
+                                            </div>
+
+                                            <div class="input_bx">
+                                                <input type="text" name="address" class="form-control"
+                                                       placeholder="Address" />
+                                            </div>
+
+
+
+                                            <div class="input_bx">
+                                                <textarea name="FMessage" class="form-control"
+                                          placeholder="Comment"></textarea>
+                                            </div>
+                                            <div class="input_bx">
+                                                <figure class="captcha_wrap">
+
+                                                    <div class="d-flex align-items-center">
+                                                        <div id="captchaText"
+                                                             style="background:#f1f1f1;padding:10px 20px;
+                                                                        font-weight:bold;letter-spacing:4px;
+                                                                        font-size:18px;border-radius:6px;">
+                                                            @ViewBag.Capcha
+                                                        </div>
+
+                                                        <a id="refreshCaptcha" class="btn btn-link ms-2">↻ Refresh</a>
+                                                    </div>
+
+                                                    <input type="hidden" name="CaptchaCode" id="CaptchaCode" />
+
+                                                    <input type="text" name="CaptchaInput"
+                                                           class="form-control mt-2"
+                                                           placeholder="Enter the code above" required />
+
+                                                </figure>
+                                            </div>
+
+                                            <div class="skipper-consent-wrap">
+                                                <label class="skipper-consent-label">
+                                                    <input type="checkbox" name="PrivacyConsent" id="PrivacyConsent" value="true" />
+
+                                                    <span>
+                                                        I consent to Skipper Limited collecting and processing the personal data provided by me through this form for the purpose of handling and responding to my enquiry. I have read and understood the
+                                                        <a href="/privacy-policy" target="_blank">Privacy Notice</a>.
+                                                    </span>
+                                                </label>
+
+                                                <span id="privacyConsentError" class="text-danger"></span>
+                                            </div>
+
+                                            <input type="submit" class="btn btn-success" value="Submit" formaction="@Url.Action("skipperenquiry", "SkipperInvestor")" formmethod="post" />
+                                        </div>
+                                    </div>
+                                }
+
+
+                                @* <input type="hidden" id="eid" name="name" value="0" />
 
                                 <div class="input_bx">
                                     <input type="text" id="invName" placeholder="Name">
@@ -118,11 +204,24 @@
                                     </a>
                                 </div>
 
+                                <div class="skipper-consent-wrap">
+                                    <label class="skipper-consent-label">
+                                        <input type="checkbox" />
+
+                                        <span>
+                                            I consent to Skipper Limited collecting and processing the personal data provided by me through this form for the purpose of handling and responding to my enquiry. I have read and understood the
+                                            <a href="/privacy-policy" target="_blank">Privacy Notice</a>.
+                                        </span>
+                                    </label>
+
+                                    <span id="privacyConsentError" class="text-danger"></span>
+                                </div>
+
                                 <div class="submit-btn">
                                     <input type="submit"
                                            onclick="SubmitQuery()"
                                            class="aos-init aos-animate">
-                                </div>
+                                </div> *@
 
                             </div>
                         </div>
@@ -143,16 +242,17 @@ else
 
 <script nonce="@Context.Items["CSPNonce"]">
 
-    $(document).ready(function () {
-        RefreshCaptcha();
-    });
 
-    function RefreshCaptcha() {
+    // $(document).ready(function () {
+    //     RefreshCaptcha();
+    // });
 
-        $.get("/SkipperInvestor/GetCaptcha", function (res) {
-            $("#captchaText").text(res.code);
-        });
-    }
+    // function RefreshCaptcha() {
+
+    //     $.get("/SkipperInvestor/GetCaptcha", function (res) {
+    //         $("#captchaText").text(res.code);
+    //     });
+    // }
 
     function SubmitQuery() {
 
@@ -234,7 +334,7 @@ else
             }
         });
     }
-      
+
 
     document.addEventListener("DOMContentLoaded", function () {
 
@@ -267,4 +367,73 @@ else
         }
     });
 
+        $(document).ready(function () {
+
+        $("#contactForm").on("submit", function (e) {
+
+            if (!$("#PrivacyConsent").is(":checked")) {
+
+                e.preventDefault();
+
+                $("#privacyConsentError")
+                    .text("Please accept the Privacy Notice before submitting.");
+
+                $("#PrivacyConsent").focus();
+
+                return false;
+            }
+
+            $("#privacyConsentError").text("");
+
+        });
+
+        $("#PrivacyConsent").on("change", function () {
+            if ($(this).is(":checked")) {
+                $("#privacyConsentError").text("");
+            }
+        });
+
+    });
+
+</script>
+
+<script nonce="@Context.Items["CSPNonce"]">
+        $(document).ready(function () {
+
+        $("#refreshCaptcha").on("click", function (e) {
+
+            e.preventDefault();
+
+            console.log("Refresh CAPTCHA clicked");
+
+            $.ajax({
+                url: '/refresh-captcha',
+                type: 'GET',
+                dataType: 'json',
+                cache: false,
+
+                success: function (response) {
+
+                    console.log("Success:", response);
+
+                    if (response && response.captcha) {
+                        $("#captchaText").text(response.captcha);
+                    }
+                    else {
+                        alert("Captcha response is empty.");
+                    }
+                },
+
+                error: function (xhr, status, error) {
+
+                    console.log("HTTP Status:", xhr.status);
+                    console.log("Status:", status);
+                    console.log("Error:", error);
+                    console.log("Response:", xhr.responseText);
+
+                    alert("Unable to refresh captcha. HTTP Status: " + xhr.status);
+                }
+            });
+        });
+    });
 </script>

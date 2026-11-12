@@ -3,6 +3,12 @@
 	.press_release_one {padding-block: 9.7rem 1.7rem;}
 .gallery {margin: 10.2rem 0 10rem;}
 }
+
+@media (max-width: 1920px) {
+	.skippertaglineinvestor.whats-trusted-btn{top: 28rem;bottom:inherit;}
+
+}
+
 @media (max-width: 1799px) {
     .left-section {
         width: 90em;
@@ -79,6 +85,10 @@
 }
 
 @media (max-width: 1599px) {
+	.skippertaglineinvestor.whats-trusted-btn{top: 28rem;bottom:inherit;}
+	.whats_new_one {
+    padding-block: 15rem 9rem;
+}
 	.gallery {
     margin: 11rem 0 10rem;
 }
@@ -94,7 +104,7 @@
         left: -47rem;
 }
 .press_release_one .press_Grid {
-    margin-top: -34rem;
+    margin-top: -28rem;
 }
 .swiper-slide:nth-child(3) .left-card::after {
     top: 22.5%;
@@ -504,11 +514,17 @@
 }
 
 @media (max-width: 1199px) {
+.gallery-desc {
+    margin-top: -33rem;
+}
+	    .whats_new_one {
+        padding-block: 9rem 9rem;
+    }
 	    .gallery {
         margin: 5rem 0 10rem;
     }
 	.press_release_one .press_Grid {
-        margin-top: -40rem;
+        margin-top: -30rem;
     }
 	.press_release_one {
     padding-block: 4.7rem 2.7rem;
@@ -842,15 +858,17 @@
 }
 
 @media (max-width: 991px) {
+    .gallery-desc {
+        margin-top: -40rem;
+    }
+	.skippertaglineinvestor.whats-trusted-btn{display: inline-table;}
 	.press_release_one .press_Grid {
         margin-top: -28rem;
     }
 	.gallery {
         margin: 16rem 0 10rem;
     }
-	.gallery-desc {
-    columns: 2
-	}
+	
 	.press_release_one .press_Grid {
     display:block;
 }
@@ -880,9 +898,7 @@
         gap: 16rem;
     }
 
-    .breadcrumb-bar {
-        display: none;
-    }
+ 
 
     .Carbon_Footprint_Reduction {
         padding-block: 6rem 6rem;
@@ -1601,7 +1617,10 @@
 }
 
 @media (max-width: 767px) {
-
+.skippertaglineinvestor.whats-trusted-btn{top:15rem;}
+.whats_new_one .swiper-containe1 {
+    padding-top: 7.9rem;
+}
 .press_release_one .press_Grid {
         margin-top: -22rem;
     }
@@ -3079,6 +3098,15 @@
     }
 }
 
+@media(max-width:992px) {
+   .breadcrumb-bar {
+        display: none;
+    }
+	.skippertaglineinvestor.whats-trusted-btn {
+        top: 17rem;
+	}
+}
+
 @media(max-width:991px) {
     .inner_banner .shrt-title h6 , .inner_banner .bread_btm h5{
     text-shadow: 3px 3px 6px #0c0c0c;
@@ -3154,6 +3182,9 @@
     .driver_twer h4 {
         margin-bottom: 2rem;
     }
+	    .skippertaglineinvestor.whats-trusted-btn {
+        top: 13rem;
+    }
 
     br {
         display: none;
@@ -3203,12 +3234,34 @@
 }
 
 @media(max-width:575px) {
+    .inner_banner.whats-banner .container {
+        top: 22rem;
+    }
+	    .media-content p {
+        font-size: var(--font-18);line-height:26px;
+		}
+		.media-content p:first-child {
+ margin-bottom:0;
+}
+    .media-content p {
+              margin-bottom: 1rem!important;
+	}
+	    .media-content p {
+        min-height: auto;
+        margin-bottom: 2rem;
+    }
+	.whats_new_one .whts_new_text h4, .whats_new_one .whts_new_text h4 > a {
+    font-size: var(--font-24);
+	}
+	.whats_new_one .swiper-containe1 {
+    padding-top: 5.9rem;
+}
     .product_group3 {
         gap: 2rem;
         padding-block: 0rem 6rem;
     }
 .gallery-desc {
-    margin-top: -37rem;
+    margin-top: -42rem;
 }
     .gallery-desc {
         columns: 1;
@@ -4090,7 +4143,7 @@
     grid-template-columns: auto;
 }
  .press_release_one .press_Grid {
-        margin-top: -20rem;
+        margin-top: -25rem;
     }
 	.press_release_one .press_Grid .press_R_bx {
     padding-block: 3rem 2rem;padding-inline: 2.6rem 2.1rem;

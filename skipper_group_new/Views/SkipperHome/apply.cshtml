@@ -92,6 +92,18 @@
                                         </span>
                                     </figure>
                                 </div>
+                                <div class="skipper-consent-wrap">
+                                    <label class="skipper-consent-label">
+                                        <input asp-for="PrivacyConsent" type="checkbox" />
+
+                                        <span>
+                                            I consent to Skipper Limited collecting and processing the personal data provided by me through this form for the purpose of handling and responding to my enquiry. I have read and understood the
+                                            <a href="/privacy-policy" target="_blank">Privacy Notice</a>.
+                                        </span>
+                                    </label>
+
+                                    <span id="privacyConsentError" class="text-danger"></span>
+                                </div>
                             </div> 
                             <div class="text-center">
 
@@ -155,5 +167,23 @@
             });
         });
 
+    });
+
+     $("form").on("submit", function (e) {
+
+        if (!$("#PrivacyConsent").is(":checked")) {
+
+            e.preventDefault();
+
+            $("#privacyConsentError").text(
+                "Please accept the privacy policy."
+            );
+
+            $("#PrivacyConsent").focus();
+
+            return false;
+        }
+
+        $("#privacyConsentError").text("");
     });
 </script>
